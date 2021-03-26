@@ -4,7 +4,7 @@ setup(
     name = 'pyFlarum',
     packages = ['pyflarum'],
     version = 'v0.1-alpha',
-    license='GNU GPLv3',
+    license='GPLv3',
     description = "An unofficial Python package for manipulating with Flarum's API",
     keywords = ['Flarum', 'forum software', 'api', "Flarum api", "bot", "userbot"],
 
@@ -23,7 +23,7 @@ setup(
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
         'Topic :: Software Development :: Build Tools',
-        'License :: GNU GPLv3',
+        'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
