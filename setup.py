@@ -3,7 +3,7 @@ from distutils.core import setup
 setup(
     name = 'pyFlarum',
     packages = ['pyflarum'],
-    version = '0.1',
+    version = 'v0.1-alpha',
     license='GNU GPLv3',
     description = "An unofficial Python package for manipulating with Flarum's API",
     keywords = ['Flarum', 'forum software', 'api', "Flarum api", "bot", "userbot"],
