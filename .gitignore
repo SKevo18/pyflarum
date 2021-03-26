@@ -1,0 +1,11 @@
+env/
+.vscode/
+tests/
+
+*.sqlite
+*.sqlite-journal
+__pycache__/
+.pyc
+todo.md
+
+.env
