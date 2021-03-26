@@ -1,8 +1,18 @@
-from distutils.core import setup
+import setuptools
 
-setup(
+
+with open("README", "r", encoding="utf-8") as fh:
+    long_description = fh.read()
+
+
+setuptools.setup(
     name = 'pyFlarum',
     packages = ['pyflarum'],
+    package_dir={'pyflarum': 'pyflarum'},
+
+    long_description=long_description,
+    long_description_content_type="text/markdown",
+
     version = 'v0.1-alpha',
     license='GPLv3',
     description = "An unofficial Python package for manipulating with Flarum's API",
@@ -12,7 +22,6 @@ setup(
     author_email = 'me@kevo.link',
 
     url = 'https://github.com/CWKevo/pyflarum',
-    download_url = 'https://codeload.github.com/CWKevo/pyflarum/zip/v0.1-alpha',
 
     install_requires=[
         'requests',
