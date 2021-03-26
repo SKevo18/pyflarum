@@ -8,12 +8,12 @@ with open("README", "r", encoding="utf-8") as fh:
 setuptools.setup(
     name = 'pyFlarum',
     packages = ['pyflarum'],
-    package_dir={'pyflarum': 'pyflarum'},
+    package_dir={'pyflarum': 'pyflarum/**/*'},
 
     long_description=long_description,
     long_description_content_type="text/markdown",
 
-    version = 'v0.1-alpha',
+    version = 'v0.0.1-beta',
     license='GPLv3',
     description = "An unofficial Python package for manipulating with Flarum's API",
     keywords = ['Flarum', 'forum software', 'api', "Flarum api", "bot", "userbot"],
