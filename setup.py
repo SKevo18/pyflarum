@@ -12,7 +12,7 @@ setup(
     author_email = 'me@kevo.link',
 
     url = 'https://github.com/CWKevo/pyflarum',
-    download_url = 'https://github.com/CWKevo/pyflarum/archive/v0.1-alpha.tar.gz',
+    download_url = 'https://codeload.github.com/CWKevo/pyflarum/zip/v0.1-alpha',
 
     install_requires=[
         'requests',
