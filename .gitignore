@@ -1,14 +1,18 @@
-env/
+# Editor & tests:
 .vscode/
+env/
 tests/
-*.egg-info
 
+# Cache:
 *.sqlite
 *.sqlite-journal
 __pycache__/
 .pyc
-todo.md
 
+# Compiled:
 dist/
+*.egg-info
 
+# Personal:
 .env
+todo.md

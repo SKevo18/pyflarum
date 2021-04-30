@@ -1,7 +1,7 @@
 import setuptools
 
 
-with open("README.md", "r", encoding="utf-8") as fh:
+with open('README.md', 'r', encoding='utf-8') as fh:
     long_description = fh.read()
 
 
@@ -10,12 +10,12 @@ setuptools.setup(
     packages = ['pyflarum'],
 
     long_description=long_description,
-    long_description_content_type="text/markdown",
+    long_description_content_type='text/markdown',
 
-    version = 'v0.1-beta',
+    version = 'v0.0.1-beta',
     license='GPLv3',
-    description = "An unofficial Python package for manipulating with Flarum's API",
-    keywords = ['Flarum', 'forum software', 'api', "Flarum api", "bot", "userbot"],
+    description = 'An unofficial Python package for manipulating with Flarum\'s API',
+    keywords = ['Flarum', 'forum software', 'api', 'Flarum api', 'bot', 'userbot', 'database', 'flarum database', 'server', 'client'],
 
     author = 'Kevo',
     author_email = 'me@kevo.link',
