@@ -12,7 +12,7 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type='text/markdown',
 
-    version = 'v0.0.1-beta',
+    version = 'v0.0.2-beta',
     license='GPLv3',
     description = 'An unofficial Python package for manipulating with Flarum\'s API',
     keywords = ['Flarum', 'forum software', 'api', 'Flarum api', 'bot', 'userbot', 'database', 'flarum database', 'server', 'client'],
