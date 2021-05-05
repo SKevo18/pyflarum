@@ -10,6 +10,8 @@ import time
 import requests
 from requests_cache.core import install_cache
 
+from pyflarum.user.models.flarum.Discussions import FlarumDiscussion, FlarumDiscussions
+
 
 class FlarumSession:
     """
@@ -110,7 +112,7 @@ class FlarumMyUser(FlarumSession):
         self.delay = delay_between_requests
 
 
-    def __fetch(self, raise_on_error: bool=False, *args, **kwargs) -> Union[dict, None]:
+    def __fetch(self, raise_on_error: bool=False, *args, **kwargs) -> dict:
         if self.delay:
             time.sleep(self.delay)
 
@@ -119,12 +121,12 @@ class FlarumMyUser(FlarumSession):
         if "errors" in raw:
             if raise_on_error:
                 raise Exception(raw.get("errors", '"errors" were detected in the raw API response, but now they cannot be obtained?'))
-            return
+            return dict()
 
         return raw
 
 
-    def get_discussions(self, ids: Union[Iterable, Iterator]=None, parameters: dict={}, raise_on_api_error: bool=False) -> Generator[dict, None, None]:
+    def get_discussions(self, ids: Union[Iterable, Iterator]=None, parameters: dict={}, raise_on_api_error: bool=False) -> Union[Generator[FlarumDiscussion, None, None], FlarumDiscussions]:
         """
             ### Descriptions:
             Fetches discussions from Flarum API, skipping non existing ones by default.
@@ -191,19 +193,22 @@ class FlarumMyUser(FlarumSession):
 
         if ids is None:
             raw = self.__fetch(raise_on_error=raise_on_api_error, url=f"{self.API_ENDPOINTS['api_discussions_url']}", params=parameters)
+            discussions = FlarumDiscussions(raw.get("data", {}))
 
-            return raw # TODO: In FlarumDiscussions
+            return discussions
 
         else:
-            def __discussion_generator() -> Generator[Union[dict, None], None, None]:
+            def __discussion_generator() -> Generator[Union[FlarumDiscussion, None], None, None]:
                 for id in ids:
                     raw = self.__fetch(raise_on_error=raise_on_api_error, url=f"{self.API_ENDPOINTS['api_discussions_url']}/{id}", params=parameters)
+                    discussion = FlarumDiscussion(raw.get("data", {}))
 
-                    yield raw # TODO: In FlarumDiscussion
+                    yield discussion
 
             return __discussion_generator()
 
-    def get_all_discussions(self, parameters: dict={}, raise_on_api_error: bool=False) -> Generator[dict, None, None]:
+
+    def get_all_discussions(self, parameters: dict={}, raise_on_api_error: bool=False) -> Generator[FlarumDiscussions, None, None]:
         """
             ### Description:
             Generates/fetches all discussions, until there are none left.
@@ -231,20 +236,12 @@ class FlarumMyUser(FlarumSession):
 
         while True:
             raw = self.__fetch(raise_on_error=raise_on_api_error, url=f"{self.API_ENDPOINTS['api_discussions_url']}", params=parameters)
-
-            if 'next' not in raw.get("links", None):
-                break
+            discussions = FlarumDiscussions(raw)
 
             parameters["page[offset]"] = offset * parameters["page[limit]"]
             offset += 1
 
-            yield raw.get("data") # TODO: In FlarumDiscussions
+            yield discussions
 
-
-# Testing:
-if __name__ == "__main__":
-    user = FlarumMyUser("https://discuss.flarum.org", use_cache=False)
-
-    for discussions in user.get_all_discussions(parameters={"sort": "-createdAt"}):
-        for discussion in discussions:
-            print(discussion["id"])
+            if not discussions.next_link:
+                break
