@@ -6,6 +6,27 @@ from pyflarum.date_conversions import flarum_to_datetime
 
 
 class FlarumDiscussion(UserDict):
+    def __init__(self, title: str=None, content: str=None, raw: dict=None):
+        if raw != None:
+            super().__init__(raw)
+
+        else:
+            if title is None or content is None:
+                raise Exception("Discussion 'title' and 'content' is required.")
+            
+            data = dict({
+                "data": {
+                    "type": "discussions",
+                    "attributes": {
+                        "title": str(title),
+                        "content": str(content)
+                    },
+                    "relationships": dict()
+                }
+            })
+
+            super().__init__(data)
+
     @property
     def type(self) -> str:
         return self.get("type", "discussions")
@@ -96,7 +117,8 @@ class FlarumDiscussions(UserDict):
 
     @property
     def discussions(self) -> List[FlarumDiscussion]:
-        return self.get("data", [])
+        for raw in self.get("data", []):
+            yield FlarumDiscussion(raw=raw)
 
 
     def included(self) -> Generator[Union[dict, FlarumDiscussion, list], None, None]:
@@ -107,14 +129,11 @@ class FlarumDiscussions(UserDict):
                 yield dict(include)
             
             elif include.get("type", None) == "discussions":
-                yield FlarumDiscussion(include)
+                yield FlarumDiscussion(raw=include)
             
             else:
                 yield list(include)
 
 
     def __iter__(self) -> Generator[FlarumDiscussion, None, None]:
-        for raw in self.discussions:
-            discussion = FlarumDiscussion(raw) # TODO: BulkDiscussion
-
-            yield discussion
+        return self.discussions
