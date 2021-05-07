@@ -238,8 +238,8 @@ class FlarumMyUser(FlarumSession):
             raw = self.__fetch(raise_on_error=raise_on_api_error, url=f"{self.API_ENDPOINTS['api_discussions_url']}", params=parameters)
             discussions = FlarumDiscussions(raw)
 
-            parameters["page[offset]"] = offset * parameters["page[limit]"]
             offset += 1
+            parameters["page[offset]"] = offset * parameters["page[limit]"]
 
             yield discussions
 
