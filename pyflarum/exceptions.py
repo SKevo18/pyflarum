@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Errors related to pyFlarum package."""
 
 class FlarumError(Exception):

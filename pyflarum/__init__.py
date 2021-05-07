@@ -11,6 +11,7 @@
     work. Thank you for using this.
 """
 
+
 __author__ = "Kevo"
 __copyright__ = "Copyright 2021, Kevo"
 __credits__ = ["Kevo"]
@@ -19,6 +20,7 @@ __version__ = "1.0"
 __maintainer__ = "Kevo"
 __email__ = "me@kevo.link"
 __status__ = "Testing"
+
 
 from pyflarum.user.login_manager import FlarumMyUser
 
