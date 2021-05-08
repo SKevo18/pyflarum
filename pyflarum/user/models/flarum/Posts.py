@@ -3,6 +3,7 @@ from typing import Union
 from datetime import datetime
 
 from pyflarum.date_conversions import flarum_to_datetime
+from pyflarum.user.models.Users import FlarumUser
 
 
 class FlarumIncludedPostFromDiscussion(dict):
@@ -121,6 +122,19 @@ class FlarumIncludedPostFromDiscussion(dict):
     def canApprove(self) -> bool:
         """Whether or not you can approve this post."""
         return self.attributes.get("canApprove", False)
+
+
+    @property
+    def relationships(self) -> dict:
+        """A raw `dict` of this post's relationships."""
+        return self.data.get("relationships", {})
+
+
+    @property
+    def author_id(self) -> int:
+        """This post's author ID."""
+        author_id = self.relationships.get("user", {}).get("data", {}).get("id", None)
+        return author_id
 
 
 class FlarumPost(FlarumIncludedPostFromDiscussion, dict):

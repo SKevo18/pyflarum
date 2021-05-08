@@ -246,16 +246,38 @@ class FlarumDiscussion(FlarumDiscussionFromBulk, dict):
         return self.get("included", list())
 
 
-    @property
-    def posts(self) -> Generator[FlarumIncludedPostFromDiscussion, None, None]:
-        for raw in self.included:
-            if raw.get("attributes", {}).get("contentType", None) == "comment":
-                post = FlarumIncludedPostFromDiscussion(data=raw)
+    def comments(self, sort_by_number: bool=True, reverse_sorting: bool=False) -> Generator[FlarumIncludedPostFromDiscussion, None, None]:
+        """
+            ### Description:
+            The discussion's comments (posts). This produces only comments (eg.: posts with `contentHTML` attribute).
 
+            ### Parameters:
+            - `sort_by_number` - Sorts all posts in the discussion by number. Sometimes, the posts are not sorted when
+            obtained through the API. This function will fix that. It may put a milliseconds more lag, because this creates a new
+            sorted `list` of posts and then replaces the old one, so it's `False` by default. However the performance impact should be
+            minimal when using this.
+
+            - `reverse_sorting` - From highest to lowest number sorting instead (same as in `sorted(reverse=True/False)`). Default is `False`.
+        """
+        posts = []
+
+        if sort_by_number:
+            for raw_post in self.included:
+                if raw_post.get("attributes", {}).get("contentType", None) == "comment":
+                    posts.append(raw_post)
+            
+            sorted_posts = sorted(posts, key=lambda x: x["attributes"]["number"], reverse=reverse_sorting)
+
+            for sorted_post in sorted_posts:
+                post = FlarumIncludedPostFromDiscussion(data=sorted_post)
                 yield post
 
-            else:
-                continue
+        else:
+            for raw_post in self.included:
+                post = FlarumIncludedPostFromDiscussion(data=raw_post)
+
+                if post.isComment:
+                    yield post
 
 
 class FlarumDiscussions(dict):
