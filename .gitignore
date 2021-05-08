@@ -1,7 +1,10 @@
 # Editor & tests:
 .vscode/
 env/
-tests/
+
+# Tests:
+scrap/
+test_*.py
 
 # Cache:
 *.sqlite

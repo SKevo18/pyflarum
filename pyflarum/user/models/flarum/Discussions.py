@@ -3,7 +3,7 @@ from typing import Dict, Generator, List, Union
 from datetime import datetime
 
 from pyflarum.date_conversions import flarum_to_datetime
-from pyflarum.user.models.flarum.Posts import FlarumIncludedPost
+from pyflarum.user.models.flarum.Posts import FlarumIncludedPostFromDiscussion
 
 
 class FlarumDiscussionFromBulk(dict):
@@ -247,13 +247,15 @@ class FlarumDiscussion(FlarumDiscussionFromBulk, dict):
 
 
     @property
-    def posts(self) -> Generator[FlarumIncludedPost, None, None]:
-        for data in self.included:
-            if data.get("type") == "posts":
-                raw = dict(data=raw)
-                post = FlarumIncludedPost(raw=raw)
+    def posts(self) -> Generator[FlarumIncludedPostFromDiscussion, None, None]:
+        for raw in self.included:
+            if raw.get("attributes", {}).get("contentType", None) == "comment":
+                post = FlarumIncludedPostFromDiscussion(data=raw)
 
                 yield post
+
+            else:
+                continue
 
 
 class FlarumDiscussions(dict):
@@ -281,7 +283,7 @@ class FlarumDiscussions(dict):
 
 
     @property
-    def data(self) -> list:
+    def data(self) -> List[FlarumDiscussionFromBulk]:
         """A raw `list` of this discussion list's discussions."""
         return self.get("data", list())
 
@@ -290,9 +292,10 @@ class FlarumDiscussions(dict):
     def discussions(self) -> Generator[FlarumDiscussionFromBulk, None, None]:
         """A `generator` of this discussion list's discussions."""
         for r in self.data:
-            raw = dict(data=r)
+            if r.get("type", None) == "discussions":
+                raw = dict(data=r)
 
-            yield FlarumDiscussionFromBulk(raw)
+                yield FlarumDiscussionFromBulk(raw)
 
 
     def included(self) -> Generator[Union[dict, FlarumDiscussion, list], None, None]:

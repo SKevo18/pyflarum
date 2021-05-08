@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
-from typing import Generator, Union
+from typing import Union
 from datetime import datetime
 
 from pyflarum.date_conversions import flarum_to_datetime
 
 
-class FlarumIncludedPost(dict):
+class FlarumIncludedPostFromDiscussion(dict):
     """
-        Represents a Flarum post in `FlarumDiscussion`. Not all properties
+        Represents a generic Flarum post in `FlarumDiscussion`. Not all properties
         are included in this post.
     """
 
@@ -55,9 +55,24 @@ class FlarumIncludedPost(dict):
 
 
     @property
-    def contentHtml(self) -> str:
-        """The HTML parsed content of this post."""
-        return self.attributes.get("contentHtml", None)
+    def content(self) -> Union[str, None]:
+        """The post's content (can be HTML or other kind of data - notification
+        that the discussion was pinned is treated as post too, for example)."""
+        type = self.contentType
+
+        if type == "comment":
+            return self.attributes.get("contentHtml", None)
+        else:
+            return self.attributes.get("content", None)
+
+
+    @property
+    def isComment(self) -> bool:
+        """(Non-Flarum) Whether or not this post contains HTML content."""
+        if self.contentType == "comment":
+            return True
+        else:
+            return False
 
 
     @property
@@ -108,10 +123,10 @@ class FlarumIncludedPost(dict):
         return self.attributes.get("canApprove", False)
 
 
-class FlarumPost(FlarumIncludedPost, dict):
+class FlarumPost(FlarumIncludedPostFromDiscussion, dict):
     """
-        Represents a `FlarumPost` obtained directly from the API.
-        Inherits from `FlarumIncludedPost`, since the properties
+        Represents a `FlarumPost` obtained directly from the API by post's ID.
+        Inherits from `FlarumIncludedPostFromDiscussion`, since the properties
         from that are included there too.
     """
 
