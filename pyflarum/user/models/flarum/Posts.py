@@ -3,7 +3,7 @@ from typing import Union
 from datetime import datetime
 
 from pyflarum.date_conversions import flarum_to_datetime
-from pyflarum.user.models.Users import FlarumUser
+from pyflarum.user.models.flarum.Users import FlarumUser
 
 
 class FlarumIncludedPostFromDiscussion(dict):

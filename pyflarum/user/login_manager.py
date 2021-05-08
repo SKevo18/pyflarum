@@ -10,7 +10,7 @@ import requests
 from requests_cache.core import install_cache
 
 from pyflarum.user.models.flarum.Discussions import FlarumDiscussion, FlarumDiscussions
-from pyflarum.user.models.Users import FlarumUser
+from pyflarum.user.models.flarum.Users import FlarumUser
 
 
 class FlarumSession:
