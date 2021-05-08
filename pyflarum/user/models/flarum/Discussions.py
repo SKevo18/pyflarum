@@ -3,6 +3,7 @@ from typing import Dict, Generator, List, Union
 from datetime import datetime
 
 from pyflarum.date_conversions import flarum_to_datetime
+from pyflarum.user.models.flarum.Posts import FlarumIncludedPost
 
 
 class FlarumDiscussionFromBulk(dict):
@@ -235,7 +236,24 @@ class FlarumDiscussion(FlarumDiscussionFromBulk, dict):
                     "relationships": dict()
                 }
             })
+
             super().__init__(data)
+
+
+    @property
+    def included(self) -> List[dict]:
+        """Raw data included in the discussion (such as posts, users...)"""
+        return self.get("included", list())
+
+
+    @property
+    def posts(self) -> Generator[FlarumIncludedPost, None, None]:
+        for data in self.included:
+            if data.get("type") == "posts":
+                raw = dict(data=raw)
+                post = FlarumIncludedPost(raw=raw)
+
+                yield post
 
 
 class FlarumDiscussions(dict):
@@ -252,7 +270,7 @@ class FlarumDiscussions(dict):
 
     @property
     def next_link(self) -> str:
-        """"Link to the next API page."""
+        """Link to the next API page."""
         return self.links.get("next", None)
 
 

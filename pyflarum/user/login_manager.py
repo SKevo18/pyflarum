@@ -125,7 +125,24 @@ class FlarumMyUser(FlarumSession):
         return raw
 
 
-    def get_discussions(self, ids: Union[Iterable, Iterator]=None, parameters: dict={}, detailed: bool=False, raise_on_api_error: bool=False) -> Union[Generator[FlarumDiscussion, None, None], FlarumDiscussions]:
+    def get_discussion(self, id: int, raise_on_api_error: bool=False) -> FlarumDiscussion:
+        """
+            ### Description:
+            Obtains discussion by its unique ID.
+
+            ### Parameters:
+            - `id` - The ID of the discussion. Can be an integer, although `str` is possible.
+
+            - `raise_on_api_error` - Raise a `FlarumError`, if result contains `errors` (e. g.: discussion wasn't found), otherwise errors are ignored.
+        """
+
+        raw = self.__fetch(raise_on_error=raise_on_api_error, url=f"{self.API_ENDPOINTS['api_discussions_url']}/{id}")
+        discussion = FlarumDiscussion(raw=raw)
+
+        return discussion
+
+
+    def get_discussions(self, ids: Union[Iterable, Iterator]=None, parameters: dict={}, raise_on_api_error: bool=False) -> Union[Generator[FlarumDiscussion, None, None], FlarumDiscussions]:
         """
             ### Descriptions:
             Fetches discussions from Flarum API, skipping non existing ones by default.
@@ -161,10 +178,7 @@ class FlarumMyUser(FlarumSession):
                 Maximum number of discussions fetched at once is 50 (Flarum limitation, to not stress database):
                 `{"page[limit]": 50}` - default is 20
 
-            - `detailed` - Whether or not to obtain full data of the discussion (discussions obtained without ID/undirectly don't contain all data).
-            Defaults to false, because it adds an additional API request.
-
-            - `raise_on_api_error` - Raise a `FlarumError`, if result contains `errors` (e. g.: discussion wasn't found), otherwise errors are skipped.
+            - `raise_on_api_error` - Raise a `FlarumError`, if result contains `errors` (e. g.: discussion wasn't found), otherwise errors are ignored.
 
             ### Example usage:
 
@@ -197,18 +211,7 @@ class FlarumMyUser(FlarumSession):
             raw = self.__fetch(raise_on_error=raise_on_api_error, url=f"{self.API_ENDPOINTS['api_discussions_url']}", params=parameters)
             discussions = FlarumDiscussions(raw)
 
-            if detailed:
-                def __detailed_discussions() -> Generator[Union[FlarumDiscussion, None], None, None]:
-                    for d in discussions:
-                        raw = self.__fetch(raise_on_error=raise_on_api_error, url=f"{self.API_ENDPOINTS['api_discussions_url']}/{d.id}", params=parameters)
-                        discussion = FlarumDiscussion(raw=raw)
-
-                        yield discussion
-
-                return __detailed_discussions()
-
-            else:
-                return discussions
+            return discussions
 
         else:
             def __discussion_generator() -> Generator[Union[FlarumDiscussion, None], None, None]:
@@ -221,7 +224,7 @@ class FlarumMyUser(FlarumSession):
             return __discussion_generator()
 
 
-    def get_all_discussions(self, parameters: dict={}, detailed: bool=False, raise_on_api_error: bool=False) -> Union[Generator[FlarumDiscussions, None, None], FlarumDiscussion]:
+    def get_all_discussions(self, parameters: dict={}, raise_on_api_error: bool=False) -> Generator[FlarumDiscussions, None, None]:
         """
             ### Description:
             Generates/fetches all discussions, until there are none left.
@@ -231,10 +234,7 @@ class FlarumMyUser(FlarumSession):
             `page[offset]` and `page[limit]` get overwritten - mandatory in order for this function to work properly - so
             you do not have to specify them.
 
-            - `detailed` - Whether or not to obtain full data of the discussion (discussions obtained without ID/undirectly don't contain all data).
-            Defaults to false, because it adds an additional API request.
-
-            - `raise_on_api_error` - Raise a `FlarumError`, if result contains `errors` (e. g.: discussion wasn't found), otherwise errors are skipped.
+            - `raise_on_api_error` - Raise a `FlarumError`, if result contains `errors` (e. g.: no data was found), otherwise errors are ignored.
 
             ### Example usage:
 
@@ -258,14 +258,51 @@ class FlarumMyUser(FlarumSession):
             offset += 1
             parameters["page[offset]"] = offset * parameters["page[limit]"]
 
-            if detailed:
-                for d in discussions:
-                    r = self.__fetch(raise_on_error=raise_on_api_error, url=f"{self.API_ENDPOINTS['api_discussions_url']}/{d.id}")
-                    discussion = FlarumDiscussion(raw=r)
+            yield discussions
 
-                    yield discussion
-            else:
-                yield discussions
+            if not discussions.next_link:
+                break
+
+
+    def get_all_discussions_detailed(self, parameters: dict={}, raise_on_api_error: bool=False) -> Union[Generator[FlarumDiscussion, None, None]]:
+        """
+            ### Description:
+            Generates/fetches full discussion data, until there are none left. The way it works is that discussions are fetched in bulk first, then
+            discussion IDs from that bunch are obtained and passed to another API request for full discussion data.
+
+            ### Parameters:
+            - `parameters` - A dictionary of search parameters. Same as for `get_all_discussions()`.
+            `page[offset]` and `page[limit]` get overwritten - mandatory in order for this function to work properly - so
+            you do not have to specify them.
+
+            - `raise_on_api_error` - Raise a `FlarumError`, if result contains `errors` (e. g.: no data was found), otherwise errors are ignored.
+
+            ### Example usage:
+
+            #### Fetch all discussions on Discuss, ordered from newest to oldest:
+            ```
+            user = FlarumMyUser("https://discuss.flarum.org")
+
+            for discussion in user.get_all_discussions_detailed(parameters={"sort": "-createdAt"}):
+                print(discussion)
+            ```
+        """
+
+        parameters["page[offset]"] = 0
+        parameters["page[limit]"] = 50
+        offset = 0
+
+        while True:
+            raw = self.__fetch(raise_on_error=raise_on_api_error, url=f"{self.API_ENDPOINTS['api_discussions_url']}", params=parameters)
+            discussions = FlarumDiscussions(raw)
+
+            offset += 1
+            parameters["page[offset]"] = offset * parameters["page[limit]"]
+
+            for d in discussions:
+                discussion = self.get_discussion(id=d.id, raise_on_api_error=raise_on_api_error)
+
+                yield discussion
 
             if not discussions.next_link:
                 break
