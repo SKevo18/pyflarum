@@ -42,7 +42,7 @@ class FlarumSession:
             if 'token' in self.token_data:
                 self.session.headers.update(
                     {
-                        "Authorization": f'Token {self.token_data["token"]}; userId={str(self.token_data["userId"])}',
+                        "Authorization": f'Token {self.token_data["token"]}; userId={self.token_data["userId"]}',
                         "User-Agent": "pyflarum-bot-authenticated"
                     }
                 )
