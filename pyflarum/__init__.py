@@ -11,6 +11,9 @@
 """
 
 
+from .session import FlarumUser
+
+
 __author__ = "Kevo"
 __copyright__ = "Copyright 2021, Kevo"
 __credits__ = ["Kevo"]
