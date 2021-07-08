@@ -1,8 +1,11 @@
+from json.decoder import JSONDecoder
+from pyflarum.flarum.core.filters import DiscussionFilter
 from typing import Any, Union
 
 from requests import Session
 
-from .flarum.core.discussions import Discussion
+from .flarum.core.discussions import Discussion, Discussions
+from .error_handler import handle_errors
 
 
 class FlarumSession(object):
@@ -31,7 +34,19 @@ class FlarumSession(object):
     def __authenticate(self, username: Union[str]=None, password: Union[str, None]=None):
         if username and password:
             identification_data = {"identification": self.username, "password": password}
-            token_data = self.session.post(url=f'{self.forum_url}/api/token', json=identification_data).json() # type: dict
+
+
+            raw_token_data = self.session.post(url=f'{self.forum_url}/api/token', json=identification_data)
+
+            if raw_token_data.status_code != 200:
+                return handle_errors(status_code=raw_token_data.status_code)
+
+
+            token_data = raw_token_data.json() # type: dict
+
+            if 'errors' in token_data:
+                return handle_errors(token_data['errors'])
+
 
             token = token_data.get("token", None)
             user_id = token_data.get("userId", None)
@@ -72,7 +87,29 @@ class FlarumSession(object):
 
 
 class FlarumUser(FlarumSession):
-    def get_discussion(self, id: int):
-        raw = self.session.get(f"{self.api_urls['discussions']}/{id}").json() # type: dict
+    def get_discussion_by_id(self, id: int):
+        raw = self.session.get(f"{self.api_urls['discussions']}/{id}")
 
-        return Discussion(session=self, fetched_data=raw)
+        if raw.status_code != 200:
+            return handle_errors(status_code=raw.status_code)
+
+        json = raw.json() # type: dict
+
+        if 'errors' in json:
+            return handle_errors(raw['errors'])
+
+        return Discussion(session=self, _fetched_data=json)
+
+
+    def all_discussions(self, filter: DiscussionFilter=None) -> Discussions:
+        raw = self.session.get(f"{self.api_urls['discussions']}", params=filter)
+
+        if raw.status_code != 200:
+            return handle_errors(status_code=raw.status_code)
+
+        json = raw.json() # type: dict
+
+        if 'errors' in json:
+            return handle_errors(raw['errors'])
+
+        return Discussions(session=self, _fetched_data=json)

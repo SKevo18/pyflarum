@@ -1,4 +1,4 @@
-from typing import Literal, NoReturn, TYPE_CHECKING, Optional, Union
+from typing import Literal, NoReturn, TYPE_CHECKING, Optional, Union, List
 
 # Avoid my greatest enemy in Python: circular import:
 if TYPE_CHECKING:
@@ -10,20 +10,62 @@ from ...error_handler import FlarumError, handle_errors
 from ...datetime_conversions import flarum_to_datetime
 
 
+class Discussions(dict):
+    """
+        A data of multiple discussions fetched from the API.
+    """
+
+    def __init__(self, session: 'FlarumSession', _fetched_data: dict):
+        self.flarum_session = session
+
+        super().__init__(_fetched_data)
+
+
+    def __iter__(self):
+        return iter(self.discussions)
+
+
+    @property
+    def links(self) -> dict:
+        return self.get("links", {})
+
+
+    @property
+    def first_link(self) -> Optional[str]:
+        return self.links.get("first", None)
+
+
+    @property
+    def previous_link(self) -> Optional[str]:
+        return self.links.get("prev", None)
+
+
+    @property
+    def data(self) -> List[dict]:
+        return self.get("data", [{}])
+
+
+    @property
+    def discussions(self):
+        for raw_discussion in self.data:
+            if raw_discussion.get("type", None) == 'discussions':
+                yield Discussion(session=self.flarum_session, _fetched_data=dict(data=raw_discussion))
+
+
 class Discussion(dict):
     """
         Discussion that was fetched from the API.
     """
 
-    def __init__(self, session: 'FlarumSession', title: Optional[str]=None, content: Optional[str]=None, fetched_data: Optional[dict]=None):
+    def __init__(self, session: 'FlarumSession', title: Optional[str]=None, content: Optional[str]=None, _fetched_data: Optional[dict]=None):
         self.flarum_session = session
 
-        if fetched_data:
-            super().__init__(fetched_data)
+        if _fetched_data:
+            super().__init__(_fetched_data)
             
         else:
             if not isinstance(title, str) or not isinstance(content, str):
-                raise TypeError(f"Both 'title' and 'content' parameters must be a 'str', if 'fetched_data' is not present.")
+                raise TypeError(f"Both 'title' and 'content' parameters must be a 'str', if '_fetched_data' is not present.")
 
             super().__init__({
                 "data": {
@@ -36,18 +78,24 @@ class Discussion(dict):
             })
 
 
+    def create(self): return self.post()
     def post(self):
         """
-            Posts/creates the discussion. Raises `FlarumError` or returns `False` if it failed, otherwise the `Discussion` is returned.
+            Posts/creates the discussion. Raises `FlarumError` or returns `False` if it failed, otherwise the new `Discussion` is returned.
         """
 
-        response = self.flarum_session.session.post(self.flarum_session.api_urls['discussions'], json=self).json()
+        raw = self.flarum_session.session.post(self.flarum_session.api_urls['discussions'], json=self)
 
-        if 'errors' in response:
-            return handle_errors(response['errors'])
+        if raw.status_code != 200:
+            return handle_errors(status_code=raw.status_code)
+
+        json = raw.json() # type: dict
+
+        if 'errors' in json:
+            return handle_errors(raw['errors'])
 
         else:
-            return Discussion(session=self.flarum_session, fetched_data=response)
+            return Discussion(session=self.flarum_session, _fetched_data=json)
 
 
     def __restore_or_hide(self, hide: bool, force: bool=False) -> Union['Discussion', Literal[False], NoReturn]:
@@ -61,7 +109,7 @@ class Discussion(dict):
 
 
         if not self.canHide and not force:
-            raise FlarumError(f'You do not have permission to remove this discussion ({self.id})')
+            raise FlarumError(f'You do not have permission to {"hide" if hide else "unhide"} this discussion ({self.id})')
 
         patch_data = {
             "data": {
@@ -73,34 +121,59 @@ class Discussion(dict):
             }
         }
 
-        response = self.flarum_session.session.patch(f"{self.flarum_session.api_urls['discussions']}/{self.id}", json=patch_data).json()
+        raw = self.flarum_session.session.patch(f"{self.flarum_session.api_urls['discussions']}/{self.id}", json=patch_data)
 
-        if 'errors' in response:
-            return handle_errors(response['errors'])
+        if raw.status_code != 200:
+            return handle_errors(status_code=raw.status_code)
+
+        json = raw.json() # type: dict
+
+        if 'errors' in json:
+            return handle_errors(raw['errors'])
 
         else:
-            return Discussion(session=self.flarum_session, fetched_data=response)
+            return True
 
 
     def hide(self, force: bool=False):
         """
-            Hides the discussion. Raises `FlarumError` or returns `False` if it failed, otherwise the `Discussion` is returned.
+            Hides the discussion. Raises `FlarumError` or returns `False` if it failed, otherwise `True` is returned.
         """
 
         return self.__restore_or_hide(hide=True, force=force)
 
 
+    def unhide(self, force: bool=False): return self.restore(force=force)
     def restore(self, force: bool=False):
         """
-            Restores the discussion (unhides). Raises `FlarumError` or returns `False` if it failed, otherwise the `Discussion` is returned.
+            Restores the discussion (unhides). Raises `FlarumError` or returns `False` if it failed, otherwise `True` is returned.
         """
 
         return self.__restore_or_hide(hide=False, force=force)
 
 
+    def delete(self, force: bool=False):
+        """Removes a discussion forever."""
+        if not self.canDelete and not force:
+            raise FlarumError(f'You do not have permission to delete this discussion ({self.id})')
+
+        raw = self.flarum_session.session.delete(f"{self.flarum_session.api_urls['discussions']}/{self.id}")
+
+        if raw.status_code != 200:
+            return handle_errors(status_code=raw.status_code)
+
+        json = raw.json() # type: dict
+
+        if 'errors' in json:
+            return handle_errors(raw['errors'])
+
+        else:
+            return True
+
+
     @property
-    def data(self) -> Optional[dict]:
-        return self.get("data", None)
+    def data(self) -> dict:
+        return self.get("data", {})
 
 
     @property
