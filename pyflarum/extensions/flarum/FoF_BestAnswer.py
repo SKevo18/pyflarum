@@ -4,10 +4,10 @@ from datetime import datetime
 
 from .. import ExtensionMixin
 from ...datetime_conversions import flarum_to_datetime
-from ...flarum.core.discussions import Discussion
+from ...flarum.core.discussions import DiscussionFromBulk
 
 
-class BestAnswerDiscussionMixin(Discussion):
+class BestAnswerDiscussionMixin(DiscussionFromBulk):
     @property
     def hasBestAnswer(self) -> bool:
         return self.attributes.get("hasBestAnswer", False)
@@ -20,7 +20,12 @@ class BestAnswerDiscussionMixin(Discussion):
         return flarum_to_datetime(raw)
 
 
+    @property
+    def canSelectBestAnswer(self) -> bool:
+        return self.attributes.get("canSelectBestAnswer", False)
+
+
 
 class BestAnswerExtension(ExtensionMixin, BestAnswerDiscussionMixin):
     def mixin(self):
-        super().mixin(self, Discussion, BestAnswerDiscussionMixin)
+        super().mixin(self, DiscussionFromBulk, BestAnswerDiscussionMixin)

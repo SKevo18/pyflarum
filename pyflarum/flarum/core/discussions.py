@@ -6,6 +6,7 @@ if TYPE_CHECKING:
 
 from datetime import datetime
 
+from ...flarum.core.users import MyUser, User
 from ...error_handler import FlarumError, handle_errors
 from ...datetime_conversions import flarum_to_datetime
 
@@ -22,7 +23,7 @@ class Discussions(dict):
 
 
     def __iter__(self):
-        return iter(self.get_discussions(included=True))
+        return iter(self.get_discussions())
 
 
     @property
@@ -55,24 +56,166 @@ class Discussions(dict):
         return self.get("included", [{}])
 
 
-    def get_discussions(self, included: bool=True):
+    def get_discussions(self):
         """
-            All discussions from the `Discussions` object. If `included == True`, then the included data will be parsed too (might slow down the processing).
+            All discussions from the `Discussions` object.
         """
+
+        all_discussions = list() # type: List[DiscussionFromBulk]
 
         for raw_discussion in self.data:
             if raw_discussion.get("type", None) == 'discussions':
-                discussion = Discussion(session=self.flarum_session, _fetched_data=dict(data=raw_discussion))
+                discussion = DiscussionFromBulk(session=self.flarum_session, _fetched_data=dict(data=raw_discussion, included=self.included))
+                all_discussions.append(discussion)
 
-                """if included:
-                    for data in self.included:
-                        pass
-
-                else:"""
-                yield discussion
+        return all_discussions
 
 
-class Discussion(dict):
+
+class DiscussionFromBulk(dict):
+    """
+        A discussion from `Discussions`.
+    """
+
+    def __init__(self, session: 'FlarumSession', _fetched_data: dict):
+        self.flarum_session = session
+        super().__init__(_fetched_data)
+
+
+    @property
+    def data(self) -> dict:
+        return self.get("data", {})
+
+
+    @property
+    def type(self) -> Optional[str]:
+        return self.data.get("type", None)
+
+
+    @property
+    def id(self) -> Optional[int]:
+        return self.data.get("id", None)
+
+
+    @property
+    def attributes(self) -> dict:
+        return self.data.get("attributes", {})
+
+
+    @property
+    def title(self) -> Optional[str]:
+        return self.attributes.get("title", None)
+
+
+    @property
+    def slug(self) -> Optional[str]:
+        return self.attributes.get("slug", None)
+
+
+    @property
+    def commentCount(self) -> Optional[str]:
+        return self.attributes.get("commentCount", None)
+
+
+    @property
+    def participantCount(self) -> Optional[str]:
+        return self.attributes.get("participantCount", None)
+
+
+    @property
+    def createdAt(self) -> Optional[datetime]:
+        raw = self.attributes.get("createdAt", None)
+
+        return flarum_to_datetime(raw)
+
+
+    @property
+    def lastPostedAt(self) -> Optional[datetime]:
+        raw = self.attributes.get("lastPostedAt", None)
+
+        return flarum_to_datetime(raw)
+
+
+    @property
+    def lastPostNumber(self) -> Optional[int]:
+        return self.attributes.get("lastPostNumber", None)
+
+
+    @property
+    def lastReadPostNumber(self) -> Optional[int]:
+        return self.attributes.get("lastReadPostNumber", None)
+
+
+    @property
+    def canReply(self) -> bool:
+        return self.attributes.get("canReply", False)
+
+
+    @property
+    def canRename(self) -> bool:
+        return self.attributes.get("canRename", False)
+
+
+    @property
+    def canDelete(self) -> bool:
+        return self.attributes.get("canDelete", False)
+
+
+    @property
+    def canHide(self) -> bool:
+        return self.attributes.get("canHide", False)
+
+
+    @property
+    def lastReadAt(self) -> Optional[datetime]:
+        raw = self.attributes.get("lastReadAt", None)
+
+        return flarum_to_datetime(raw)
+
+
+    @property
+    def isHidden(self) -> bool:
+        return self.attributes.get("isHidden", False)
+
+
+    @property
+    def subscription(self) -> Optional[str]:
+        return self.attributes.get("subscription", None)
+
+
+    @property
+    def relationships(self) -> dict:
+        return self.data.get("relationships", {})
+
+
+    @property
+    def included(self) -> List[dict]:
+        return self.get("included", [{}])
+
+
+    def get_user_relationship(self, raw: bool=False) -> Optional[Union[dict, User]]:
+        if raw:
+            return self.relationships.get("user", {})
+        
+        else:
+            id = self.relationships.get("user", {}).get("data", {}).get("id", None)
+
+            if id:
+                for data in self.included:
+                    if data.get("type", None) == 'users' and data.get("id", None) == id:
+                        user = User(session=self.flarum_session, _fetched_data=dict(data=data))
+
+                        if user.username == self.flarum_session.username:
+                            return MyUser(session=self.flarum_session, _fetched_data=dict(data=data))
+
+                        else:
+                            return user
+
+            return None
+
+
+
+class Discussion(DiscussionFromBulk):
     """
         Discussion that was fetched from the API.
     """
@@ -189,99 +332,3 @@ class Discussion(dict):
 
         else:
             return True
-
-
-    @property
-    def data(self) -> dict:
-        return self.get("data", {})
-
-
-    @property
-    def type(self) -> Optional[str]:
-        return self.data.get("type", None)
-
-
-    @property
-    def id(self) -> Optional[int]:
-        return self.data.get("id", None)
-
-
-    @property
-    def attributes(self) -> dict:
-        return self.data.get("attributes", {})
-
-
-    @property
-    def title(self) -> Optional[str]:
-        return self.attributes.get("title", None)
-
-
-    @property
-    def slug(self) -> Optional[str]:
-        return self.attributes.get("slug", None)
-
-
-    @property
-    def commentCount(self) -> Optional[str]:
-        return self.attributes.get("commentCount", None)
-
-
-    @property
-    def participantCount(self) -> Optional[str]:
-        return self.attributes.get("participantCount", None)
-
-
-    @property
-    def createdAt(self) -> Optional[datetime]:
-        raw = self.attributes.get("createdAt", None)
-
-        return flarum_to_datetime(raw)
-
-
-    @property
-    def lastPostedAt(self) -> Optional[datetime]:
-        raw = self.attributes.get("lastPostedAt", None)
-
-        return flarum_to_datetime(raw)
-
-
-    @property
-    def lastPostNumber(self) -> Optional[int]:
-        return self.attributes.get("lastPostNumber", None)
-
-
-    @property
-    def lastReadPostNumber(self) -> Optional[int]:
-        return self.attributes.get("lastReadPostNumber", None)
-
-
-    @property
-    def canReply(self) -> bool:
-        return self.attributes.get("canReply", False)
-
-
-    @property
-    def canRename(self) -> bool:
-        return self.attributes.get("canRename", False)
-
-
-    @property
-    def canDelete(self) -> bool:
-        return self.attributes.get("canDelete", False)
-
-
-    @property
-    def canHide(self) -> bool:
-        return self.attributes.get("canHide", False)
-
-
-    @property
-    def lastReadAt(self) -> Optional[datetime]:
-        raw = self.attributes.get("lastReadAt", None)
-
-        return flarum_to_datetime(raw)
-
-
-    @property
-    def isHidden(self) -> bool:
-        return self.attributes.get("isHidden", False)

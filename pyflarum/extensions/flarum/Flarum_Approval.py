@@ -1,8 +1,8 @@
 from .. import ExtensionMixin
-from ...flarum.core.discussions import Discussion
+from ...flarum.core.discussions import DiscussionFromBulk
 
 
-class ApprovalDiscussionMixin(Discussion):
+class ApprovalDiscussionMixin(DiscussionFromBulk):
     @property
     def isApproved(self) -> bool:
         return self.attributes.get("isApproved", False)
@@ -11,4 +11,4 @@ class ApprovalDiscussionMixin(Discussion):
 
 class ApprovalExtension(ExtensionMixin, ApprovalDiscussionMixin):
     def mixin(self):
-        super().mixin(self, Discussion, ApprovalDiscussionMixin)
+        super().mixin(self, DiscussionFromBulk, ApprovalDiscussionMixin)

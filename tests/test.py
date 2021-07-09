@@ -22,4 +22,5 @@ user = FlarumUser(forum_url="https://discuss.flarum.org", extensions=[BestAnswer
 for discussions in user.absolutely_all_discussions(Filter(order_by='createdAt')):
     for discussion in discussions:
         discussion: Union[BestAnswerExtension]
-        print(f"Title: {discussion.title} ({discussion.slug})")
+        author = discussion.get_user_relationship()
+        print(discussion.title, "=>", author.username)
