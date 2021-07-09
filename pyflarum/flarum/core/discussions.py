@@ -113,6 +113,17 @@ class DiscussionFromBulk(dict):
 
 
     @property
+    def url(self) -> Optional[str]:
+        slug = self.slug
+        
+        if slug:
+            return f"{self.flarum_session.forum_url}/d/{slug}"
+
+        else:
+            return f"{self.flarum_session.forum_url}/d/{self.id}"
+
+
+    @property
     def commentCount(self) -> Optional[str]:
         return self.attributes.get("commentCount", None)
 
@@ -193,25 +204,36 @@ class DiscussionFromBulk(dict):
         return self.get("included", [{}])
 
 
-    def get_user_relationship(self, raw: bool=False) -> Optional[Union[dict, User]]:
-        if raw:
-            return self.relationships.get("user", {})
+    def get_author(self) -> Optional[Union[dict, User]]:
+        id = self.relationships.get("user", {}).get("data", {}).get("id", None)
         
-        else:
-            id = self.relationships.get("user", {}).get("data", {}).get("id", None)
+        for raw_user in self.included:
+            if raw_user.get("id", None) == id and raw_user.get("type", None) == 'users':
+                user = User(session=self.flarum_session, _fetched_data=dict(data=raw_user))
 
-            if id:
-                for data in self.included:
-                    if data.get("type", None) == 'users' and data.get("id", None) == id:
-                        user = User(session=self.flarum_session, _fetched_data=dict(data=data))
+                if user.username == self.flarum_session.username:
+                    return MyUser(session=self.flarum_session, _fetched_data=dict(data=raw_user))
 
-                        if user.username == self.flarum_session.username:
-                            return MyUser(session=self.flarum_session, _fetched_data=dict(data=data))
+                else:
+                    return user
 
-                        else:
-                            return user
+        return None
 
-            return None
+
+    def get_last_posted_user(self) -> Optional[Union[dict, User]]:
+        id = self.relationships.get("lastPostedUser", {}).get("data", {}).get("id", None)
+
+        for raw_user in self.included:
+            if raw_user.get("id", None) == id and raw_user.get("type", None) == 'users':
+                user = User(session=self.flarum_session, _fetched_data=dict(data=raw_user))
+
+                if user.username == self.flarum_session.username:
+                    return MyUser(session=self.flarum_session, _fetched_data=dict(data=raw_user))
+
+                else:
+                    return user
+
+        return None
 
 
 
