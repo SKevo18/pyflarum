@@ -16,7 +16,8 @@ from .session import FlarumUser
 from .error_handler import FlarumError
 
 from .flarum.core.discussions import Discussion
-from .flarum.core.filters import DiscussionFilter
+
+from .flarum.core.filters import Filter
 
 
 __author__ = "Kevo"
@@ -35,5 +36,7 @@ if __name__ == '__main__':
         FlarumError,
         
         Discussion,
-        DiscussionFilter,
+
+        Gambit,
+        Filter,
     )

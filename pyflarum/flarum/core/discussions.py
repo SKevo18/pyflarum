@@ -22,7 +22,7 @@ class Discussions(dict):
 
 
     def __iter__(self):
-        return iter(self.discussions)
+        return iter(self.get_discussions(included=True))
 
 
     @property
@@ -41,15 +41,35 @@ class Discussions(dict):
 
 
     @property
+    def next_link(self) -> Optional[str]:
+        return self.links.get("next", None)
+
+
+    @property
     def data(self) -> List[dict]:
         return self.get("data", [{}])
 
 
     @property
-    def discussions(self):
+    def included(self) -> List[dict]:
+        return self.get("included", [{}])
+
+
+    def get_discussions(self, included: bool=True):
+        """
+            All discussions from the `Discussions` object. If `included == True`, then the included data will be parsed too (might slow down the processing).
+        """
+
         for raw_discussion in self.data:
             if raw_discussion.get("type", None) == 'discussions':
-                yield Discussion(session=self.flarum_session, _fetched_data=dict(data=raw_discussion))
+                discussion = Discussion(session=self.flarum_session, _fetched_data=dict(data=raw_discussion))
+
+                """if included:
+                    for data in self.included:
+                        pass
+
+                else:"""
+                yield discussion
 
 
 class Discussion(dict):
@@ -101,15 +121,15 @@ class Discussion(dict):
     def __restore_or_hide(self, hide: bool, force: bool=False) -> Union['Discussion', Literal[False], NoReturn]:
         if hide:
             if self.isHidden and not force:
-                raise FlarumError(f"Discussion {self.id} is already hidden. Use 'force = True' parameter to ignore this error.")
+                raise FlarumError(f"Discussion {self.id} is already hidden. Use `force = True` to ignore this error.")
 
         else:
             if not self.isHidden and not force:
-                raise FlarumError(f"Discussion {self.id} is already restored. Use 'force = True' parameter to ignore this error.")
+                raise FlarumError(f"Discussion {self.id} is already restored. Use `force = True` to ignore this error.")
 
 
         if not self.canHide and not force:
-            raise FlarumError(f'You do not have permission to {"hide" if hide else "unhide"} this discussion ({self.id})')
+            raise FlarumError(f'You do not have permission to {"hide" if hide else "unhide"} this discussion ({self.id}). Use `force = True` to ignore this error.')
 
         patch_data = {
             "data": {
@@ -231,6 +251,11 @@ class Discussion(dict):
 
 
     @property
+    def lastReadPostNumber(self) -> Optional[int]:
+        return self.attributes.get("lastReadPostNumber", None)
+
+
+    @property
     def canReply(self) -> bool:
         return self.attributes.get("canReply", False)
 
@@ -248,6 +273,13 @@ class Discussion(dict):
     @property
     def canHide(self) -> bool:
         return self.attributes.get("canHide", False)
+
+
+    @property
+    def lastReadAt(self) -> Optional[datetime]:
+        raw = self.attributes.get("lastReadAt", None)
+
+        return flarum_to_datetime(raw)
 
 
     @property

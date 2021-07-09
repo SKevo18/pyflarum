@@ -1,36 +1,25 @@
+from typing import Union
+
+
 from normalize_path import normalize_path
 normalize_path()
-
-import os
-import time
 
 from dotenv import load_dotenv
 load_dotenv()
 
-from pyflarum import FlarumUser, DiscussionFilter, FlarumError
+
+from pyflarum import FlarumUser
+
+from pyflarum.flarum.core.filters import Filter
+
+from pyflarum.extensions.flarum.FoF_BestAnswer import BestAnswerExtension
+from pyflarum.extensions.absolutely_all_discussions import AbsolutelyAllDiscussionsExtension
 
 
-user = FlarumUser(forum_url=os.environ['forum_url'], username="test", password=os.environ['account_password'])
-discussions = user.all_discussions(DiscussionFilter())
-
-while True:
-    try:
-        for discussion in discussions:
-            if not discussion.isHidden:
-                discussion.hide()
-                print(f"Hid discussion {discussion.id}")
-
-            else:
-                discussion.unhide()
-                print(f"Unhid discussion {discussion.id}")
+user = FlarumUser(forum_url="https://discuss.flarum.org", extensions=[BestAnswerExtension, AbsolutelyAllDiscussionsExtension]) # type: AbsolutelyAllDiscussionsExtension
 
 
-    except FlarumError as e:
-        if e.status == 429:
-            print(e)
-
-            print("Sleeping for 10 seconds.")
-            time.sleep(10)
-
-        else:
-            print(e)
+for discussions in user.absolutely_all_discussions(Filter(order_by='createdAt')):
+    for discussion in discussions:
+        discussion: Union[BestAnswerExtension]
+        print(f"Title: {discussion.title} ({discussion.slug})")

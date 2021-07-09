@@ -3,7 +3,7 @@ from typing import Optional, Union
 from datetime import datetime
 
 
-def flarum_to_datetime(flarum_dt: Optional[Union[str, datetime]]=None) -> datetime:
+def flarum_to_datetime(flarum_dt: Optional[Union[str, datetime]]=None):
     """
         Converts Flarum's datetime string to Python's datetime object.
         Doesn't convert if the parameter is already a datetime object.
@@ -18,10 +18,12 @@ def flarum_to_datetime(flarum_dt: Optional[Union[str, datetime]]=None) -> dateti
         return flarum_dt
 
     else:
-        return datetime.strptime(flarum_dt, r'%Y-%m-%dT%H:%M:%S%z')
+        strpped = datetime.strptime(flarum_dt, r'%Y-%m-%dT%H:%M:%S%z') # type: datetime
+
+        return strpped
 
 
-def datetime_to_flarum(dt: Optional[Union[datetime, str]]=None) -> str:
+def datetime_to_flarum(dt: Optional[Union[datetime, str]]=None):
     """
         Converts Python's datetime object to Flarum's datetime string.
         Doesn't convert if the parameter is already a string.
@@ -36,4 +38,6 @@ def datetime_to_flarum(dt: Optional[Union[datetime, str]]=None) -> str:
         return dt
 
     else:
-        return dt.strftime(r'%Y-%m-%dT%H:%M:%S%z')
+        strfed = dt.strftime(r'%Y-%m-%dT%H:%M:%S%z') # type: str
+
+        return strfed

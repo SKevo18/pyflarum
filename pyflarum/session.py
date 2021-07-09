@@ -1,19 +1,25 @@
-from json.decoder import JSONDecoder
-from pyflarum.flarum.core.filters import DiscussionFilter
-from typing import Any, Union
+from typing import Any, List, Union, Optional
 
 from requests import Session
 
 from .flarum.core.discussions import Discussion, Discussions
+from .flarum.core.filters import Filter
 from .error_handler import handle_errors
+
+from .extensions import ExtensionMixin
 
 
 class FlarumSession(object):
-    def __init__(self, forum_url: str, username: Union[str]=None, password: Union[str, None]=None, api_endpoint: str="api", user_agent: str="pyflarum", session_object: Union[Session, Any]=Session()):
+    def __init__(self, forum_url: str, username: Union[str]=None, password: Union[str, None]=None, api_endpoint: str="api", user_agent: str="pyflarum", extensions: Optional[List[ExtensionMixin]]=None, session_object: Union[Session, Any]=Session()):
         self.forum_url = forum_url
         self.api_endpoint = api_endpoint
         self.username = username
         self.session = session_object
+
+        self.extensions = extensions
+        if self.extensions:
+            for extension in self.extensions:
+                extension.mixin(extension)
 
         self.session.headers.update({
             "User-Agent": user_agent
@@ -101,8 +107,12 @@ class FlarumUser(FlarumSession):
         return Discussion(session=self, _fetched_data=json)
 
 
-    def all_discussions(self, filter: DiscussionFilter=None) -> Discussions:
-        raw = self.session.get(f"{self.api_urls['discussions']}", params=filter)
+    def all_discussions(self, filter: Filter=None) -> Discussions:
+        """
+            Obtains all discussions from specific page using `filter`.
+        """
+
+        raw = self.session.get(f"{self.api_urls['discussions']}", params=filter.to_dict)
 
         if raw.status_code != 200:
             return handle_errors(status_code=raw.status_code)
