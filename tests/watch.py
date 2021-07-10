@@ -12,7 +12,7 @@ import os
 from pyflarum import FlarumUser
 from pyflarum.flarum.core.notifications import Notification
 
-from pyflarum.extensions.watch import StopWatching, WatchNotificationsExtension
+from pyflarum.extensions.watch import WatchNotificationsExtension
 
 
 EXTENSIONS = [
@@ -21,8 +21,7 @@ EXTENSIONS = [
 
 
 def on_notification(notification: Notification):
-    print(notification.title)
-    raise StopWatching
+    print(notification.id)
 
 
 user = FlarumUser(forum_url=os.environ['forum_url'], username="test", password=os.environ['account_password'], extensions=EXTENSIONS) # type: WatchNotificationsExtension

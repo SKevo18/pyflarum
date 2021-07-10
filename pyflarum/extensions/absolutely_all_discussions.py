@@ -31,6 +31,6 @@ class AbsolutelyAllDiscussionsUserMixin(FlarumUser):
                 break
 
 
-class AbsolutelyAllDiscussionsExtension(ExtensionMixin, AbsolutelyAllDiscussionsUserMixin):
+class AbsolutelyAllExtension(ExtensionMixin, AbsolutelyAllDiscussionsUserMixin):
     def mixin(self):
         super().mixin(self, FlarumUser, AbsolutelyAllDiscussionsUserMixin)

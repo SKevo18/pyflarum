@@ -14,7 +14,7 @@ class WatchUserMixin(FlarumUser):
             all_notifications = self.get_notifications(**kwargs)
 
             for notification in all_notifications:
-                if notification.isUnread:
+                if not notification.isRead:
                     on_notification(notification)
 
             time.sleep(interval)

@@ -62,11 +62,11 @@ class Notifications(dict):
             All notifications from the `Notifications` object.
         """
 
-        all_notifications = list() # type: List[BaseNotification]
+        all_notifications = list() # type: List[Notification]
 
         for raw_notification in self.data:
             if raw_notification.get("type", None) == 'notifications':
-                notification = BaseNotification(user=self.user, _fetched_data=dict(data=raw_notification, parent_included=self.included))
+                notification = Notification(user=self.user, _fetched_data=dict(data=raw_notification, _parent_included=self.included))
                 all_notifications.append(notification)
 
         return all_notifications
@@ -87,7 +87,7 @@ class Notifications(dict):
 
 
 
-class BaseNotification(dict):
+class Notification(dict):
     """
         Notification, that always has properties defined.
     """
@@ -166,14 +166,14 @@ class BaseNotification(dict):
 
 
     @property
-    def parent_included(self) -> List[dict]:
-        return self.get("parent_included", [{}])
+    def _parent_included(self) -> List[dict]:
+        return self.get("_parent_included", [{}])
 
 
     def from_user(self) -> Optional[Union[dict, UserFromNotification]]:
         id = self.relationships.get("fromUser", {}).get("data", {}).get("id", None)
         
-        for raw_user in self.parent_included:
+        for raw_user in self._parent_included:
             if raw_user.get("id", None) == id and raw_user.get("type", None) == 'users':
                 user = UserFromNotification(user=self.user, _fetched_data=dict(data=raw_user))
                 return user
@@ -184,7 +184,7 @@ class BaseNotification(dict):
     def subject(self) -> Optional[Union[dict, PostFromNotification]]:
         id = self.relationships.get("fromUser", {}).get("data", {}).get("id", None)
         
-        for raw_user in self.parent_included:
+        for raw_user in self._parent_included:
             if raw_user.get("id", None) == id and raw_user.get("type", None) == 'users':
                 user = UserFromNotification(user=self.user, _fetched_data=dict(data=raw_user))
                 return user

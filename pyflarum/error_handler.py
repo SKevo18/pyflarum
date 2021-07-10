@@ -14,15 +14,12 @@ class FlarumError(Exception):
         return super().__init__(message)
 
 
-def handle_errors(errors: Optional[List[Dict[str, str]]]=None, status_code: Optional[str]=None) -> NoReturn:
+def handle_errors(errors: Optional[List[Dict[str, str]]]=None, status_code: Optional[str]=None):
     """
         Handles Flarum & request related errors. Should be called only when errors actually exist.
     """
 
-    if not errors:
-        return FlarumError(f'Request related error: {status_code}')
-    
-    else:
+    if errors:
         for error in errors:
             if status_code:
                 status = status_code
@@ -49,4 +46,7 @@ def handle_errors(errors: Optional[List[Dict[str, str]]]=None, status_code: Opti
                 else:
                     raise FlarumError(f'Error {status}: {code} - {details}', status=status, code=code, details=details)
 
-            raise FlarumError(f'Error {status}: {code} - {details}', status=status, code=code, details=details)
+    else:
+        raise FlarumError(f'Request related error: {status_code}')
+
+    raise FlarumError(f'Error {status}: {code} - {details}', status=status, code=code, details=details)

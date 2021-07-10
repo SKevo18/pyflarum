@@ -1,11 +1,14 @@
-from .flarum.core.notifications import Notifications
 from typing import Any, List, Union, Optional
 
+from datetime import datetime
 from requests import Session
 
+from .flarum.core.users import MyUser
+from .flarum.core.notifications import Notifications
 from .flarum.core.discussions import Discussion, Discussions
 from .flarum.core.filters import Filter
 from .error_handler import handle_errors
+from .datetime_conversions import datetime_to_flarum
 
 from .extensions import ExtensionMixin
 
@@ -75,7 +78,9 @@ class FlarumSession(object):
     @property
     def api_urls(self):
         """
-            API reference:
+            Simple, hardcoded `'key: value'` `dict` of API routes.
+
+            API routes reference (old):
             https://github.com/flarum/flarum.github.io/blob/20322c0e6011e4f304ae7e95f41594a0b086bc27/_docs/api.md
         """
 
@@ -94,16 +99,39 @@ class FlarumSession(object):
 
 
 class FlarumUser(FlarumSession):
+    @property
+    def user(self):
+        """
+            Your user data.
+        """
+
+        raw = self.session.get(f"{self.api_urls['users']}/{self.username}")
+
+        try:
+            json = raw.json() # type: dict
+        except Exception:
+            json = {}
+
+        if 'errors' in json:
+            return handle_errors(json['errors'])
+        elif raw.status_code != 200:
+            return handle_errors(status_code=raw.status_code)
+
+        return MyUser(user=self, _fetched_data=json)
+
+
     def get_discussion_by_id(self, id: int):
         raw = self.session.get(f"{self.api_urls['discussions']}/{id}")
 
-        if raw.status_code != 200:
-            return handle_errors(status_code=raw.status_code)
-
-        json = raw.json() # type: dict
+        try:
+            json = raw.json() # type: dict
+        except Exception:
+            json = {}
 
         if 'errors' in json:
-            return handle_errors(raw['errors'])
+            return handle_errors(json['errors'])
+        elif raw.status_code != 200:
+            return handle_errors(status_code=raw.status_code)
 
         return Discussion(user=self, _fetched_data=json)
 
@@ -121,13 +149,15 @@ class FlarumUser(FlarumSession):
             raw = self.session.get(f"{self.api_urls['discussions']}")
 
 
-        if raw.status_code != 200:
-            return handle_errors(status_code=raw.status_code)
-
-        json = raw.json() # type: dict
+        try:
+            json = raw.json() # type: dict
+        except Exception:
+            json = {}
 
         if 'errors' in json:
-            return handle_errors(raw['errors'])
+            return handle_errors(json['errors'])
+        elif raw.status_code != 200:
+            return handle_errors(status_code=raw.status_code)
 
         return Discussions(user=self, _fetched_data=json)
     
@@ -137,16 +167,42 @@ class FlarumUser(FlarumSession):
             Obtains all notifications of your user.
         """
 
-
         raw = self.session.get(f"{self.api_urls['notifications']}")
 
-
-        if raw.status_code != 200:
-            return handle_errors(status_code=raw.status_code)
-
-        json = raw.json() # type: dict
+        try:
+            json = raw.json() # type: dict
+        except Exception:
+            json = {}
 
         if 'errors' in json:
-            return handle_errors(raw['errors'])
+            return handle_errors(json['errors'])
+        elif raw.status_code != 200:
+            return handle_errors(status_code=raw.status_code)
 
         return Notifications(user=self, _fetched_data=json)
+
+
+    def mark_all_discussions_as_read(self, at: datetime=datetime.now()):
+        post_data = {
+            "data": {
+                "type": "users",
+                "id": 1,
+                "attributes": {
+                    "markedAllAsReadAt": datetime_to_flarum(at)
+                }
+            }
+        }
+
+        raw = self.session.patch(f"{self.api_urls['users']}/1", json=post_data)
+
+        try:
+            json = raw.json() # type: dict
+        except Exception:
+            json = {}
+
+        if 'errors' in json:
+            return handle_errors(json['errors'])
+        elif raw.status_code != 200:
+            return handle_errors(status_code=raw.status_code)
+
+        return True

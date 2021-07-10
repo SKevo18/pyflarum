@@ -65,7 +65,7 @@ class Posts(dict):
 
         for raw_post in self.data:
             if raw_post.get("type", None) == 'posts':
-                post = PostFromBulk(user=self.user, _fetched_data=dict(data=raw_post, parent_included=self.included))
+                post = PostFromBulk(user=self.user, _fetched_data=dict(data=raw_post, _parent_included=self.included))
                 all_posts.append(post)
 
         return all_posts
@@ -282,14 +282,14 @@ class PostFromBulk(PostFromNotification):
 
 
     @property
-    def parent_included(self) -> List[dict]:
-        return self.get("parent_included", [{}])
+    def _parent_included(self) -> List[dict]:
+        return self.get("_parent_included", [{}])
 
 
     def get_author(self) -> Optional[Union[dict, User]]:
         id = self.relationships.get("user", {}).get("data", {}).get("id", None)
         
-        for raw_user in self.parent_included:
+        for raw_user in self._parent_included:
             if raw_user.get("id", None) == id and raw_user.get("type", None) == 'users':
                 user = User(user=self.user, _fetched_data=dict(data=raw_user))
 
@@ -305,7 +305,7 @@ class PostFromBulk(PostFromNotification):
     def get_last_posted_user(self) -> Optional[Union[dict, User]]:
         id = self.relationships.get("lastPostedUser", {}).get("data", {}).get("id", None)
 
-        for raw_user in self.parent_included:
+        for raw_user in self._parent_included:
             if raw_user.get("id", None) == id and raw_user.get("type", None) == 'users':
                 user = User(user=self.user, _fetched_data=dict(data=raw_user))
 

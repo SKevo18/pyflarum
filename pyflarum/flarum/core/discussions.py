@@ -65,7 +65,7 @@ class Discussions(dict):
 
         for raw_discussion in self.data:
             if raw_discussion.get("type", None) == 'discussions':
-                discussion = DiscussionFromBulk(user=self.user, _fetched_data=dict(data=raw_discussion, parent_included=self.included))
+                discussion = DiscussionFromBulk(user=self.user, _fetched_data=dict(data=raw_discussion, _parent_included=self.included))
                 all_discussions.append(discussion)
 
         return all_discussions
@@ -109,6 +109,67 @@ class DiscussionFromNotification(dict):
     @property
     def slug(self) -> Optional[str]:
         return self.attributes.get("slug", None)
+
+
+    def __restore_or_hide(self, hide: bool) -> Union['Discussion', Literal[False], NoReturn]:
+        patch_data = {
+            "data": {
+                "type": "discussions",
+                "id": self.id,
+                "attributes": {
+                    "isHidden": hide
+                }
+            }
+        }
+
+        raw = self.user.session.patch(f"{self.user.api_urls['discussions']}/{self.id}", json=patch_data)
+
+        if raw.status_code != 200:
+            return handle_errors(status_code=raw.status_code)
+
+        json = raw.json() # type: dict
+
+        if 'errors' in json:
+            return handle_errors(raw['errors'])
+
+        else:
+            return True
+
+
+    def hide(self):
+        """
+            Hides the discussion. Raises `FlarumError` or returns `False` if it failed, otherwise `True` is returned.
+        """
+
+        return self.__restore_or_hide(hide=True)
+
+
+    def restore(self):
+        """
+            Restores the discussion (unhides). Raises `FlarumError` or returns `False` if it failed, otherwise `True` is returned.
+        """
+
+        return self.__restore_or_hide(hide=False)
+    unhide = restore
+
+
+    def delete(self):
+        """
+            Deletes a discussion forever - this action is irreversible!
+        """
+
+        raw = self.user.session.delete(f"{self.user.api_urls['discussions']}/{self.id}")
+
+        if raw.status_code != 200:
+            return handle_errors(status_code=raw.status_code)
+
+        json = raw.json() # type: dict
+
+        if 'errors' in json:
+            return handle_errors(raw['errors'])
+
+        else:
+            return True
 
 
 
@@ -210,14 +271,14 @@ class DiscussionFromBulk(DiscussionFromNotification):
 
 
     @property
-    def parent_included(self) -> List[dict]:
-        return self.get("parent_included", [{}])
+    def _parent_included(self) -> List[dict]:
+        return self.get("_parent_included", [{}])
 
 
     def get_author(self) -> Optional[Union[dict, User]]:
         id = self.relationships.get("user", {}).get("data", {}).get("id", None)
         
-        for raw_user in self.parent_included:
+        for raw_user in self._parent_included:
             if raw_user.get("id", None) == id and raw_user.get("type", None) == 'users':
                 user = User(user=self.user, _fetched_data=dict(data=raw_user))
 
@@ -233,7 +294,7 @@ class DiscussionFromBulk(DiscussionFromNotification):
     def get_last_posted_user(self) -> Optional[Union[dict, User]]:
         id = self.relationships.get("lastPostedUser", {}).get("data", {}).get("id", None)
 
-        for raw_user in self.parent_included:
+        for raw_user in self._parent_included:
             if raw_user.get("id", None) == id and raw_user.get("type", None) == 'users':
                 user = User(user=self.user, _fetched_data=dict(data=raw_user))
 
@@ -244,6 +305,39 @@ class DiscussionFromBulk(DiscussionFromNotification):
                     return user
 
         return None
+
+
+    def __restore_or_hide(self, hide: bool, force: bool=False) -> Union['Discussion', Literal[False], NoReturn]:
+        if hide:
+            if self.isHidden and not force:
+                raise FlarumError(f"Discussion {self.id} is already hidden. Use `force = True` to ignore this error.")
+
+        else:
+            if not self.isHidden and not force:
+                raise FlarumError(f"Discussion {self.id} is already restored. Use `force = True` to ignore this error.")
+
+
+        if not self.canHide and not force:
+            raise FlarumError(f'You do not have permission to {"hide" if hide else "unhide"} this discussion ({self.id}). Use `force = True` to ignore this error.')
+
+        super().__restore_or_hide(hide=hide)
+
+
+    def hide(self, force: bool=False):
+        return self.__restore_or_hide(hide=True, force=force)
+
+
+    def restore(self, force: bool=False):
+        return self.__restore_or_hide(hide=False, force=force)
+    unhide = restore
+
+
+    def delete(self, force: bool=False):
+        if not self.canDelete and not force:
+            raise FlarumError(f'You do not have permission to delete this discussion ({self.id})')
+
+        else:
+            super().delete()
 
 
 
@@ -291,76 +385,3 @@ class Discussion(DiscussionFromBulk):
         else:
             return Discussion(user=self.user, _fetched_data=json)
     create = post
-
-
-    def __restore_or_hide(self, hide: bool, force: bool=False) -> Union['Discussion', Literal[False], NoReturn]:
-        if hide:
-            if self.isHidden and not force:
-                raise FlarumError(f"Discussion {self.id} is already hidden. Use `force = True` to ignore this error.")
-
-        else:
-            if not self.isHidden and not force:
-                raise FlarumError(f"Discussion {self.id} is already restored. Use `force = True` to ignore this error.")
-
-
-        if not self.canHide and not force:
-            raise FlarumError(f'You do not have permission to {"hide" if hide else "unhide"} this discussion ({self.id}). Use `force = True` to ignore this error.')
-
-        patch_data = {
-            "data": {
-                "type": "discussions",
-                "id": self.id,
-                "attributes": {
-                    "isHidden": hide
-                }
-            }
-        }
-
-        raw = self.user.session.patch(f"{self.user.api_urls['discussions']}/{self.id}", json=patch_data)
-
-        if raw.status_code != 200:
-            return handle_errors(status_code=raw.status_code)
-
-        json = raw.json() # type: dict
-
-        if 'errors' in json:
-            return handle_errors(raw['errors'])
-
-        else:
-            return True
-
-
-    def hide(self, force: bool=False):
-        """
-            Hides the discussion. Raises `FlarumError` or returns `False` if it failed, otherwise `True` is returned.
-        """
-
-        return self.__restore_or_hide(hide=True, force=force)
-
-
-    def restore(self, force: bool=False):
-        """
-            Restores the discussion (unhides). Raises `FlarumError` or returns `False` if it failed, otherwise `True` is returned.
-        """
-
-        return self.__restore_or_hide(hide=False, force=force)
-    unhide = restore
-
-
-    def delete(self, force: bool=False):
-        """Removes a discussion forever."""
-        if not self.canDelete and not force:
-            raise FlarumError(f'You do not have permission to delete this discussion ({self.id})')
-
-        raw = self.user.session.delete(f"{self.user.api_urls['discussions']}/{self.id}")
-
-        if raw.status_code != 200:
-            return handle_errors(status_code=raw.status_code)
-
-        json = raw.json() # type: dict
-
-        if 'errors' in json:
-            return handle_errors(raw['errors'])
-
-        else:
-            return True

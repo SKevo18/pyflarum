@@ -12,16 +12,16 @@ from pyflarum import FlarumUser
 
 from pyflarum.flarum.core.filters import Filter
 
-from pyflarum.extensions.absolutely_all_discussions import AbsolutelyAllDiscussionsExtension
+from pyflarum.extensions.absolutely_all_discussions import AbsolutelyAllExtension
 from pyflarum.extensions.flarum.Flarum_Tags import TagsExtension
 
 
 EXTENSIONS = [
-    AbsolutelyAllDiscussionsExtension,
+    AbsolutelyAllExtension,
     TagsExtension
 ]
 
-user = FlarumUser(forum_url="https://discuss.flarum.org", extensions=EXTENSIONS) # type: AbsolutelyAllDiscussionsExtension
+user = FlarumUser(forum_url="https://discuss.flarum.org", extensions=EXTENSIONS) # type: AbsolutelyAllExtension
 
 
 def incompatible_extensions():
