@@ -1,3 +1,4 @@
+from pyflarum.flarum.core.discussions import Discussion, DiscussionFromBulk, DiscussionFromNotification
 from typing import Literal, NoReturn, TYPE_CHECKING, Optional, Union, List
 
 # Avoid my greatest enemy in Python: circular import:
@@ -7,8 +8,52 @@ if TYPE_CHECKING:
 from datetime import datetime
 
 from ...flarum.core.users import MyUser, User
-from ...error_handler import FlarumError, handle_errors
+from ...error_handler import FlarumError, parse_request_as_json
 from ...datetime_conversions import flarum_to_datetime
+
+
+class PreparedPost(dict):
+    def __init__(self, user: 'FlarumUser', discussion: Optional[Union[Discussion, DiscussionFromBulk, DiscussionFromNotification]]=None, content: Optional[str]=None):
+        self.user = user
+        self.discussion = discussion
+        self.content = content
+    
+
+    @property
+    def to_dict(self):
+        data = {
+            "data": {
+                "type": "posts",
+                "attributes": {
+                    "content": self.content
+                },
+                "relationships": {
+                    "discussion": {
+                        "data": {
+                            "type": "discussions",
+                            "id": self.discussion.id
+                        }
+                    }
+                }
+            }
+        }
+
+        return data
+
+
+    def post(self):
+        """
+            Posts/creates the post. Returns the created `Post`.
+        """
+
+        if not isinstance(self.discussion, (Discussion, DiscussionFromBulk, DiscussionFromNotification)) or not isinstance(self.content, str):
+            raise TypeError("`discussion` must be `Discussion`, `DiscussionFromBulk` or `DiscussionFromNotification` and `content` must be `str`.")
+
+        raw = self.user.session.post(self.user.api_urls['posts'], json=self.to_dict)
+        json = parse_request_as_json(raw)
+
+        return Post(user=self.user, _fetched_data=json)
+    create = post
 
 
 class Posts(dict):
@@ -152,6 +197,89 @@ class PostFromNotification(dict):
     def canHide(self) -> bool:
         return self.attributes.get("canHide", False)
 
+
+    @property
+    def _parent_included(self) -> List[dict]:
+        return self.get("_parent_included", [{}])
+
+
+    @property
+    def relationships(self) -> dict:
+        return self.data.get("relationships", {})
+
+
+    def __restore_or_hide(self, hide: bool, force: bool=False) -> Union[Literal[False], NoReturn]:
+        if not self.canHide and not force:
+            raise FlarumError(f'You do not have permission to {"hide" if hide else "unhide"} this post ({self.id}). Use `force = True` to ignore this error.')
+
+        patch_data = {
+            "data": {
+                "type": "posts",
+                "id": self.id,
+                "attributes": {
+                    "isHidden": hide
+                }
+            }
+        }
+
+        raw = self.user.session.patch(f"{self.user.api_urls['posts']}/{self.id}", json=patch_data)
+        parse_request_as_json(raw)
+
+        return True
+
+
+    def hide(self, force: bool=False):
+        """
+            Hides the post. Raises `FlarumError` or returns `False` if it failed, otherwise `True` is returned.
+        """
+
+        return self.__restore_or_hide(hide=True, force=force)
+
+
+    def restore(self, force: bool=False):
+        """
+            Restores the post (unhides). Raises `FlarumError` or returns `False` if it failed, otherwise `True` is returned.
+        """
+
+        return self.__restore_or_hide(hide=False, force=force)
+    unhide = restore
+
+
+    def delete(self, force: bool=False):
+        """
+            Removes the post forever.
+        """
+
+        if not self.canDelete and not force:
+            raise FlarumError(f'You do not have permission to delete this post ({self.id})')
+
+        raw = self.user.session.delete(f"{self.user.api_urls['discussions']}/{self.id}")
+        parse_request_as_json(raw)
+
+        return True
+
+
+    def get_discussion(self):
+        id_to_find = self.relationships.get("discussion", {}).get("data", {}).get("id", None)
+
+        for possible_discussion in self._parent_included:
+            if (possible_discussion.get("type", None) == "discussions") and (possible_discussion.get("id", None) == id_to_find):
+                discussion = DiscussionFromNotification(user=self.user, _fetched_data=dict(data=possible_discussion, _parent_included=self._parent_included))
+
+                return discussion
+
+        return None
+
+
+    def reply_to(self, post: PreparedPost):
+        """
+            Replies to this `Post` with another `PreparedPost`.
+        """
+
+        to_post = post
+        to_post.discussion = self.get_discussion()
+
+        return to_post.post()
 
 
 class PostFromBulk(PostFromNotification):
@@ -318,51 +446,15 @@ class PostFromBulk(PostFromNotification):
         return None
 
 
-
 class Post(PostFromBulk):
     """
         A Flarum discussion.
     """
 
-    def __init__(self, user: 'FlarumUser', title: Optional[str]=None, content: Optional[str]=None, _fetched_data: Optional[dict]=None):
+    def __init__(self, user: 'FlarumUser', _fetched_data: dict):
         self.user = user
 
-        if _fetched_data:
-            super().__init__(_fetched_data)
-            
-        else:
-            if not isinstance(title, str) or not isinstance(content, str):
-                raise TypeError(f"Both 'title' and 'content' parameters must be a 'str', if '_fetched_data' is not present.")
-
-            super().__init__({
-                "data": {
-                    "type": "discussions",
-                    "attributes": {
-                        "title": title,
-                        "content": content
-                    }
-                }
-            })
-
-
-    def post(self):
-        """
-            Posts/creates the discussion. Raises `FlarumError` or returns `False` if it failed, otherwise the new `Post` is returned.
-        """
-
-        raw = self.user.session.post(self.user.api_urls['discussions'], json=self)
-
-        if raw.status_code != 200:
-            return handle_errors(status_code=raw.status_code)
-
-        json = raw.json() # type: dict
-
-        if 'errors' in json:
-            return handle_errors(raw['errors'])
-
-        else:
-            return Post(user=self.user, _fetched_data=json)
-    create = post
+        super().__init__(user=self.user, _fetched_data=_fetched_data)
 
 
     def __restore_or_hide(self, hide: bool, force: bool=False) -> Union['Post', Literal[False], NoReturn]:
@@ -374,65 +466,20 @@ class Post(PostFromBulk):
             if not self.isHidden and not force:
                 raise FlarumError(f"Post {self.id} is already restored. Use `force = True` to ignore this error.")
 
-
-        if not self.canHide and not force:
-            raise FlarumError(f'You do not have permission to {"hide" if hide else "unhide"} this discussion ({self.id}). Use `force = True` to ignore this error.')
-
-        patch_data = {
-            "data": {
-                "type": "posts",
-                "id": self.id,
-                "attributes": {
-                    "isHidden": hide
-                }
-            }
-        }
-
-        raw = self.user.session.patch(f"{self.user.api_urls['posts']}/{self.id}", json=patch_data)
-
-        if raw.status_code != 200:
-            return handle_errors(status_code=raw.status_code)
-
-        json = raw.json() # type: dict
-
-        if 'errors' in json:
-            return handle_errors(raw['errors'])
-
-        else:
-            return True
+        return super().__restore_or_hide(hide=hide, force=force)
 
 
     def hide(self, force: bool=False):
-        """
-            Hides the discussion. Raises `FlarumError` or returns `False` if it failed, otherwise `True` is returned.
-        """
-
         return self.__restore_or_hide(hide=True, force=force)
 
 
     def restore(self, force: bool=False):
-        """
-            Restores the discussion (unhides). Raises `FlarumError` or returns `False` if it failed, otherwise `True` is returned.
-        """
-
         return self.__restore_or_hide(hide=False, force=force)
     unhide = restore
 
 
-    def delete(self, force: bool=False):
-        """Removes a discussion forever."""
-        if not self.canDelete and not force:
-            raise FlarumError(f'You do not have permission to delete this discussion ({self.id})')
+    def reply_to(self, post: PreparedPost, force: bool=False):
+        if not self.canReply and not force:
+            raise FlarumError(f"You cannot reply to this post ({self.id}). Use `force = True` to ignore this error.")
 
-        raw = self.user.session.delete(f"{self.user.api_urls['discussions']}/{self.id}")
-
-        if raw.status_code != 200:
-            return handle_errors(status_code=raw.status_code)
-
-        json = raw.json() # type: dict
-
-        if 'errors' in json:
-            return handle_errors(raw['errors'])
-
-        else:
-            return True
+        return super().reply_to(post=post)

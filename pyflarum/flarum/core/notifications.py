@@ -1,4 +1,5 @@
-from typing import TYPE_CHECKING, Optional, Union, List
+from pyflarum.flarum.core.discussions import DiscussionFromNotification
+from typing import TYPE_CHECKING, Optional, List
 
 from datetime import datetime
 
@@ -8,7 +9,7 @@ if TYPE_CHECKING:
 
 from ...flarum.core.users import UserFromNotification
 from ...flarum.core.posts import PostFromNotification
-from ...error_handler import handle_errors
+from ...error_handler import parse_request_as_json
 from ...datetime_conversions import flarum_to_datetime
 
 
@@ -74,14 +75,7 @@ class Notifications(dict):
 
     def mark_all_as_read(self) -> bool:
         raw = self.user.session.post(f"{self.user.api_urls['notifications']}/read")
-
-        if raw.status_code != 200:
-            return handle_errors(status_code=raw.status_code)
-
-        json = raw.json() # type: dict
-
-        if 'errors' in json:
-            return handle_errors(raw['errors'])
+        parse_request_as_json(raw)
 
         return True
 
@@ -170,7 +164,7 @@ class Notification(dict):
         return self.get("_parent_included", [{}])
 
 
-    def from_user(self) -> Optional[Union[dict, UserFromNotification]]:
+    def from_user(self):
         id = self.relationships.get("fromUser", {}).get("data", {}).get("id", None)
         
         for raw_user in self._parent_included:
@@ -181,13 +175,25 @@ class Notification(dict):
         return None
 
 
-    def subject(self) -> Optional[Union[dict, PostFromNotification]]:
-        id = self.relationships.get("fromUser", {}).get("data", {}).get("id", None)
+    def get_subject(self):
+        id = self.relationships.get("subject", {}).get("data", {}).get("id", None)
         
-        for raw_user in self._parent_included:
-            if raw_user.get("id", None) == id and raw_user.get("type", None) == 'users':
-                user = UserFromNotification(user=self.user, _fetched_data=dict(data=raw_user))
-                return user
+        for raw_subject in self._parent_included:
+            if raw_subject.get("id", None) == id:
+                notification_type = raw_subject.get("type", None)
+
+                if notification_type == 'discussions':
+                    return DiscussionFromNotification(user=self.user, _fetched_data=dict(data=raw_subject))
+
+                elif notification_type == 'posts':
+                    return PostFromNotification(user=self.user, _fetched_data=dict(data=raw_subject, _parent_included=self._parent_included))
 
         return None
 
+
+    def mark_as_read(self):
+        post_data = {"is_read": True}
+        raw = self.user.session.patch(f"{self.user.api_urls['notifications']}/{self.id}", json=post_data)
+        parse_request_as_json(raw)
+
+        return True

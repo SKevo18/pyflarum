@@ -1,4 +1,5 @@
 from typing import Optional, List, Dict, NoReturn
+from requests.models import Response
 
 
 class FlarumError(Exception):
@@ -14,9 +15,27 @@ class FlarumError(Exception):
         return super().__init__(message)
 
 
+def parse_request_as_json(request: Response):
+    try:
+        json = request.json() # type: dict
+
+    except Exception as e:
+        json = {'errors': [{'code': 0, 'detail': e}]}
+
+
+    if 'errors' in json:
+        return handle_errors(json['errors'])
+
+    elif not 200 <= request.status_code <= 202:
+        return handle_errors(status_code=request.status_code)
+
+
+    return json
+
+
 def handle_errors(errors: Optional[List[Dict[str, str]]]=None, status_code: Optional[str]=None):
     """
-        Handles Flarum & request related errors. Should be called only when errors actually exist.
+        Handles Flarum & request related errors. Should be called on error only.
     """
 
     if errors:

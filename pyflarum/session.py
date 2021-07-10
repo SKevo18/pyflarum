@@ -7,7 +7,7 @@ from .flarum.core.users import MyUser
 from .flarum.core.notifications import Notifications
 from .flarum.core.discussions import Discussion, Discussions
 from .flarum.core.filters import Filter
-from .error_handler import handle_errors
+from .error_handler import parse_request_as_json
 from .datetime_conversions import datetime_to_flarum
 
 from .extensions import ExtensionMixin
@@ -45,18 +45,8 @@ class FlarumSession(object):
         if username and password:
             identification_data = {"identification": self.username, "password": password}
 
-
-            raw_token_data = self.session.post(url=f'{self.forum_url}/api/token', json=identification_data)
-
-            if raw_token_data.status_code != 200:
-                return handle_errors(status_code=raw_token_data.status_code)
-
-
-            token_data = raw_token_data.json() # type: dict
-
-            if 'errors' in token_data:
-                return handle_errors(token_data['errors'])
-
+            raw = self.session.post(url=f'{self.forum_url}/api/token', json=identification_data)
+            token_data = parse_request_as_json(raw)
 
             token = token_data.get("token", None)
             user_id = token_data.get("userId", None)
@@ -105,33 +95,22 @@ class FlarumUser(FlarumSession):
             Your user data.
         """
 
-        raw = self.session.get(f"{self.api_urls['users']}/{self.username}")
+        filter = Filter(query=self.username, limit=1)
+        raw = self.session.get(f"{self.api_urls['users']}", params=filter.to_dict)
+        json = parse_request_as_json(raw)
 
-        try:
-            json = raw.json() # type: dict
-        except Exception:
-            json = {}
+        for raw_user in json.get("data", {}):
+            possible_user = MyUser(user=self, _fetched_data=dict(data=raw_user))
 
-        if 'errors' in json:
-            return handle_errors(json['errors'])
-        elif raw.status_code != 200:
-            return handle_errors(status_code=raw.status_code)
+            if possible_user.username == self.username:
+                return possible_user
 
-        return MyUser(user=self, _fetched_data=json)
+        return None
 
 
     def get_discussion_by_id(self, id: int):
         raw = self.session.get(f"{self.api_urls['discussions']}/{id}")
-
-        try:
-            json = raw.json() # type: dict
-        except Exception:
-            json = {}
-
-        if 'errors' in json:
-            return handle_errors(json['errors'])
-        elif raw.status_code != 200:
-            return handle_errors(status_code=raw.status_code)
+        json = parse_request_as_json(raw)
 
         return Discussion(user=self, _fetched_data=json)
 
@@ -148,36 +127,24 @@ class FlarumUser(FlarumSession):
         else:
             raw = self.session.get(f"{self.api_urls['discussions']}")
 
-
-        try:
-            json = raw.json() # type: dict
-        except Exception:
-            json = {}
-
-        if 'errors' in json:
-            return handle_errors(json['errors'])
-        elif raw.status_code != 200:
-            return handle_errors(status_code=raw.status_code)
+        json = parse_request_as_json(raw)
 
         return Discussions(user=self, _fetched_data=json)
     
 
-    def get_notifications(self) -> Notifications:
+    def get_notifications(self, filter: Optional[Filter]=None) -> Notifications:
         """
             Obtains all notifications of your user.
         """
 
-        raw = self.session.get(f"{self.api_urls['notifications']}")
+        if filter:
+            raw = self.session.get(f"{self.api_urls['notifications']}", params=filter.to_dict)
+        
+        else:
+            raw = self.session.get(f"{self.api_urls['notifications']}")
 
-        try:
-            json = raw.json() # type: dict
-        except Exception:
-            json = {}
 
-        if 'errors' in json:
-            return handle_errors(json['errors'])
-        elif raw.status_code != 200:
-            return handle_errors(status_code=raw.status_code)
+        json = parse_request_as_json(raw)
 
         return Notifications(user=self, _fetched_data=json)
 
@@ -186,23 +153,21 @@ class FlarumUser(FlarumSession):
         post_data = {
             "data": {
                 "type": "users",
-                "id": 1,
+                "id": self.user.id,
                 "attributes": {
                     "markedAllAsReadAt": datetime_to_flarum(at)
                 }
             }
         }
 
-        raw = self.session.patch(f"{self.api_urls['users']}/1", json=post_data)
+        raw = self.session.patch(f"{self.api_urls['users']}/{self.user.id}", json=post_data)
+        parse_request_as_json(raw)
 
-        try:
-            json = raw.json() # type: dict
-        except Exception:
-            json = {}
+        return True
 
-        if 'errors' in json:
-            return handle_errors(json['errors'])
-        elif raw.status_code != 200:
-            return handle_errors(status_code=raw.status_code)
+
+    def mark_all_notifications_as_read(self, at: datetime=datetime.now()):
+        raw = self.session.post(f"{self.api_urls['notifications']}/read")
+        parse_request_as_json(raw)
 
         return True

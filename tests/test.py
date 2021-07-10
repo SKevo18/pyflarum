@@ -6,11 +6,11 @@ load_dotenv()
 
 import os
 
-from datetime import datetime
-
 from pyflarum import FlarumUser
-from pyflarum.flarum.core.filters import Filter
-from pyflarum.extensions.absolutely_all_discussions import AbsolutelyAllExtension
+
+from pyflarum.flarum.core.posts import PostFromNotification
+
+from pyflarum.extensions.absolutely_all import AbsolutelyAllExtension
 
 
 EXTENSIONS = [
@@ -20,17 +20,16 @@ EXTENSIONS = [
 user = FlarumUser(forum_url=os.environ['forum_url'], username='test', password=os.environ['account_password'], extensions=EXTENSIONS) # type: AbsolutelyAllExtension
 
 
-def all_discussions():
-    for discussions in user.absolutely_all_discussions(Filter(order_by='createdAt')):
-        for discussion in discussions:
-                print(discussion)
-
-
 def all_notifications():
-    all_notifications = user.get_notifications()
+    for notifications in user.absolutely_all_notifications():
+        for notification in notifications:
+            print(notification.id)
 
-    for notification in all_notifications:
-        print(notification.isRead)
+            if not notification.isRead:
+                subject = notification.get_subject()
+
+                if isinstance(subject, PostFromNotification):
+                    print(subject.content)
 
 
 

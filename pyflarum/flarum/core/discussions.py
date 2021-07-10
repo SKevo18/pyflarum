@@ -1,4 +1,4 @@
-from typing import Literal, NoReturn, TYPE_CHECKING, Optional, Union, List
+from typing import TYPE_CHECKING, Optional, List
 
 # Avoid my greatest enemy in Python: circular import:
 if TYPE_CHECKING:
@@ -7,8 +7,47 @@ if TYPE_CHECKING:
 from datetime import datetime
 
 from ...flarum.core.users import MyUser, User
-from ...error_handler import FlarumError, handle_errors
+from ...error_handler import FlarumError, parse_request_as_json
 from ...datetime_conversions import flarum_to_datetime
+
+
+class PreparedDiscussion(dict):
+    def __init__(self, user: 'FlarumUser', title: Optional[str]=None, content: Optional[str]=None):
+        self.user = user
+        self.title = title
+        self.content = content
+
+        super().__init__()
+
+
+    @property
+    def to_dict(self):
+        data = {
+            "data": {
+                "type": "discussions",
+                "attributes": {
+                    "title": self.title,
+                    "content": self.content
+                }
+            }
+        }
+
+        return data
+
+
+    def post(self):
+        """
+            Posts/creates the discussion. Raises `FlarumError` or returns `False` if it failed, otherwise the new `Discussion` is returned.
+        """
+
+        if not isinstance(self.title, str) or not isinstance(self.content, str):
+            raise TypeError(f"Both `title` and `content` parameters must be a `str`.")
+
+        raw = self.user.session.post(self.user.api_urls['discussions'], json=self.to_dict)
+        json = parse_request_as_json(raw)
+
+        return Discussion(user=self.user, _fetched_data=json)
+    create = post
 
 
 class Discussions(dict):
@@ -111,7 +150,7 @@ class DiscussionFromNotification(dict):
         return self.attributes.get("slug", None)
 
 
-    def __restore_or_hide(self, hide: bool) -> Union['Discussion', Literal[False], NoReturn]:
+    def __restore_or_hide(self, hide: bool):
         patch_data = {
             "data": {
                 "type": "discussions",
@@ -123,17 +162,9 @@ class DiscussionFromNotification(dict):
         }
 
         raw = self.user.session.patch(f"{self.user.api_urls['discussions']}/{self.id}", json=patch_data)
+        parse_request_as_json(raw)
 
-        if raw.status_code != 200:
-            return handle_errors(status_code=raw.status_code)
-
-        json = raw.json() # type: dict
-
-        if 'errors' in json:
-            return handle_errors(raw['errors'])
-
-        else:
-            return True
+        return True
 
 
     def hide(self):
@@ -159,17 +190,9 @@ class DiscussionFromNotification(dict):
         """
 
         raw = self.user.session.delete(f"{self.user.api_urls['discussions']}/{self.id}")
+        parse_request_as_json(raw)
 
-        if raw.status_code != 200:
-            return handle_errors(status_code=raw.status_code)
-
-        json = raw.json() # type: dict
-
-        if 'errors' in json:
-            return handle_errors(raw['errors'])
-
-        else:
-            return True
+        return True
 
 
 
@@ -184,7 +207,7 @@ class DiscussionFromBulk(DiscussionFromNotification):
 
 
     @property
-    def url(self) -> Optional[str]:
+    def url(self):
         slug = self.slug
         
         if slug:
@@ -275,7 +298,7 @@ class DiscussionFromBulk(DiscussionFromNotification):
         return self.get("_parent_included", [{}])
 
 
-    def get_author(self) -> Optional[Union[dict, User]]:
+    def get_author(self):
         id = self.relationships.get("user", {}).get("data", {}).get("id", None)
         
         for raw_user in self._parent_included:
@@ -291,7 +314,7 @@ class DiscussionFromBulk(DiscussionFromNotification):
         return None
 
 
-    def get_last_posted_user(self) -> Optional[Union[dict, User]]:
+    def get_last_posted_user(self):
         id = self.relationships.get("lastPostedUser", {}).get("data", {}).get("id", None)
 
         for raw_user in self._parent_included:
@@ -307,7 +330,7 @@ class DiscussionFromBulk(DiscussionFromNotification):
         return None
 
 
-    def __restore_or_hide(self, hide: bool, force: bool=False) -> Union['Discussion', Literal[False], NoReturn]:
+    def __restore_or_hide(self, hide: bool, force: bool=False):
         if hide:
             if self.isHidden and not force:
                 raise FlarumError(f"Discussion {self.id} is already hidden. Use `force = True` to ignore this error.")
@@ -320,7 +343,7 @@ class DiscussionFromBulk(DiscussionFromNotification):
         if not self.canHide and not force:
             raise FlarumError(f'You do not have permission to {"hide" if hide else "unhide"} this discussion ({self.id}). Use `force = True` to ignore this error.')
 
-        super().__restore_or_hide(hide=hide)
+        return super().__restore_or_hide(hide=hide)
 
 
     def hide(self, force: bool=False):
@@ -337,7 +360,7 @@ class DiscussionFromBulk(DiscussionFromNotification):
             raise FlarumError(f'You do not have permission to delete this discussion ({self.id})')
 
         else:
-            super().delete()
+            return super().delete()
 
 
 
@@ -346,42 +369,7 @@ class Discussion(DiscussionFromBulk):
         A Flarum discussion.
     """
 
-    def __init__(self, user: 'FlarumUser', title: Optional[str]=None, content: Optional[str]=None, _fetched_data: Optional[dict]=None):
+    def __init__(self, user: 'FlarumUser', _fetched_data: dict):
         self.user = user
 
-        if _fetched_data:
-            super().__init__(_fetched_data)
-            
-        else:
-            if not isinstance(title, str) or not isinstance(content, str):
-                raise TypeError(f"Both 'title' and 'content' parameters must be a 'str', if '_fetched_data' is not present.")
-
-            super().__init__({
-                "data": {
-                    "type": "discussions",
-                    "attributes": {
-                        "title": title,
-                        "content": content
-                    }
-                }
-            })
-
-
-    def post(self):
-        """
-            Posts/creates the discussion. Raises `FlarumError` or returns `False` if it failed, otherwise the new `Discussion` is returned.
-        """
-
-        raw = self.user.session.post(self.user.api_urls['discussions'], json=self)
-
-        if raw.status_code != 200:
-            return handle_errors(status_code=raw.status_code)
-
-        json = raw.json() # type: dict
-
-        if 'errors' in json:
-            return handle_errors(raw['errors'])
-
-        else:
-            return Discussion(user=self.user, _fetched_data=json)
-    create = post
+        super().__init__(user=self.user, _fetched_data=_fetched_data)

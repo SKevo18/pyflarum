@@ -1,15 +1,13 @@
+from typing import Optional
+
 from . import ExtensionMixin
 from ..session import FlarumUser
 
 import time
 
 
-class StopWatching(Exception):
-    pass
-
-
-class WatchUserMixin(FlarumUser):
-    def watch_notifications(self, on_notification, interval: float=10, **kwargs):
+class WatchFlarumUserMixin(FlarumUser):
+    def watch_notifications(self, on_notification, interval: Optional[float]=10, auto_mark_as_read: bool=True, **kwargs):
         while True:
             all_notifications = self.get_notifications(**kwargs)
 
@@ -17,9 +15,13 @@ class WatchUserMixin(FlarumUser):
                 if not notification.isRead:
                     on_notification(notification)
 
-            time.sleep(interval)
+                    if auto_mark_as_read:
+                        notification.mark_as_read()
+
+            if interval:
+                time.sleep(interval)
 
 
-class WatchNotificationsExtension(ExtensionMixin, WatchUserMixin):
+class WatchNotificationsExtension(ExtensionMixin, WatchFlarumUserMixin):
     def mixin(self):
-        super().mixin(self, FlarumUser, WatchUserMixin)
+        super().mixin(self, FlarumUser, WatchFlarumUserMixin)
