@@ -172,9 +172,9 @@ class TagsDiscussionMixin(DiscussionFromBulk):
         for raw_tag in tags:
             id = raw_tag.get("id", None)
 
-            for possible_tag in self.included:
+            for possible_tag in self.parent_included:
                 if possible_tag and (possible_tag.get("type", None) == 'tags') and (possible_tag.get("id", None) == id) and (possible_tag.get("id", None) not in seen):
-                    tag = Tag(session=self.flarum_session, _fetched_data=dict(data=possible_tag))
+                    tag = Tag(session=self.user, _fetched_data=dict(data=possible_tag))
                     all_tags.append(tag)
 
                     seen.add(tag.id)

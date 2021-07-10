@@ -2,7 +2,7 @@ from typing import List, Optional, TYPE_CHECKING
 
 # Avoid my greatest enemy in Python: circular import:
 if TYPE_CHECKING:
-    from ...session import FlarumSession
+    from ...session import FlarumUser
 
 from datetime import datetime
 
@@ -14,8 +14,8 @@ class Users(dict):
         A data of multiple users fetched from the API.
     """
 
-    def __init__(self, session: 'FlarumSession', _fetched_data: dict):
-        self.flarum_session = session
+    def __init__(self, user: 'FlarumUser', _fetched_data: dict):
+        self.user = user
 
         super().__init__(_fetched_data)
 
@@ -63,27 +63,25 @@ class Users(dict):
 
         for raw_user in self.data:
             if raw_user.get("type", None) == 'users':
-                user = UserFromBulk(session=self.flarum_session, _fetched_data=dict(data=raw_user))
+                user = UserFromBulk(user=self.user, _fetched_data=dict(data=raw_user))
                 all_users.append(user)
 
         return all_users
 
 
-
-class UserFromBulk(dict):
+class UserFromNotification(dict):
     """
-        A user from `Users`.
+        An user from `BaseNotification`
     """
 
-    def __init__(self, session: 'FlarumSession', _fetched_data: dict):
-        self.flarum_session = session
+    def __init__(self, user: 'FlarumUser', _fetched_data: dict):
+        self.user = user
         super().__init__(_fetched_data)
 
 
     @property
     def data(self) -> dict:
         return self.get("data", {})
-
 
     @property
     def type(self) -> Optional[str]:
@@ -118,6 +116,17 @@ class UserFromBulk(dict):
     @property
     def slug(self) -> Optional[str]:
         return self.attributes.get("slug", None)
+
+
+
+class UserFromBulk(UserFromNotification):
+    """
+        An user from `Users`.
+    """
+
+    def __init__(self, user: 'FlarumUser', _fetched_data: dict):
+        self.user = user
+        super().__init__(user=self.user, _fetched_data=_fetched_data)
 
 
     @property
@@ -190,12 +199,12 @@ class UserFromBulk(dict):
 
 class User(UserFromBulk):
     """
-        User that was fetched from the API.
+        An user that was fetched from the API.
     """
 
-    def __init__(self, session: 'FlarumSession', _fetched_data: dict):
-        self.flarum_session = session
-        super().__init__(session=self.flarum_session, _fetched_data=_fetched_data)
+    def __init__(self, user: 'FlarumUser', _fetched_data: dict):
+        self.user = user
+        super().__init__(user=self.user, _fetched_data=_fetched_data)
 
 
 
@@ -204,7 +213,7 @@ class MyUser(User):
         Your user, contains full user data.
     """
 
-    def __init__(self, session: 'FlarumSession', _fetched_data: dict):
-        self.flarum_session = session
+    def __init__(self, user: 'FlarumUser', _fetched_data: dict):
+        self.user = user
 
-        super().__init__(session=self.flarum_session, _fetched_data=_fetched_data)
+        super().__init__(user=self.user, _fetched_data=_fetched_data)

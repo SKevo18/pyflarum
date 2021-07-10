@@ -6,7 +6,7 @@ from ..session import FlarumUser
 from ..flarum.core.filters import Filter
 
 
-class AbsolutelyAllDiscussionsDiscussionMixin(FlarumUser):
+class AbsolutelyAllDiscussionsUserMixin(FlarumUser):
     def absolutely_all_discussions(self, filter: Optional[Filter]=None):
         """
             A generator that yields `Discussions` from entire forum, until there are `None` left. `Filter` compatible.
@@ -31,8 +31,6 @@ class AbsolutelyAllDiscussionsDiscussionMixin(FlarumUser):
                 break
 
 
-
-
-class AbsolutelyAllDiscussionsExtension(ExtensionMixin, AbsolutelyAllDiscussionsDiscussionMixin):
+class AbsolutelyAllDiscussionsExtension(ExtensionMixin, AbsolutelyAllDiscussionsUserMixin):
     def mixin(self):
-        super().mixin(self, FlarumUser, AbsolutelyAllDiscussionsDiscussionMixin)
+        super().mixin(self, FlarumUser, AbsolutelyAllDiscussionsUserMixin)

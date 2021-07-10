@@ -11,9 +11,9 @@ from ...error_handler import FlarumError, handle_errors
 from ...datetime_conversions import flarum_to_datetime
 
 
-class Discussions(dict):
+class Posts(dict):
     """
-        A data of multiple discussions fetched from the API.
+        A data of multiple posts fetched from the API.
     """
 
     def __init__(self, user: 'FlarumUser', _fetched_data: dict):
@@ -23,7 +23,7 @@ class Discussions(dict):
 
 
     def __iter__(self):
-        return iter(self.get_discussions())
+        return iter(self.get_posts())
 
 
     @property
@@ -56,29 +56,112 @@ class Discussions(dict):
         return self.get("included", [{}])
 
 
-    def get_discussions(self):
+    def get_posts(self):
         """
-            All discussions from the `Discussions` object.
+            All posts from the `Posts` object.
         """
 
-        all_discussions = list() # type: List[DiscussionFromBulk]
+        all_posts = list() # type: List[PostFromBulk]
 
-        for raw_discussion in self.data:
-            if raw_discussion.get("type", None) == 'discussions':
-                discussion = DiscussionFromBulk(user=self.user, _fetched_data=dict(data=raw_discussion, parent_included=self.included))
-                all_discussions.append(discussion)
+        for raw_post in self.data:
+            if raw_post.get("type", None) == 'posts':
+                post = PostFromBulk(user=self.user, _fetched_data=dict(data=raw_post, parent_included=self.included))
+                all_posts.append(post)
 
-        return all_discussions
+        return all_posts
 
 
-class DiscussionFromNotification(dict):
+class PostFromNotification(dict):
     """
-        A discussion from `BaseNotification`
+        A post from `BaseNotification`
     """
 
     def __init__(self, user: 'FlarumUser', _fetched_data: dict):
         self.user = user
         super().__init__(_fetched_data)
+
+
+    @property
+    def data(self) -> dict:
+        return self.get("data", {})
+
+
+    @property
+    def type(self) -> Optional[str]:
+        return self.data.get("type", None)
+
+
+    @property
+    def id(self) -> Optional[int]:
+        raw = self.data.get("id", None)
+
+        if raw:
+            return int(raw)
+
+
+    @property
+    def attributes(self) -> dict:
+        return self.data.get("attributes", {})
+
+
+    @property
+    def number(self) -> Optional[int]:
+        return self.attributes.get("number", None)
+
+
+    @property
+    def createdAt(self) -> Optional[datetime]:
+        raw = self.attributes.get("createdAt", None)
+
+        return flarum_to_datetime(raw)
+
+
+    @property
+    def contentType(self) -> Optional[str]:
+        return self.attributes.get("contentType", None)
+
+
+    @property
+    def contentHTML(self) -> Optional[str]:
+        return self.attributes.get("contentHtml", None)
+
+
+    @property
+    def content(self) -> Optional[str]:
+        return self.attributes.get("content", None)
+
+
+    @property
+    def editedAt(self) -> Optional[datetime]:
+        raw = self.attributes.get("editedAt", None)
+
+        return flarum_to_datetime(raw)
+
+
+    @property
+    def canEdit(self) -> bool:
+        return self.attributes.get("canEdit", False)
+
+
+    @property
+    def canDelete(self) -> bool:
+        return self.attributes.get("canDelete", False)
+
+
+    @property
+    def canHide(self) -> bool:
+        return self.attributes.get("canHide", False)
+
+
+
+class PostFromBulk(PostFromNotification):
+    """
+        A post from `Posts`.
+    """
+
+    def __init__(self, user: 'FlarumUser', _fetched_data: dict):
+        self.user = user
+        super().__init__(user=self.user, _fetched_data=_fetched_data)
 
 
     @property
@@ -109,17 +192,6 @@ class DiscussionFromNotification(dict):
     @property
     def slug(self) -> Optional[str]:
         return self.attributes.get("slug", None)
-
-
-
-class DiscussionFromBulk(DiscussionFromNotification):
-    """
-        A discussion from `Discussions`.
-    """
-
-    def __init__(self, user: 'FlarumUser', _fetched_data: dict):
-        self.user = user
-        super().__init__(user=self.user, _fetched_data=_fetched_data)
 
 
     @property
@@ -247,7 +319,7 @@ class DiscussionFromBulk(DiscussionFromNotification):
 
 
 
-class Discussion(DiscussionFromBulk):
+class Post(PostFromBulk):
     """
         A Flarum discussion.
     """
@@ -275,7 +347,7 @@ class Discussion(DiscussionFromBulk):
 
     def post(self):
         """
-            Posts/creates the discussion. Raises `FlarumError` or returns `False` if it failed, otherwise the new `Discussion` is returned.
+            Posts/creates the discussion. Raises `FlarumError` or returns `False` if it failed, otherwise the new `Post` is returned.
         """
 
         raw = self.user.session.post(self.user.api_urls['discussions'], json=self)
@@ -289,18 +361,18 @@ class Discussion(DiscussionFromBulk):
             return handle_errors(raw['errors'])
 
         else:
-            return Discussion(user=self.user, _fetched_data=json)
+            return Post(user=self.user, _fetched_data=json)
     create = post
 
 
-    def __restore_or_hide(self, hide: bool, force: bool=False) -> Union['Discussion', Literal[False], NoReturn]:
+    def __restore_or_hide(self, hide: bool, force: bool=False) -> Union['Post', Literal[False], NoReturn]:
         if hide:
             if self.isHidden and not force:
-                raise FlarumError(f"Discussion {self.id} is already hidden. Use `force = True` to ignore this error.")
+                raise FlarumError(f"Post {self.id} is already hidden. Use `force = True` to ignore this error.")
 
         else:
             if not self.isHidden and not force:
-                raise FlarumError(f"Discussion {self.id} is already restored. Use `force = True` to ignore this error.")
+                raise FlarumError(f"Post {self.id} is already restored. Use `force = True` to ignore this error.")
 
 
         if not self.canHide and not force:
@@ -308,7 +380,7 @@ class Discussion(DiscussionFromBulk):
 
         patch_data = {
             "data": {
-                "type": "discussions",
+                "type": "posts",
                 "id": self.id,
                 "attributes": {
                     "isHidden": hide
@@ -316,7 +388,7 @@ class Discussion(DiscussionFromBulk):
             }
         }
 
-        raw = self.user.session.patch(f"{self.user.api_urls['discussions']}/{self.id}", json=patch_data)
+        raw = self.user.session.patch(f"{self.user.api_urls['posts']}/{self.id}", json=patch_data)
 
         if raw.status_code != 200:
             return handle_errors(status_code=raw.status_code)

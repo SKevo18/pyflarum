@@ -1,3 +1,4 @@
+from .flarum.core.notifications import Notifications
 from typing import Any, List, Union, Optional
 
 from requests import Session
@@ -104,7 +105,7 @@ class FlarumUser(FlarumSession):
         if 'errors' in json:
             return handle_errors(raw['errors'])
 
-        return Discussion(session=self, _fetched_data=json)
+        return Discussion(user=self, _fetched_data=json)
 
 
     def all_discussions(self, filter: Filter=None) -> Discussions:
@@ -112,7 +113,13 @@ class FlarumUser(FlarumSession):
             Obtains all discussions from specific page using `filter`.
         """
 
-        raw = self.session.get(f"{self.api_urls['discussions']}", params=filter.to_dict)
+
+        if filter:
+            raw = self.session.get(f"{self.api_urls['discussions']}", params=filter.to_dict)
+
+        else:
+            raw = self.session.get(f"{self.api_urls['discussions']}")
+
 
         if raw.status_code != 200:
             return handle_errors(status_code=raw.status_code)
@@ -122,4 +129,24 @@ class FlarumUser(FlarumSession):
         if 'errors' in json:
             return handle_errors(raw['errors'])
 
-        return Discussions(session=self, _fetched_data=json)
+        return Discussions(user=self, _fetched_data=json)
+    
+
+    def get_notifications(self) -> Notifications:
+        """
+            Obtains all notifications of your user.
+        """
+
+
+        raw = self.session.get(f"{self.api_urls['notifications']}")
+
+
+        if raw.status_code != 200:
+            return handle_errors(status_code=raw.status_code)
+
+        json = raw.json() # type: dict
+
+        if 'errors' in json:
+            return handle_errors(raw['errors'])
+
+        return Notifications(user=self, _fetched_data=json)

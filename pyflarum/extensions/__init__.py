@@ -12,12 +12,12 @@ class ExtensionMixin(object):
                 setattr(class_to_patch, f'{prop}', value)
 
 
-from .flarum.Flarum_Approval import ApprovalDiscussionMixin, ApprovalExtension
+from .flarum.Flarum_Approval import ApprovalDiscussionNotificationMixin, ApprovalExtension
 from .flarum.FoF_BestAnswer import BestAnswerDiscussionMixin, BestAnswerExtension
 
 
 if __name__ == '__main__':
     print(
-        ApprovalDiscussionMixin, ApprovalExtension,
+        ApprovalDiscussionNotificationMixin, ApprovalExtension,
         BestAnswerDiscussionMixin, BestAnswerExtension
     )
