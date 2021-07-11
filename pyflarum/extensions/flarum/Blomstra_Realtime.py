@@ -1,10 +1,11 @@
 from .. import ExtensionMixin
 
-from typing import TYPE_CHECKING
-if TYPE_CHECKING:
-    from ...session import FlarumUser
-
 from ...flarum.core.discussions import DiscussionFromBulk
+
+
+AUTHOR = 'blomstra'
+NAME = 'realtime'
+ID = f"{AUTHOR}-{NAME}"
 
 
 class RealtimeDiscussionMixin(DiscussionFromBulk):
@@ -14,6 +15,7 @@ class RealtimeDiscussionMixin(DiscussionFromBulk):
 
 
 
-class RealtimeExtension(ExtensionMixin, RealtimeDiscussionMixin):
-    def mixin(self, user: 'FlarumUser'=None):
+class RealtimeExtension(ExtensionMixin):
+    def mixin(self):
+        
         super().mixin(self, DiscussionFromBulk, RealtimeDiscussionMixin)

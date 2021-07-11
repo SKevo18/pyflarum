@@ -3,7 +3,7 @@ from typing import Any, List, Union, Optional
 from datetime import datetime
 from requests import Session
 
-from .flarum.core.users import MyUser
+from .flarum.core.users import MyUser, User
 from .flarum.core.notifications import Notifications
 from .flarum.core.discussions import Discussion, Discussions
 from .flarum.core.filters import Filter
@@ -92,7 +92,7 @@ class FlarumUser(FlarumSession):
         self.extensions = extensions
         if self.extensions:
             for extension in self.extensions:
-                extension.mixin(extension, user=self)
+                extension.mixin(extension)
 
         super().__init__(**kwargs)
 
@@ -179,3 +179,10 @@ class FlarumUser(FlarumSession):
         parse_request(raw)
 
         return True
+
+
+    def get_user_by_id(self, id: int):
+        raw = self.session.get(f"{self.api_urls['users']}/{id}")
+        json = parse_request(raw)
+
+        return User(user=self, _fetched_data=json)

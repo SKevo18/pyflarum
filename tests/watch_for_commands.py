@@ -13,8 +13,8 @@ from pyflarum import FlarumUser
 from pyflarum.flarum.core.notifications import Notification
 from pyflarum.flarum.core.posts import PostFromNotification, PreparedPost
 
-from pyflarum.extensions.watch import WatchNotificationsExtension
-from pyflarum.extensions.commands import CommandsExtension
+from pyflarum.extensions.watch import WatchFlarumUserMixin, WatchNotificationsExtension
+from pyflarum.extensions.commands import CommandsExtension, CommandsFlarumUserMixin
 
 
 EXTENSIONS = [
@@ -22,7 +22,7 @@ EXTENSIONS = [
     CommandsExtension
 ]
 
-user = FlarumUser(forum_url=os.environ['forum_url'], username="test", password=os.environ['account_password'], extensions=EXTENSIONS) # type: Union[WatchNotificationsExtension, CommandsExtension]
+user = FlarumUser(forum_url=os.environ['forum_url'], username="test", password=os.environ['account_password'], extensions=EXTENSIONS) # type: Union[WatchFlarumUserMixin, CommandsFlarumUserMixin]
 
 def on_notification(notification: Notification):
     subject = notification.get_subject()

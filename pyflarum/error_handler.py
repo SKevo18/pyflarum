@@ -33,7 +33,7 @@ def parse_request(request: Response):
     if 'errors' in json:
         return handle_errors(json['errors'])
 
-    elif not 200 <= request.status_code <= 202:
+    elif not 200 <= request.status_code <= 204:
         return handle_errors(status_code=request.status_code)
 
 

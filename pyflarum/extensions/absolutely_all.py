@@ -55,6 +55,6 @@ class AbsolutelyAllFlarumUserMixin(FlarumUser):
                 break
 
 
-class AbsolutelyAllExtension(ExtensionMixin, AbsolutelyAllFlarumUserMixin):
-    def mixin(self, user: 'FlarumUser'=None):
+class AbsolutelyAllExtension(ExtensionMixin):
+    def mixin(self):
         super().mixin(self, FlarumUser, AbsolutelyAllFlarumUserMixin)

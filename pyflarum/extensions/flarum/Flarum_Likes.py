@@ -1,10 +1,11 @@
 from .. import ExtensionMixin
 
-from typing import TYPE_CHECKING
-if TYPE_CHECKING:
-    from ...session import FlarumUser
-
 from ...flarum.core.posts import PostFromNotification
+
+
+AUTHOR = 'flarum'
+NAME = 'likes'
+ID = f"{AUTHOR}-{NAME}"
 
 
 class LikesPostNotificationMixin(PostFromNotification):
@@ -14,6 +15,7 @@ class LikesPostNotificationMixin(PostFromNotification):
 
 
 
-class LikesExtension(ExtensionMixin, LikesPostNotificationMixin):
-    def mixin(self, user: 'FlarumUser'=None):
+class LikesExtension(ExtensionMixin):
+    def mixin(self):
+        
         super().mixin(self, PostFromNotification, LikesPostNotificationMixin)

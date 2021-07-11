@@ -182,6 +182,11 @@ class User(UserFromBulk):
         super().__init__(user=self.user, _fetched_data=_fetched_data)
 
 
+    @property
+    def foo(self):
+        return 'bar'
+
+
 
 class MyUser(User):
     """

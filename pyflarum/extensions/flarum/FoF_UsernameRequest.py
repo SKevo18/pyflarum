@@ -1,11 +1,14 @@
-from typing import Dict, List, Optional, TYPE_CHECKING
-if TYPE_CHECKING:
-    from ...session import FlarumUser
+from typing import Dict, List, Optional
 
 from datetime import datetime
 
 from .. import ExtensionMixin
 from ...flarum.core.users import UserFromBulk
+
+
+AUTHOR = 'fof'
+NAME = 'username-request'
+ID = f"{AUTHOR}-{NAME}"
 
 
 class UsernameRequestUserMixin(UserFromBulk):
@@ -26,6 +29,6 @@ class UsernameRequestUserMixin(UserFromBulk):
         return None
 
 
-class UsernameRequestExtension(ExtensionMixin, UsernameRequestUserMixin):
-    def mixin(self, user: 'FlarumUser'=None):
+class UsernameRequestExtension(ExtensionMixin):
+    def mixin(self):
         super().mixin(self, UserFromBulk, UsernameRequestUserMixin)

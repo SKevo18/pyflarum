@@ -1,9 +1,9 @@
 from typing import Literal, Optional, Union
 
-from ...extensions import ExtensionMixin
+from ..extensions import ExtensionMixin
 
-from ...session import FlarumUser
-from ...error_handler import parse_request
+from ..session import FlarumUser
+from ..error_handler import parse_request
 
 from pathlib import Path
 
@@ -102,6 +102,21 @@ class MailSettings(dict):
 
 
 class AdminFlarumUserMixin(FlarumUser):
+    def __enable_or_disable_extension(self, id: str, enabled: bool=True):
+        raw = self.session.patch(f"{self.api_urls['extensions']}/{id}", json={"enabled": enabled})
+        parse_request(raw)
+
+        return True
+
+
+    def enable_extension(self, id: str):
+        return self.__enable_or_disable_extension(id=id, enabled=True)
+
+
+    def disable_extension(self, id: str):
+        return self.__enable_or_disable_extension(id=id, enabled=False)
+
+
     def clear_cache(self):
         raw = self.session.delete(f"{self.api_urls['base']}/cache")
         parse_request(raw)
@@ -109,7 +124,7 @@ class AdminFlarumUserMixin(FlarumUser):
         return True
 
 
-    def update_forum_info(self, forum_title: Optional[str]=None, forum_description: Optional[str]=None, welcome_title: Optional[str]=None, welcome_message: Optional[str]=None, user_slug_driver: Optional[Literal["", "default", "id"]]=None):
+    def update_forum_info(self, forum_title: Optional[str]=None, forum_description: Optional[str]=None, default_route: Optional[str]=None, welcome_title: Optional[str]=None, welcome_message: Optional[str]=None, user_slug_driver: Optional[Literal["", "default", "id"]]=None):
         post_data = {}
 
 
@@ -118,6 +133,9 @@ class AdminFlarumUserMixin(FlarumUser):
 
         if forum_description:
             post_data["forum_description"] = forum_description
+
+        if default_route:
+            post_data["default_route"] = default_route
 
         if welcome_title:
             post_data["welcome_title"] = welcome_title
@@ -247,7 +265,7 @@ class AdminFlarumUserMixin(FlarumUser):
 
     def update_custom_footer(self, footer: Optional[str]=None):
         post_data = {
-            "custom_css": (footer if footer else "")
+            "custom_footer": (footer if footer else "")
         }
 
         raw = self.session.post(f"{self.api_urls['base']}/settings", json=post_data)
@@ -258,7 +276,7 @@ class AdminFlarumUserMixin(FlarumUser):
 
     def update_custom_css(self, css: Optional[str]=None):
         post_data = {
-            "custom_css": (css if css else "")
+            "custom_less": (css if css else "")
         }
 
         raw = self.session.post(f"{self.api_urls['base']}/settings", json=post_data)
@@ -269,5 +287,5 @@ class AdminFlarumUserMixin(FlarumUser):
 
 
 class AdminExtension(ExtensionMixin, AdminFlarumUserMixin):
-    def mixin(self, user: 'FlarumUser'=None):
+    def mixin(self):
         super().mixin(self, FlarumUser, AdminFlarumUserMixin)

@@ -4,11 +4,14 @@ from datetime import datetime
 
 from .. import ExtensionMixin
 
-if TYPE_CHECKING:
-    from ...session import FlarumUser
-
 from ...datetime_conversions import flarum_to_datetime
 from ...flarum.core.discussions import DiscussionFromBulk, DiscussionFromNotification
+
+
+AUTHOR = 'fof'
+NAME = 'best-answer'
+ID = f"{AUTHOR}-{NAME}"
+
 
 
 class BestAnswerDiscussionNotificationMixin(DiscussionFromNotification):
@@ -31,7 +34,7 @@ class BestAnswerDiscussionMixin(DiscussionFromBulk):
 
 
 
-class BestAnswerExtension(ExtensionMixin, BestAnswerDiscussionMixin, BestAnswerDiscussionNotificationMixin):
-    def mixin(self, user: 'FlarumUser'=None):
+class BestAnswerExtension(ExtensionMixin):
+    def mixin(self):
         super().mixin(self, DiscussionFromNotification, BestAnswerDiscussionNotificationMixin)
         super().mixin(self, DiscussionFromBulk, BestAnswerDiscussionMixin)

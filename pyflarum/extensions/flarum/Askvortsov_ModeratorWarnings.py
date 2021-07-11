@@ -1,10 +1,11 @@
 from .. import ExtensionMixin
 
-from typing import TYPE_CHECKING
-if TYPE_CHECKING:
-    from ...session import FlarumUser
-
 from ...flarum.core.users import UserFromBulk
+
+
+AUTHOR = 'askvortsov'
+NAME = 'moderator-warnings'
+ID = f"{AUTHOR}-{NAME}"
 
 
 class ModeratorWarningsUserMixin(UserFromBulk):
@@ -28,6 +29,6 @@ class ModeratorWarningsUserMixin(UserFromBulk):
         return self.attributes.get("visibleWarningCount", 0)
 
 
-class ModeratorWarningsExtension(ExtensionMixin, ModeratorWarningsUserMixin):
-    def mixin(self, user: 'FlarumUser'=None):
+class ModeratorWarningsExtension(ExtensionMixin):
+    def mixin(self):
         super().mixin(self, UserFromBulk, ModeratorWarningsUserMixin)

@@ -1,11 +1,15 @@
-from typing import Optional, Union
+from typing import List, Optional, Union
 
 from ...extensions import ExtensionMixin
-from ...flarum.core.admin import AdminFlarumUserMixin
+from ...extensions.admin import AdminFlarumUserMixin
 
 from ...session import FlarumUser
 from ...error_handler import parse_request
 
+
+AUTHOR = 'malago'
+NAME = 'achievements'
+ID = f"{AUTHOR}-{NAME}"
 
 
 class Achievement(dict):
@@ -93,31 +97,7 @@ class Achievement(dict):
 
 
 
-# TODO: Test & fix:
-class AchievementsExtension(ExtensionMixin):
-    def __init__(self):
-        self.id = "malago-achievements"
-
-
-    def mixin(self, user: 'FlarumUser'):
-        self._user = user
-
-
-    def __enable_or_disable(self, enable: bool=True):
-        raw = self._user.session.patch(f"{self.api_urls['extensions']}/{self.id}", json={"enabled": enable})
-        parse_request(raw)
-
-        return True
-
-
-    def enable(self):
-        return self.__enable_or_disable(enable=True)
-
-
-    def disable(self):
-        return self.__enable_or_disable(enable=False)
-
-
+class AchievementsAdminFlarumUserMixin(AdminFlarumUserMixin):
     def update_settings(self, show_achievement_list_in_each_post_footer: Optional[bool]=None, show_achievement_list_in_user_badge: Optional[bool]=None):
         post_data = {}
 
@@ -129,7 +109,7 @@ class AchievementsExtension(ExtensionMixin):
             post_data["malago-achievements.show-user-card"] = show_achievement_list_in_user_badge
 
 
-        raw = self._user.session.post(f"{self.api_urls['settings']}", json=post_data)
+        raw = self.session.post(f"{self.api_urls['settings']}", json=post_data)
         parse_request(raw)
 
         return True
@@ -152,7 +132,32 @@ class AchievementsExtension(ExtensionMixin):
             }
         }
 
-        raw = self._user.session.post(f"{self.api_urls['base']}/achievements", json=post_data)
+        raw = self.session.post(f"{self.api_urls['base']}/achievements", json=post_data)
         json = parse_request(raw)
 
-        return Achievement(user=self.user, _fetched_data=json)
+        return Achievement(user=self, _fetched_data=json)
+
+
+    def get_all_achievements(self):
+        raw = self.session.get(f"{self.api_urls['base']}/achievements")
+        json = parse_request(raw)
+
+        all_achievements = list() # type: List[Achievement]
+
+        for raw_achievement in json['data']:
+            achievement = Achievement(user=self, _fetched_data=dict(data=raw_achievement))
+            all_achievements.append(achievement)
+
+        return all_achievements
+
+
+
+class AchievementsExtension(ExtensionMixin):
+    def __init__(self):
+        self.name = NAME
+        self.author = AUTHOR
+        self.id = ID
+
+
+    def mixin(self):
+        super().mixin(self, AdminFlarumUserMixin, AchievementsAdminFlarumUserMixin)

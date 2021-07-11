@@ -1,11 +1,12 @@
 from .. import ExtensionMixin
 
-from typing import TYPE_CHECKING
-if TYPE_CHECKING:
-    from ...session import FlarumUser
-
 from ...flarum.core.discussions import DiscussionFromNotification
 from ...flarum.core.posts import PostFromNotification
+
+
+AUTHOR = 'flarum'
+NAME = 'approval'
+ID = f"{AUTHOR}-{NAME}"
 
 
 class ApprovalDiscussionNotificationMixin(DiscussionFromNotification):
@@ -26,7 +27,8 @@ class ApprovalPostNotificationMixin(PostFromNotification):
 
 
 
-class ApprovalExtension(ExtensionMixin, ApprovalDiscussionNotificationMixin, ApprovalPostNotificationMixin):
-    def mixin(self, user: 'FlarumUser'=None):
+class ApprovalExtension(ExtensionMixin):
+    def mixin(self):
+        
         super().mixin(self, DiscussionFromNotification, ApprovalDiscussionNotificationMixin)
         super().mixin(self, PostFromNotification, ApprovalPostNotificationMixin)

@@ -1,11 +1,13 @@
 from .. import ExtensionMixin
 
-from typing import TYPE_CHECKING
-if TYPE_CHECKING:
-    from ...session import FlarumUser
-
 from ...flarum.core.discussions import DiscussionFromBulk
 from ...flarum.core.users import UserFromBulk
+
+
+AUTHOR = 'fof'
+NAME = 'byobu'
+ID = f"{AUTHOR}-{NAME}"
+
 
 
 class ByobuDiscussionMixin(DiscussionFromBulk):
@@ -35,7 +37,7 @@ class ByobuUserMixin(UserFromBulk):
         return self.attributes.get("cannotBeDirectlyMessaged", False)
 
 
-class ByobuExtension(ExtensionMixin, ByobuDiscussionMixin):
-    def mixin(self, user: 'FlarumUser'=None):
+class ByobuExtension(ExtensionMixin):
+    def mixin(self):
         super().mixin(self, DiscussionFromBulk, ByobuDiscussionMixin)
         super().mixin(self, UserFromBulk, ByobuUserMixin)

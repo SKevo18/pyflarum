@@ -1,1 +1,1 @@
-[ ] Parse included data
+- [ ] - Figure out how to type hint monkey patching classes correctly, without useless subclassing

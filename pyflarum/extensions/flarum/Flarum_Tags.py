@@ -9,6 +9,12 @@ from ...datetime_conversions import flarum_to_datetime
 from ...error_handler import parse_request
 
 
+AUTHOR = 'flarum'
+NAME = 'tags'
+ID = f"{AUTHOR}-{NAME}"
+
+
+
 class Tag(dict):
     """
         A Flarum tag.
@@ -202,6 +208,6 @@ class TagsDiscussionMixin(DiscussionFromBulk):
 
 
 
-class TagsExtension(ExtensionMixin, TagsDiscussionMixin):
-    def mixin(self, user: 'FlarumUser'=None):
+class TagsExtension(ExtensionMixin):
+    def mixin(self):
         super().mixin(self, DiscussionFromBulk, TagsDiscussionMixin)

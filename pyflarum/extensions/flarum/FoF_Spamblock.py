@@ -1,18 +1,32 @@
 from .. import ExtensionMixin
 
-from typing import TYPE_CHECKING
-if TYPE_CHECKING:
-    from ...session import FlarumUser
-
-from ...flarum.core.users import UserFromBulk
+from ...flarum.core.users import User, UserFromBulk, UserFromNotification
+from ...error_handler import FlarumError, parse_request
 
 
-class SpamblockUserMixin(UserFromBulk):
+AUTHOR = 'fof'
+NAME = 'spamblock'
+ID = f"{AUTHOR}-{NAME}"
+
+
+
+class SpamblockUserFromNotificationMixin(UserFromNotification):
+    def spamblock(self) -> bool:
+        raw = self.user.session.post(f"{self.user.api_urls['users']}/{self.id}/spamblock")
+        parse_request(raw)
+
+        return True
+
+
+
+class SpamblockUserMixin(User, UserFromBulk, SpamblockUserFromNotificationMixin):
     @property
     def canSpamblock(self) -> bool:
         return self.attributes.get("canSpamblock", False)
 
 
-class SpamblockExtension(ExtensionMixin, SpamblockUserMixin):
-    def mixin(self, user: 'FlarumUser'=None):
+
+class SpamblockExtension(ExtensionMixin):
+    def mixin(self):
+        super().mixin(self, UserFromNotification, SpamblockUserFromNotificationMixin)
         super().mixin(self, UserFromBulk, SpamblockUserMixin)

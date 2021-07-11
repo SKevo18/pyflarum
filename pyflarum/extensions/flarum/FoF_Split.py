@@ -1,10 +1,11 @@
 from .. import ExtensionMixin
 
-from typing import TYPE_CHECKING
-if TYPE_CHECKING:
-    from ...session import FlarumUser
-
 from ...flarum.core.discussions import DiscussionFromBulk
+
+
+AUTHOR = 'fof'
+NAME = 'split'
+ID = f"{AUTHOR}-{NAME}"
 
 
 class SplitDiscussionMixin(DiscussionFromBulk):
@@ -14,6 +15,6 @@ class SplitDiscussionMixin(DiscussionFromBulk):
 
 
 
-class SplitExtension(ExtensionMixin, SplitDiscussionMixin):
-    def mixin(self, user: 'FlarumUser'=None):
+class SplitExtension(ExtensionMixin):
+    def mixin(self):
         super().mixin(self, DiscussionFromBulk, SplitDiscussionMixin)

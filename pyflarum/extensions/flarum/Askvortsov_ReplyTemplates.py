@@ -1,5 +1,11 @@
 from .. import ExtensionMixin
+
 from ...flarum.core.discussions import DiscussionFromBulk
+
+
+AUTHOR = 'askvortsov'
+NAME = 'reply-templates'
+ID = f"{AUTHOR}-{NAME}"
 
 
 class ReplyTemplatesDiscussionMixin(DiscussionFromBulk):
@@ -14,6 +20,7 @@ class ReplyTemplatesDiscussionMixin(DiscussionFromBulk):
 
 
 
-class ReplyTemplatesExtension(ExtensionMixin, ReplyTemplatesDiscussionMixin):
-    def mixin(self, user: 'FlarumUser'=None):
+class ReplyTemplatesExtension(ExtensionMixin):
+    def mixin(self):
+        
         super().mixin(self, DiscussionFromBulk, ReplyTemplatesDiscussionMixin)

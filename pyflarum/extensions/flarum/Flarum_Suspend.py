@@ -1,16 +1,17 @@
-from typing import Optional, TYPE_CHECKING
+from typing import Optional
 
 from datetime import datetime, timedelta
 
 from .. import ExtensionMixin
 
-
-if TYPE_CHECKING:
-    from ...session import FlarumUser
-
-from ...flarum.core.users import UserFromBulk
+from ...flarum.core.users import User, UserFromBulk
 from ...error_handler import parse_request
 from ...datetime_conversions import datetime_to_flarum, flarum_to_datetime
+
+
+AUTHOR = 'flarum'
+NAME = 'suspend'
+ID = f"{AUTHOR}-{NAME}"
 
 
 class SuspendUserMixin(UserFromBulk):
@@ -20,7 +21,7 @@ class SuspendUserMixin(UserFromBulk):
 
 
     @property
-    def suspendedUntil(self) -> bool:
+    def suspendedUntil(self):
         raw = self.attributes.get("suspendedUntil", None)
 
         return flarum_to_datetime(raw)
@@ -54,11 +55,11 @@ class SuspendUserMixin(UserFromBulk):
         raw = self.user.session.patch(f"{self.user.api_urls['users']}/{self.id}", json=post_data)
         json = parse_request(raw)
 
-        return UserFromBulk(user=self.user, _fetched_data=json)
+        return User(user=self.user, _fetched_data=json)
 
 
 
 
-class SuspendExtension(ExtensionMixin, SuspendUserMixin):
-    def mixin(self, user: 'FlarumUser'=None):
+class SuspendExtension(ExtensionMixin):
+    def mixin(self):
         super().mixin(self, UserFromBulk, SuspendUserMixin)

@@ -12,7 +12,7 @@ from pyflarum import FlarumUser
 
 from pyflarum.flarum.core.filters import Filter
 
-from pyflarum.extensions.absolutely_all_discussions import AbsolutelyAllExtension
+from pyflarum.extensions.absolutely_all import AbsolutelyAllExtension, AbsolutelyAllFlarumUserMixin
 from pyflarum.extensions.flarum.Flarum_Tags import TagsExtension
 
 
@@ -21,7 +21,7 @@ EXTENSIONS = [
     TagsExtension
 ]
 
-user = FlarumUser(forum_url="https://discuss.flarum.org", extensions=EXTENSIONS) # type: AbsolutelyAllExtension
+user = FlarumUser(forum_url="https://discuss.flarum.org", extensions=EXTENSIONS) # type: AbsolutelyAllFlarumUserMixin
 
 
 def incompatible_extensions():

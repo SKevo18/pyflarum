@@ -1,10 +1,12 @@
-from typing import Optional, TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from ...session import FlarumUser
+from typing import Optional
 
 from .. import ExtensionMixin
 from ...flarum.core.users import UserFromBulk
+
+
+AUTHOR = 'fof'
+NAME = 'user-bio'
+ID = f"{AUTHOR}-{NAME}"
 
 
 class UserBioUserMixin(UserFromBulk):
@@ -23,6 +25,6 @@ class UserBioUserMixin(UserFromBulk):
         return self.attributes.get("canEditBio", False)
 
 
-class UserBioExtension(ExtensionMixin, UserBioUserMixin):
-    def mixin(self, user: 'FlarumUser'=None):
+class UserBioExtension(ExtensionMixin):
+    def mixin(self):
         super().mixin(self, UserFromBulk, UserBioUserMixin)

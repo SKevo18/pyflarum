@@ -42,5 +42,5 @@ class CommandsFlarumUserMixin(FlarumUser):
 
 
 class CommandsExtension(ExtensionMixin, CommandsFlarumUserMixin):
-    def mixin(self, user: 'FlarumUser'=None):
+    def mixin(self):
         super().mixin(self, FlarumUser, CommandsFlarumUserMixin)

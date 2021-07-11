@@ -23,5 +23,5 @@ class WatchFlarumUserMixin(FlarumUser):
 
 
 class WatchNotificationsExtension(ExtensionMixin, WatchFlarumUserMixin):
-    def mixin(self, user: 'FlarumUser'=None):
+    def mixin(self):
         super().mixin(self, FlarumUser, WatchFlarumUserMixin)

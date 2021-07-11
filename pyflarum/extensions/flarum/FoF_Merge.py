@@ -1,10 +1,12 @@
 from .. import ExtensionMixin
 
-from typing import TYPE_CHECKING
-if TYPE_CHECKING:
-    from ...session import FlarumUser
-
 from ...flarum.core.discussions import DiscussionFromBulk
+
+
+AUTHOR = 'fof'
+NAME = 'merge'
+ID = f"{AUTHOR}-{NAME}"
+
 
 
 class MergeDiscussionMixin(DiscussionFromBulk):
@@ -14,6 +16,6 @@ class MergeDiscussionMixin(DiscussionFromBulk):
 
 
 
-class MergeExtension(ExtensionMixin, MergeDiscussionMixin):
-    def mixin(self, user: 'FlarumUser'=None):
+class MergeExtension(ExtensionMixin):
+    def mixin(self):
         super().mixin(self, DiscussionFromBulk, MergeDiscussionMixin)
