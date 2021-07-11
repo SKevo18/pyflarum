@@ -93,6 +93,7 @@ class Achievement(dict):
 
 
 
+# TODO: Test & fix:
 class AchievementsExtension(ExtensionMixin):
     def __init__(self):
         self.id = "malago-achievements"
