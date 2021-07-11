@@ -13,7 +13,7 @@ class Filter():
 
     @property
     def to_dict(self):
-        __data = dict()
+        __data = {}
 
         if self.order_by:
             __data["sort"] = self.order_by

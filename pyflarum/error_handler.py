@@ -1,5 +1,7 @@
-from typing import Optional, List, Dict, NoReturn
+from typing import Optional, List, Dict
+
 from requests.models import Response
+from json.decoder import JSONDecodeError
 
 
 class FlarumError(Exception):
@@ -15,11 +17,16 @@ class FlarumError(Exception):
         return super().__init__(message)
 
 
-def parse_request_as_json(request: Response):
+def parse_request(request: Response):
     try:
-        json = request.json() # type: dict
+        # Includes opening and closing brackets:
+        if len(request.text) >= 2:
+            json = request.json() # type: dict
 
-    except Exception as e:
+        else:
+            json = {}
+
+    except JSONDecodeError as e:
         json = {'errors': [{'code': 0, 'detail': e}]}
 
 

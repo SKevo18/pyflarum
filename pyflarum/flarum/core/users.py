@@ -59,11 +59,11 @@ class Users(dict):
             All users from the `Users` object.
         """
 
-        all_users = list() # type: List[UserFromBulk]
+        all_users = [] # type: List[UserFromBulk]
 
         for raw_user in self.data:
             if raw_user.get("type", None) == 'users':
-                user = UserFromBulk(user=self.user, _fetched_data=dict(data=raw_user))
+                user = UserFromBulk(user=self.user, _fetched_data=dict(data=raw_user, _parent_included=self.included))
                 all_users.append(user)
 
         return all_users
@@ -164,31 +164,6 @@ class UserFromBulk(UserFromNotification):
     @property
     def canDelete(self) -> bool:
         return self.attributes.get("canDelete", False)
-
-
-    @property
-    def canSuspend(self) -> bool:
-        return self.attributes.get("canSuspend", False)
-
-
-    @property
-    def usernameHistory(self) -> Optional[List[str]]:
-        return self.attributes.get("canEditCredentials", None)
-
-
-    @property
-    def bio(self) -> Optional[str]:
-        return self.attributes.get("bio", None)
-
-
-    @property
-    def canViewBio(self) -> bool:
-        return self.attributes.get("canViewBio", False)
-
-
-    @property
-    def canEditBio(self) -> bool:
-        return self.attributes.get("canEditBio", False)
 
 
     @property

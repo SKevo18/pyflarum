@@ -14,7 +14,7 @@ def flarum_to_datetime(flarum_dt: Optional[Union[str, datetime]]=None):
     if not flarum_dt:
         return None
 
-    elif type(flarum_dt) == datetime:
+    elif isinstance(flarum_dt, datetime):
         return flarum_dt
 
     else:
@@ -34,7 +34,7 @@ def datetime_to_flarum(dt: Optional[Union[datetime, str]]=None):
     if not dt:
         return None
 
-    elif type(dt) == str:
+    elif isinstance(dt, str):
         return dt
 
     else:

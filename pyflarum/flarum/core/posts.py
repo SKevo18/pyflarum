@@ -8,7 +8,7 @@ if TYPE_CHECKING:
 from datetime import datetime
 
 from ...flarum.core.users import MyUser, User
-from ...error_handler import FlarumError, parse_request_as_json
+from ...error_handler import FlarumError, parse_request
 from ...datetime_conversions import flarum_to_datetime
 
 
@@ -50,7 +50,7 @@ class PreparedPost(dict):
             raise TypeError("`discussion` must be `Discussion`, `DiscussionFromBulk` or `DiscussionFromNotification` and `content` must be `str`.")
 
         raw = self.user.session.post(self.user.api_urls['posts'], json=self.to_dict)
-        json = parse_request_as_json(raw)
+        json = parse_request(raw)
 
         return Post(user=self.user, _fetched_data=json)
     create = post
@@ -106,7 +106,7 @@ class Posts(dict):
             All posts from the `Posts` object.
         """
 
-        all_posts = list() # type: List[PostFromBulk]
+        all_posts = [] # type: List[PostFromBulk]
 
         for raw_post in self.data:
             if raw_post.get("type", None) == 'posts':
@@ -223,7 +223,7 @@ class PostFromNotification(dict):
         }
 
         raw = self.user.session.patch(f"{self.user.api_urls['posts']}/{self.id}", json=patch_data)
-        parse_request_as_json(raw)
+        parse_request(raw)
 
         return True
 
@@ -254,7 +254,7 @@ class PostFromNotification(dict):
             raise FlarumError(f'You do not have permission to delete this post ({self.id})')
 
         raw = self.user.session.delete(f"{self.user.api_urls['discussions']}/{self.id}")
-        parse_request_as_json(raw)
+        parse_request(raw)
 
         return True
 

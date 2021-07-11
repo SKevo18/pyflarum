@@ -7,7 +7,7 @@ from .flarum.core.users import MyUser
 from .flarum.core.notifications import Notifications
 from .flarum.core.discussions import Discussion, Discussions
 from .flarum.core.filters import Filter
-from .error_handler import parse_request_as_json
+from .error_handler import parse_request
 from .datetime_conversions import datetime_to_flarum
 
 from .extensions import ExtensionMixin
@@ -46,7 +46,7 @@ class FlarumSession(object):
             identification_data = {"identification": self.username, "password": password}
 
             raw = self.session.post(url=f'{self.forum_url}/api/token', json=identification_data)
-            token_data = parse_request_as_json(raw)
+            token_data = parse_request(raw)
 
             token = token_data.get("token", None)
             user_id = token_data.get("userId", None)
@@ -75,7 +75,11 @@ class FlarumSession(object):
         """
 
         return {
+            "base": f"{self.forum_url}/{self.api_endpoint}",
             "forum": f"{self.forum_url}/{self.api_endpoint}/forum",
+
+            "settings": f"{self.forum_url}/{self.api_endpoint}/settings",
+            "extensions": f"{self.forum_url}/{self.api_endpoint}/extensions",
 
             "discussions": f"{self.forum_url}/{self.api_endpoint}/discussions",
             "posts": f"{self.forum_url}/{self.api_endpoint}/posts",
@@ -97,7 +101,7 @@ class FlarumUser(FlarumSession):
 
         filter = Filter(query=self.username, limit=1)
         raw = self.session.get(f"{self.api_urls['users']}", params=filter.to_dict)
-        json = parse_request_as_json(raw)
+        json = parse_request(raw)
 
         for raw_user in json.get("data", {}):
             possible_user = MyUser(user=self, _fetched_data=dict(data=raw_user))
@@ -110,7 +114,7 @@ class FlarumUser(FlarumSession):
 
     def get_discussion_by_id(self, id: int):
         raw = self.session.get(f"{self.api_urls['discussions']}/{id}")
-        json = parse_request_as_json(raw)
+        json = parse_request(raw)
 
         return Discussion(user=self, _fetched_data=json)
 
@@ -127,7 +131,7 @@ class FlarumUser(FlarumSession):
         else:
             raw = self.session.get(f"{self.api_urls['discussions']}")
 
-        json = parse_request_as_json(raw)
+        json = parse_request(raw)
 
         return Discussions(user=self, _fetched_data=json)
     
@@ -144,7 +148,7 @@ class FlarumUser(FlarumSession):
             raw = self.session.get(f"{self.api_urls['notifications']}")
 
 
-        json = parse_request_as_json(raw)
+        json = parse_request(raw)
 
         return Notifications(user=self, _fetched_data=json)
 
@@ -161,13 +165,13 @@ class FlarumUser(FlarumSession):
         }
 
         raw = self.session.patch(f"{self.api_urls['users']}/{self.user.id}", json=post_data)
-        parse_request_as_json(raw)
+        parse_request(raw)
 
         return True
 
 
     def mark_all_notifications_as_read(self, at: datetime=datetime.now()):
         raw = self.session.post(f"{self.api_urls['notifications']}/read")
-        parse_request_as_json(raw)
+        parse_request(raw)
 
         return True

@@ -7,7 +7,7 @@ if TYPE_CHECKING:
 from datetime import datetime
 
 from ...flarum.core.users import MyUser, User
-from ...error_handler import FlarumError, parse_request_as_json
+from ...error_handler import FlarumError, parse_request
 from ...datetime_conversions import flarum_to_datetime
 
 
@@ -44,7 +44,7 @@ class PreparedDiscussion(dict):
             raise TypeError(f"Both `title` and `content` parameters must be a `str`.")
 
         raw = self.user.session.post(self.user.api_urls['discussions'], json=self.to_dict)
-        json = parse_request_as_json(raw)
+        json = parse_request(raw)
 
         return Discussion(user=self.user, _fetched_data=json)
     create = post
@@ -100,7 +100,7 @@ class Discussions(dict):
             All discussions from the `Discussions` object.
         """
 
-        all_discussions = list() # type: List[DiscussionFromBulk]
+        all_discussions = [] # type: List[DiscussionFromBulk]
 
         for raw_discussion in self.data:
             if raw_discussion.get("type", None) == 'discussions':
@@ -162,7 +162,7 @@ class DiscussionFromNotification(dict):
         }
 
         raw = self.user.session.patch(f"{self.user.api_urls['discussions']}/{self.id}", json=patch_data)
-        parse_request_as_json(raw)
+        parse_request(raw)
 
         return True
 
@@ -190,7 +190,7 @@ class DiscussionFromNotification(dict):
         """
 
         raw = self.user.session.delete(f"{self.user.api_urls['discussions']}/{self.id}")
-        parse_request_as_json(raw)
+        parse_request(raw)
 
         return True
 

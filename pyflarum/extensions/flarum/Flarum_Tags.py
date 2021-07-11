@@ -3,10 +3,10 @@ from typing import List, Optional
 from datetime import datetime
 
 from .. import ExtensionMixin
-from ...session import FlarumSession
+from ...session import FlarumUser
 from ...flarum.core.discussions import DiscussionFromBulk
 from ...datetime_conversions import flarum_to_datetime
-from ...error_handler import handle_errors
+from ...error_handler import parse_request
 
 
 class Tag(dict):
@@ -14,8 +14,8 @@ class Tag(dict):
         A Flarum tag.
     """
 
-    def __init__(self, session: 'FlarumSession', _fetched_data: dict):
-        self.flarum_session = session
+    def __init__(self, user: 'FlarumUser', _fetched_data: dict):
+        self.user = user
         super().__init__(_fetched_data)
 
 
@@ -135,26 +135,44 @@ class Tag(dict):
         return self.data.get("relationships", {})
 
 
-    def get_parent_tag(self, force: bool=False) -> 'Tag':
+    def get_parent_tag(self, force: bool=False):
         if not self.isChild and not force:
             raise TypeError(f'{self.name} is not a children, and therefore does not have a parent tag. Use `force = True` to bypass this error.')
 
         id = self.relationships.get("parent", {}).get("data", {}).get("id", None) # type: int
-        raw = self.flarum_session.session.get(f"{self.flarum_session.api_urls['tags']}")
-
-        if raw.status_code != 200:
-            return handle_errors(status_code=raw.status_code)
-
-        json = raw.json() # type: dict
-
-        if 'errors' in json:
-            return handle_errors(raw['errors'])
+        raw = self.user.session.get(f"{self.user.api_urls['tags']}")
+        json = parse_request(raw)
 
         for raw_tag in json.get("data", [{}]):
             if (raw_tag.get("id", None) == id) and (raw_tag.get("type", None) == 'tags'):
-                return Tag(session=self.flarum_session, _fetched_data=dict(data=raw_tag))
+                return Tag(user=self.user, _fetched_data=dict(data=raw_tag))
 
         return None
+
+
+    def __restrict_or_unrestrict_permissions(self, restrict: bool=True):
+        post_data = {
+            "data": {
+                "type": "tags",
+                "id": "1",
+                "attributes": {
+                    "isRestricted": restrict
+                }
+            }
+        }
+
+        raw = self.user.session.post(f"{self.user.api_urls['tags']}/{self.id}", json=post_data)
+        json = parse_request(raw)
+
+        return Tag(user=self.user, _fetched_data=json)
+
+
+    def restrict_permissions(self):
+        return self.__restrict_or_unrestrict_permissions(restrict=True)
+
+
+    def unrestrict_permissions(self):
+        return self.__restrict_or_unrestrict_permissions(restrict=False)
 
 
 
@@ -165,7 +183,7 @@ class TagsDiscussionMixin(DiscussionFromBulk):
 
 
     def get_tags(self) -> List[Tag]:
-        all_tags = list() # type: List[Tag]
+        all_tags = [] # type: List[Tag]
         seen = set()
         tags = self.relationships.get("tags", {}).get("data", [{}]) # type: List[dict]
 

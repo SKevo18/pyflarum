@@ -9,7 +9,7 @@ if TYPE_CHECKING:
 
 from ...flarum.core.users import UserFromNotification
 from ...flarum.core.posts import PostFromNotification
-from ...error_handler import parse_request_as_json
+from ...error_handler import parse_request
 from ...datetime_conversions import flarum_to_datetime
 
 
@@ -63,7 +63,7 @@ class Notifications(dict):
             All notifications from the `Notifications` object.
         """
 
-        all_notifications = list() # type: List[Notification]
+        all_notifications = [] # type: List[Notification]
 
         for raw_notification in self.data:
             if raw_notification.get("type", None) == 'notifications':
@@ -75,7 +75,7 @@ class Notifications(dict):
 
     def mark_all_as_read(self) -> bool:
         raw = self.user.session.post(f"{self.user.api_urls['notifications']}/read")
-        parse_request_as_json(raw)
+        parse_request(raw)
 
         return True
 
@@ -194,6 +194,6 @@ class Notification(dict):
     def mark_as_read(self):
         post_data = {"is_read": True}
         raw = self.user.session.patch(f"{self.user.api_urls['notifications']}/{self.id}", json=post_data)
-        parse_request_as_json(raw)
+        parse_request(raw)
 
         return True
