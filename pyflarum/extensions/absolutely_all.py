@@ -56,5 +56,5 @@ class AbsolutelyAllFlarumUserMixin(FlarumUser):
 
 
 class AbsolutelyAllExtension(ExtensionMixin, AbsolutelyAllFlarumUserMixin):
-    def mixin(self):
+    def mixin(self, user: 'FlarumUser'=None):
         super().mixin(self, FlarumUser, AbsolutelyAllFlarumUserMixin)

@@ -1,8 +1,12 @@
-from typing import Optional
+from typing import Optional, TYPE_CHECKING
 
 from datetime import datetime, timedelta
 
 from .. import ExtensionMixin
+
+
+if TYPE_CHECKING:
+    from ...session import FlarumUser
 
 from ...flarum.core.users import UserFromBulk
 from ...error_handler import parse_request
@@ -56,5 +60,5 @@ class SuspendUserMixin(UserFromBulk):
 
 
 class SuspendExtension(ExtensionMixin, SuspendUserMixin):
-    def mixin(self):
+    def mixin(self, user: 'FlarumUser'=None):
         super().mixin(self, UserFromBulk, SuspendUserMixin)

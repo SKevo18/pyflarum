@@ -203,5 +203,5 @@ class TagsDiscussionMixin(DiscussionFromBulk):
 
 
 class TagsExtension(ExtensionMixin, TagsDiscussionMixin):
-    def mixin(self):
+    def mixin(self, user: 'FlarumUser'=None):
         super().mixin(self, DiscussionFromBulk, TagsDiscussionMixin)

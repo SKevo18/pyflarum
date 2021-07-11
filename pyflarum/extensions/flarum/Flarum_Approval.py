@@ -1,4 +1,9 @@
 from .. import ExtensionMixin
+
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from ...session import FlarumUser
+
 from ...flarum.core.discussions import DiscussionFromNotification
 from ...flarum.core.posts import PostFromNotification
 
@@ -22,6 +27,6 @@ class ApprovalPostNotificationMixin(PostFromNotification):
 
 
 class ApprovalExtension(ExtensionMixin, ApprovalDiscussionNotificationMixin, ApprovalPostNotificationMixin):
-    def mixin(self):
+    def mixin(self, user: 'FlarumUser'=None):
         super().mixin(self, DiscussionFromNotification, ApprovalDiscussionNotificationMixin)
         super().mixin(self, PostFromNotification, ApprovalPostNotificationMixin)

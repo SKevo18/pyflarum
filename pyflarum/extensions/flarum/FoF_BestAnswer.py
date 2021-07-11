@@ -1,8 +1,12 @@
-from typing import Optional
+from typing import Optional, TYPE_CHECKING
 
 from datetime import datetime
 
 from .. import ExtensionMixin
+
+if TYPE_CHECKING:
+    from ...session import FlarumUser
+
 from ...datetime_conversions import flarum_to_datetime
 from ...flarum.core.discussions import DiscussionFromBulk, DiscussionFromNotification
 
@@ -28,6 +32,6 @@ class BestAnswerDiscussionMixin(DiscussionFromBulk):
 
 
 class BestAnswerExtension(ExtensionMixin, BestAnswerDiscussionMixin, BestAnswerDiscussionNotificationMixin):
-    def mixin(self):
+    def mixin(self, user: 'FlarumUser'=None):
         super().mixin(self, DiscussionFromNotification, BestAnswerDiscussionNotificationMixin)
         super().mixin(self, DiscussionFromBulk, BestAnswerDiscussionMixin)

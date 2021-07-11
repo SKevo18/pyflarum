@@ -93,9 +93,17 @@ class Achievement(dict):
 
 
 
-class AchievementsAdminMixin(AdminFlarumUserMixin):
+class AchievementsExtension(ExtensionMixin):
+    def __init__(self):
+        self.id = "malago-achievements"
+
+
+    def mixin(self, user: 'FlarumUser'):
+        self._user = user
+
+
     def __enable_or_disable(self, enable: bool=True):
-        raw = self.session.patch(f"{self.api_urls['extensions']}/malago-achievements", json={"enabled": enable})
+        raw = self._user.session.patch(f"{self.api_urls['extensions']}/{self.id}", json={"enabled": enable})
         parse_request(raw)
 
         return True
@@ -120,7 +128,7 @@ class AchievementsAdminMixin(AdminFlarumUserMixin):
             post_data["malago-achievements.show-user-card"] = show_achievement_list_in_user_badge
 
 
-        raw = self.session.post(f"{self.api_urls['settings']}", json=post_data)
+        raw = self._user.session.post(f"{self.api_urls['settings']}", json=post_data)
         parse_request(raw)
 
         return True
@@ -143,13 +151,7 @@ class AchievementsAdminMixin(AdminFlarumUserMixin):
             }
         }
 
-        raw = self.session.post(f"{self.api_urls['base']}/achievements", json=post_data)
+        raw = self._user.session.post(f"{self.api_urls['base']}/achievements", json=post_data)
         json = parse_request(raw)
 
         return Achievement(user=self.user, _fetched_data=json)
-
-
-
-class AchievementsExtension(ExtensionMixin, AchievementsAdminMixin):
-    def mixin(self):
-        super().mixin(self, FlarumUser, AchievementsAdminMixin)

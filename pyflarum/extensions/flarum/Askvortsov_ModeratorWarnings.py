@@ -1,4 +1,9 @@
 from .. import ExtensionMixin
+
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from ...session import FlarumUser
+
 from ...flarum.core.users import UserFromBulk
 
 
@@ -24,5 +29,5 @@ class ModeratorWarningsUserMixin(UserFromBulk):
 
 
 class ModeratorWarningsExtension(ExtensionMixin, ModeratorWarningsUserMixin):
-    def mixin(self):
+    def mixin(self, user: 'FlarumUser'=None):
         super().mixin(self, UserFromBulk, ModeratorWarningsUserMixin)

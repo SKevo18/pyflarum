@@ -1,4 +1,6 @@
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, TYPE_CHECKING
+if TYPE_CHECKING:
+    from ...session import FlarumUser
 
 from datetime import datetime
 
@@ -25,5 +27,5 @@ class UsernameRequestUserMixin(UserFromBulk):
 
 
 class UsernameRequestExtension(ExtensionMixin, UsernameRequestUserMixin):
-    def mixin(self):
+    def mixin(self, user: 'FlarumUser'=None):
         super().mixin(self, UserFromBulk, UsernameRequestUserMixin)

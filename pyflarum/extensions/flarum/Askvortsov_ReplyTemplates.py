@@ -15,5 +15,5 @@ class ReplyTemplatesDiscussionMixin(DiscussionFromBulk):
 
 
 class ReplyTemplatesExtension(ExtensionMixin, ReplyTemplatesDiscussionMixin):
-    def mixin(self):
+    def mixin(self, user: 'FlarumUser'=None):
         super().mixin(self, DiscussionFromBulk, ReplyTemplatesDiscussionMixin)

@@ -1,4 +1,6 @@
-from typing import Optional
+from typing import Optional, TYPE_CHECKING
+if TYPE_CHECKING:
+    from ...session import FlarumUser
 
 from .. import ExtensionMixin
 from ...flarum.core.discussions import DiscussionFromBulk
@@ -16,5 +18,5 @@ class NecrobumpingDiscussionMixin(DiscussionFromBulk):
 
 
 class NecrobumpingExtension(ExtensionMixin, NecrobumpingDiscussionMixin):
-    def mixin(self):
+    def mixin(self, user: 'FlarumUser'=None):
         super().mixin(self, DiscussionFromBulk, NecrobumpingDiscussionMixin)

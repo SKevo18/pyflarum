@@ -1,4 +1,7 @@
-from typing import Optional
+from typing import Optional, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from ...session import FlarumUser
 
 from .. import ExtensionMixin
 from ...flarum.core.users import UserFromBulk
@@ -21,5 +24,5 @@ class UserBioUserMixin(UserFromBulk):
 
 
 class UserBioExtension(ExtensionMixin, UserBioUserMixin):
-    def mixin(self):
+    def mixin(self, user: 'FlarumUser'=None):
         super().mixin(self, UserFromBulk, UserBioUserMixin)

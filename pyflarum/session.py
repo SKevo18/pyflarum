@@ -14,16 +14,11 @@ from .extensions import ExtensionMixin
 
 
 class FlarumSession(object):
-    def __init__(self, forum_url: str, username: Union[str]=None, password: Union[str, None]=None, api_endpoint: str="api", user_agent: str="pyflarum", extensions: Optional[List[ExtensionMixin]]=None, session_object: Union[Session, Any]=Session()):
+    def __init__(self, forum_url: str, username: Union[str]=None, password: Union[str, None]=None, api_endpoint: str="api", user_agent: str="pyflarum", session_object: Union[Session, Any]=Session()):
         self.forum_url = forum_url
         self.api_endpoint = api_endpoint
         self.username = username
         self.session = session_object
-
-        self.extensions = extensions
-        if self.extensions:
-            for extension in self.extensions:
-                extension.mixin(extension)
 
         self.session.headers.update({
             "User-Agent": user_agent
@@ -93,6 +88,15 @@ class FlarumSession(object):
 
 
 class FlarumUser(FlarumSession):
+    def __init__(self, extensions: Optional[List[ExtensionMixin]]=None, **kwargs):
+        self.extensions = extensions
+        if self.extensions:
+            for extension in self.extensions:
+                extension.mixin(extension, user=self)
+
+        super().__init__(**kwargs)
+
+
     @property
     def user(self):
         """
