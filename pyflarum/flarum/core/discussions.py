@@ -216,7 +216,7 @@ class DiscussionFromBulk(DiscussionFromNotification):
     @property
     def url(self):
         slug = self.slug
-        
+
         if slug:
             return f"{self.user.forum_url}/d/{slug}"
 
@@ -307,7 +307,7 @@ class DiscussionFromBulk(DiscussionFromNotification):
 
     def get_author(self):
         id = self.relationships.get("user", {}).get("data", {}).get("id", None)
-        
+
         for raw_user in self._parent_included:
             if raw_user.get("id", None) == id and raw_user.get("type", None) == 'users':
                 user = User(user=self.user, _fetched_data=dict(data=raw_user))
@@ -371,7 +371,7 @@ class Discussion(DiscussionFromBulk):
         self.user = user
 
         super().__init__(user=self.user, _fetched_data=_fetched_data)
-    
+
 
     @property
     def included(self) -> List[dict]:
@@ -391,7 +391,7 @@ class Discussion(DiscussionFromBulk):
                 if id_to_find:
                     for possible_raw_post in self.included:
                         if (possible_raw_post.get("type", None) == 'posts') and (possible_raw_post.get("id", None) == id_to_find):
-                            post = PostFromBulk(user=self.user, _fetched_data=dict(data=possible_raw_post))
+                            post = PostFromBulk(user=self.user, _fetched_data=dict(data=possible_raw_post, _parent_included=self.included))
 
                             all_posts.append(post)
 
