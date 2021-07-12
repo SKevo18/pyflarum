@@ -1,4 +1,7 @@
-from typing import Any, List, Union, Optional
+from typing import Any, List, Union, Optional, Literal, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 from datetime import datetime
 from requests import Session
@@ -96,6 +99,8 @@ class FlarumUser(FlarumSession):
 
         super().__init__(**kwargs)
 
+        self.user_id = self.user.id
+
 
     @property
     def user(self):
@@ -161,20 +166,20 @@ class FlarumUser(FlarumSession):
         post_data = {
             "data": {
                 "type": "users",
-                "id": self.user.id,
+                "id": self.user_id,
                 "attributes": {
                     "markedAllAsReadAt": datetime_to_flarum(at)
                 }
             }
         }
 
-        raw = self.session.patch(f"{self.api_urls['users']}/{self.user.id}", json=post_data)
+        raw = self.session.patch(f"{self.api_urls['users']}/{self.user_id}", json=post_data)
         parse_request(raw)
 
         return True
 
 
-    def mark_all_notifications_as_read(self, at: datetime=datetime.now()):
+    def mark_all_notifications_as_read(self):
         raw = self.session.post(f"{self.api_urls['notifications']}/read")
         parse_request(raw)
 
@@ -186,3 +191,63 @@ class FlarumUser(FlarumSession):
         json = parse_request(raw)
 
         return User(user=self, _fetched_data=json)
+
+
+    def send_password_reset_email(self):
+        patch_data = { "email": self.user.email }
+
+        raw = self.session.patch(f"{self.api_urls['users']}/{self.user_id}", json=patch_data)
+        json = parse_request(raw)
+
+        return MyUser(user=self, _fetched_data=json)
+
+
+    def update_notification_preferences(self, notification: str, type: str=Literal['alert', 'email'], state: bool=True):
+        patch_data = {
+            "data": {
+                "type": "users",
+                "id": self.user_id,
+                "attributes": {
+                    "preferences": {
+                        f"notify_{notification}_{type}": state
+                    }
+                }
+            }
+        }
+
+        raw = self.session.patch(f"{self.api_urls['users']}/{self.user_id}", json=patch_data)
+        json = parse_request(raw)
+
+        return MyUser(user=self, _fetched_data=json)
+
+
+    def change_email(self, new_email: str, password_confirmation: str):
+        patch_data = {
+            "data": {
+                "type": "users",
+                "id": self.user_id,
+                "attributes": {
+                    "email": new_email
+                }
+            },
+            "meta": {
+                "password": password_confirmation
+            }
+        }
+
+        raw = self.session.patch(f"{self.api_urls['users']}/{self.user_id}", json=patch_data)
+        json = parse_request(raw)
+
+        return MyUser(user=self, _fetched_data=json)
+
+
+    def upload_avatar(self, avatar_path: Union[str, bytes, 'Path'], image_type: Literal['jpeg', 'png', 'jpg']='png'):
+        with open(avatar_path, 'rb') as avatar_file:
+            binary_avatar = avatar_file.read()
+
+        raw = self.session.post(url=f"{self.api_urls['base']}/logo", data=dict(avatar=binary_avatar), headers={
+            'Content-Type': f'image/{image_type}', 'Content-Disposition': f'form-data; name="avatar"; filename="avatar.{image_type}"'
+        })
+        json = parse_request(raw)
+
+        return MyUser(user=self, _fetched_data=json)

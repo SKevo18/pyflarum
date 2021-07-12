@@ -6,6 +6,7 @@ if TYPE_CHECKING:
 
 from datetime import datetime
 
+from ...error_handler import parse_request
 from ...datetime_conversions import flarum_to_datetime
 
 
@@ -104,6 +105,16 @@ class UserFromNotification(dict):
 
 
     @property
+    def email(self) -> Optional[str]:
+        return self.attributes.get("email", None)
+
+
+    @property
+    def isEmailConfirmed(self) -> bool:
+        return self.attributes.get("isEmailConfirmed", False)
+
+
+    @property
     def displayName(self) -> Optional[str]:
         return self.attributes.get("displayName", None)
 
@@ -117,6 +128,29 @@ class UserFromNotification(dict):
     def slug(self) -> Optional[str]:
         return self.attributes.get("slug", None)
 
+
+    def update_info(self, new_username: Optional[str]=None, groups: Optional[list]=None):
+        patch_data = {
+            "data": {
+                "type": "users",
+                "id": self.id,
+                "attributes": {},
+                "relationships": {}
+            }
+        }
+
+
+        if new_username:
+            patch_data['attributes']['username'] = new_username
+
+        if groups:
+            patch_data['data']['relationships'].update({"groups": {"data": groups}})
+
+
+        raw = self.user.session.patch(f"{self.user.api_urls['users']}/{self.id}", json=patch_data)
+        json = parse_request(raw)
+
+        return MyUser(user=self, _fetched_data=json)
 
 
 class UserFromBulk(UserFromNotification):

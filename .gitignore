@@ -6,6 +6,7 @@ env/
 scrap/
 scrapped.html
 test_*.py
+test.png
 
 # Cache:
 *.sqlite
