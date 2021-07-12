@@ -6,7 +6,7 @@ if TYPE_CHECKING:
 
 from datetime import datetime
 
-from ...flarum.core.users import MyUser, User
+from ...flarum.core.users import User
 from ...error_handler import FlarumError, parse_request
 from ...datetime_conversions import flarum_to_datetime
 
@@ -118,6 +118,13 @@ class DiscussionFromNotification(dict):
     def __init__(self, user: 'FlarumUser', _fetched_data: dict):
         self.user = user
         super().__init__(_fetched_data)
+
+
+    def get_full_data(self):
+        raw = self.user.session.get(f"{self.user.api_urls['discussions']}/{self.id}")
+        json = parse_request(raw)
+
+        return Discussion(user=self.user, _fetched_data=json)
 
 
     @property
@@ -305,11 +312,7 @@ class DiscussionFromBulk(DiscussionFromNotification):
             if raw_user.get("id", None) == id and raw_user.get("type", None) == 'users':
                 user = User(user=self.user, _fetched_data=dict(data=raw_user))
 
-                if user.username == self.user.username:
-                    return MyUser(user=self.user, _fetched_data=dict(data=raw_user))
-
-                else:
-                    return user
+                return user
 
         return None
 
@@ -321,11 +324,7 @@ class DiscussionFromBulk(DiscussionFromNotification):
             if raw_user.get("id", None) == id and raw_user.get("type", None) == 'users':
                 user = User(user=self.user, _fetched_data=dict(data=raw_user))
 
-                if user.username == self.user.username:
-                    return MyUser(user=self.user, _fetched_data=dict(data=raw_user))
-
-                else:
-                    return user
+                return user
 
         return None
 
@@ -363,7 +362,6 @@ class DiscussionFromBulk(DiscussionFromNotification):
             return super().delete()
 
 
-
 class Discussion(DiscussionFromBulk):
     """
         A Flarum discussion.
@@ -373,3 +371,28 @@ class Discussion(DiscussionFromBulk):
         self.user = user
 
         super().__init__(user=self.user, _fetched_data=_fetched_data)
+    
+
+    @property
+    def included(self) -> List[dict]:
+        return self.get("included", [{}])
+
+
+    def get_posts(self):
+        from ...flarum.core.posts import PostFromBulk
+
+        all_posts = list() # type: List[PostFromBulk]
+        raw_posts = self.relationships.get("posts", {}).get("data", [{}]) # type: List[dict]
+
+        for raw_post in raw_posts:
+            if raw_post.get("type", None) == 'posts':
+                id_to_find = raw_post.get("id", None)
+
+                if id_to_find:
+                    for possible_raw_post in self.included:
+                        if (possible_raw_post.get("type", None) == 'posts') and (possible_raw_post.get("id", None) == id_to_find):
+                            post = PostFromBulk(user=self.user, _fetched_data=dict(data=possible_raw_post))
+
+                            all_posts.append(post)
+
+        return all_posts

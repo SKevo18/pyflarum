@@ -17,5 +17,4 @@ class FlagsPostNotificationMixin(PostFromNotification):
 
 class FlagsExtension(ExtensionMixin):
     def mixin(self):
-        
         super().mixin(self, PostFromNotification, FlagsPostNotificationMixin)

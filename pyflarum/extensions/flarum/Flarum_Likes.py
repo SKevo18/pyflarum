@@ -17,5 +17,4 @@ class LikesPostNotificationMixin(PostFromNotification):
 
 class LikesExtension(ExtensionMixin):
     def mixin(self):
-        
         super().mixin(self, PostFromNotification, LikesPostNotificationMixin)

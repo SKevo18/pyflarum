@@ -22,5 +22,4 @@ class ReplyTemplatesDiscussionMixin(DiscussionFromBulk):
 
 class ReplyTemplatesExtension(ExtensionMixin):
     def mixin(self):
-        
         super().mixin(self, DiscussionFromBulk, ReplyTemplatesDiscussionMixin)

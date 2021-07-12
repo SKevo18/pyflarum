@@ -4,6 +4,7 @@ env/
 
 # Tests:
 scrap/
+scrapped.html
 test_*.py
 
 # Cache:

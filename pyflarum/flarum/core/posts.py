@@ -1,4 +1,3 @@
-from pyflarum.flarum.core.discussions import Discussion, DiscussionFromBulk, DiscussionFromNotification
 from typing import Literal, NoReturn, TYPE_CHECKING, Optional, Union, List
 
 # Avoid my greatest enemy in Python: circular import:
@@ -7,9 +6,10 @@ if TYPE_CHECKING:
 
 from datetime import datetime
 
-from ...flarum.core.users import MyUser, User
+from ...flarum.core.users import UserFromBulk
 from ...error_handler import FlarumError, parse_request
 from ...datetime_conversions import flarum_to_datetime
+from ...flarum.core.discussions import Discussion, DiscussionFromBulk, DiscussionFromNotification
 
 
 class PreparedPost(dict):
@@ -118,7 +118,7 @@ class Posts(dict):
 
 class PostFromNotification(dict):
     """
-        A post from `BaseNotification`
+        A post from `Notification`
     """
 
     def __init__(self, user: 'FlarumUser', _fetched_data: dict):
@@ -167,13 +167,18 @@ class PostFromNotification(dict):
 
 
     @property
-    def contentHTML(self) -> Optional[str]:
+    def contentHtml(self) -> Optional[str]:
         return self.attributes.get("contentHtml", None)
 
 
     @property
     def content(self) -> Optional[str]:
         return self.attributes.get("content", None)
+
+
+    @property
+    def ipAddress(self) -> Optional[str]:
+        return self.attributes.get("ipAddress", None)
 
 
     @property
@@ -206,6 +211,14 @@ class PostFromNotification(dict):
     @property
     def relationships(self) -> dict:
         return self.data.get("relationships", {})
+
+
+    @property
+    def url(self):
+        discussion_id = self.relationships.get("discussion", {}).get("data", {}).get("id", None)
+
+        if discussion_id:
+            return f"{self.user.forum_url}/d/{discussion_id}/{self.number}"
 
 
     def __restore_or_hide(self, hide: bool, force: bool=False) -> Union[Literal[False], NoReturn]:
@@ -282,6 +295,30 @@ class PostFromNotification(dict):
         return to_post.post()
 
 
+    def get_author(self):
+        id = self.relationships.get("user", {}).get("data", {}).get("id", None)
+        
+        for raw_user in self._parent_included:
+            if raw_user.get("id", None) == id and raw_user.get("type", None) == 'users':
+                user = UserFromBulk(user=self.user, _fetched_data=dict(data=raw_user))
+
+                return user
+
+        return None
+
+
+    def get_discussion(self):
+        id = self.relationships.get("discussion", {}).get("data", {}).get("id", None)
+
+        for raw_discussion in self._parent_included:
+            if raw_discussion.get("id", None) == id and raw_discussion.get("type", None) == 'discussions':
+                discussion = DiscussionFromBulk(user=self.user, _fetched_data=dict(data=raw_discussion))
+
+                return discussion
+
+        return None
+
+
 class PostFromBulk(PostFromNotification):
     """
         A post from `Posts`.
@@ -293,157 +330,8 @@ class PostFromBulk(PostFromNotification):
 
 
     @property
-    def data(self) -> dict:
-        return self.get("data", {})
-
-
-    @property
-    def type(self) -> Optional[str]:
-        return self.data.get("type", None)
-
-
-    @property
-    def id(self) -> Optional[int]:
-        return self.data.get("id", None)
-
-
-    @property
-    def attributes(self) -> dict:
-        return self.data.get("attributes", {})
-
-
-    @property
-    def title(self) -> Optional[str]:
-        return self.attributes.get("title", None)
-
-
-    @property
-    def slug(self) -> Optional[str]:
-        return self.attributes.get("slug", None)
-
-
-    @property
-    def url(self) -> Optional[str]:
-        slug = self.slug
-        
-        if slug:
-            return f"{self.user.forum_url}/d/{slug}"
-
-        else:
-            return f"{self.user.forum_url}/d/{self.id}"
-
-
-    @property
-    def commentCount(self) -> Optional[str]:
-        return self.attributes.get("commentCount", None)
-
-
-    @property
-    def participantCount(self) -> Optional[str]:
-        return self.attributes.get("participantCount", None)
-
-
-    @property
-    def createdAt(self) -> Optional[datetime]:
-        raw = self.attributes.get("createdAt", None)
-
-        return flarum_to_datetime(raw)
-
-
-    @property
-    def lastPostedAt(self) -> Optional[datetime]:
-        raw = self.attributes.get("lastPostedAt", None)
-
-        return flarum_to_datetime(raw)
-
-
-    @property
-    def lastPostNumber(self) -> Optional[int]:
-        return self.attributes.get("lastPostNumber", None)
-
-
-    @property
-    def lastReadPostNumber(self) -> Optional[int]:
-        return self.attributes.get("lastReadPostNumber", None)
-
-
-    @property
-    def canReply(self) -> bool:
-        return self.attributes.get("canReply", False)
-
-
-    @property
-    def canRename(self) -> bool:
-        return self.attributes.get("canRename", False)
-
-
-    @property
-    def canDelete(self) -> bool:
-        return self.attributes.get("canDelete", False)
-
-
-    @property
-    def canHide(self) -> bool:
-        return self.attributes.get("canHide", False)
-
-
-    @property
-    def lastReadAt(self) -> Optional[datetime]:
-        raw = self.attributes.get("lastReadAt", None)
-
-        return flarum_to_datetime(raw)
-
-
-    @property
-    def isHidden(self) -> bool:
-        return self.attributes.get("isHidden", False)
-
-
-    @property
-    def subscription(self) -> Optional[str]:
-        return self.attributes.get("subscription", None)
-
-
-    @property
-    def relationships(self) -> dict:
-        return self.data.get("relationships", {})
-
-
-    @property
     def _parent_included(self) -> List[dict]:
         return self.get("_parent_included", [{}])
-
-
-    def get_author(self) -> Optional[Union[dict, User]]:
-        id = self.relationships.get("user", {}).get("data", {}).get("id", None)
-        
-        for raw_user in self._parent_included:
-            if raw_user.get("id", None) == id and raw_user.get("type", None) == 'users':
-                user = User(user=self.user, _fetched_data=dict(data=raw_user))
-
-                if user.username == self.user.username:
-                    return MyUser(user=self.user, _fetched_data=dict(data=raw_user))
-
-                else:
-                    return user
-
-        return None
-
-
-    def get_last_posted_user(self) -> Optional[Union[dict, User]]:
-        id = self.relationships.get("lastPostedUser", {}).get("data", {}).get("id", None)
-
-        for raw_user in self._parent_included:
-            if raw_user.get("id", None) == id and raw_user.get("type", None) == 'users':
-                user = User(user=self.user, _fetched_data=dict(data=raw_user))
-
-                if user.username == self.user.username:
-                    return MyUser(user=self.user, _fetched_data=dict(data=raw_user))
-
-                else:
-                    return user
-
-        return None
 
 
 class Post(PostFromBulk):
@@ -455,31 +343,3 @@ class Post(PostFromBulk):
         self.user = user
 
         super().__init__(user=self.user, _fetched_data=_fetched_data)
-
-
-    def __restore_or_hide(self, hide: bool, force: bool=False) -> Union['Post', Literal[False], NoReturn]:
-        if hide:
-            if self.isHidden and not force:
-                raise FlarumError(f"Post {self.id} is already hidden. Use `force = True` to ignore this error.")
-
-        else:
-            if not self.isHidden and not force:
-                raise FlarumError(f"Post {self.id} is already restored. Use `force = True` to ignore this error.")
-
-        return super().__restore_or_hide(hide=hide, force=force)
-
-
-    def hide(self, force: bool=False):
-        return self.__restore_or_hide(hide=True, force=force)
-
-
-    def restore(self, force: bool=False):
-        return self.__restore_or_hide(hide=False, force=force)
-    unhide = restore
-
-
-    def reply_to(self, post: PreparedPost, force: bool=False):
-        if not self.canReply and not force:
-            raise FlarumError(f"You cannot reply to this post ({self.id}). Use `force = True` to ignore this error.")
-
-        return super().reply_to(post=post)

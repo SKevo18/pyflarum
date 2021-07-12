@@ -22,5 +22,4 @@ class LockDiscussionMixin(DiscussionFromBulk):
 
 class StickyExtension(ExtensionMixin):
     def mixin(self):
-        
         super().mixin(self, DiscussionFromBulk, LockDiscussionMixin)

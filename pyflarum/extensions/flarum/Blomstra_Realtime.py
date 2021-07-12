@@ -17,5 +17,4 @@ class RealtimeDiscussionMixin(DiscussionFromBulk):
 
 class RealtimeExtension(ExtensionMixin):
     def mixin(self):
-        
         super().mixin(self, DiscussionFromBulk, RealtimeDiscussionMixin)

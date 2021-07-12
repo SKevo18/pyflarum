@@ -1,7 +1,9 @@
 from .. import ExtensionMixin
 
-from ...flarum.core.discussions import DiscussionFromNotification
-from ...flarum.core.posts import PostFromNotification
+from ...flarum.core.discussions import Discussion, DiscussionFromNotification
+from ...flarum.core.posts import Post, PostFromNotification
+
+from ...error_handler import FlarumError, parse_request
 
 
 AUTHOR = 'flarum'
@@ -15,6 +17,7 @@ class ApprovalDiscussionNotificationMixin(DiscussionFromNotification):
         return self.attributes.get("isApproved", False)
 
 
+
 class ApprovalPostNotificationMixin(PostFromNotification):
     @property
     def isApproved(self) -> bool:
@@ -26,9 +29,29 @@ class ApprovalPostNotificationMixin(PostFromNotification):
         return self.attributes.get("canApprove", False)
 
 
+    def approve(self, force: bool=False):
+        if self.isApproved and not force:
+            raise FlarumError(f'Post ID {self.id} is already approved. Use `force = True` to bypass this error.')
+
+
+        patch_data = {
+            "data": {
+                "type": "posts",
+                "id": self.id,
+                "attributes": {
+                    "isApproved": True
+                }
+            }
+        }
+
+        raw = self.user.session.patch(f"{self.user.api_urls['posts']}/{self.id}", json=patch_data)
+        json = parse_request(raw)
+
+        return Post(user=self.user, _fetched_data=json)
+
+
 
 class ApprovalExtension(ExtensionMixin):
     def mixin(self):
-        
         super().mixin(self, DiscussionFromNotification, ApprovalDiscussionNotificationMixin)
         super().mixin(self, PostFromNotification, ApprovalPostNotificationMixin)
