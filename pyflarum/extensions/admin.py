@@ -1,11 +1,9 @@
-from typing import Literal, Optional, Union
+from typing import Literal, Optional, BinaryIO
 
 from ..extensions import ExtensionMixin
 
 from ..session import FlarumUser
 from ..error_handler import parse_request
-
-from pathlib import Path
 
 
 
@@ -213,13 +211,9 @@ class AdminFlarumUserMixin(FlarumUser):
         return True
 
 
-    def upload_logo(self, logo_path: Union[str, bytes, Path], image_type: Literal['jpeg', 'png', 'jpg']='png'):
-        with open(logo_path, 'rb') as logo_file:
-            binary_logo = logo_file.read()
+    def upload_logo(self, file: BinaryIO, file_name: str="logo", file_type: Literal['image/png', 'image/jpeg', 'image/gif']="image/png"):
+        raw = self.session.post(url=f"{self.api_urls['base']}/logo", files={ "logo": (file_name, file, file_type) })
 
-        raw = self.session.post(url=f"{self.api_urls['base']}/logo", json=dict(logo=binary_logo), headers={
-            'Content-Type': f'image/{image_type}', 'Content-Disposition': f'form-data; name="logo"; filename="logo.{image_type}"'
-        })
         parse_request(raw)
 
         return True
@@ -232,13 +226,8 @@ class AdminFlarumUserMixin(FlarumUser):
         return True
 
 
-    def upload_favicon(self, favicon_path: Union[str, bytes, Path], image_type: Literal['jpeg', 'png', 'jpg', 'ico']='png'):
-        with open(favicon_path, 'rb') as favicon_file:
-            binary_favicon = favicon_file.read()
-
-        raw = self.session.post(url=f"{self.api_urls['base']}/favicon", json=dict(favicon=binary_favicon), headers={
-            'Content-Type': f'image/{image_type}', 'Content-Disposition': f'form-data; name="favicon"; filename="favicon.{image_type}"'
-        })
+    def upload_favicon(self, file: BinaryIO, file_name: str="favicon", file_type: Literal['image/png', 'image/jpeg', 'image/gif']="image/png"):
+        raw = self.session.post(url=f"{self.api_urls['base']}/favicon", files={ "favicon": (file_name, file, file_type) })
 
         parse_request(raw)
 

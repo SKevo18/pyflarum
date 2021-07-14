@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 import os
+import requests
 
 from pyflarum import FlarumUser
 
@@ -13,6 +14,10 @@ user = FlarumUser(forum_url=os.environ['forum_url'], username='test', password=o
 
 
 if __name__ == "__main__":
-    # FIXME
-    updated_user = user.upload_avatar(r"test.png", image_type='png')
-    print(updated_user.avatarUrl)
+    # Get random birb image:
+    birb_link = requests.get("https://some-random-api.ml/img/birb").json()['link']
+    birb_image = requests.get(birb_link, stream=True).content
+
+    # Upload it as avatar
+    my_user = user.upload_avatar(birb_image, file_type="image/jpeg")
+    print(my_user.avatarUrl)

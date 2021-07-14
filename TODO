@@ -1,1 +1,2 @@
-- [ ] - Figure out how to type hint monkey patching classes correctly, without useless subclassing
+- [ ] - Merge FlarumUser and MyUser together
+- [ ] - Docstring everything in detail

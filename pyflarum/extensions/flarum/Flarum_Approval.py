@@ -1,6 +1,6 @@
 from .. import ExtensionMixin
 
-from ...flarum.core.discussions import Discussion, DiscussionFromNotification
+from ...flarum.core.discussions import DiscussionFromNotification
 from ...flarum.core.posts import Post, PostFromNotification
 
 from ...error_handler import FlarumError, parse_request

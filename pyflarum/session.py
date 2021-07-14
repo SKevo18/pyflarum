@@ -1,7 +1,4 @@
-from typing import Any, List, Union, Optional, Literal, TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from pathlib import Path
+from typing import Any, BinaryIO, List, Union, Optional, Literal
 
 from datetime import datetime
 from requests import Session
@@ -99,7 +96,8 @@ class FlarumUser(FlarumSession):
 
         super().__init__(**kwargs)
 
-        self.user_id = self.user.id
+        if self.user:
+            self.user_id = self.user.id
 
 
     @property
@@ -241,13 +239,16 @@ class FlarumUser(FlarumSession):
         return MyUser(user=self, _fetched_data=json)
 
 
-    def upload_avatar(self, avatar_path: Union[str, bytes, 'Path'], image_type: Literal['jpeg', 'png', 'jpg']='png'):
-        with open(avatar_path, 'rb') as avatar_file:
-            binary_avatar = avatar_file.read()
+    def upload_avatar(self, file: BinaryIO, file_name: str="avatar", file_type: Literal['image/png', 'image/jpeg', 'image/gif']="image/png"):
+        raw = self.session.post(url=f"{self.api_urls['users']}/{self.user_id}/avatar", files={ "avatar": (file_name, file, file_type) })
 
-        raw = self.session.post(url=f"{self.api_urls['base']}/logo", data=dict(avatar=binary_avatar), headers={
-            'Content-Type': f'image/{image_type}', 'Content-Disposition': f'form-data; name="avatar"; filename="avatar.{image_type}"'
-        })
+        json = parse_request(raw)
+
+        return MyUser(user=self, _fetched_data=json)
+
+
+    def remove_avatar(self):
+        raw = self.session.delete(url=f"{self.api_urls['users']}/{self.user_id}/avatar")
         json = parse_request(raw)
 
         return MyUser(user=self, _fetched_data=json)

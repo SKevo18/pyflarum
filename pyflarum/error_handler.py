@@ -51,7 +51,13 @@ def handle_errors(errors: Optional[List[Dict[str, str]]]=None, status_code: Opti
                 status = status_code
 
             else:
-                status = int(error.get('status', None))
+                s = error.get('status', None)
+
+                if s:
+                    status = int(s)
+
+                else:
+                    status = 'Unknown'
 
             code = error.get('code', 0)
             details = error.get("detail", "No further details.")
@@ -72,7 +78,8 @@ def handle_errors(errors: Optional[List[Dict[str, str]]]=None, status_code: Opti
                 else:
                     raise FlarumError(f'Error {status}: {code} - {details}', status=status, code=code, details=details)
 
+            else:
+                raise FlarumError(f'Error {status}: {code} - {details}', status=status, code=code, details=details)
+
     else:
         raise FlarumError(f'Request related error: {status_code}')
-
-    raise FlarumError(f'Error {status}: {code} - {details}', status=status, code=code, details=details)
