@@ -10,14 +10,14 @@ from pyflarum import FlarumUser
 
 from pyflarum.flarum.core.posts import PostFromNotification
 
-from pyflarum.extensions.absolutely_all import AbsolutelyAllExtension, AbsolutelyAllFlarumUserMixin
+from pyflarum.extensions import absolutely_all
 
 
 EXTENSIONS = [
-    AbsolutelyAllExtension
+    absolutely_all.AbsolutelyAllExtension
 ]
 
-user = FlarumUser(forum_url=os.environ['forum_url'], username='test', password=os.environ['account_password'], extensions=EXTENSIONS) # type: AbsolutelyAllFlarumUserMixin
+user = FlarumUser(forum_url=os.environ['forum_url'], username='test', password=os.environ['account_password'], extensions=EXTENSIONS) # type: absolutely_all.AbsolutelyAllFlarumUserMixin
 
 
 def all_notifications():

@@ -10,21 +10,20 @@ import os
 from datetime import datetime
 
 from pyflarum import FlarumUser
-from pyflarum.extensions.admin import AdminExtension, AdminFlarumUserMixin
-from pyflarum.extensions.flarum.Malago_Achievements import AchievementsAdminFlarumUserMixin, AchievementsExtension
-from pyflarum.extensions.flarum.Malago_Achievements import ID as achievements_extension_id
+from pyflarum.extensions import admin
+from pyflarum.extensions.flarum import Malago_Achievements
 
 EXTENSIONS = [
-    AchievementsExtension,
-    AdminExtension
+    Malago_Achievements.AchievementsExtension,
+    admin.AdminExtension
 ]
 
 
-user = FlarumUser(forum_url=os.environ['forum_url'], username='test', password=os.environ['account_password'], extensions=EXTENSIONS) # type: Union[AdminFlarumUserMixin, AchievementsAdminFlarumUserMixin]
+user = FlarumUser(forum_url=os.environ['forum_url'], username='test', password=os.environ['account_password'], extensions=EXTENSIONS) # type: Union[admin.AdminFlarumUserMixin, Malago_Achievements.AchievementsAdminFlarumUserMixin]
 
 
 if __name__ == "__main__":
-    user.enable_extension(achievements_extension_id)
+    user.enable_extension(Malago_Achievements.ID)
     all_achievements = user.get_all_achievements()
 
     name = "test achievement"

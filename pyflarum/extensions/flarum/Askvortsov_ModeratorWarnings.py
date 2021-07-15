@@ -11,6 +11,10 @@ ID = f"{AUTHOR}-{NAME}"
 class ModeratorWarningsUserMixin(UserFromBulk):
     @property
     def canViewWarnings(self) -> bool:
+        """
+            Whether or not you can view the warnings of this user.
+        """
+
         return self.attributes.get("canViewWarnings", False)
 
 

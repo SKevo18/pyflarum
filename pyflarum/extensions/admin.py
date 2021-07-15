@@ -1,4 +1,4 @@
-from typing import Literal, Optional, BinaryIO
+from typing import Any, Literal, Optional, BinaryIO
 
 from ..extensions import ExtensionMixin
 
@@ -145,10 +145,7 @@ class AdminFlarumUserMixin(FlarumUser):
             post_data["slug_driver_Flarum\\User\\User"] = user_slug_driver
 
 
-        raw = self.session.post(f"{self.api_urls['base']}/settings", json=post_data)
-        parse_request(raw)
-
-        return True
+        return self.__update_settings(post_data)
 
 
     def get_mail_settings(self):
@@ -175,10 +172,7 @@ class AdminFlarumUserMixin(FlarumUser):
             post_data["mail_password"] = mail_password
 
 
-        raw = self.session.post(f"{self.api_urls['base']}/settings", json=post_data)
-        parse_request(raw)
-
-        return True
+        return self.__update_settings(post_data)
 
 
     def send_test_mail(self):
@@ -242,33 +236,19 @@ class AdminFlarumUserMixin(FlarumUser):
 
 
     def update_custom_header(self, header: Optional[str]=None):
-        post_data = {
-            "custom_header": (header if header else "")
-        }
-
-        raw = self.session.post(f"{self.api_urls['base']}/settings", json=post_data)
-        parse_request(raw)
-
-        return True
+        return self.__update_settings({ "custom_header": (header if header else "") })
 
 
     def update_custom_footer(self, footer: Optional[str]=None):
-        post_data = {
-            "custom_footer": (footer if footer else "")
-        }
-
-        raw = self.session.post(f"{self.api_urls['base']}/settings", json=post_data)
-        parse_request(raw)
-
-        return True
+        return self.__update_settings({ "custom_footer": (footer if footer else "") })
 
 
     def update_custom_css(self, css: Optional[str]=None):
-        post_data = {
-            "custom_less": (css if css else "")
-        }
+        return self.__update_settings({ "custom_header": (css if css else "") })
 
-        raw = self.session.post(f"{self.api_urls['base']}/settings", json=post_data)
+
+    def __update_settings(self, data: dict):
+        raw = self.session.post(f"{self.api_urls['base']}/settings", json=data)
         parse_request(raw)
 
         return True

@@ -13,20 +13,20 @@ from pyflarum import FlarumUser
 
 from pyflarum.flarum.core.filters import Filter
 
-from pyflarum.extensions.absolutely_all import AbsolutelyAllExtension, AbsolutelyAllFlarumUserMixin
-from pyflarum.extensions.flarum.Flarum_Subscriptions import SubscriptionsDiscussionFromBulkMixin, SubscriptionsExtension
+from pyflarum.extensions import absolutely_all
+from pyflarum.extensions.flarum import Flarum_Subscriptions
 
 
 EXTENSIONS = [
-    AbsolutelyAllExtension,
-    SubscriptionsExtension
+    absolutely_all.AbsolutelyAllExtension,
+    Flarum_Subscriptions.SubscriptionsExtension
 ]
 
-user = FlarumUser(forum_url=os.environ['forum_url'], username='test', password=os.environ['account_password'], extensions=EXTENSIONS) # type: AbsolutelyAllFlarumUserMixin
+user = FlarumUser(forum_url=os.environ['forum_url'], username='test', password=os.environ['account_password'], extensions=EXTENSIONS) # type: absolutely_all.AbsolutelyAllFlarumUserMixin
 
 
 def follow_all():
-    discussion: Union[SubscriptionsDiscussionFromBulkMixin]
+    discussion: Union[Flarum_Subscriptions.SubscriptionsDiscussionFromBulkMixin]
 
     for discussions in user.absolutely_all_discussions(Filter(query='is:ignored')):
         for discussion in discussions:

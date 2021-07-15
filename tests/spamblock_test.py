@@ -10,25 +10,25 @@ load_dotenv()
 import os
 
 from pyflarum import FlarumUser
-from pyflarum.extensions.admin import AdminExtension
-from pyflarum.extensions.flarum.FoF_Spamblock import SpamblockExtension, SpamblockUserMixin
-from pyflarum.extensions.flarum.Flarum_Suspend import SuspendExtension, SuspendUserMixin
+from pyflarum.extensions import admin
+from pyflarum.extensions.flarum import FoF_Spamblock
+from pyflarum.extensions.flarum import Flarum_Suspend
 
 
 EXTENSIONS = [
-    AdminExtension,
-    SpamblockExtension,
-    SuspendExtension
+    admin.AdminExtension,
+    FoF_Spamblock.SpamblockExtension,
+    Flarum_Suspend.SuspendExtension
 ]
 
 
-user = FlarumUser(forum_url=os.environ['forum_url'], username='test', password=os.environ['account_password'], extensions=EXTENSIONS) # type: Union[AdminExtension, SpamblockExtension, SuspendExtension]
+user = FlarumUser(forum_url=os.environ['forum_url'], username='test', password=os.environ['account_password'], extensions=EXTENSIONS) # type: Union[admin.AdminFlarumUserMixin, FoF_Spamblock.SpamblockFlarumUserMixin, Flarum_Suspend.SuspendFlarumUserMixin]
 
 
 if __name__ == "__main__":
     id_to_block = 3
 
-    to_block = user.get_user_by_id(id_to_block) # type: Union[SpamblockUserMixin, SuspendUserMixin]
+    to_block = user.get_user_by_id(id_to_block) # type: Union[FoF_Spamblock.SpamblockUserMixin, Flarum_Suspend.SuspendUserMixin]
     blocked = to_block.spamblock()
     print(f"Success: {blocked}")
 

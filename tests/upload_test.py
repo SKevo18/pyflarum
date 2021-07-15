@@ -8,10 +8,10 @@ import os
 import requests
 
 from pyflarum import FlarumUser
-from pyflarum.extensions.admin import AdminFlarumUserMixin, AdminExtension
+from pyflarum.extensions import admin
 
 
-user = FlarumUser(forum_url=os.environ['forum_url'], username='test', password=os.environ['account_password'], extensions=[AdminExtension]) # type: AdminFlarumUserMixin
+user = FlarumUser(forum_url=os.environ['forum_url'], username='test', password=os.environ['account_password'], extensions=[admin.AdminExtension]) # type: admin.AdminFlarumUserMixin
 
 
 if __name__ == "__main__":
@@ -21,10 +21,12 @@ if __name__ == "__main__":
 
     # Upload it as avatar:
     updated_user = user.upload_user_avatar(birb_image)
-    print(updated_user.user.avatarUrl)
+    print(updated_user.my_user.avatarUrl)
 
     # ...or for someone else:
-    user = user.get_user_by_id()
+    _user = user.get_user_by_id(3)
+    user.upload_user_avatar(birb_image, user=_user)
+    print(user.my_user.id)
 
     # Also, why not upload it as logo?
     user.upload_logo(birb_image)

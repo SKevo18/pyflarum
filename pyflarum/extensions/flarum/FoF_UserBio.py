@@ -13,21 +13,21 @@ ID = f"{AUTHOR}-{NAME}"
 
 
 class UserBioFlarumUserMixin(FlarumUser):
-    def update_user_bio(self, user: Optional[AnyUser]=None, bio: Optional[str]=None):
+    def update_user_bio(self, bio: Optional[str]=None, user: Optional[AnyUser]=None):
         post_data = {
             "data": {
                 "type": "users",
-                "id": self.user.id,
+                "id": self.my_user.id,
                 "attributes": {
                     "bio": bio if bio else ""
                 }
             }
         }
 
-        raw = self.session.patch(f"{self.api_urls['users']}/{user.id if user else self.user.id}", json=post_data)
+        raw = self.session.patch(f"{self.api_urls['users']}/{user.id if user else self.my_user.id}", json=post_data)
         json = parse_request(raw)
 
-        return self.__update_user_data(new_data=dict(data=json))
+        return self._update_user_data(new_data=json)
 
 
 class UserBioUserFromBulkMixin(UserFromBulk):

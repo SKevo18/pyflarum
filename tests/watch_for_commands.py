@@ -14,16 +14,16 @@ from pyflarum import FlarumUser
 from pyflarum.flarum.core.notifications import Notification
 from pyflarum.flarum.core.posts import PostFromNotification, PreparedPost
 
-from pyflarum.extensions.watch import WatchFlarumUserMixin, WatchExtension
-from pyflarum.extensions.commands import CommandsExtension, CommandsFlarumUserMixin
+from pyflarum.extensions import watch
+from pyflarum.extensions import commands
 
 
 EXTENSIONS = [
-    WatchExtension,
-    CommandsExtension
+    watch.WatchExtension,
+    commands.CommandsExtension
 ]
 
-user = FlarumUser(forum_url=os.environ['forum_url'], username="test", password=os.environ['account_password'], extensions=EXTENSIONS) # type: Union[WatchFlarumUserMixin, CommandsFlarumUserMixin]
+user = FlarumUser(forum_url=os.environ['forum_url'], username="test", password=os.environ['account_password'], extensions=EXTENSIONS) # type: Union[watch.WatchFlarumUserMixin, commands.CommandsFlarumUserMixin]
 api_key = os.environ['openweather_api_key']
 
 weather_post = """**{city}**, `{country}` has **{weather}** and __{temperature} °C__"""

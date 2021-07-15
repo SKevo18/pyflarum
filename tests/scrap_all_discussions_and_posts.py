@@ -18,15 +18,15 @@ from pyflarum import FlarumUser
 from pyflarum.flarum.core.filters import Filter
 from pyflarum.flarum.core.posts import PostFromBulk
 
-from pyflarum.extensions.absolutely_all import AbsolutelyAllExtension, AbsolutelyAllFlarumUserMixin
+from pyflarum.extensions import absolutely_all
 
 EXTENSIONS = [
-    AbsolutelyAllExtension
+    absolutely_all.AbsolutelyAllExtension
 ]
 
 
 def scrap_all(file_name: Union[str, bytes, Path]="scrapped.html"):
-    user = FlarumUser(forum_url=os.environ['forum_url'], extensions=EXTENSIONS, session_object=CachedSession()) # type: AbsolutelyAllFlarumUserMixin
+    user = FlarumUser(forum_url=os.environ['forum_url'], extensions=EXTENSIONS, session_object=CachedSession()) # type: absolutely_all.AbsolutelyAllFlarumUserMixin
 
     with open(file_name, 'w') as scrap:
         header = f"""<html><head><title>All discussions from {user.forum_url}</title></head><body><div style="margin: 2rem 0; text-align: center; color: blue;"><h1>All discussions from <a href="{user.forum_url}">{user.forum_url}</a> ({datetime.now().strftime(r'%H:%M:%S %d. %m. %Y')})</h1></div><div id="data">\n"""

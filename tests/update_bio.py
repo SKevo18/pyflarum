@@ -8,10 +8,10 @@ import os
 import requests
 
 from pyflarum import FlarumUser
-from pyflarum.extensions.flarum.FoF_UserBio import UserBioFlarumUserMixin, UserBioExtension, UserBioUserFromBulkMixin
+from pyflarum.extensions.flarum import FoF_UserBio
 
 
-user = FlarumUser(forum_url=os.environ['forum_url'], username='test', password=os.environ['account_password'], extensions=[UserBioExtension]) # type: UserBioFlarumUserMixin
+user = FlarumUser(forum_url=os.environ['forum_url'], username='test', password=os.environ['account_password'], extensions=[FoF_UserBio.UserBioExtension]) # type: FoF_UserBio.UserBioFlarumUserMixin
 
 
 if __name__ == "__main__":
@@ -19,5 +19,5 @@ if __name__ == "__main__":
     quote = requests.get("http://api.quotable.io/random").json() # type: dict
 
     # Set it as your bio:
-    my_user = user.update_bio(f"{quote['content']}\n\n- {quote.get('author', 'Unknown')}") # type: UserBioUserFromBulkMixin
-    print(my_user.bio)
+    my_user = user.update_user_bio(f"{quote['content']}\n\n- {quote.get('author', 'Unknown')}")
+    print(my_user.my_user.bio)
