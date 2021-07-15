@@ -1,9 +1,10 @@
-from pyflarum.error_handler import parse_request
 from typing import Optional
+from ...custom_types import AnyUser
 
 from .. import ExtensionMixin
 from ...session import FlarumUser
-from ...flarum.core.users import MyUser, UserFromBulk
+from ...flarum.core.users import UserFromBulk
+from ...error_handler import parse_request
 
 
 AUTHOR = 'fof'
@@ -12,21 +13,21 @@ ID = f"{AUTHOR}-{NAME}"
 
 
 class UserBioFlarumUserMixin(FlarumUser):
-    def update_bio(self, bio: Optional[str]=None):
+    def update_user_bio(self, user: Optional[AnyUser]=None, bio: Optional[str]=None):
         post_data = {
             "data": {
                 "type": "users",
-                "id": self.user_id,
+                "id": self.user.id,
                 "attributes": {
                     "bio": bio if bio else ""
                 }
             }
         }
 
-        raw = self.session.patch(f"{self.api_urls['users']}/{self.user_id}", json=post_data)
+        raw = self.session.patch(f"{self.api_urls['users']}/{user.id if user else self.user.id}", json=post_data)
         json = parse_request(raw)
 
-        return MyUser(user=self, _fetched_data=json)
+        return self.__update_user_data(new_data=dict(data=json))
 
 
 class UserBioUserFromBulkMixin(UserFromBulk):

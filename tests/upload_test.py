@@ -20,8 +20,11 @@ if __name__ == "__main__":
     birb_image = requests.get(birb_link, stream=True).content
 
     # Upload it as avatar:
-    my_user = user.upload_avatar(birb_image)
-    print(my_user.avatarUrl)
+    updated_user = user.upload_user_avatar(birb_image)
+    print(updated_user.user.avatarUrl)
+
+    # ...or for someone else:
+    user = user.get_user_by_id()
 
     # Also, why not upload it as logo?
     user.upload_logo(birb_image)

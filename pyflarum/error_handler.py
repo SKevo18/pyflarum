@@ -17,6 +17,14 @@ class FlarumError(Exception):
         return super().__init__(message)
 
 
+class MissingExtensionError(Exception):
+    """
+        Missing pyFlarum extension error.
+    """
+
+    pass
+
+
 def parse_request(request: Response):
     try:
         # Includes opening and closing brackets:

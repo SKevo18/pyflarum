@@ -1,13 +1,14 @@
-from typing import Optional
-
-from . import ExtensionMixin
-from ..session import FlarumUser
+from typing import Any, Callable, Optional
 
 import time
 
+from . import ExtensionMixin
+from ..session import FlarumUser
+from ..flarum.core.notifications import Notification
+
 
 class WatchFlarumUserMixin(FlarumUser):
-    def watch_notifications(self, on_notification, interval: Optional[float]=10, auto_mark_as_read: bool=True, **kwargs):
+    def watch_notifications(self, on_notification: Callable[[Notification], Any], interval: Optional[float]=10, auto_mark_as_read: bool=True, **kwargs):
         while True:
             all_notifications = self.get_notifications(**kwargs)
 
@@ -22,6 +23,6 @@ class WatchFlarumUserMixin(FlarumUser):
                 time.sleep(interval)
 
 
-class WatchNotificationsExtension(ExtensionMixin, WatchFlarumUserMixin):
+class WatchExtension(ExtensionMixin, WatchFlarumUserMixin):
     def mixin(self):
         super().mixin(self, FlarumUser, WatchFlarumUserMixin)

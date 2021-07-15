@@ -129,30 +129,6 @@ class UserFromNotification(dict):
         return self.attributes.get("slug", None)
 
 
-    def update_info(self, new_username: Optional[str]=None, groups: Optional[list]=None):
-        patch_data = {
-            "data": {
-                "type": "users",
-                "id": self.id,
-                "attributes": {},
-                "relationships": {}
-            }
-        }
-
-
-        if new_username:
-            patch_data['attributes']['username'] = new_username
-
-        if groups:
-            patch_data['data']['relationships'].update({"groups": {"data": groups}})
-
-
-        raw = self.user.session.patch(f"{self.user.api_urls['users']}/{self.id}", json=patch_data)
-        json = parse_request(raw)
-
-        return MyUser(user=self, _fetched_data=json)
-
-
 class UserFromBulk(UserFromNotification):
     """
         An user from `Users`.

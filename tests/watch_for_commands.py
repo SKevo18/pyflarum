@@ -13,12 +13,12 @@ from pyflarum import FlarumUser
 from pyflarum.flarum.core.notifications import Notification
 from pyflarum.flarum.core.posts import PostFromNotification, PreparedPost
 
-from pyflarum.extensions.watch import WatchFlarumUserMixin, WatchNotificationsExtension
+from pyflarum.extensions.watch import WatchFlarumUserMixin, WatchExtension
 from pyflarum.extensions.commands import CommandsExtension, CommandsFlarumUserMixin
 
 
 EXTENSIONS = [
-    WatchNotificationsExtension,
+    WatchExtension,
     CommandsExtension
 ]
 
