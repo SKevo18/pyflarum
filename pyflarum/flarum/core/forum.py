@@ -156,6 +156,11 @@ class Forum(dict):
 
 
     @property
+    def allowUsernameMentionFormat(self) -> bool:
+        return self.attributes.get("allowUsernameMentionFormat", False)
+
+
+    @property
     def relationships(self) -> dict:
         return self.get("relationships", {})
 

@@ -53,11 +53,6 @@ class SubscriptionsDiscussionFromBulkMixin(DiscussionFromBulk, SubscriptionsDisc
 
 
 class SubscriptionsExtension(ExtensionMixin):
-    def __init__(self):
-        self.name = NAME
-        self.author = AUTHOR
-        self.id = ID
-
     def get_dependencies(self):
         return {
             "soft": SOFT_DEPENDENCIES,

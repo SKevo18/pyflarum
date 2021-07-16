@@ -1,5 +1,8 @@
+from typing import Optional
+
 from .. import ExtensionMixin
 
+from ...flarum.core.forum import Forum
 from ...flarum.core.posts import PostFromNotification
 
 
@@ -11,7 +14,25 @@ SOFT_DEPENDENCIES = []
 HARD_DEPENCENDIES = []
 
 
-class FlagsPostNotificationMixin(PostFromNotification):
+
+class FlagsForumMixin(Forum):
+    @property
+    def canViewFlags(self) -> bool:
+        return self.attributes.get("canViewFlags", False)
+
+
+    @property
+    def flagCount(self) -> Optional[int]:
+        return self.attributes.get("flagCount", None)
+
+
+    @property
+    def guidelinesUrl(self) -> Optional[str]:
+        return self.attributes.get("guidelinesUrl", None)
+
+
+
+class FlagsPostFromNotificationMixin(PostFromNotification):
     @property
     def canFlag(self) -> bool:
         return self.attributes.get("canFlag", False)
@@ -19,11 +40,6 @@ class FlagsPostNotificationMixin(PostFromNotification):
 
 
 class FlagsExtension(ExtensionMixin):
-    def __init__(self):
-        self.name = NAME
-        self.author = AUTHOR
-        self.id = ID
-
     def get_dependencies(self):
         return {
             "soft": SOFT_DEPENDENCIES,
@@ -32,4 +48,5 @@ class FlagsExtension(ExtensionMixin):
 
 
     def mixin(self):
-        super().mixin(self, PostFromNotification, FlagsPostNotificationMixin)
+        super().mixin(self, PostFromNotification, FlagsPostFromNotificationMixin)
+        super().mixin(self, Forum, FlagsForumMixin)

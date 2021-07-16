@@ -1,9 +1,9 @@
-from pyflarum.flarum.core.forum import Forum
 from typing import List, Optional, Union
 
 from ...extensions import ExtensionMixin
 from ...extensions.admin import AdminExtension, AdminFlarumUserMixin
 
+from ...flarum.core.forum import Forum
 from ...session import FlarumUser
 from ...error_handler import parse_request
 
@@ -167,11 +167,6 @@ class AchievementsAdminFlarumUserMixin(AdminFlarumUserMixin):
 
 
 class AchievementsExtension(ExtensionMixin):
-    def __init__(self):
-        self.name = NAME
-        self.author = AUTHOR
-        self.id = ID
-
     def get_dependencies(self):
         return {
             "soft": SOFT_DEPENDENCIES,

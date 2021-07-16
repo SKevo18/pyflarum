@@ -4,6 +4,8 @@ from datetime import datetime
 
 from .. import ExtensionMixin
 from ...session import FlarumUser
+
+from ...flarum.core.forum import Forum
 from ...flarum.core.discussions import DiscussionFromBulk
 from ...datetime_conversions import flarum_to_datetime
 from ...error_handler import parse_request
@@ -185,6 +187,45 @@ class Tag(dict):
 
 
 
+class TagsForumMixin(Forum):
+    @property
+    def canBypassTagCounts(self) -> bool:
+        return self.attributes.get("canBypassTagCounts", False)
+
+
+    @property
+    def minPrimaryTags(self) -> Optional[int]:
+        raw = self.attributes.get("minPrimaryTags", None)
+
+        if raw:
+            return int(raw)
+
+
+    @property
+    def maxPrimaryTags(self) -> Optional[int]:
+        raw = self.attributes.get("maxPrimaryTags", None)
+
+        if raw:
+            return int(raw)
+
+
+    @property
+    def minSecondaryTags(self) -> Optional[int]:
+        raw = self.attributes.get("minSecondaryTags", None)
+
+        if raw:
+            return int(raw)
+
+
+    @property
+    def maxSecondaryTags(self) -> Optional[int]:
+        raw = self.attributes.get("maxSecondaryTags", None)
+
+        if raw:
+            return int(raw)
+
+
+
 class TagsDiscussionMixin(DiscussionFromBulk):
     @property
     def canTag(self) -> bool:
@@ -212,11 +253,6 @@ class TagsDiscussionMixin(DiscussionFromBulk):
 
 
 class TagsExtension(ExtensionMixin):
-    def __init__(self):
-        self.name = NAME
-        self.author = AUTHOR
-        self.id = ID
-
     def get_dependencies(self):
         return {
             "soft": SOFT_DEPENDENCIES,
@@ -225,4 +261,5 @@ class TagsExtension(ExtensionMixin):
 
 
     def mixin(self):
+        super().mixin(self, Forum, TagsForumMixin)
         super().mixin(self, DiscussionFromBulk, TagsDiscussionMixin)

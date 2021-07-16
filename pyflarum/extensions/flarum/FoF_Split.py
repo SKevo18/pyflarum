@@ -19,11 +19,6 @@ class SplitDiscussionMixin(DiscussionFromBulk):
 
 
 class SplitExtension(ExtensionMixin):
-    def __init__(self):
-        self.name = NAME
-        self.author = AUTHOR
-        self.id = ID
-
     def get_dependencies(self):
         return {
             "soft": SOFT_DEPENDENCIES,

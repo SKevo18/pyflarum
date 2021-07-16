@@ -3,6 +3,8 @@ from ...custom_types import AnyUser
 
 from .. import ExtensionMixin
 from ...session import FlarumUser
+
+from ...flarum.core.forum import Forum
 from ...flarum.core.users import UserFromBulk
 from ...error_handler import parse_request
 
@@ -13,6 +15,14 @@ ID = f"{AUTHOR}-{NAME}"
 
 SOFT_DEPENDENCIES = []
 HARD_DEPENCENDIES = []
+
+
+
+class UserBioForumMixin(Forum):
+    @property
+    def max_bio_length(self) -> bool:
+        return self.attributes.get("fof-user-bio.maxLength", False)
+
 
 
 class UserBioFlarumUserMixin(FlarumUser):
@@ -50,11 +60,6 @@ class UserBioUserFromBulkMixin(UserFromBulk):
 
 
 class UserBioExtension(ExtensionMixin):
-    def __init__(self):
-        self.name = NAME
-        self.author = AUTHOR
-        self.id = ID
-
     def get_dependencies(self):
         return {
             "soft": SOFT_DEPENDENCIES,
@@ -65,3 +70,4 @@ class UserBioExtension(ExtensionMixin):
     def mixin(self):
         super().mixin(self, FlarumUser, UserBioFlarumUserMixin)
         super().mixin(self, UserFromBulk, UserBioUserFromBulkMixin)
+        super().mixin(self, Forum, UserBioForumMixin)
