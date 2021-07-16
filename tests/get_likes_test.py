@@ -14,13 +14,14 @@ USER = FlarumUser(forum_url=os.environ['forum_url'], username='test', password=o
 
 
 if __name__ == "__main__":
-    discussion = USER.get_discussion_by_id(16)
+    discussion = USER.get_discussion_by_id(4)
+
     for post in discussion.get_posts():
         post: Flarum_Likes.LikesPostFromBulkMixin
 
         liked_by = post.get_liked_by()
 
         if len(liked_by) > 0:
-            print(f"Post {post.url} was liked by:")
+            print(f"Post {post.id} ({post.url}) was liked by:")
             for user in post.get_liked_by():
                 print(user.username)

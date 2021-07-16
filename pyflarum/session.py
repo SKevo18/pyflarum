@@ -9,11 +9,12 @@ from requests import Session
 
 from .flarum.core.forum import Forum
 
-from .flarum.core.users import MyUser, User
+from .flarum.core.users import MyUser, User, Users
+from .flarum.core.notifications import Notifications
 from .flarum.core.groups import Groups
 
-from .flarum.core.notifications import Notifications
 from .flarum.core.discussions import Discussion, Discussions
+from .flarum.core.posts import Post, Posts
 
 from .flarum.core.filters import Filter
 
@@ -176,9 +177,16 @@ class FlarumUser(FlarumSession, dict):
         return Discussion(user=self, _fetched_data=json)
 
 
-    def all_discussions(self, filter: Filter=None) -> Discussions:
+    def get_post_by_id(self, id: int):
+        raw = self.session.get(f"{self.api_urls['posts']}/{id}")
+        json = parse_request(raw)
+
+        return Post(user=self, _fetched_data=json)
+
+
+    def all_discussions(self, filter: Filter=None):
         """
-            Obtains all discussions from specific page using `filter`.
+            Obtains all discussions from specific page by using `filter`.
         """
 
 
@@ -191,7 +199,41 @@ class FlarumUser(FlarumSession, dict):
         json = parse_request(raw)
 
         return Discussions(user=self, _fetched_data=json)
-    
+
+
+    def all_posts(self, filter: Filter=None):
+        """
+            Obtains all posts from specific page by using `filter`.
+        """
+
+
+        if filter:
+            raw = self.session.get(f"{self.api_urls['posts']}", params=filter.to_dict)
+
+        else:
+            raw = self.session.get(f"{self.api_urls['posts']}")
+
+        json = parse_request(raw)
+
+        return Posts(user=self, _fetched_data=json)
+
+
+    def all_users(self, filter: Filter=None):
+        """
+            Obtains all users from specific page by using `filter`.
+        """
+
+
+        if filter:
+            raw = self.session.get(f"{self.api_urls['users']}", params=filter.to_dict)
+
+        else:
+            raw = self.session.get(f"{self.api_urls['users']}")
+
+        json = parse_request(raw)
+
+        return Users(user=self, _fetched_data=json)
+
 
     def get_notifications(self, filter: Optional[Filter]=None) -> Notifications:
         """
