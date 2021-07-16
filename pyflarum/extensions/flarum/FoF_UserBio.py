@@ -11,6 +11,9 @@ AUTHOR = 'fof'
 NAME = 'user-bio'
 ID = f"{AUTHOR}-{NAME}"
 
+SOFT_DEPENDENCIES = []
+HARD_DEPENCENDIES = []
+
 
 class UserBioFlarumUserMixin(FlarumUser):
     def update_user_bio(self, bio: Optional[str]=None, user: Optional[AnyUser]=None):
@@ -47,6 +50,18 @@ class UserBioUserFromBulkMixin(UserFromBulk):
 
 
 class UserBioExtension(ExtensionMixin):
+    def __init__(self):
+        self.name = NAME
+        self.author = AUTHOR
+        self.id = ID
+
+    def get_dependencies(self):
+        return {
+            "soft": SOFT_DEPENDENCIES,
+            "hard": HARD_DEPENCENDIES
+        }
+
+
     def mixin(self):
         super().mixin(self, FlarumUser, UserBioFlarumUserMixin)
         super().mixin(self, UserFromBulk, UserBioUserFromBulkMixin)

@@ -11,6 +11,10 @@ NAME = 'username-request'
 ID = f"{AUTHOR}-{NAME}"
 
 
+SOFT_DEPENDENCIES = []
+HARD_DEPENCENDIES = []
+
+
 class UsernameRequestUserMixin(UserFromBulk):
     @property
     def usernameHistory(self) -> Optional[List[Dict[str, datetime]]]:
@@ -30,5 +34,17 @@ class UsernameRequestUserMixin(UserFromBulk):
 
 
 class UsernameRequestExtension(ExtensionMixin):
+    def __init__(self):
+        self.name = NAME
+        self.author = AUTHOR
+        self.id = ID
+
+    def get_dependencies(self):
+        return {
+            "soft": SOFT_DEPENDENCIES,
+            "hard": HARD_DEPENCENDIES
+        }
+
+
     def mixin(self):
         super().mixin(self, UserFromBulk, UsernameRequestUserMixin)

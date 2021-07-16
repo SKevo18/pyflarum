@@ -12,6 +12,9 @@ AUTHOR = 'fof'
 NAME = 'best-answer'
 ID = f"{AUTHOR}-{NAME}"
 
+SOFT_DEPENDENCIES = []
+HARD_DEPENCENDIES = []
+
 
 
 class BestAnswerDiscussionNotificationMixin(DiscussionFromNotification):
@@ -35,6 +38,18 @@ class BestAnswerDiscussionMixin(DiscussionFromBulk):
 
 
 class BestAnswerExtension(ExtensionMixin):
+    def __init__(self):
+        self.name = NAME
+        self.author = AUTHOR
+        self.id = ID
+
+    def get_dependencies(self):
+        return {
+            "soft": SOFT_DEPENDENCIES,
+            "hard": HARD_DEPENCENDIES
+        }
+
+
     def mixin(self):
         super().mixin(self, DiscussionFromNotification, BestAnswerDiscussionNotificationMixin)
         super().mixin(self, DiscussionFromBulk, BestAnswerDiscussionMixin)

@@ -1,7 +1,8 @@
+from pyflarum.flarum.core.forum import Forum
 from typing import List, Optional, Union
 
 from ...extensions import ExtensionMixin
-from ...extensions.admin import AdminFlarumUserMixin
+from ...extensions.admin import AdminExtension, AdminFlarumUserMixin
 
 from ...session import FlarumUser
 from ...error_handler import parse_request
@@ -10,6 +11,9 @@ from ...error_handler import parse_request
 AUTHOR = 'malago'
 NAME = 'achievements'
 ID = f"{AUTHOR}-{NAME}"
+
+SOFT_DEPENDENCIES = [AdminExtension]
+HARD_DEPENCENDIES = []
 
 
 class Achievement(dict):
@@ -96,6 +100,16 @@ class Achievement(dict):
         return self.attributes.get("new", None)
 
 
+class AchievementsForumMixin(Forum):
+    @property
+    def show_achievements_in_post_footer(self) -> bool:
+        return self.attributes.get("malago-achievements.show-post-footer", False)
+
+
+    @property
+    def show_achievements_in_user_card(self) -> bool:
+        return self.attributes.get("malago-achievements.show-user-card", False)
+
 
 class AchievementsAdminFlarumUserMixin(AdminFlarumUserMixin):
     def update_settings(self, show_achievement_list_in_each_post_footer: Optional[bool]=None, show_achievement_list_in_user_badge: Optional[bool]=None):
@@ -125,7 +139,7 @@ class AchievementsAdminFlarumUserMixin(AdminFlarumUserMixin):
                     "computation": computation,
                     "points": points,
                     "image": image_url_or_fa_icon,
-                    "rectangle": "0,0,,", # TODO: What is this?
+                    "rectangle": "0,0,,",
                     "active": int(active),
                     "hidden": int(hidden)
                 }
@@ -158,6 +172,13 @@ class AchievementsExtension(ExtensionMixin):
         self.author = AUTHOR
         self.id = ID
 
+    def get_dependencies(self):
+        return {
+            "soft": SOFT_DEPENDENCIES,
+            "hard": HARD_DEPENCENDIES
+        }
+
 
     def mixin(self):
         super().mixin(self, AdminFlarumUserMixin, AchievementsAdminFlarumUserMixin)
+        super().mixin(self, Forum, AchievementsForumMixin)

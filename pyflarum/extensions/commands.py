@@ -6,6 +6,15 @@ from ..session import FlarumUser
 import re
 
 
+AUTHOR = 'skevo'
+NAME = 'commands'
+ID = f"{AUTHOR}-{NAME}"
+
+
+SOFT_DEPENDENCIES = []
+HARD_DEPENCENDIES = []
+
+
 class CommandsFlarumUserMixin(FlarumUser):
     def is_mentioned_in(self, string: str):
         match = re.search(rf'@"({self.username})"#[a-z0-9]+', string)
@@ -42,5 +51,17 @@ class CommandsFlarumUserMixin(FlarumUser):
 
 
 class CommandsExtension(ExtensionMixin, CommandsFlarumUserMixin):
+    def __init__(self):
+        self.name = NAME
+        self.author = AUTHOR
+        self.id = ID
+
+    def get_dependencies(self):
+        return {
+            "soft": SOFT_DEPENDENCIES,
+            "hard": HARD_DEPENCENDIES
+        }
+
+
     def mixin(self):
         super().mixin(self, FlarumUser, CommandsFlarumUserMixin)

@@ -37,6 +37,5 @@ if __name__ == '__main__':
         
         Discussion,
 
-        Gambit,
         Filter,
     )

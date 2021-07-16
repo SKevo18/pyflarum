@@ -23,24 +23,6 @@ user = FlarumUser(forum_url=os.environ['forum_url'], username='test', password=o
 
 
 if __name__ == "__main__":
-    user.enable_extension(Malago_Achievements.ID)
-    all_achievements = user.get_all_achievements()
-
-    name = "test achievement"
-
-    # Prevent double-creation:
-    can_create = True
-    for achievement in all_achievements:
-        print(achievement.name)
-
-        if achievement.name == name:
-            can_create = False
-            break
-
-    # Create an achievement
-    if can_create:
-        user.create_achievement(name="test achievements", description="owo", computation="year:1", points=100, image_url_or_fa_icon="fas fa-magic")
-
     # Update forum info:
     user.update_forum_info(
         forum_description="Peppa Pig",
@@ -59,3 +41,23 @@ if __name__ == "__main__":
 
     # Validation test: raise FlarumError on invalid CSS:
     user.update_custom_css('I am invalid.')
+
+
+    # Enable achievements extension:
+    user.enable_extension(Malago_Achievements.ID)
+    all_achievements = user.get_all_achievements()
+
+    name = "test achievement"
+
+    # Prevent double-creation:
+    can_create = True
+    for achievement in all_achievements:
+        print(achievement.name)
+
+        if achievement.name == name:
+            can_create = False
+            break
+
+    # Create an achievement
+    if can_create:
+        user.create_achievement(name="test achievements", description="owo", computation="year:1", points=100, image_url_or_fa_icon="fas fa-magic")

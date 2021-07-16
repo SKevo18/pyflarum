@@ -18,10 +18,12 @@ class FlarumError(Exception):
 
 
 class MissingExtensionError(Exception):
-    """
-        Missing pyFlarum extension error.
-    """
+    """Missing pyFlarum extension error."""
+    pass
 
+
+class MissingExtensionWarning(Warning):
+    """Missing pyFlarum extension warning."""
     pass
 
 

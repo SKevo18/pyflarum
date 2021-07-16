@@ -7,6 +7,9 @@ AUTHOR = 'flarum'
 NAME = 'lock'
 ID = f"{AUTHOR}-{NAME}"
 
+SOFT_DEPENDENCIES = []
+HARD_DEPENCENDIES = []
+
 
 class LockDiscussionMixin(DiscussionFromBulk):
     @property
@@ -21,5 +24,17 @@ class LockDiscussionMixin(DiscussionFromBulk):
 
 
 class StickyExtension(ExtensionMixin):
+    def __init__(self):
+        self.name = NAME
+        self.author = AUTHOR
+        self.id = ID
+
+    def get_dependencies(self):
+        return {
+            "soft": SOFT_DEPENDENCIES,
+            "hard": HARD_DEPENCENDIES
+        }
+
+
     def mixin(self):
         super().mixin(self, DiscussionFromBulk, LockDiscussionMixin)

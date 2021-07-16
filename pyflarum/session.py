@@ -1,16 +1,26 @@
 from typing import Any, BinaryIO, Dict, List, Union, Optional, Literal
 from .custom_types import AnyUser
 
+
+import warnings
 from datetime import datetime
 from requests import Session
 
+
+from .flarum.core.forum import Forum
+
 from .flarum.core.users import MyUser, User
+from .flarum.core.groups import Groups
+
 from .flarum.core.notifications import Notifications
 from .flarum.core.discussions import Discussion, Discussions
+
 from .flarum.core.filters import Filter
-from .error_handler import parse_request
+
+
+from .error_handler import MissingExtensionError, MissingExtensionWarning, parse_request
 from .datetime_conversions import datetime_to_flarum
-from .flarum.core.groups import Groups
+
 
 from .extensions import ExtensionMixin
 
@@ -96,12 +106,31 @@ class FlarumSession(object):
 class FlarumUser(FlarumSession, dict):
     def __init__(self, extensions: Optional[List[ExtensionMixin]]=None, **kwargs):
         self.extensions = extensions
+
         if self.extensions:
             for extension in self.extensions:
+                dependencies = extension.get_dependencies(extension) # type: dict
+
+                hard = dependencies.get("hard", None)
+                soft = dependencies.get("soft", None)
+
+                if hard and len(hard) > 0:
+                    for hard_dependency in hard:
+                        if hard_dependency not in self.extensions:
+                            raise MissingExtensionError(f'`{extension}` hardly depends on `{hard_dependency}`. Please, include that extension too in your extension list.')
+
                 extension.mixin(extension)
+
+            for extension in self.extensions:
+                if soft and len(soft) > 0:
+                    for soft_dependency in soft:
+                        if soft_dependency not in self.extensions:
+                            warnings.warn(f'`{extension}` softly depends on `{soft_dependency}`. Some features might be unavailable.', MissingExtensionWarning)
+
 
         super().__init__(**kwargs)
         __json = self._fetch_user_data()
+
 
         if __json:
             self.my_user = MyUser(user=self, _fetched_data=dict(data=__json))
@@ -131,6 +160,13 @@ class FlarumUser(FlarumSession, dict):
 
         else:
             return self
+
+
+    def get_forum_data(self):
+        raw = self.session.get(f"{self.api_urls['base']}")
+        json = parse_request(raw)
+
+        return Forum(user=self, _fetched_data=json)
 
 
     def get_discussion_by_id(self, id: int):

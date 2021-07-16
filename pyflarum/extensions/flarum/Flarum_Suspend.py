@@ -13,6 +13,9 @@ AUTHOR = 'flarum'
 NAME = 'suspend'
 ID = f"{AUTHOR}-{NAME}"
 
+SOFT_DEPENDENCIES = []
+HARD_DEPENCENDIES = []
+
 
 class SuspendUserMixin(UserFromBulk):
     @property
@@ -61,5 +64,17 @@ class SuspendUserMixin(UserFromBulk):
 
 
 class SuspendExtension(ExtensionMixin):
+    def __init__(self):
+        self.name = NAME
+        self.author = AUTHOR
+        self.id = ID
+
+    def get_dependencies(self):
+        return {
+            "soft": SOFT_DEPENDENCIES,
+            "hard": HARD_DEPENCENDIES
+        }
+
+
     def mixin(self):
         super().mixin(self, UserFromBulk, SuspendUserMixin)

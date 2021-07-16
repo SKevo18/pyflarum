@@ -1,12 +1,15 @@
 from .. import ExtensionMixin
 
 from ...flarum.core.users import User, UserFromBulk, UserFromNotification
-from ...error_handler import FlarumError, parse_request
+from ...error_handler import parse_request
 
 
 AUTHOR = 'fof'
 NAME = 'spamblock'
 ID = f"{AUTHOR}-{NAME}"
+
+SOFT_DEPENDENCIES = []
+HARD_DEPENCENDIES = []
 
 
 
@@ -27,6 +30,18 @@ class SpamblockUserMixin(User, UserFromBulk, SpamblockUserFromNotificationMixin)
 
 
 class SpamblockExtension(ExtensionMixin):
+    def __init__(self):
+        self.name = NAME
+        self.author = AUTHOR
+        self.id = ID
+
+    def get_dependencies(self):
+        return {
+            "soft": SOFT_DEPENDENCIES,
+            "hard": HARD_DEPENCENDIES
+        }
+
+
     def mixin(self):
         super().mixin(self, UserFromNotification, SpamblockUserFromNotificationMixin)
         super().mixin(self, UserFromBulk, SpamblockUserMixin)

@@ -11,6 +11,9 @@ AUTHOR = 'flarum'
 NAME = 'subscriptions'
 ID = f"{AUTHOR}-{NAME}"
 
+SOFT_DEPENDENCIES = []
+HARD_DEPENCENDIES = []
+
 
 class SubscriptionsDiscussionFromNotificationMixin(DiscussionFromNotification):
     def __change_subscription_state(self, state: Literal['following', 'ignoring', None]):
@@ -50,6 +53,18 @@ class SubscriptionsDiscussionFromBulkMixin(DiscussionFromBulk, SubscriptionsDisc
 
 
 class SubscriptionsExtension(ExtensionMixin):
+    def __init__(self):
+        self.name = NAME
+        self.author = AUTHOR
+        self.id = ID
+
+    def get_dependencies(self):
+        return {
+            "soft": SOFT_DEPENDENCIES,
+            "hard": HARD_DEPENCENDIES
+        }
+
+
     def mixin(self):
         super().mixin(self, DiscussionFromNotification, SubscriptionsDiscussionFromNotificationMixin)
         super().mixin(self, DiscussionFromBulk, SubscriptionsDiscussionFromBulkMixin)

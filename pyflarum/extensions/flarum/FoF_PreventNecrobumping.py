@@ -8,6 +8,9 @@ AUTHOR = 'fof'
 NAME = 'prevent-necrobumping'
 ID = f"{AUTHOR}-{NAME}"
 
+SOFT_DEPENDENCIES = []
+HARD_DEPENCENDIES = []
+
 
 
 class PreventNecrobumpingDiscussionMixin(DiscussionFromBulk):
@@ -22,5 +25,17 @@ class PreventNecrobumpingDiscussionMixin(DiscussionFromBulk):
 
 
 class PreventNecrobumpingExtension(ExtensionMixin):
+    def __init__(self):
+        self.name = NAME
+        self.author = AUTHOR
+        self.id = ID
+
+    def get_dependencies(self):
+        return {
+            "soft": SOFT_DEPENDENCIES,
+            "hard": HARD_DEPENCENDIES
+        }
+
+
     def mixin(self):
         super().mixin(self, DiscussionFromBulk, PreventNecrobumpingDiscussionMixin)

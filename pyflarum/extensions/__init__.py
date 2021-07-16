@@ -1,4 +1,21 @@
-class ExtensionMixin(object):
+class ExtensionMixin:
+    def __init__(self):
+        self.name = "Unknown"
+        self.author = "Unknown"
+        self.id = "N/A"
+
+
+    def get_dependencies(self):
+        """
+            Overwrite this method to make your own dependencies.
+        """
+
+        return {
+            "hard": [],
+            "soft": []
+        }
+
+
     def mixin(_, class_to_patch: object, class_to_mix_in: object):
         """
             A boilerplate function for mixing.

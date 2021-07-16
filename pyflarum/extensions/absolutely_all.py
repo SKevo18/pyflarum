@@ -6,6 +6,15 @@ from ..session import FlarumUser
 from ..flarum.core.filters import Filter
 
 
+AUTHOR = 'skevo'
+NAME = 'absolutely-all'
+ID = f"{AUTHOR}-{NAME}"
+
+
+SOFT_DEPENDENCIES = []
+HARD_DEPENCENDIES = []
+
+
 class AbsolutelyAllFlarumUserMixin(FlarumUser):
     def absolutely_all_discussions(self, filter: Optional[Filter]=None):
         """
@@ -56,5 +65,17 @@ class AbsolutelyAllFlarumUserMixin(FlarumUser):
 
 
 class AbsolutelyAllExtension(ExtensionMixin):
+    def __init__(self):
+        self.name = NAME
+        self.author = AUTHOR
+        self.id = ID
+
+    def get_dependencies(self):
+        return {
+            "soft": SOFT_DEPENDENCIES,
+            "hard": HARD_DEPENCENDIES
+        }
+
+
     def mixin(self):
         super().mixin(self, FlarumUser, AbsolutelyAllFlarumUserMixin)

@@ -8,6 +8,9 @@ AUTHOR = 'fof'
 NAME = 'byobu'
 ID = f"{AUTHOR}-{NAME}"
 
+SOFT_DEPENDENCIES = []
+HARD_DEPENCENDIES = []
+
 
 
 class ByobuDiscussionMixin(DiscussionFromBulk):
@@ -38,6 +41,18 @@ class ByobuUserMixin(UserFromBulk):
 
 
 class ByobuExtension(ExtensionMixin):
+    def __init__(self):
+        self.name = NAME
+        self.author = AUTHOR
+        self.id = ID
+
+    def get_dependencies(self):
+        return {
+            "soft": SOFT_DEPENDENCIES,
+            "hard": HARD_DEPENCENDIES
+        }
+
+
     def mixin(self):
         super().mixin(self, DiscussionFromBulk, ByobuDiscussionMixin)
         super().mixin(self, UserFromBulk, ByobuUserMixin)
