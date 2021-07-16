@@ -8,8 +8,9 @@ from .flarum.core.users import MyUser, User
 from .flarum.core.notifications import Notifications
 from .flarum.core.discussions import Discussion, Discussions
 from .flarum.core.filters import Filter
-from .error_handler import FlarumError, parse_request
+from .error_handler import parse_request
 from .datetime_conversions import datetime_to_flarum
+from .flarum.core.groups import Groups
 
 from .extensions import ExtensionMixin
 
@@ -195,6 +196,13 @@ class FlarumUser(FlarumSession, dict):
         parse_request(raw)
 
         return True
+
+
+    def get_groups(self):
+        raw = self.session.get(f"{self.api_urls['groups']}")
+        json = parse_request(raw)
+
+        return Groups(user=self, _fetched_data=json)
 
 
     def get_user_by_id(self, id: int):

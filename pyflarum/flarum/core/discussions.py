@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Optional, List
+from typing import NoReturn, TYPE_CHECKING, Optional, List
 
 # Avoid my greatest enemy in Python: circular import:
 if TYPE_CHECKING:
@@ -7,6 +7,8 @@ if TYPE_CHECKING:
 from datetime import datetime
 
 from ...flarum.core.users import User
+from ...flarum.core.posts import PostFromDiscussion
+
 from ...error_handler import FlarumError, parse_request
 from ...datetime_conversions import flarum_to_datetime
 
@@ -329,6 +331,18 @@ class DiscussionFromBulk(DiscussionFromNotification):
         return None
 
 
+    def get_first_post(self):
+        id = self.relationships.get("firstPost", {}).get("data", {}).get("id", None)
+
+        for raw_post in self._parent_included:
+            if raw_post.get("id", None) == id and raw_post.get("type", None) == 'users':
+                post = PostFromDiscussion(user=self.user, _fetched_data=dict(data=raw_post))
+
+                return post
+
+        return None
+
+
     def __restore_or_hide(self, hide: bool, force: bool=False):
         if hide:
             if self.isHidden and not force:
@@ -396,3 +410,19 @@ class Discussion(DiscussionFromBulk):
                             all_posts.append(post)
 
         return all_posts
+
+
+    def get_first_post(self):
+        """
+            The `Discussion` object does not have the first post's JSON data in it's own JSON. Because of Python's subclass inheritance, this
+            function was included in `Discussion`, but it does not work!
+
+            ### Alternative:
+
+            ```python
+            discussion = user.get_discussion_by_id(1)
+            first_post = discussion.get_posts()[0]
+            ```
+        """
+
+        raise NotImplementedError("`Discussion` does not have the first post data to fetch. Please, use the snippet in this function's docstring instead to obtain the first post.")

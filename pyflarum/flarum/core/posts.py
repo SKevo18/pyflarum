@@ -3,17 +3,17 @@ from typing import Literal, NoReturn, TYPE_CHECKING, Optional, Union, List
 # Avoid my greatest enemy in Python: circular import:
 if TYPE_CHECKING:
     from ...session import FlarumUser
+    from ...flarum.core.discussions import Discussion, DiscussionFromBulk, DiscussionFromNotification
 
 from datetime import datetime
 
 from ...flarum.core.users import UserFromBulk
 from ...error_handler import FlarumError, parse_request
 from ...datetime_conversions import flarum_to_datetime
-from ...flarum.core.discussions import Discussion, DiscussionFromBulk, DiscussionFromNotification
 
 
 class PreparedPost(dict):
-    def __init__(self, user: 'FlarumUser', discussion: Optional[Union[Discussion, DiscussionFromBulk, DiscussionFromNotification]]=None, content: Optional[str]=None):
+    def __init__(self, user: 'FlarumUser', discussion: Optional[Union['Discussion', 'DiscussionFromBulk', 'DiscussionFromNotification']]=None, content: Optional[str]=None):
         self.user = user
         self.discussion = discussion
         self.content = content
@@ -45,9 +45,6 @@ class PreparedPost(dict):
         """
             Posts/creates the post. Returns the created `Post`.
         """
-
-        if not isinstance(self.discussion, (Discussion, DiscussionFromBulk, DiscussionFromNotification)) or not isinstance(self.content, str):
-            raise TypeError("`discussion` must be `Discussion`, `DiscussionFromBulk` or `DiscussionFromNotification` and `content` must be `str`.")
 
         raw = self.user.session.post(self.user.api_urls['posts'], json=self.to_dict)
         json = parse_request(raw)
@@ -116,14 +113,15 @@ class Posts(dict):
         return all_posts
 
 
-class PostFromNotification(dict):
+class PostFromDiscussion(dict):
     """
-        A post from `Notification`
+        A post from `Discussion`
     """
 
     def __init__(self, user: 'FlarumUser', _fetched_data: dict):
         self.user = user
         super().__init__(_fetched_data)
+
 
 
     @property
@@ -169,6 +167,18 @@ class PostFromNotification(dict):
     @property
     def contentHtml(self) -> Optional[str]:
         return self.attributes.get("contentHtml", None)
+
+
+
+class PostFromNotification(PostFromDiscussion):
+    """
+        A post from `Notification`
+    """
+
+    def __init__(self, user: 'FlarumUser', _fetched_data: dict):
+        self.user = user
+        super().__init__(user=self.user, _fetched_data=_fetched_data)
+
 
 
     @property
@@ -236,9 +246,9 @@ class PostFromNotification(dict):
         }
 
         raw = self.user.session.patch(f"{self.user.api_urls['posts']}/{self.id}", json=patch_data)
-        parse_request(raw)
+        json = parse_request(raw)
 
-        return True
+        return Post(user=self.user, _fetched_data=json)
 
 
     def hide(self, force: bool=False):
@@ -307,16 +317,12 @@ class PostFromNotification(dict):
         return None
 
 
-    def get_discussion(self):
-        id = self.relationships.get("discussion", {}).get("data", {}).get("id", None)
+    def edit(self, new_data: PreparedPost):
+        raw = self.user.session.patch(f"{self.user.api_urls['posts']}/{self.id}", json=new_data.to_dict)
+        json = parse_request(raw)
 
-        for raw_discussion in self._parent_included:
-            if raw_discussion.get("id", None) == id and raw_discussion.get("type", None) == 'discussions':
-                discussion = DiscussionFromBulk(user=self.user, _fetched_data=dict(data=raw_discussion))
+        return Post(user=self.user, _fetched_data=json)
 
-                return discussion
-
-        return None
 
 
 class PostFromBulk(PostFromNotification):
@@ -336,7 +342,7 @@ class PostFromBulk(PostFromNotification):
 
 class Post(PostFromBulk):
     """
-        A Flarum discussion.
+        A Flarum group.
     """
 
     def __init__(self, user: 'FlarumUser', _fetched_data: dict):
