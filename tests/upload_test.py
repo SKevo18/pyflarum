@@ -21,12 +21,12 @@ if __name__ == "__main__":
 
     # Upload it as avatar:
     updated_user = user.upload_user_avatar(birb_image)
-    print(updated_user.my_user.avatarUrl)
+    print(updated_user.data.avatarUrl)
 
     # ...or for someone else:
     _user = user.get_user_by_id(3)
     user.upload_user_avatar(birb_image, user=_user)
-    print(user.my_user.id)
+    print(user.data.id)
 
     # Also, why not upload it as logo?
     user.upload_logo(birb_image)

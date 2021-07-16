@@ -16,11 +16,13 @@ from pyflarum.flarum.core.posts import PostFromNotification, PreparedPost
 
 from pyflarum.extensions import watch
 from pyflarum.extensions import commands
+from pyflarum.extensions.flarum import Flarum_Likes
 
 
 EXTENSIONS = [
     watch.WatchExtension,
-    commands.CommandsExtension
+    commands.CommandsExtension,
+    Flarum_Likes.LikesExtension
 ]
 
 user = FlarumUser(forum_url=os.environ['forum_url'], username="test", password=os.environ['account_password'], extensions=EXTENSIONS) # type: Union[watch.WatchFlarumUserMixin, commands.CommandsFlarumUserMixin]
@@ -32,6 +34,8 @@ def on_notification(notification: Notification):
     subject = notification.get_subject()
 
     if isinstance(subject, PostFromNotification):
+        subject: Flarum_Likes.LikesPostFromNotificationMixin
+
         if user.is_mentioned_in(subject.content):
             print("New mention!")
             command = user.parse_as_command(subject.content)
@@ -56,6 +60,10 @@ def on_notification(notification: Notification):
                     subject.reply_to(PreparedPost(user=user, content="Please, specify the city."))
 
                     print("No city specified for 'weather' command")
+            
+            elif command[0].lower() == "like":
+                subject.like()
+                print(f"Successfuly liked post {subject.id} ({subject.url})")
 
             else:
                 print("Match not found for command data:", command)

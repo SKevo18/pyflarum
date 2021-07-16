@@ -19,5 +19,5 @@ if __name__ == "__main__":
     quote = requests.get("http://api.quotable.io/random").json() # type: dict
 
     # Set it as your bio:
-    my_user = user.update_user_bio(f"{quote['content']}\n\n- {quote.get('author', 'Unknown')}")
-    print(my_user.my_user.bio)
+    user.update_user_bio(f"{quote['content']}\n\n- {quote.get('author', 'Unknown')}")
+    print(user.data.bio)

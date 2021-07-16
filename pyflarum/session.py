@@ -133,7 +133,7 @@ class FlarumUser(FlarumSession, dict):
 
 
         if __json:
-            self.my_user = MyUser(user=self, _fetched_data=dict(data=__json))
+            self.data = MyUser(user=self, _fetched_data=dict(data=__json))
 
 
     def _fetch_user_data(self):
@@ -153,8 +153,8 @@ class FlarumUser(FlarumSession, dict):
 
 
     def _update_user_data(self, new_data: dict):
-        if new_data.get("data", {}).get("id", None) == self.my_user.id:
-            self.my_user = MyUser(user=self, _fetched_data=new_data)
+        if new_data.get("data", {}).get("id", None) == self.data.id:
+            self.data = MyUser(user=self, _fetched_data=new_data)
 
             return self
 
@@ -214,14 +214,14 @@ class FlarumUser(FlarumSession, dict):
         post_data = {
             "data": {
                 "type": "users",
-                "id": self.my_user.id,
+                "id": self.data.id,
                 "attributes": {
                     "markedAllAsReadAt": datetime_to_flarum(at)
                 }
             }
         }
 
-        raw = self.session.patch(f"{self.api_urls['users']}/{self.my_user.id}", json=post_data)
+        raw = self.session.patch(f"{self.api_urls['users']}/{self.data.id}", json=post_data)
         parse_request(raw)
 
         return True
@@ -249,7 +249,7 @@ class FlarumUser(FlarumSession, dict):
 
 
     def update_user_info(self, user: Optional[AnyUser]=None, new_username: Optional[str]=None, groups: Optional[list]=None):
-        id = user.id if user else self.my_user.id
+        id = user.id if user else self.data.id
 
         patch_data = {
             "data": {
@@ -275,16 +275,16 @@ class FlarumUser(FlarumSession, dict):
 
 
     def send_password_reset_email(self):
-        patch_data = { "email": self.my_user.email }
+        patch_data = { "email": self.data.email }
 
-        raw = self.session.patch(f"{self.api_urls['users']}/{self.my_user.id}", json=patch_data)
+        raw = self.session.patch(f"{self.api_urls['users']}/{self.data.id}", json=patch_data)
         json = parse_request(raw)
 
         return self._update_user_data(new_data=dict(data=json))
 
 
     def update_preferences(self, notification: str, type: str=Literal['alert', 'email'], user: Optional[AnyUser]=None, state: bool=True):
-        id = user.id if user else self.my_user.id
+        id = user.id if user else self.data.id
 
         patch_data = {
             "data": {
@@ -305,7 +305,7 @@ class FlarumUser(FlarumSession, dict):
 
 
     def change_email(self, new_email: str, password_confirmation: str, user: Optional[AnyUser]=None):
-        id = user.id if user else self.my_user.id
+        id = user.id if user else self.data.id
 
         patch_data = {
             "data": {
@@ -327,7 +327,7 @@ class FlarumUser(FlarumSession, dict):
 
 
     def upload_user_avatar(self, file: BinaryIO, user: Optional[AnyUser]=None, file_name: str="avatar", file_type: Literal['image/png', 'image/jpeg', 'image/gif']="image/png"):
-        raw = self.session.post(url=f"{self.api_urls['users']}/{user.id if user else self.my_user.id}/avatar", files={ "avatar": (file_name, file, file_type) })
+        raw = self.session.post(url=f"{self.api_urls['users']}/{user.id if user else self.data.id}/avatar", files={ "avatar": (file_name, file, file_type) })
 
         json = parse_request(raw)
 
@@ -335,7 +335,7 @@ class FlarumUser(FlarumSession, dict):
 
 
     def remove_user_avatar(self, user: Optional[AnyUser]=None):
-        raw = self.session.delete(url=f"{self.api_urls['users']}/{user.id if user else self.my_user.id}/avatar")
+        raw = self.session.delete(url=f"{self.api_urls['users']}/{user.id if user else self.data.id}/avatar")
         json = parse_request(raw)
 
         return self._update_user_data(new_data=json)

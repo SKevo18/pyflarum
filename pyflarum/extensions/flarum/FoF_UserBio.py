@@ -30,14 +30,14 @@ class UserBioFlarumUserMixin(FlarumUser):
         post_data = {
             "data": {
                 "type": "users",
-                "id": self.my_user.id,
+                "id": self.data.id,
                 "attributes": {
                     "bio": bio if bio else ""
                 }
             }
         }
 
-        raw = self.session.patch(f"{self.api_urls['users']}/{user.id if user else self.my_user.id}", json=post_data)
+        raw = self.session.patch(f"{self.api_urls['users']}/{user.id if user else self.data.id}", json=post_data)
         json = parse_request(raw)
 
         return self._update_user_data(new_data=json)
