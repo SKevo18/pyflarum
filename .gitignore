@@ -17,7 +17,6 @@ __pycache__/
 # Compiled:
 dist/
 *.egg-info
-docs/
 
 # Personal:
 .env
