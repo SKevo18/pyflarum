@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
     pyFlarum Python package - provides an easy access to Flarum's API.
 

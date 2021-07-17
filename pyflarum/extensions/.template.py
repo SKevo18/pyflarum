@@ -1,5 +1,5 @@
-from .. import ExtensionMixin
-from ...session import FlarumUser
+from . import ExtensionMixin
+from ..session import FlarumUser
 
 
 AUTHOR = "unknown"
