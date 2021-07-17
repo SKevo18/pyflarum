@@ -21,7 +21,9 @@ jobs:
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
       - name: Build docs
-        run: pdoc --force --html --output-dir ./docs pyflarum
+        run: |
+          chmod +x ./compile_documentation.sh
+          ./compile_documentation.sh
 
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@4.1.4
