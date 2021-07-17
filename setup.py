@@ -1,3 +1,7 @@
+import sys
+sys.path.append('.')
+
+import pyflarum
 import setuptools
 
 
@@ -7,28 +11,27 @@ with open('README.md', 'r', encoding='utf-8') as fh:
 
 setuptools.setup(
     name = 'pyFlarum',
-    packages = ['pyflarum'],
+    packages = setuptools.find_packages(),
 
     long_description=long_description,
     long_description_content_type='text/markdown',
 
-    version = 'v0.0.2-beta',
-    license='GPLv3',
-    description = 'An unofficial Python package for manipulating with Flarum\'s API',
+    version = pyflarum.__version__,
+    license=pyflarum.__license__,
+    description = pyflarum.__description__,
     keywords = ['Flarum', 'forum software', 'api', 'Flarum api', 'bot', 'userbot', 'database', 'flarum database', 'server', 'client'],
 
-    author = 'Kevo',
-    author_email = 'me@kevo.link',
+    author = pyflarum.__author__,
+    author_email = pyflarum.__email__,
 
     url = 'https://github.com/CWKevo/pyflarum',
 
     install_requires=[
-        'requests',
-        'requests_cache',
+        'requests'
     ],
 
     classifiers=[
-        'Development Status :: 3 - Alpha',
+        f'Development Status :: {pyflarum.__status__}',
         'Intended Audience :: Developers',
         'Topic :: Software Development :: Build Tools',
         'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
