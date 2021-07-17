@@ -32,11 +32,7 @@ __status__      = "4 - Beta"
 
 
 if __name__ == '__main__':
-    print(
-        FlarumUser,
-        FlarumError,
-        
-        Discussion,
+    from typing import Union
 
-        Filter,
-    )
+    # Prevent VSCode from reporting unused imports:
+    _: Union[FlarumUser, FlarumError, Discussion, Filter]
