@@ -23,7 +23,8 @@ jobs:
       - name: Build docs
         run: pdoc --force --html --output-dir ./docs pyflarum
 
-      - name: Commit
-        uses: stefanzweifel/git-auto-commit-action@v4
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@4.1.4
         with:
-          commit_message: Build documentation
+          branch: gh-pages
+          folder: ./docs/pyflarum
