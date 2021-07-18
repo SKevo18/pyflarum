@@ -28,36 +28,7 @@
 <p>Somewhere at the beginning of this year, I have started a concept to build a Python Flarum API client. The goal was to provide everyone an easy and extensible system to interact with Flarum's public API and perform user-related tasks.</p>
 <p>Later, I began to work on rebasing FreeFlarum's code, so this idea was left in the dust. But after that was done, I revisited this project and started over now that I had learned more about Python.</p>
 <p>Thus, I present to you my first (real) Python package - <a href="https://pypi.org/project/pyFlarum">pyFlarum</a>.</p>
-<h2 id="table-of-contents">🪑 Table of Contents:</h2>
-<ul>
-<li><a href="#🐍-pyflarum">🐍 pyFlarum</a></li>
-<li><a href="#🔗-other-useful-links">🔗 Other useful links:</a><ul>
-<li><a href="#🐱‍🏍-features">🐱‍🏍 Features:</a></li>
-</ul>
-</li>
-<li><a href="#🚀-quickstart">🚀 Quickstart:</a><ul>
-<li><a href="#📀-installation">📀 Installation:</a></li>
-<li><a href="#📜-quickstart-example">📜 Quickstart Example:</a></li>
-<li><a href="#➡-whats-next">➡ What's next?</a></li>
-</ul>
-</li>
-<li><a href="#📜-examples">📜 Examples:</a></li>
-<li><a href="#📡-parameters">📡 Parameters</a><ul>
-<li><a href="#🔐-authentication">🔐 Authentication</a></li>
-<li><a href="#📚-cached-sessions">📚 Cached sessions:</a></li>
-</ul>
-</li>
-<li><a href="#🧩-extensions">🧩 Extensions</a><ul>
-<li><a href="#🐲-dealing-with-type-hints">🐲 Dealing with type hints</a></li>
-</ul>
-</li>
-<li><a href="#⬆-class-inheritance">⬆ Class Inheritance</a><ul>
-<li><a href="#📜-example">📜 Example:</a></li>
-<li><a href="#👀-included-data">👀 Included data</a></li>
-</ul>
-</li>
-</ul>
-<h2 id="other-useful-links">🔗 Other useful links:</h2>
+<h2 id="useful-links">🔗 Useful links:</h2>
 <ul>
 <li><a href="https://discuss.flarum.org/d/">🗣 Discuss</a></li>
 <li><a href="https://cwkevo.github.io/pyflarum/docs">📚 Documentation</a></li>
@@ -67,7 +38,7 @@
 <h3 id="features">🐱‍🏍 Features:</h3>
 <ul>
 <li>Complete support for creating, retrieving, updating and deleting data.</li>
-<li>(Almost) everything is object-oriented, with detailed docstrings and examples to help you code faster.</li>
+<li>(Almost) everything is object-oriented, with docstrings (still needs to be done) and examples to help you code faster.</li>
 <li>Very extensible, thanks to custom extension &amp; dependency system. The most common Flarum extensions are included out of the box, and more are still on the way. Read more about the extension system <a href="#-extensions">here</a>.</li>
 <li>The data is fetched and stored as JSON, but the keys can be retrieved by using class properties, which also handles type conversions.</li>
 <li>This means that instead of using <code>discussion['data']['attributes']['title']</code>, it is as simple as <code>discussion.title</code>.</li>
@@ -279,7 +250,7 @@ for discussion in USER.all_discussions():
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/418214be1c1f86ed82a07c1c1d52629727d630c5/pyflarum\__init__.py#L0-L40" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/c0f3786b4feb48ac70daf2cd31fd565213f447c7/pyflarum\__init__.py#L0-L40" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">import warnings
 
@@ -411,8 +382,7 @@ setTimeout(() => input.focus(), 100);
 <div class="toc">
 <ul>
 <li><a href="#pyflarum">🐍 pyFlarum</a><ul>
-<li><a href="#table-of-contents">🪑 Table of Contents:</a></li>
-<li><a href="#other-useful-links">🔗 Other useful links:</a><ul>
+<li><a href="#useful-links">🔗 Useful links:</a><ul>
 <li><a href="#features">🐱‍🏍 Features:</a></li>
 </ul>
 </li>
