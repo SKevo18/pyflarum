@@ -30,8 +30,8 @@
 <p>Thus, I present to you my first (real) Python package - <a href="https://pypi.org/project/pyFlarum">pyFlarum</a>.</p>
 <h2 id="useful-links">🔗 Useful links:</h2>
 <ul>
-<li><a href="https://discuss.flarum.org/d/">🗣 Discuss</a></li>
-<li><a href="https://cwkevo.github.io/pyflarum/docs">📚 Documentation</a></li>
+<li><a href="https://discuss.flarum.org/d/28221">🗣 Discuss</a></li>
+<li><a href="https://cwkevo.github.io/pyflarum/docs/">📚 Documentation</a></li>
 <li><a href="https://github.com/CWKevo/pyflarum">👨‍💻 GitHub repository</a></li>
 <li><a href="https://pypi.org/project/pyFlarum">🐍 PyPi link</a></li>
 </ul>
@@ -47,7 +47,7 @@
 </ul>
 <h2 id="quickstart">🚀 Quickstart:</h2>
 <h3 id="installation">📀 Installation:</h3>
-<p>This package requires the <a href="https://pypi.org/project/requests">requests</a> library to be installed. Yep, that's the only dependency. Should there be more over time, you can install them all at once by using this command (but I assume that you're already familiar with all of this, so feel free to skip this part):</p>
+<p>This package requires Python 3.6+ and the <a href="https://pypi.org/project/requests">requests</a> library to be installed. Yep, that's the only dependency. Should there be more over time, you can install them all at once by using this command (but I assume that you're already familiar with all of this, so feel free to skip this part):</p>
 <pre><code class="language-shell">pip install -r requirements.txt
 # or:
 python -m pip install -r requirements.txt
@@ -82,11 +82,11 @@ print(discussion.title)
 </code></pre>
 <p>That's just amazing 4 lines of code (without comments and newlines)!</p>
 <h3 id="whats-next">➡ What's next?</h3>
-<p>Check the <a href="">documentation</a> to dive deep into the concepts of this project and learn more! </p>
+<p>Check the <a href="https://cwkevo.github.io/pyflarum/docs/">documentation</a> to dive deep into the concepts of this project and learn more! </p>
 <p>I will now take a small break from maintaining this - I still want to do a bit more projects this summer now that I have some time. However, I am open for feature requests and bug reports at the <a href="https://github.com/CWKevo/pyflarum/issues">GitHub repository</a>.</p>
 <p>The documentation is still not finished yet, but that can wait for now until some people show some interest in this. My honest view is that I do not want to work on something that people will not enjoy, and I will likely require some motivation in order to keep this project alive. If no interest is shown, I will occassionaly push bugfixes and features for my personal use over time. I don't actually expect much people to use this, but I'd be surprised and happy if you would!</p>
 <h2 id="examples">📜 Examples:</h2>
-<p>I'll show you some more examples before we dive deep into the details at the <a href="https://cwkevo.github.io/pyflarum/docs">documentation</a>. All of the following snippets assume that you already have your <code>USER</code> object initialized.</p>
+<p>I'll show you some more examples before we dive deep into the details at the <a href="https://cwkevo.github.io/pyflarum/docs/">documentation</a>. All of the following snippets assume that you already have your <code>USER</code> object initialized.</p>
 <p>Get all discussions from the front page (<code>/api/discussions</code>) and print the title &amp; URL:</p>
 <pre><code class="language-python">for discussion in USER.all_discussions():
     print(discussion.title, discussion.url)
@@ -250,7 +250,7 @@ for discussion in USER.all_discussions():
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/3397e97073348d0a21d1ac27ea16aa7860ec9b10/pyflarum/__init__.py#L0-L40" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7aac2c395f13700653fc181d063b6910c7fc8988/pyflarum/__init__.py#L0-L40" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">import warnings
 
