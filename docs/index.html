@@ -38,11 +38,11 @@
 <ul>
 <li>Complete support for creating, retrieving, updating and deleting data.</li>
 <li>(Almost) everything is object-oriented, with docstrings (still needs to be done) and examples to help you code faster.</li>
-<li>Very extensible, thanks to custom extension &amp; dependency system. The most common Flarum extensions are included out of the box, and more are still on the way. Read more about the extension system <a href="#-extensions">here</a>.</li>
+<li>Very extensible, thanks to custom extension &amp; dependency system. The most common Flarum extensions are included out of the box, and more are still on the way. Read more about the extension system <a href="https://cwkevo.github.io/pyflarum/docs/#extensions">here</a>.</li>
 <li>The data is fetched and stored as JSON, but the keys can be retrieved by using class properties, which also handles type conversions.</li>
 <li>This means that instead of using <code>discussion['data']['attributes']['title']</code>, it is as simple as <code>discussion.title</code>.</li>
 <li>Flarum's JSON API works in saving mode. What I mean is that when you fetch a discussion from notification, not all of the discussion's data is present in the JSON. On the other hand, obtaining the discussion directly by it's ID results in a much detailed JSON.</li>
-<li>To save you headaches, pyFlarum obviously handles this too and all of the objects have different hierarchy and inheritance. Example: <code>DiscussionFromNotification</code> is parent for <code>DiscussionFromBulk</code> and that's parent for <code>Discussion</code>, where <code>Discussion</code> object is discussion obtained directly from API, and therefore logically contains all properties of the previous objects (and JSON). This is all nicely rendered thanks to your editor's linting and type hints, so you won't make a mistake by accessing unexisting properties from parent objects. More about pyFlarum's inheritance system and it's flaws can be found <a href="#-class-inheritance">here</a>.</li>
+<li>To save you headaches, pyFlarum obviously handles this too and all of the objects have different hierarchy and inheritance. Example: <code>DiscussionFromNotification</code> is parent for <code>DiscussionFromBulk</code> and that's parent for <code>Discussion</code>, where <code>Discussion</code> object is discussion obtained directly from API, and therefore logically contains all properties of the previous objects (and JSON). This is all nicely rendered thanks to your editor's linting and type hints, so you won't make a mistake by accessing unexisting properties from parent objects. More about pyFlarum's inheritance system and it's flaws can be found <a href="https://cwkevo.github.io/pyflarum/docs/#class-inheritance">here</a>.</li>
 </ul>
 <h2 id="quickstart">🚀 Quickstart:</h2>
 <h3 id="installation">📀 Installation:</h3>
@@ -95,7 +95,7 @@ print(discussion.title)
 for group in user.get_groups():
     print(group.nameSingular)
 </code></pre>
-<p>You can find more examples in the sections below, or browse the <a href="https://github.com/CWKevo/pyflarum/tree/main/tests">tests</a> directory of the source code for full examples of various tasks. These will be regularly updated, <a href="#-whats-next">should this stay maintained</a>, to ensure that old stuff works and new features behave correctly too.</p>
+<p>You can find more examples in the sections below, or browse the <a href="https://github.com/CWKevo/pyflarum/tree/main/tests">tests</a> directory of the source code for full examples of various tasks. These will be regularly updated, <a href="#➡-whats-next">should this stay maintained</a>, to ensure that old stuff works and new features behave correctly too.</p>
 <h2 id="parameters">📡 Parameters</h2>
 <p>By default, pyFlarum works by just knowing the forum's URL. But there are more options to choose from. Let's go through the basic ones:</p>
 <h3 id="authentication">🔐 Authentication</h3>
@@ -173,7 +173,7 @@ discussion.isApproved # &lt;- no syntax highlighting
 discussion.isApproved # &lt;- syntax highlighting works
 </code></pre>
 <blockquote>
-<p><strong>Note:</strong> The <code>Flarum_Approval</code> extension contains only one mixin for discussions: <code>Flarum_Approval.ApprovalDiscussionFromNotificationMixin</code>. Since this is a parent of <code>Discussion</code> because of the <a href="#-class-inheritance">inheritance</a>, you can type-hint just that for it to work (no <code>Union</code> from <a href="https://docs.python.org/3/library/typing.html">typing</a> is required). You can check the <a href="https://cwkevo.github.io/pyflarum/docs/extensions">extensions documentation</a> for list of available mixins and extensions, or the <a href="https://github.com/CWKevo/pyflarum/tree/main/pyflarum/extensions">source code</a>.</p>
+<p><strong>Note:</strong> The <code>Flarum_Approval</code> extension contains only one mixin for discussions: <code>Flarum_Approval.ApprovalDiscussionFromNotificationMixin</code>. Since this is a parent of <code>Discussion</code> because of the <a href="#⬆-class-inheritance">inheritance</a>, you can type-hint just that for it to work (no <code>Union</code> from <a href="https://docs.python.org/3/library/typing.html">typing</a> is required). You can check the <a href="https://cwkevo.github.io/pyflarum/docs/extensions">extensions documentation</a> for list of available mixins and extensions, or the <a href="https://github.com/CWKevo/pyflarum/tree/main/pyflarum/extensions">source code</a>.</p>
 </blockquote>
 <h2 id="class-inheritance">⬆ Class Inheritance</h2>
 <p>pyFlarum's inhertitance needed to be wrapped around Flarum's API, so that these two can work together. To understand this system, we need to first understand how Flarum's API works:</p>
@@ -249,7 +249,7 @@ for discussion in USER.all_discussions():
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/d1827e4830cf90e882247fce22bdd15b5f932c0b/pyflarum/__init__.py#L0-L40" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/4125f6965a7c89ccb8b0972d412bfc4d633eb10b/pyflarum/__init__.py#L0-L40" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">import warnings
 
