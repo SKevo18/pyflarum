@@ -11,7 +11,7 @@ Later, I began to work on rebasing FreeFlarum's code, so this idea was left in t
 Thus, I present to you my first (real) Python package - [pyFlarum](https://pypi.org/project/pyFlarum).
 
 
-## 🔗 Other useful links:
+## 🔗 Useful links:
   - [🗣 Discuss](https://discuss.flarum.org/d/)
   - [📚 Documentation](https://cwkevo.github.io/pyflarum/docs)
   - [👨‍💻 GitHub repository](https://github.com/CWKevo/pyflarum)
