@@ -12,8 +12,8 @@ Thus, I present to you my first (real) Python package - [pyFlarum](https://pypi.
 
 
 ## 🔗 Useful links:
-  - [🗣 Discuss](https://discuss.flarum.org/d/)
-  - [📚 Documentation](https://cwkevo.github.io/pyflarum/docs)
+  - [🗣 Discuss](https://discuss.flarum.org/d/28221)
+  - [📚 Documentation](https://cwkevo.github.io/pyflarum/docs/)
   - [👨‍💻 GitHub repository](https://github.com/CWKevo/pyflarum)
   - [🐍 PyPi link](https://pypi.org/project/pyFlarum)
 
@@ -32,7 +32,7 @@ Thus, I present to you my first (real) Python package - [pyFlarum](https://pypi.
 
 ### 📀 Installation:
 
-This package requires the [requests](https://pypi.org/project/requests) library to be installed. Yep, that's the only dependency. Should there be more over time, you can install them all at once by using this command (but I assume that you're already familiar with all of this, so feel free to skip this part):
+This package requires Python 3.6+ and the [requests](https://pypi.org/project/requests) library to be installed. Yep, that's the only dependency. Should there be more over time, you can install them all at once by using this command (but I assume that you're already familiar with all of this, so feel free to skip this part):
 
 ```shell
 pip install -r requirements.txt
@@ -83,7 +83,7 @@ That's just amazing 4 lines of code (without comments and newlines)!
 
 ### ➡ What's next?
 
-Check the [documentation]() to dive deep into the concepts of this project and learn more! 
+Check the [documentation](https://cwkevo.github.io/pyflarum/docs/) to dive deep into the concepts of this project and learn more! 
 
 I will now take a small break from maintaining this - I still want to do a bit more projects this summer now that I have some time. However, I am open for feature requests and bug reports at the [GitHub repository](https://github.com/CWKevo/pyflarum/issues).
 
@@ -91,7 +91,7 @@ The documentation is still not finished yet, but that can wait for now until som
 
 
 ## 📜 Examples:
-I'll show you some more examples before we dive deep into the details at the [documentation](https://cwkevo.github.io/pyflarum/docs). All of the following snippets assume that you already have your `USER` object initialized.
+I'll show you some more examples before we dive deep into the details at the [documentation](https://cwkevo.github.io/pyflarum/docs/). All of the following snippets assume that you already have your `USER` object initialized.
 
 Get all discussions from the front page (`/api/discussions`) and print the title & URL:
 ```python
