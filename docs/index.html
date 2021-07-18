@@ -23,8 +23,7 @@
 </header>
 <section id="section-intro">
 <h1 id="pyflarum">🐍 pyFlarum</h1>
-<p><img alt="GitHub issues" src="https://img.shields.io/github/issues/CWKevo/pyflarum?color=forestgreen&amp;label=Issues">
-<img alt="GitHub" src="https://img.shields.io/github/license/CWKevo/pyFlarum?color=yellow&amp;label=License"></p>
+<p><img alt="GitHub issues" src="https://img.shields.io/github/issues/CWKevo/pyflarum?color=forestgreen&amp;label=Issues"> <img alt="GitHub" src="https://img.shields.io/github/license/CWKevo/pyFlarum?color=yellow&amp;label=License"></p>
 <p>Somewhere at the beginning of this year, I have started a concept to build a Python Flarum API client. The goal was to provide everyone an easy and extensible system to interact with Flarum's public API and perform user-related tasks.</p>
 <p>Later, I began to work on rebasing FreeFlarum's code, so this idea was left in the dust. But after that was done, I revisited this project and started over now that I had learned more about Python.</p>
 <p>Thus, I present to you my first (real) Python package - <a href="https://pypi.org/project/pyFlarum">pyFlarum</a>.</p>
@@ -77,7 +76,7 @@ USER = FlarumUser(forum_url=&quot;https://discuss.flarum.org&quot;)
 # `forum_url` parameter mustn't end with a slash, or it chokes on API URLs!
 
 # Now, let's get the discussion:
-discussion = USER.get_discussion_by_id(49)
+discussion = USER.get_discussion_by_id(28221)
 print(discussion.title)
 </code></pre>
 <p>That's just amazing 4 lines of code (without comments and newlines)!</p>
@@ -250,7 +249,7 @@ for discussion in USER.all_discussions():
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7aac2c395f13700653fc181d063b6910c7fc8988/pyflarum/__init__.py#L0-L40" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/d1827e4830cf90e882247fce22bdd15b5f932c0b/pyflarum/__init__.py#L0-L40" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">import warnings
 
@@ -269,7 +268,7 @@ __author__      = &#34;SKevo&#34;
 __copyright__   = &#34;Copyright 2021, SKevo&#34;
 __credits__     = [&#34;SKevo&#34;]
 __license__     = &#34;GPLv3&#34;
-__version__     = &#34;v1.0.2-beta&#34;
+__version__     = &#34;v1.0.3-beta&#34;
 __maintainer__  = &#34;SKevo&#34;
 __email__       = &#34;me@kevo.link&#34;
 __status__      = &#34;4 - Beta&#34;
