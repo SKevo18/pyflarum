@@ -20,11 +20,11 @@ Thus, I present to you my first (real) Python package - [pyFlarum](https://pypi.
 ### 🐱‍🏍 Features:
 - Complete support for creating, retrieving, updating and deleting data.
 - (Almost) everything is object-oriented, with docstrings (still needs to be done) and examples to help you code faster.
-- Very extensible, thanks to custom extension & dependency system. The most common Flarum extensions are included out of the box, and more are still on the way. Read more about the extension system [here](#-extensions).
+- Very extensible, thanks to custom extension & dependency system. The most common Flarum extensions are included out of the box, and more are still on the way. Read more about the extension system [here](https://cwkevo.github.io/pyflarum/docs/#extensions).
 - The data is fetched and stored as JSON, but the keys can be retrieved by using class properties, which also handles type conversions.
   - This means that instead of using `discussion['data']['attributes']['title']`, it is as simple as `discussion.title`.
 - Flarum's JSON API works in saving mode. What I mean is that when you fetch a discussion from notification, not all of the discussion's data is present in the JSON. On the other hand, obtaining the discussion directly by it's ID results in a much detailed JSON.
-  - To save you headaches, pyFlarum obviously handles this too and all of the objects have different hierarchy and inheritance. Example: `DiscussionFromNotification` is parent for `DiscussionFromBulk` and that's parent for `Discussion`, where `Discussion` object is discussion obtained directly from API, and therefore logically contains all properties of the previous objects (and JSON). This is all nicely rendered thanks to your editor's linting and type hints, so you won't make a mistake by accessing unexisting properties from parent objects. More about pyFlarum's inheritance system and it's flaws can be found [here](#-class-inheritance).
+  - To save you headaches, pyFlarum obviously handles this too and all of the objects have different hierarchy and inheritance. Example: `DiscussionFromNotification` is parent for `DiscussionFromBulk` and that's parent for `Discussion`, where `Discussion` object is discussion obtained directly from API, and therefore logically contains all properties of the previous objects (and JSON). This is all nicely rendered thanks to your editor's linting and type hints, so you won't make a mistake by accessing unexisting properties from parent objects. More about pyFlarum's inheritance system and it's flaws can be found [here](https://cwkevo.github.io/pyflarum/docs/#class-inheritance).
 
 
 ## 🚀 Quickstart:
@@ -105,7 +105,7 @@ for group in user.get_groups():
     print(group.nameSingular)
 ```
 
-You can find more examples in the sections below, or browse the [tests](https://github.com/CWKevo/pyflarum/tree/main/tests) directory of the source code for full examples of various tasks. These will be regularly updated, [should this stay maintained](#-whats-next), to ensure that old stuff works and new features behave correctly too.
+You can find more examples in the sections below, or browse the [tests](https://github.com/CWKevo/pyflarum/tree/main/tests) directory of the source code for full examples of various tasks. These will be regularly updated, [should this stay maintained](#➡-whats-next), to ensure that old stuff works and new features behave correctly too.
 
 
 ## 📡 Parameters
@@ -216,7 +216,7 @@ discussion = USER.get_discussion_by_id(1) # type: Flarum_Approval.ApprovalDiscus
 discussion.isApproved # <- syntax highlighting works
 ```
 
-> **Note:** The `Flarum_Approval` extension contains only one mixin for discussions: `Flarum_Approval.ApprovalDiscussionFromNotificationMixin`. Since this is a parent of `Discussion` because of the [inheritance](#-class-inheritance), you can type-hint just that for it to work (no `Union` from [typing](https://docs.python.org/3/library/typing.html) is required). You can check the [extensions documentation](https://cwkevo.github.io/pyflarum/docs/extensions) for list of available mixins and extensions, or the [source code](https://github.com/CWKevo/pyflarum/tree/main/pyflarum/extensions).
+> **Note:** The `Flarum_Approval` extension contains only one mixin for discussions: `Flarum_Approval.ApprovalDiscussionFromNotificationMixin`. Since this is a parent of `Discussion` because of the [inheritance](#⬆-class-inheritance), you can type-hint just that for it to work (no `Union` from [typing](https://docs.python.org/3/library/typing.html) is required). You can check the [extensions documentation](https://cwkevo.github.io/pyflarum/docs/extensions) for list of available mixins and extensions, or the [source code](https://github.com/CWKevo/pyflarum/tree/main/pyflarum/extensions).
 
 
 ## ⬆ Class Inheritance
