@@ -171,6 +171,62 @@ class PostFromDiscussion(dict):
         return self.attributes.get("contentHtml", None)
 
 
+    def __restore_or_hide(self, hide: bool) -> Union[Literal[False], NoReturn]:
+        patch_data = {
+            "data": {
+                "type": "posts",
+                "id": self.id,
+                "attributes": {
+                    "isHidden": hide
+                }
+            }
+        }
+
+        raw = self.user.session.patch(f"{self.user.api_urls['posts']}/{self.id}", json=patch_data)
+        json = parse_request(raw)
+
+        return Post(user=self.user, _fetched_data=json)
+
+
+    def hide(self):
+        """
+            Hides the post. Raises `FlarumError` or returns `False` if it failed, otherwise `True` is returned.
+        """
+
+        return self.__restore_or_hide(hide=True)
+
+
+    def restore(self):
+        """
+            Restores the post (unhides). Raises `FlarumError` or returns `False` if it failed, otherwise `True` is returned.
+        """
+
+        return self.__restore_or_hide(hide=False)
+    unhide = restore
+
+
+    def delete(self):
+        """
+            Removes the post forever.
+        """
+
+        raw = self.user.session.delete(f"{self.user.api_urls['posts']}/{self.id}")
+        parse_request(raw)
+
+        return True
+
+
+    def edit(self, new_post: PreparedPost):
+        """
+            Edits the post.
+        """
+
+        raw = self.user.session.patch(f"{self.user.api_urls['posts']}/{self.id}", json=new_post.to_dict)
+        json = parse_request(raw)
+
+        return Post(user=self.user, _fetched_data=json)
+
+
 
 class PostFromNotification(PostFromDiscussion):
     """
@@ -231,57 +287,6 @@ class PostFromNotification(PostFromDiscussion):
 
         if discussion_id:
             return f"{self.user.forum_url}/d/{discussion_id}/{self.number}"
-
-
-    def __restore_or_hide(self, hide: bool, force: bool=False) -> Union[Literal[False], NoReturn]:
-        if not self.canHide and not force:
-            raise FlarumError(f'You do not have permission to {"hide" if hide else "unhide"} this post ({self.id}). Use `force = True` to ignore this error.')
-
-        patch_data = {
-            "data": {
-                "type": "posts",
-                "id": self.id,
-                "attributes": {
-                    "isHidden": hide
-                }
-            }
-        }
-
-        raw = self.user.session.patch(f"{self.user.api_urls['posts']}/{self.id}", json=patch_data)
-        json = parse_request(raw)
-
-        return Post(user=self.user, _fetched_data=json)
-
-
-    def hide(self, force: bool=False):
-        """
-            Hides the post. Raises `FlarumError` or returns `False` if it failed, otherwise `True` is returned.
-        """
-
-        return self.__restore_or_hide(hide=True, force=force)
-
-
-    def restore(self, force: bool=False):
-        """
-            Restores the post (unhides). Raises `FlarumError` or returns `False` if it failed, otherwise `True` is returned.
-        """
-
-        return self.__restore_or_hide(hide=False, force=force)
-    unhide = restore
-
-
-    def delete(self, force: bool=False):
-        """
-            Removes the post forever.
-        """
-
-        if not self.canDelete and not force:
-            raise FlarumError(f'You do not have permission to delete this post ({self.id})')
-
-        raw = self.user.session.delete(f"{self.user.api_urls['discussions']}/{self.id}")
-        parse_request(raw)
-
-        return True
 
 
     def get_discussion(self):
