@@ -20,7 +20,7 @@ Thus, I present to you my first (real) Python package - [pyFlarum](https://pypi.
 
 ### 🐱‍🏍 Features:
 - Complete support for creating, retrieving, updating and deleting data.
-- (Almost) everything is object-oriented, with detailed docstrings and examples to help you code faster.
+- (Almost) everything is object-oriented, with docstrings (still needs to be done) and examples to help you code faster.
 - Very extensible, thanks to custom extension & dependency system. The most common Flarum extensions are included out of the box, and more are still on the way. Read more about the extension system [here](#-extensions).
 - The data is fetched and stored as JSON, but the keys can be retrieved by using class properties, which also handles type conversions.
   - This means that instead of using `discussion['data']['attributes']['title']`, it is as simple as `discussion.title`.
