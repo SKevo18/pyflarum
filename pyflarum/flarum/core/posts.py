@@ -3,7 +3,9 @@ from typing import Literal, NoReturn, TYPE_CHECKING, Optional, Union, List
 # Avoid my greatest enemy in Python: circular import:
 if TYPE_CHECKING:
     from ...session import FlarumUser
-    from ...flarum.core.discussions import Discussion, DiscussionFromBulk, DiscussionFromNotification
+    from ...flarum.core.discussions import DiscussionFromBulk, Discussion
+
+from ...flarum.core.discussions import DiscussionFromNotification
 
 from datetime import datetime
 

@@ -1,4 +1,4 @@
-from typing import NoReturn, TYPE_CHECKING, Optional, List
+from typing import TYPE_CHECKING, Optional, List
 
 # Avoid my greatest enemy in Python: circular import:
 if TYPE_CHECKING:
@@ -7,7 +7,6 @@ if TYPE_CHECKING:
 from datetime import datetime
 
 from ...flarum.core.users import User
-from ...flarum.core.posts import PostFromDiscussion
 
 from ...error_handler import FlarumError, parse_request
 from ...datetime_conversions import flarum_to_datetime
@@ -205,6 +204,8 @@ class DiscussionFromNotification(dict):
 
 
 
+# Circular:
+from ...flarum.core.posts import PostFromDiscussion
 class DiscussionFromBulk(DiscussionFromNotification):
     """
         A discussion from `Discussions`.
