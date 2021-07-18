@@ -11,24 +11,6 @@ Later, I began to work on rebasing FreeFlarum's code, so this idea was left in t
 Thus, I present to you my first (real) Python package - [pyFlarum](https://pypi.org/project/pyFlarum).
 
 
-## 🪑 Table of Contents:
- - [🐍 pyFlarum](#🐍-pyflarum)
-  - [🔗 Other useful links:](#🔗-other-useful-links)
-    - [🐱‍🏍 Features:](#🐱‍🏍-features)
-  - [🚀 Quickstart:](#🚀-quickstart)
-    - [📀 Installation:](#📀-installation)
-    - [📜 Quickstart Example:](#📜-quickstart-example)
-    - [➡ What's next?](#➡-whats-next)
-  - [📜 Examples:](#📜-examples)
-  - [📡 Parameters](#📡-parameters)
-    - [🔐 Authentication](#🔐-authentication)
-    - [📚 Cached sessions:](#📚-cached-sessions)
-  - [🧩 Extensions](#🧩-extensions)
-    - [🐲 Dealing with type hints](#🐲-dealing-with-type-hints)
-  - [⬆ Class Inheritance](#⬆-class-inheritance)
-    - [📜 Example:](#📜-example)
-    - [👀 Included data](#👀-included-data)
-
 ## 🔗 Other useful links:
   - [🗣 Discuss](https://discuss.flarum.org/d/)
   - [📚 Documentation](https://cwkevo.github.io/pyflarum/docs)
