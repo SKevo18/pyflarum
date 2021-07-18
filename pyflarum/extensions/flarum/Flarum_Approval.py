@@ -14,14 +14,14 @@ SOFT_DEPENDENCIES = []
 HARD_DEPENCENDIES = []
 
 
-class ApprovalDiscussionNotificationMixin(DiscussionFromNotification):
+class ApprovalDiscussionFromNotificationMixin(DiscussionFromNotification):
     @property
     def isApproved(self) -> bool:
         return self.attributes.get("isApproved", False)
 
 
 
-class ApprovalPostNotificationMixin(PostFromNotification):
+class ApprovalPostFromNotificationMixin(PostFromNotification):
     @property
     def isApproved(self) -> bool:
         return self.attributes.get("isApproved", False)
@@ -63,5 +63,5 @@ class ApprovalExtension(ExtensionMixin):
 
 
     def mixin(self):
-        super().mixin(self, DiscussionFromNotification, ApprovalDiscussionNotificationMixin)
-        super().mixin(self, PostFromNotification, ApprovalPostNotificationMixin)
+        super().mixin(self, DiscussionFromNotification, ApprovalDiscussionFromNotificationMixin)
+        super().mixin(self, PostFromNotification, ApprovalPostFromNotificationMixin)

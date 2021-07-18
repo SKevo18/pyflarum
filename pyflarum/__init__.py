@@ -1,16 +1,6 @@
-"""
-    pyFlarum Python package - provides an easy access to Flarum's API.
+import warnings
 
-    (c) Kevo 2021
-
-    You are allowed to modify any parts of this program, as long as this
-    notice stays on its place, without any modifications. It is that simple
-    to support my hard work. Thank you for using this.
-
-    - PyPi: https://pypi.org/project/pyFlarum/
-    - Official Flarum website: https://flarum.org
-"""
-
+from pathlib import Path
 
 from .session import FlarumUser
 from .error_handler import FlarumError
@@ -30,6 +20,19 @@ __maintainer__  = "SKevo"
 __email__       = "me@kevo.link"
 __status__      = "4 - Beta"
 
+# Default readme:
+__readme__ = "(c) SKevo"
+
+# Overwrite docstring, so pdoc can render it nicely
+try:
+    with open(f"{Path(__file__).parent.parent.absolute()}{Path('/README.md')}", 'r', encoding="UTF-8") as readme:
+        __readme__ = readme.read()
+
+except FileNotFoundError:
+    warnings.warn("README file not found", Warning)
+
+import pyflarum
+pyflarum.__doc__ = __readme__
 
 if __name__ == '__main__':
     from typing import Union

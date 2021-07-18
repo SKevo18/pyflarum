@@ -136,6 +136,6 @@ from .flarum.FoF_BestAnswer import *
 
 if __name__ == '__main__':
     print(
-        ApprovalDiscussionNotificationMixin, ApprovalExtension,
+        ApprovalDiscussionFromNotificationMixin, ApprovalExtension,
         BestAnswerDiscussionMixin, BestAnswerExtension
     )

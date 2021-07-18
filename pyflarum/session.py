@@ -28,10 +28,6 @@ from .extensions import ExtensionMixin
 
 class FlarumSession(object):
     def __init__(self, forum_url: str, username: Union[str]=None, password: Union[str, None]=None, api_endpoint: str="api", user_agent: str="pyflarum", session_object: Union[Session, Any]=Session()):
-        """
-            Initializes the session.
-        """
-
         self.forum_url = forum_url
         self.api_endpoint = api_endpoint
         self.username = username
@@ -80,7 +76,7 @@ class FlarumSession(object):
     @property
     def api_urls(self):
         """
-            Simple, hardcoded `'key: value'` `dict` of API routes.
+            Simple, hardcoded `'key: value'` `dict` of Flarum's API routes for quick access.
 
             API routes reference (old):
             https://github.com/flarum/flarum.github.io/blob/20322c0e6011e4f304ae7e95f41594a0b086bc27/_docs/api.md

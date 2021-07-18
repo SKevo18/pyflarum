@@ -29,14 +29,14 @@ user = FlarumUser(forum_url=os.environ['forum_url'], username='test', password=o
 
 if __name__ == "__main__":
     for discussions in user.absolutely_all_discussions():
-        discussion: Union[Flarum_Approval.ApprovalDiscussionNotificationMixin, Discussion]
+        discussion: Union[Flarum_Approval.ApprovalDiscussionFromNotificationMixin, Discussion]
 
         for discussion in discussions:
             time.sleep(5) # prevent 429
             full_discussion = discussion.get_full_data()
 
             for post in full_discussion.get_posts():
-                post: Union[Flarum_Approval.ApprovalPostNotificationMixin, Post]
+                post: Union[Flarum_Approval.ApprovalPostFromNotificationMixin, Post]
 
                 if not post.isApproved:
                     post.approve()
