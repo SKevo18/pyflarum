@@ -25,7 +25,7 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4125f6965a7c89ccb8b0972d412bfc4d633eb10b/pyflarum/flarum/core/posts.py#L0-L352" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/40e89ce2997973518b82d5f22bd68c7ff5e71fa7/pyflarum/flarum/core/posts.py#L0-L357" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">from typing import Literal, NoReturn, TYPE_CHECKING, Optional, Union, List
 
@@ -200,6 +200,62 @@ class PostFromDiscussion(dict):
         return self.attributes.get(&#34;contentHtml&#34;, None)
 
 
+    def __restore_or_hide(self, hide: bool) -&gt; Union[Literal[False], NoReturn]:
+        patch_data = {
+            &#34;data&#34;: {
+                &#34;type&#34;: &#34;posts&#34;,
+                &#34;id&#34;: self.id,
+                &#34;attributes&#34;: {
+                    &#34;isHidden&#34;: hide
+                }
+            }
+        }
+
+        raw = self.user.session.patch(f&#34;{self.user.api_urls[&#39;posts&#39;]}/{self.id}&#34;, json=patch_data)
+        json = parse_request(raw)
+
+        return Post(user=self.user, _fetched_data=json)
+
+
+    def hide(self):
+        &#34;&#34;&#34;
+            Hides the post. Raises `FlarumError` or returns `False` if it failed, otherwise `True` is returned.
+        &#34;&#34;&#34;
+
+        return self.__restore_or_hide(hide=True)
+
+
+    def restore(self):
+        &#34;&#34;&#34;
+            Restores the post (unhides). Raises `FlarumError` or returns `False` if it failed, otherwise `True` is returned.
+        &#34;&#34;&#34;
+
+        return self.__restore_or_hide(hide=False)
+    unhide = restore
+
+
+    def delete(self):
+        &#34;&#34;&#34;
+            Removes the post forever.
+        &#34;&#34;&#34;
+
+        raw = self.user.session.delete(f&#34;{self.user.api_urls[&#39;posts&#39;]}/{self.id}&#34;)
+        parse_request(raw)
+
+        return True
+
+
+    def edit(self, new_post: PreparedPost):
+        &#34;&#34;&#34;
+            Edits the post.
+        &#34;&#34;&#34;
+
+        raw = self.user.session.patch(f&#34;{self.user.api_urls[&#39;posts&#39;]}/{self.id}&#34;, json=new_post.to_dict)
+        json = parse_request(raw)
+
+        return Post(user=self.user, _fetched_data=json)
+
+
 
 class PostFromNotification(PostFromDiscussion):
     &#34;&#34;&#34;
@@ -260,57 +316,6 @@ class PostFromNotification(PostFromDiscussion):
 
         if discussion_id:
             return f&#34;{self.user.forum_url}/d/{discussion_id}/{self.number}&#34;
-
-
-    def __restore_or_hide(self, hide: bool, force: bool=False) -&gt; Union[Literal[False], NoReturn]:
-        if not self.canHide and not force:
-            raise FlarumError(f&#39;You do not have permission to {&#34;hide&#34; if hide else &#34;unhide&#34;} this post ({self.id}). Use `force = True` to ignore this error.&#39;)
-
-        patch_data = {
-            &#34;data&#34;: {
-                &#34;type&#34;: &#34;posts&#34;,
-                &#34;id&#34;: self.id,
-                &#34;attributes&#34;: {
-                    &#34;isHidden&#34;: hide
-                }
-            }
-        }
-
-        raw = self.user.session.patch(f&#34;{self.user.api_urls[&#39;posts&#39;]}/{self.id}&#34;, json=patch_data)
-        json = parse_request(raw)
-
-        return Post(user=self.user, _fetched_data=json)
-
-
-    def hide(self, force: bool=False):
-        &#34;&#34;&#34;
-            Hides the post. Raises `FlarumError` or returns `False` if it failed, otherwise `True` is returned.
-        &#34;&#34;&#34;
-
-        return self.__restore_or_hide(hide=True, force=force)
-
-
-    def restore(self, force: bool=False):
-        &#34;&#34;&#34;
-            Restores the post (unhides). Raises `FlarumError` or returns `False` if it failed, otherwise `True` is returned.
-        &#34;&#34;&#34;
-
-        return self.__restore_or_hide(hide=False, force=force)
-    unhide = restore
-
-
-    def delete(self, force: bool=False):
-        &#34;&#34;&#34;
-            Removes the post forever.
-        &#34;&#34;&#34;
-
-        if not self.canDelete and not force:
-            raise FlarumError(f&#39;You do not have permission to delete this post ({self.id})&#39;)
-
-        raw = self.user.session.delete(f&#34;{self.user.api_urls[&#39;discussions&#39;]}/{self.id}&#34;)
-        parse_request(raw)
-
-        return True
 
 
     def get_discussion(self):
@@ -400,7 +405,7 @@ class Post(PostFromBulk):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4125f6965a7c89ccb8b0972d412bfc4d633eb10b/pyflarum/flarum/core/posts.py#L345-L353" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/40e89ce2997973518b82d5f22bd68c7ff5e71fa7/pyflarum/flarum/core/posts.py#L350-L358" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class Post(PostFromBulk):
     &#34;&#34;&#34;
@@ -422,7 +427,7 @@ class Post(PostFromBulk):
 <h3>Methods</h3>
 <dl>
 <dt id="pyflarum.flarum.core.posts.Post.delete"><code class="name flex">
-<span>def <span class="ident">delete</span></span>(<span>self, force: bool = False)</span>
+<span>def <span class="ident">delete</span></span>(<span>self)</span>
 </code></dt>
 <dd>
 <p class="inheritance">
@@ -431,8 +436,18 @@ class Post(PostFromBulk):
 </p>
 <div class="desc inherited"><p>Removes the post forever.</p></div>
 </dd>
+<dt id="pyflarum.flarum.core.posts.Post.edit"><code class="name flex">
+<span>def <span class="ident">edit</span></span>(<span>self, new_data: <a title="pyflarum.flarum.core.posts.PreparedPost" href="#pyflarum.flarum.core.posts.PreparedPost">PreparedPost</a>)</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.posts.PostFromBulk" href="#pyflarum.flarum.core.posts.PostFromBulk">PostFromBulk</a></code>.<code><a title="pyflarum.flarum.core.posts.PostFromBulk.edit" href="#pyflarum.flarum.core.posts.PostFromBulk.edit">edit</a></code>
+</p>
+<div class="desc inherited"><p>Edits the post.</p></div>
+</dd>
 <dt id="pyflarum.flarum.core.posts.Post.hide"><code class="name flex">
-<span>def <span class="ident">hide</span></span>(<span>self, force: bool = False)</span>
+<span>def <span class="ident">hide</span></span>(<span>self)</span>
 </code></dt>
 <dd>
 <p class="inheritance">
@@ -452,7 +467,7 @@ class Post(PostFromBulk):
 <div class="desc inherited"><p>Replies to this <code><a title="pyflarum.flarum.core.posts.Post" href="#pyflarum.flarum.core.posts.Post">Post</a></code> with another <code><a title="pyflarum.flarum.core.posts.PreparedPost" href="#pyflarum.flarum.core.posts.PreparedPost">PreparedPost</a></code>.</p></div>
 </dd>
 <dt id="pyflarum.flarum.core.posts.Post.restore"><code class="name flex">
-<span>def <span class="ident">restore</span></span>(<span>self, force: bool = False)</span>
+<span>def <span class="ident">restore</span></span>(<span>self)</span>
 </code></dt>
 <dd>
 <p class="inheritance">
@@ -462,7 +477,7 @@ class Post(PostFromBulk):
 <div class="desc inherited"><p>Restores the post (unhides). Raises <code>FlarumError</code> or returns <code>False</code> if it failed, otherwise <code>True</code> is returned.</p></div>
 </dd>
 <dt id="pyflarum.flarum.core.posts.Post.unhide"><code class="name flex">
-<span>def <span class="ident">unhide</span></span>(<span>self, force: bool = False)</span>
+<span>def <span class="ident">unhide</span></span>(<span>self)</span>
 </code></dt>
 <dd>
 <p class="inheritance">
@@ -482,7 +497,7 @@ class Post(PostFromBulk):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4125f6965a7c89ccb8b0972d412bfc4d633eb10b/pyflarum/flarum/core/posts.py#L330-L342" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/40e89ce2997973518b82d5f22bd68c7ff5e71fa7/pyflarum/flarum/core/posts.py#L335-L347" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class PostFromBulk(PostFromNotification):
     &#34;&#34;&#34;
@@ -512,7 +527,7 @@ class Post(PostFromBulk):
 <h3>Methods</h3>
 <dl>
 <dt id="pyflarum.flarum.core.posts.PostFromBulk.delete"><code class="name flex">
-<span>def <span class="ident">delete</span></span>(<span>self, force: bool = False)</span>
+<span>def <span class="ident">delete</span></span>(<span>self)</span>
 </code></dt>
 <dd>
 <p class="inheritance">
@@ -521,8 +536,18 @@ class Post(PostFromBulk):
 </p>
 <div class="desc inherited"><p>Removes the post forever.</p></div>
 </dd>
+<dt id="pyflarum.flarum.core.posts.PostFromBulk.edit"><code class="name flex">
+<span>def <span class="ident">edit</span></span>(<span>self, new_data: <a title="pyflarum.flarum.core.posts.PreparedPost" href="#pyflarum.flarum.core.posts.PreparedPost">PreparedPost</a>)</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.posts.PostFromNotification" href="#pyflarum.flarum.core.posts.PostFromNotification">PostFromNotification</a></code>.<code><a title="pyflarum.flarum.core.posts.PostFromNotification.edit" href="#pyflarum.flarum.core.posts.PostFromNotification.edit">edit</a></code>
+</p>
+<div class="desc inherited"><p>Edits the post.</p></div>
+</dd>
 <dt id="pyflarum.flarum.core.posts.PostFromBulk.hide"><code class="name flex">
-<span>def <span class="ident">hide</span></span>(<span>self, force: bool = False)</span>
+<span>def <span class="ident">hide</span></span>(<span>self)</span>
 </code></dt>
 <dd>
 <p class="inheritance">
@@ -542,7 +567,7 @@ class Post(PostFromBulk):
 <div class="desc inherited"><p>Replies to this <code><a title="pyflarum.flarum.core.posts.Post" href="#pyflarum.flarum.core.posts.Post">Post</a></code> with another <code><a title="pyflarum.flarum.core.posts.PreparedPost" href="#pyflarum.flarum.core.posts.PreparedPost">PreparedPost</a></code>.</p></div>
 </dd>
 <dt id="pyflarum.flarum.core.posts.PostFromBulk.restore"><code class="name flex">
-<span>def <span class="ident">restore</span></span>(<span>self, force: bool = False)</span>
+<span>def <span class="ident">restore</span></span>(<span>self)</span>
 </code></dt>
 <dd>
 <p class="inheritance">
@@ -552,7 +577,7 @@ class Post(PostFromBulk):
 <div class="desc inherited"><p>Restores the post (unhides). Raises <code>FlarumError</code> or returns <code>False</code> if it failed, otherwise <code>True</code> is returned.</p></div>
 </dd>
 <dt id="pyflarum.flarum.core.posts.PostFromBulk.unhide"><code class="name flex">
-<span>def <span class="ident">unhide</span></span>(<span>self, force: bool = False)</span>
+<span>def <span class="ident">unhide</span></span>(<span>self)</span>
 </code></dt>
 <dd>
 <p class="inheritance">
@@ -572,7 +597,7 @@ class Post(PostFromBulk):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4125f6965a7c89ccb8b0972d412bfc4d633eb10b/pyflarum/flarum/core/posts.py#L118-L171" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/40e89ce2997973518b82d5f22bd68c7ff5e71fa7/pyflarum/flarum/core/posts.py#L118-L227" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class PostFromDiscussion(dict):
     &#34;&#34;&#34;
@@ -627,7 +652,63 @@ class Post(PostFromBulk):
 
     @property
     def contentHtml(self) -&gt; Optional[str]:
-        return self.attributes.get(&#34;contentHtml&#34;, None)</code></pre>
+        return self.attributes.get(&#34;contentHtml&#34;, None)
+
+
+    def __restore_or_hide(self, hide: bool) -&gt; Union[Literal[False], NoReturn]:
+        patch_data = {
+            &#34;data&#34;: {
+                &#34;type&#34;: &#34;posts&#34;,
+                &#34;id&#34;: self.id,
+                &#34;attributes&#34;: {
+                    &#34;isHidden&#34;: hide
+                }
+            }
+        }
+
+        raw = self.user.session.patch(f&#34;{self.user.api_urls[&#39;posts&#39;]}/{self.id}&#34;, json=patch_data)
+        json = parse_request(raw)
+
+        return Post(user=self.user, _fetched_data=json)
+
+
+    def hide(self):
+        &#34;&#34;&#34;
+            Hides the post. Raises `FlarumError` or returns `False` if it failed, otherwise `True` is returned.
+        &#34;&#34;&#34;
+
+        return self.__restore_or_hide(hide=True)
+
+
+    def restore(self):
+        &#34;&#34;&#34;
+            Restores the post (unhides). Raises `FlarumError` or returns `False` if it failed, otherwise `True` is returned.
+        &#34;&#34;&#34;
+
+        return self.__restore_or_hide(hide=False)
+    unhide = restore
+
+
+    def delete(self):
+        &#34;&#34;&#34;
+            Removes the post forever.
+        &#34;&#34;&#34;
+
+        raw = self.user.session.delete(f&#34;{self.user.api_urls[&#39;posts&#39;]}/{self.id}&#34;)
+        parse_request(raw)
+
+        return True
+
+
+    def edit(self, new_post: PreparedPost):
+        &#34;&#34;&#34;
+            Edits the post.
+        &#34;&#34;&#34;
+
+        raw = self.user.session.patch(f&#34;{self.user.api_urls[&#39;posts&#39;]}/{self.id}&#34;, json=new_post.to_dict)
+        json = parse_request(raw)
+
+        return Post(user=self.user, _fetched_data=json)</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -645,7 +726,7 @@ class Post(PostFromBulk):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4125f6965a7c89ccb8b0972d412bfc4d633eb10b/pyflarum/flarum/core/posts.py#L147-L149" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/40e89ce2997973518b82d5f22bd68c7ff5e71fa7/pyflarum/flarum/core/posts.py#L147-L149" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def attributes(self) -&gt; dict:
@@ -658,7 +739,7 @@ def attributes(self) -&gt; dict:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4125f6965a7c89ccb8b0972d412bfc4d633eb10b/pyflarum/flarum/core/posts.py#L169-L171" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/40e89ce2997973518b82d5f22bd68c7ff5e71fa7/pyflarum/flarum/core/posts.py#L169-L171" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def contentHtml(self) -&gt; Optional[str]:
@@ -671,7 +752,7 @@ def contentHtml(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4125f6965a7c89ccb8b0972d412bfc4d633eb10b/pyflarum/flarum/core/posts.py#L164-L166" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/40e89ce2997973518b82d5f22bd68c7ff5e71fa7/pyflarum/flarum/core/posts.py#L164-L166" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def contentType(self) -&gt; Optional[str]:
@@ -684,7 +765,7 @@ def contentType(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4125f6965a7c89ccb8b0972d412bfc4d633eb10b/pyflarum/flarum/core/posts.py#L157-L161" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/40e89ce2997973518b82d5f22bd68c7ff5e71fa7/pyflarum/flarum/core/posts.py#L157-L161" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def createdAt(self) -&gt; Optional[datetime]:
@@ -699,7 +780,7 @@ def createdAt(self) -&gt; Optional[datetime]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4125f6965a7c89ccb8b0972d412bfc4d633eb10b/pyflarum/flarum/core/posts.py#L129-L131" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/40e89ce2997973518b82d5f22bd68c7ff5e71fa7/pyflarum/flarum/core/posts.py#L129-L131" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def data(self) -&gt; dict:
@@ -712,7 +793,7 @@ def data(self) -&gt; dict:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4125f6965a7c89ccb8b0972d412bfc4d633eb10b/pyflarum/flarum/core/posts.py#L139-L144" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/40e89ce2997973518b82d5f22bd68c7ff5e71fa7/pyflarum/flarum/core/posts.py#L139-L144" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def id(self) -&gt; Optional[int]:
@@ -728,7 +809,7 @@ def id(self) -&gt; Optional[int]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4125f6965a7c89ccb8b0972d412bfc4d633eb10b/pyflarum/flarum/core/posts.py#L152-L154" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/40e89ce2997973518b82d5f22bd68c7ff5e71fa7/pyflarum/flarum/core/posts.py#L152-L154" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def number(self) -&gt; Optional[int]:
@@ -741,11 +822,110 @@ def number(self) -&gt; Optional[int]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4125f6965a7c89ccb8b0972d412bfc4d633eb10b/pyflarum/flarum/core/posts.py#L134-L136" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/40e89ce2997973518b82d5f22bd68c7ff5e71fa7/pyflarum/flarum/core/posts.py#L134-L136" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def type(self) -&gt; Optional[str]:
     return self.data.get(&#34;type&#34;, None)</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="pyflarum.flarum.core.posts.PostFromDiscussion.delete"><code class="name flex">
+<span>def <span class="ident">delete</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Removes the post forever.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/CWKevo/pyFlarum/blob/40e89ce2997973518b82d5f22bd68c7ff5e71fa7/pyflarum/flarum/core/posts.py#L208-L216" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def delete(self):
+    &#34;&#34;&#34;
+        Removes the post forever.
+    &#34;&#34;&#34;
+
+    raw = self.user.session.delete(f&#34;{self.user.api_urls[&#39;posts&#39;]}/{self.id}&#34;)
+    parse_request(raw)
+
+    return True</code></pre>
+</details>
+</dd>
+<dt id="pyflarum.flarum.core.posts.PostFromDiscussion.edit"><code class="name flex">
+<span>def <span class="ident">edit</span></span>(<span>self, new_post: <a title="pyflarum.flarum.core.posts.PreparedPost" href="#pyflarum.flarum.core.posts.PreparedPost">PreparedPost</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Edits the post.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/CWKevo/pyFlarum/blob/40e89ce2997973518b82d5f22bd68c7ff5e71fa7/pyflarum/flarum/core/posts.py#L219-L227" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def edit(self, new_post: PreparedPost):
+    &#34;&#34;&#34;
+        Edits the post.
+    &#34;&#34;&#34;
+
+    raw = self.user.session.patch(f&#34;{self.user.api_urls[&#39;posts&#39;]}/{self.id}&#34;, json=new_post.to_dict)
+    json = parse_request(raw)
+
+    return Post(user=self.user, _fetched_data=json)</code></pre>
+</details>
+</dd>
+<dt id="pyflarum.flarum.core.posts.PostFromDiscussion.hide"><code class="name flex">
+<span>def <span class="ident">hide</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Hides the post. Raises <code>FlarumError</code> or returns <code>False</code> if it failed, otherwise <code>True</code> is returned.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/CWKevo/pyFlarum/blob/40e89ce2997973518b82d5f22bd68c7ff5e71fa7/pyflarum/flarum/core/posts.py#L191-L196" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def hide(self):
+    &#34;&#34;&#34;
+        Hides the post. Raises `FlarumError` or returns `False` if it failed, otherwise `True` is returned.
+    &#34;&#34;&#34;
+
+    return self.__restore_or_hide(hide=True)</code></pre>
+</details>
+</dd>
+<dt id="pyflarum.flarum.core.posts.PostFromDiscussion.restore"><code class="name flex">
+<span>def <span class="ident">restore</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Restores the post (unhides). Raises <code>FlarumError</code> or returns <code>False</code> if it failed, otherwise <code>True</code> is returned.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/CWKevo/pyFlarum/blob/40e89ce2997973518b82d5f22bd68c7ff5e71fa7/pyflarum/flarum/core/posts.py#L199-L204" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def restore(self):
+    &#34;&#34;&#34;
+        Restores the post (unhides). Raises `FlarumError` or returns `False` if it failed, otherwise `True` is returned.
+    &#34;&#34;&#34;
+
+    return self.__restore_or_hide(hide=False)</code></pre>
+</details>
+</dd>
+<dt id="pyflarum.flarum.core.posts.PostFromDiscussion.unhide"><code class="name flex">
+<span>def <span class="ident">unhide</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Restores the post (unhides). Raises <code>FlarumError</code> or returns <code>False</code> if it failed, otherwise <code>True</code> is returned.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/CWKevo/pyFlarum/blob/40e89ce2997973518b82d5f22bd68c7ff5e71fa7/pyflarum/flarum/core/posts.py#L199-L204" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def restore(self):
+    &#34;&#34;&#34;
+        Restores the post (unhides). Raises `FlarumError` or returns `False` if it failed, otherwise `True` is returned.
+    &#34;&#34;&#34;
+
+    return self.__restore_or_hide(hide=False)</code></pre>
 </details>
 </dd>
 </dl>
@@ -759,7 +939,7 @@ def type(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4125f6965a7c89ccb8b0972d412bfc4d633eb10b/pyflarum/flarum/core/posts.py#L175-L326" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/40e89ce2997973518b82d5f22bd68c7ff5e71fa7/pyflarum/flarum/core/posts.py#L231-L331" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class PostFromNotification(PostFromDiscussion):
     &#34;&#34;&#34;
@@ -820,57 +1000,6 @@ def type(self) -&gt; Optional[str]:
 
         if discussion_id:
             return f&#34;{self.user.forum_url}/d/{discussion_id}/{self.number}&#34;
-
-
-    def __restore_or_hide(self, hide: bool, force: bool=False) -&gt; Union[Literal[False], NoReturn]:
-        if not self.canHide and not force:
-            raise FlarumError(f&#39;You do not have permission to {&#34;hide&#34; if hide else &#34;unhide&#34;} this post ({self.id}). Use `force = True` to ignore this error.&#39;)
-
-        patch_data = {
-            &#34;data&#34;: {
-                &#34;type&#34;: &#34;posts&#34;,
-                &#34;id&#34;: self.id,
-                &#34;attributes&#34;: {
-                    &#34;isHidden&#34;: hide
-                }
-            }
-        }
-
-        raw = self.user.session.patch(f&#34;{self.user.api_urls[&#39;posts&#39;]}/{self.id}&#34;, json=patch_data)
-        json = parse_request(raw)
-
-        return Post(user=self.user, _fetched_data=json)
-
-
-    def hide(self, force: bool=False):
-        &#34;&#34;&#34;
-            Hides the post. Raises `FlarumError` or returns `False` if it failed, otherwise `True` is returned.
-        &#34;&#34;&#34;
-
-        return self.__restore_or_hide(hide=True, force=force)
-
-
-    def restore(self, force: bool=False):
-        &#34;&#34;&#34;
-            Restores the post (unhides). Raises `FlarumError` or returns `False` if it failed, otherwise `True` is returned.
-        &#34;&#34;&#34;
-
-        return self.__restore_or_hide(hide=False, force=force)
-    unhide = restore
-
-
-    def delete(self, force: bool=False):
-        &#34;&#34;&#34;
-            Removes the post forever.
-        &#34;&#34;&#34;
-
-        if not self.canDelete and not force:
-            raise FlarumError(f&#39;You do not have permission to delete this post ({self.id})&#39;)
-
-        raw = self.user.session.delete(f&#34;{self.user.api_urls[&#39;discussions&#39;]}/{self.id}&#34;)
-        parse_request(raw)
-
-        return True
 
 
     def get_discussion(self):
@@ -934,7 +1063,7 @@ def type(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4125f6965a7c89ccb8b0972d412bfc4d633eb10b/pyflarum/flarum/core/posts.py#L208-L210" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/40e89ce2997973518b82d5f22bd68c7ff5e71fa7/pyflarum/flarum/core/posts.py#L264-L266" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def canDelete(self) -&gt; bool:
@@ -947,7 +1076,7 @@ def canDelete(self) -&gt; bool:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4125f6965a7c89ccb8b0972d412bfc4d633eb10b/pyflarum/flarum/core/posts.py#L203-L205" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/40e89ce2997973518b82d5f22bd68c7ff5e71fa7/pyflarum/flarum/core/posts.py#L259-L261" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def canEdit(self) -&gt; bool:
@@ -960,7 +1089,7 @@ def canEdit(self) -&gt; bool:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4125f6965a7c89ccb8b0972d412bfc4d633eb10b/pyflarum/flarum/core/posts.py#L213-L215" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/40e89ce2997973518b82d5f22bd68c7ff5e71fa7/pyflarum/flarum/core/posts.py#L269-L271" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def canHide(self) -&gt; bool:
@@ -973,7 +1102,7 @@ def canHide(self) -&gt; bool:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4125f6965a7c89ccb8b0972d412bfc4d633eb10b/pyflarum/flarum/core/posts.py#L186-L188" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/40e89ce2997973518b82d5f22bd68c7ff5e71fa7/pyflarum/flarum/core/posts.py#L242-L244" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def content(self) -&gt; Optional[str]:
@@ -986,7 +1115,7 @@ def content(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4125f6965a7c89ccb8b0972d412bfc4d633eb10b/pyflarum/flarum/core/posts.py#L196-L200" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/40e89ce2997973518b82d5f22bd68c7ff5e71fa7/pyflarum/flarum/core/posts.py#L252-L256" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def editedAt(self) -&gt; Optional[datetime]:
@@ -1001,7 +1130,7 @@ def editedAt(self) -&gt; Optional[datetime]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4125f6965a7c89ccb8b0972d412bfc4d633eb10b/pyflarum/flarum/core/posts.py#L191-L193" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/40e89ce2997973518b82d5f22bd68c7ff5e71fa7/pyflarum/flarum/core/posts.py#L247-L249" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def ipAddress(self) -&gt; Optional[str]:
@@ -1014,7 +1143,7 @@ def ipAddress(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4125f6965a7c89ccb8b0972d412bfc4d633eb10b/pyflarum/flarum/core/posts.py#L223-L225" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/40e89ce2997973518b82d5f22bd68c7ff5e71fa7/pyflarum/flarum/core/posts.py#L279-L281" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def relationships(self) -&gt; dict:
@@ -1027,7 +1156,7 @@ def relationships(self) -&gt; dict:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4125f6965a7c89ccb8b0972d412bfc4d633eb10b/pyflarum/flarum/core/posts.py#L228-L233" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/40e89ce2997973518b82d5f22bd68c7ff5e71fa7/pyflarum/flarum/core/posts.py#L284-L289" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def url(self):
@@ -1041,38 +1170,28 @@ def url(self):
 <h3>Methods</h3>
 <dl>
 <dt id="pyflarum.flarum.core.posts.PostFromNotification.delete"><code class="name flex">
-<span>def <span class="ident">delete</span></span>(<span>self, force: bool = False)</span>
+<span>def <span class="ident">delete</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Removes the post forever.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4125f6965a7c89ccb8b0972d412bfc4d633eb10b/pyflarum/flarum/core/posts.py#L273-L284" class="git-link">Browse git</a>
-</summary>
-<pre><code class="python">def delete(self, force: bool=False):
-    &#34;&#34;&#34;
-        Removes the post forever.
-    &#34;&#34;&#34;
-
-    if not self.canDelete and not force:
-        raise FlarumError(f&#39;You do not have permission to delete this post ({self.id})&#39;)
-
-    raw = self.user.session.delete(f&#34;{self.user.api_urls[&#39;discussions&#39;]}/{self.id}&#34;)
-    parse_request(raw)
-
-    return True</code></pre>
-</details>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.posts.PostFromDiscussion" href="#pyflarum.flarum.core.posts.PostFromDiscussion">PostFromDiscussion</a></code>.<code><a title="pyflarum.flarum.core.posts.PostFromDiscussion.delete" href="#pyflarum.flarum.core.posts.PostFromDiscussion.delete">delete</a></code>
+</p>
+<div class="desc inherited"><p>Removes the post forever.</p></div>
 </dd>
 <dt id="pyflarum.flarum.core.posts.PostFromNotification.edit"><code class="name flex">
 <span>def <span class="ident">edit</span></span>(<span>self, new_data: <a title="pyflarum.flarum.core.posts.PreparedPost" href="#pyflarum.flarum.core.posts.PreparedPost">PreparedPost</a>)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.posts.PostFromDiscussion" href="#pyflarum.flarum.core.posts.PostFromDiscussion">PostFromDiscussion</a></code>.<code><a title="pyflarum.flarum.core.posts.PostFromDiscussion.edit" href="#pyflarum.flarum.core.posts.PostFromDiscussion.edit">edit</a></code>
+</p>
+<div class="desc inherited"><p>Edits the post.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4125f6965a7c89ccb8b0972d412bfc4d633eb10b/pyflarum/flarum/core/posts.py#L322-L326" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/40e89ce2997973518b82d5f22bd68c7ff5e71fa7/pyflarum/flarum/core/posts.py#L327-L331" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def edit(self, new_data: PreparedPost):
     raw = self.user.session.patch(f&#34;{self.user.api_urls[&#39;posts&#39;]}/{self.id}&#34;, json=new_data.to_dict)
@@ -1089,7 +1208,7 @@ def url(self):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4125f6965a7c89ccb8b0972d412bfc4d633eb10b/pyflarum/flarum/core/posts.py#L310-L319" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/40e89ce2997973518b82d5f22bd68c7ff5e71fa7/pyflarum/flarum/core/posts.py#L315-L324" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_author(self):
     id = self.relationships.get(&#34;user&#34;, {}).get(&#34;data&#34;, {}).get(&#34;id&#34;, None)
@@ -1111,7 +1230,7 @@ def url(self):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4125f6965a7c89ccb8b0972d412bfc4d633eb10b/pyflarum/flarum/core/posts.py#L287-L296" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/40e89ce2997973518b82d5f22bd68c7ff5e71fa7/pyflarum/flarum/core/posts.py#L292-L301" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_discussion(self):
     id_to_find = self.relationships.get(&#34;discussion&#34;, {}).get(&#34;data&#34;, {}).get(&#34;id&#34;, None)
@@ -1126,22 +1245,14 @@ def url(self):
 </details>
 </dd>
 <dt id="pyflarum.flarum.core.posts.PostFromNotification.hide"><code class="name flex">
-<span>def <span class="ident">hide</span></span>(<span>self, force: bool = False)</span>
+<span>def <span class="ident">hide</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Hides the post. Raises <code>FlarumError</code> or returns <code>False</code> if it failed, otherwise <code>True</code> is returned.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4125f6965a7c89ccb8b0972d412bfc4d633eb10b/pyflarum/flarum/core/posts.py#L256-L261" class="git-link">Browse git</a>
-</summary>
-<pre><code class="python">def hide(self, force: bool=False):
-    &#34;&#34;&#34;
-        Hides the post. Raises `FlarumError` or returns `False` if it failed, otherwise `True` is returned.
-    &#34;&#34;&#34;
-
-    return self.__restore_or_hide(hide=True, force=force)</code></pre>
-</details>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.posts.PostFromDiscussion" href="#pyflarum.flarum.core.posts.PostFromDiscussion">PostFromDiscussion</a></code>.<code><a title="pyflarum.flarum.core.posts.PostFromDiscussion.hide" href="#pyflarum.flarum.core.posts.PostFromDiscussion.hide">hide</a></code>
+</p>
+<div class="desc inherited"><p>Hides the post. Raises <code>FlarumError</code> or returns <code>False</code> if it failed, otherwise <code>True</code> is returned.</p></div>
 </dd>
 <dt id="pyflarum.flarum.core.posts.PostFromNotification.reply_to"><code class="name flex">
 <span>def <span class="ident">reply_to</span></span>(<span>self, post: <a title="pyflarum.flarum.core.posts.PreparedPost" href="#pyflarum.flarum.core.posts.PreparedPost">PreparedPost</a>)</span>
@@ -1151,7 +1262,7 @@ def url(self):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4125f6965a7c89ccb8b0972d412bfc4d633eb10b/pyflarum/flarum/core/posts.py#L299-L307" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/40e89ce2997973518b82d5f22bd68c7ff5e71fa7/pyflarum/flarum/core/posts.py#L304-L312" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def reply_to(self, post: PreparedPost):
     &#34;&#34;&#34;
@@ -1165,40 +1276,24 @@ def url(self):
 </details>
 </dd>
 <dt id="pyflarum.flarum.core.posts.PostFromNotification.restore"><code class="name flex">
-<span>def <span class="ident">restore</span></span>(<span>self, force: bool = False)</span>
+<span>def <span class="ident">restore</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Restores the post (unhides). Raises <code>FlarumError</code> or returns <code>False</code> if it failed, otherwise <code>True</code> is returned.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4125f6965a7c89ccb8b0972d412bfc4d633eb10b/pyflarum/flarum/core/posts.py#L264-L269" class="git-link">Browse git</a>
-</summary>
-<pre><code class="python">def restore(self, force: bool=False):
-    &#34;&#34;&#34;
-        Restores the post (unhides). Raises `FlarumError` or returns `False` if it failed, otherwise `True` is returned.
-    &#34;&#34;&#34;
-
-    return self.__restore_or_hide(hide=False, force=force)</code></pre>
-</details>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.posts.PostFromDiscussion" href="#pyflarum.flarum.core.posts.PostFromDiscussion">PostFromDiscussion</a></code>.<code><a title="pyflarum.flarum.core.posts.PostFromDiscussion.restore" href="#pyflarum.flarum.core.posts.PostFromDiscussion.restore">restore</a></code>
+</p>
+<div class="desc inherited"><p>Restores the post (unhides). Raises <code>FlarumError</code> or returns <code>False</code> if it failed, otherwise <code>True</code> is returned.</p></div>
 </dd>
 <dt id="pyflarum.flarum.core.posts.PostFromNotification.unhide"><code class="name flex">
-<span>def <span class="ident">unhide</span></span>(<span>self, force: bool = False)</span>
+<span>def <span class="ident">unhide</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Restores the post (unhides). Raises <code>FlarumError</code> or returns <code>False</code> if it failed, otherwise <code>True</code> is returned.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4125f6965a7c89ccb8b0972d412bfc4d633eb10b/pyflarum/flarum/core/posts.py#L264-L269" class="git-link">Browse git</a>
-</summary>
-<pre><code class="python">def restore(self, force: bool=False):
-    &#34;&#34;&#34;
-        Restores the post (unhides). Raises `FlarumError` or returns `False` if it failed, otherwise `True` is returned.
-    &#34;&#34;&#34;
-
-    return self.__restore_or_hide(hide=False, force=force)</code></pre>
-</details>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.posts.PostFromDiscussion" href="#pyflarum.flarum.core.posts.PostFromDiscussion">PostFromDiscussion</a></code>.<code><a title="pyflarum.flarum.core.posts.PostFromDiscussion.unhide" href="#pyflarum.flarum.core.posts.PostFromDiscussion.unhide">unhide</a></code>
+</p>
+<div class="desc inherited"><p>Restores the post (unhides). Raises <code>FlarumError</code> or returns <code>False</code> if it failed, otherwise <code>True</code> is returned.</p></div>
 </dd>
 </dl>
 </dd>
@@ -1211,7 +1306,7 @@ def url(self):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4125f6965a7c89ccb8b0972d412bfc4d633eb10b/pyflarum/flarum/core/posts.py#L58-L115" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/40e89ce2997973518b82d5f22bd68c7ff5e71fa7/pyflarum/flarum/core/posts.py#L58-L115" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class Posts(dict):
     &#34;&#34;&#34;
@@ -1284,7 +1379,7 @@ def url(self):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4125f6965a7c89ccb8b0972d412bfc4d633eb10b/pyflarum/flarum/core/posts.py#L93-L95" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/40e89ce2997973518b82d5f22bd68c7ff5e71fa7/pyflarum/flarum/core/posts.py#L93-L95" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def data(self) -&gt; List[dict]:
@@ -1297,7 +1392,7 @@ def data(self) -&gt; List[dict]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4125f6965a7c89ccb8b0972d412bfc4d633eb10b/pyflarum/flarum/core/posts.py#L78-L80" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/40e89ce2997973518b82d5f22bd68c7ff5e71fa7/pyflarum/flarum/core/posts.py#L78-L80" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def first_link(self) -&gt; Optional[str]:
@@ -1310,7 +1405,7 @@ def first_link(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4125f6965a7c89ccb8b0972d412bfc4d633eb10b/pyflarum/flarum/core/posts.py#L98-L100" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/40e89ce2997973518b82d5f22bd68c7ff5e71fa7/pyflarum/flarum/core/posts.py#L98-L100" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def included(self) -&gt; List[dict]:
@@ -1323,7 +1418,7 @@ def included(self) -&gt; List[dict]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4125f6965a7c89ccb8b0972d412bfc4d633eb10b/pyflarum/flarum/core/posts.py#L73-L75" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/40e89ce2997973518b82d5f22bd68c7ff5e71fa7/pyflarum/flarum/core/posts.py#L73-L75" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def links(self) -&gt; dict:
@@ -1336,7 +1431,7 @@ def links(self) -&gt; dict:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4125f6965a7c89ccb8b0972d412bfc4d633eb10b/pyflarum/flarum/core/posts.py#L88-L90" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/40e89ce2997973518b82d5f22bd68c7ff5e71fa7/pyflarum/flarum/core/posts.py#L88-L90" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def next_link(self) -&gt; Optional[str]:
@@ -1349,7 +1444,7 @@ def next_link(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4125f6965a7c89ccb8b0972d412bfc4d633eb10b/pyflarum/flarum/core/posts.py#L83-L85" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/40e89ce2997973518b82d5f22bd68c7ff5e71fa7/pyflarum/flarum/core/posts.py#L83-L85" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def previous_link(self) -&gt; Optional[str]:
@@ -1367,7 +1462,7 @@ def previous_link(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4125f6965a7c89ccb8b0972d412bfc4d633eb10b/pyflarum/flarum/core/posts.py#L103-L115" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/40e89ce2997973518b82d5f22bd68c7ff5e71fa7/pyflarum/flarum/core/posts.py#L103-L115" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_posts(self):
     &#34;&#34;&#34;
@@ -1405,7 +1500,7 @@ dict(one=1, two=2)</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4125f6965a7c89ccb8b0972d412bfc4d633eb10b/pyflarum/flarum/core/posts.py#L17-L55" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/40e89ce2997973518b82d5f22bd68c7ff5e71fa7/pyflarum/flarum/core/posts.py#L17-L55" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class PreparedPost(dict):
     def __init__(self, user: &#39;FlarumUser&#39;, discussion: Optional[Union[&#39;Discussion&#39;, &#39;DiscussionFromBulk&#39;, &#39;DiscussionFromNotification&#39;]]=None, content: Optional[str]=None):
@@ -1459,7 +1554,7 @@ dict(one=1, two=2)</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4125f6965a7c89ccb8b0972d412bfc4d633eb10b/pyflarum/flarum/core/posts.py#L24-L43" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/40e89ce2997973518b82d5f22bd68c7ff5e71fa7/pyflarum/flarum/core/posts.py#L24-L43" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def to_dict(self):
@@ -1494,7 +1589,7 @@ def to_dict(self):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4125f6965a7c89ccb8b0972d412bfc4d633eb10b/pyflarum/flarum/core/posts.py#L46-L54" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/40e89ce2997973518b82d5f22bd68c7ff5e71fa7/pyflarum/flarum/core/posts.py#L46-L54" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def post(self):
     &#34;&#34;&#34;
@@ -1515,7 +1610,7 @@ def to_dict(self):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4125f6965a7c89ccb8b0972d412bfc4d633eb10b/pyflarum/flarum/core/posts.py#L46-L54" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/40e89ce2997973518b82d5f22bd68c7ff5e71fa7/pyflarum/flarum/core/posts.py#L46-L54" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def post(self):
     &#34;&#34;&#34;
@@ -1594,8 +1689,9 @@ setTimeout(() => input.focus(), 100);
 <ul>
 <li>
 <h4><code><a title="pyflarum.flarum.core.posts.Post" href="#pyflarum.flarum.core.posts.Post">Post</a></code></h4>
-<ul class="">
+<ul class="two-column">
 <li><code><a title="pyflarum.flarum.core.posts.Post.delete" href="#pyflarum.flarum.core.posts.Post.delete">delete</a></code></li>
+<li><code><a title="pyflarum.flarum.core.posts.Post.edit" href="#pyflarum.flarum.core.posts.Post.edit">edit</a></code></li>
 <li><code><a title="pyflarum.flarum.core.posts.Post.hide" href="#pyflarum.flarum.core.posts.Post.hide">hide</a></code></li>
 <li><code><a title="pyflarum.flarum.core.posts.Post.reply_to" href="#pyflarum.flarum.core.posts.Post.reply_to">reply_to</a></code></li>
 <li><code><a title="pyflarum.flarum.core.posts.Post.restore" href="#pyflarum.flarum.core.posts.Post.restore">restore</a></code></li>
@@ -1604,8 +1700,9 @@ setTimeout(() => input.focus(), 100);
 </li>
 <li>
 <h4><code><a title="pyflarum.flarum.core.posts.PostFromBulk" href="#pyflarum.flarum.core.posts.PostFromBulk">PostFromBulk</a></code></h4>
-<ul class="">
+<ul class="two-column">
 <li><code><a title="pyflarum.flarum.core.posts.PostFromBulk.delete" href="#pyflarum.flarum.core.posts.PostFromBulk.delete">delete</a></code></li>
+<li><code><a title="pyflarum.flarum.core.posts.PostFromBulk.edit" href="#pyflarum.flarum.core.posts.PostFromBulk.edit">edit</a></code></li>
 <li><code><a title="pyflarum.flarum.core.posts.PostFromBulk.hide" href="#pyflarum.flarum.core.posts.PostFromBulk.hide">hide</a></code></li>
 <li><code><a title="pyflarum.flarum.core.posts.PostFromBulk.reply_to" href="#pyflarum.flarum.core.posts.PostFromBulk.reply_to">reply_to</a></code></li>
 <li><code><a title="pyflarum.flarum.core.posts.PostFromBulk.restore" href="#pyflarum.flarum.core.posts.PostFromBulk.restore">restore</a></code></li>
@@ -1620,9 +1717,14 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="pyflarum.flarum.core.posts.PostFromDiscussion.contentType" href="#pyflarum.flarum.core.posts.PostFromDiscussion.contentType">contentType</a></code></li>
 <li><code><a title="pyflarum.flarum.core.posts.PostFromDiscussion.createdAt" href="#pyflarum.flarum.core.posts.PostFromDiscussion.createdAt">createdAt</a></code></li>
 <li><code><a title="pyflarum.flarum.core.posts.PostFromDiscussion.data" href="#pyflarum.flarum.core.posts.PostFromDiscussion.data">data</a></code></li>
+<li><code><a title="pyflarum.flarum.core.posts.PostFromDiscussion.delete" href="#pyflarum.flarum.core.posts.PostFromDiscussion.delete">delete</a></code></li>
+<li><code><a title="pyflarum.flarum.core.posts.PostFromDiscussion.edit" href="#pyflarum.flarum.core.posts.PostFromDiscussion.edit">edit</a></code></li>
+<li><code><a title="pyflarum.flarum.core.posts.PostFromDiscussion.hide" href="#pyflarum.flarum.core.posts.PostFromDiscussion.hide">hide</a></code></li>
 <li><code><a title="pyflarum.flarum.core.posts.PostFromDiscussion.id" href="#pyflarum.flarum.core.posts.PostFromDiscussion.id">id</a></code></li>
 <li><code><a title="pyflarum.flarum.core.posts.PostFromDiscussion.number" href="#pyflarum.flarum.core.posts.PostFromDiscussion.number">number</a></code></li>
+<li><code><a title="pyflarum.flarum.core.posts.PostFromDiscussion.restore" href="#pyflarum.flarum.core.posts.PostFromDiscussion.restore">restore</a></code></li>
 <li><code><a title="pyflarum.flarum.core.posts.PostFromDiscussion.type" href="#pyflarum.flarum.core.posts.PostFromDiscussion.type">type</a></code></li>
+<li><code><a title="pyflarum.flarum.core.posts.PostFromDiscussion.unhide" href="#pyflarum.flarum.core.posts.PostFromDiscussion.unhide">unhide</a></code></li>
 </ul>
 </li>
 <li>

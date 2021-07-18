@@ -25,7 +25,7 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4125f6965a7c89ccb8b0972d412bfc4d633eb10b/pyflarum/extensions/flarum/Flarum_Subscriptions.py#L0-L64" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/40e89ce2997973518b82d5f22bd68c7ff5e71fa7/pyflarum/extensions/flarum/Flarum_Subscriptions.py#L0-L64" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">from typing import Literal
 
@@ -112,7 +112,7 @@ class SubscriptionsExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4125f6965a7c89ccb8b0972d412bfc4d633eb10b/pyflarum/extensions/flarum/Flarum_Subscriptions.py#L48-L51" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/40e89ce2997973518b82d5f22bd68c7ff5e71fa7/pyflarum/extensions/flarum/Flarum_Subscriptions.py#L48-L51" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class SubscriptionsDiscussionFromBulkMixin(DiscussionFromBulk, SubscriptionsDiscussionFromNotificationMixin):
     @property
@@ -134,7 +134,7 @@ class SubscriptionsExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4125f6965a7c89ccb8b0972d412bfc4d633eb10b/pyflarum/extensions/flarum/Flarum_Subscriptions.py#L49-L51" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/40e89ce2997973518b82d5f22bd68c7ff5e71fa7/pyflarum/extensions/flarum/Flarum_Subscriptions.py#L49-L51" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def subscription(self) -&gt; bool:
@@ -195,7 +195,7 @@ def subscription(self) -&gt; bool:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4125f6965a7c89ccb8b0972d412bfc4d633eb10b/pyflarum/extensions/flarum/Flarum_Subscriptions.py#L18-L45" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/40e89ce2997973518b82d5f22bd68c7ff5e71fa7/pyflarum/extensions/flarum/Flarum_Subscriptions.py#L18-L45" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class SubscriptionsDiscussionFromNotificationMixin(DiscussionFromNotification):
     def __change_subscription_state(self, state: Literal[&#39;following&#39;, &#39;ignoring&#39;, None]):
@@ -255,7 +255,7 @@ def subscription(self) -&gt; bool:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4125f6965a7c89ccb8b0972d412bfc4d633eb10b/pyflarum/extensions/flarum/Flarum_Subscriptions.py#L36-L37" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/40e89ce2997973518b82d5f22bd68c7ff5e71fa7/pyflarum/extensions/flarum/Flarum_Subscriptions.py#L36-L37" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def follow(self):
     return self.__change_subscription_state(state=&#39;following&#39;)</code></pre>
@@ -279,7 +279,7 @@ def subscription(self) -&gt; bool:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4125f6965a7c89ccb8b0972d412bfc4d633eb10b/pyflarum/extensions/flarum/Flarum_Subscriptions.py#L44-L45" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/40e89ce2997973518b82d5f22bd68c7ff5e71fa7/pyflarum/extensions/flarum/Flarum_Subscriptions.py#L44-L45" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def ignore(self):
     return self.__change_subscription_state(state=&#39;ignore&#39;)</code></pre>
@@ -303,7 +303,7 @@ def subscription(self) -&gt; bool:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4125f6965a7c89ccb8b0972d412bfc4d633eb10b/pyflarum/extensions/flarum/Flarum_Subscriptions.py#L40-L41" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/40e89ce2997973518b82d5f22bd68c7ff5e71fa7/pyflarum/extensions/flarum/Flarum_Subscriptions.py#L40-L41" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def unfollow(self):
     return self.__change_subscription_state(state=None)</code></pre>
@@ -396,7 +396,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4125f6965a7c89ccb8b0972d412bfc4d633eb10b/pyflarum/extensions/flarum/Flarum_Subscriptions.py#L55-L65" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/40e89ce2997973518b82d5f22bd68c7ff5e71fa7/pyflarum/extensions/flarum/Flarum_Subscriptions.py#L55-L65" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class SubscriptionsExtension(ExtensionMixin):
     def get_dependencies(self):
@@ -428,7 +428,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4125f6965a7c89ccb8b0972d412bfc4d633eb10b/pyflarum/extensions/flarum/Flarum_Subscriptions.py#L56-L60" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/40e89ce2997973518b82d5f22bd68c7ff5e71fa7/pyflarum/extensions/flarum/Flarum_Subscriptions.py#L56-L60" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_dependencies(self):
     return {
@@ -449,7 +449,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4125f6965a7c89ccb8b0972d412bfc4d633eb10b/pyflarum/extensions/flarum/Flarum_Subscriptions.py#L63-L65" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/40e89ce2997973518b82d5f22bd68c7ff5e71fa7/pyflarum/extensions/flarum/Flarum_Subscriptions.py#L63-L65" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def mixin(self):
     super().mixin(self, DiscussionFromNotification, SubscriptionsDiscussionFromNotificationMixin)

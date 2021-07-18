@@ -802,6 +802,36 @@ INDEX=[
 "doc":""
 },
 {
+"ref":"pyflarum.flarum.core.posts.PostFromDiscussion.hide",
+"url":10,
+"doc":"Hides the post. Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
+"func":1
+},
+{
+"ref":"pyflarum.flarum.core.posts.PostFromDiscussion.restore",
+"url":10,
+"doc":"Restores the post (unhides). Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
+"func":1
+},
+{
+"ref":"pyflarum.flarum.core.posts.PostFromDiscussion.unhide",
+"url":10,
+"doc":"Restores the post (unhides). Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
+"func":1
+},
+{
+"ref":"pyflarum.flarum.core.posts.PostFromDiscussion.delete",
+"url":10,
+"doc":"Removes the post forever.",
+"func":1
+},
+{
+"ref":"pyflarum.flarum.core.posts.PostFromDiscussion.edit",
+"url":10,
+"doc":"Edits the post.",
+"func":1
+},
+{
 "ref":"pyflarum.flarum.core.posts.PostFromNotification",
 "url":10,
 "doc":"A post from  Notification "
@@ -847,6 +877,30 @@ INDEX=[
 "doc":""
 },
 {
+"ref":"pyflarum.flarum.core.posts.PostFromNotification.get_discussion",
+"url":10,
+"doc":"",
+"func":1
+},
+{
+"ref":"pyflarum.flarum.core.posts.PostFromNotification.reply_to",
+"url":10,
+"doc":"Replies to this  Post with another  PreparedPost .",
+"func":1
+},
+{
+"ref":"pyflarum.flarum.core.posts.PostFromNotification.get_author",
+"url":10,
+"doc":"",
+"func":1
+},
+{
+"ref":"pyflarum.flarum.core.posts.PostFromNotification.edit",
+"url":10,
+"doc":"Edits the post.",
+"func":1
+},
+{
 "ref":"pyflarum.flarum.core.posts.PostFromNotification.hide",
 "url":10,
 "doc":"Hides the post. Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
@@ -871,33 +925,21 @@ INDEX=[
 "func":1
 },
 {
-"ref":"pyflarum.flarum.core.posts.PostFromNotification.get_discussion",
+"ref":"pyflarum.flarum.core.posts.PostFromBulk",
 "url":10,
-"doc":"",
-"func":1
+"doc":"A post from  Posts ."
 },
 {
-"ref":"pyflarum.flarum.core.posts.PostFromNotification.reply_to",
+"ref":"pyflarum.flarum.core.posts.PostFromBulk.reply_to",
 "url":10,
 "doc":"Replies to this  Post with another  PreparedPost .",
 "func":1
 },
 {
-"ref":"pyflarum.flarum.core.posts.PostFromNotification.get_author",
+"ref":"pyflarum.flarum.core.posts.PostFromBulk.edit",
 "url":10,
-"doc":"",
+"doc":"Edits the post.",
 "func":1
-},
-{
-"ref":"pyflarum.flarum.core.posts.PostFromNotification.edit",
-"url":10,
-"doc":"",
-"func":1
-},
-{
-"ref":"pyflarum.flarum.core.posts.PostFromBulk",
-"url":10,
-"doc":"A post from  Posts ."
 },
 {
 "ref":"pyflarum.flarum.core.posts.PostFromBulk.hide",
@@ -924,15 +966,21 @@ INDEX=[
 "func":1
 },
 {
-"ref":"pyflarum.flarum.core.posts.PostFromBulk.reply_to",
+"ref":"pyflarum.flarum.core.posts.Post",
+"url":10,
+"doc":"A Flarum group."
+},
+{
+"ref":"pyflarum.flarum.core.posts.Post.reply_to",
 "url":10,
 "doc":"Replies to this  Post with another  PreparedPost .",
 "func":1
 },
 {
-"ref":"pyflarum.flarum.core.posts.Post",
+"ref":"pyflarum.flarum.core.posts.Post.edit",
 "url":10,
-"doc":"A Flarum group."
+"doc":"Edits the post.",
+"func":1
 },
 {
 "ref":"pyflarum.flarum.core.posts.Post.hide",
@@ -956,12 +1004,6 @@ INDEX=[
 "ref":"pyflarum.flarum.core.posts.Post.delete",
 "url":10,
 "doc":"Removes the post forever.",
-"func":1
-},
-{
-"ref":"pyflarum.flarum.core.posts.Post.reply_to",
-"url":10,
-"doc":"Replies to this  Post with another  PreparedPost .",
 "func":1
 },
 {
@@ -2019,6 +2061,18 @@ INDEX=[
 "func":1
 },
 {
+"ref":"pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromNotificationMixin.reply_to",
+"url":10,
+"doc":"Replies to this  Post with another  PreparedPost .",
+"func":1
+},
+{
+"ref":"pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromNotificationMixin.edit",
+"url":10,
+"doc":"Edits the post.",
+"func":1
+},
+{
 "ref":"pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromNotificationMixin.hide",
 "url":10,
 "doc":"Hides the post. Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
@@ -2043,12 +2097,6 @@ INDEX=[
 "func":1
 },
 {
-"ref":"pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromNotificationMixin.reply_to",
-"url":10,
-"doc":"Replies to this  Post with another  PreparedPost .",
-"func":1
-},
-{
 "ref":"pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromBulkMixin",
 "url":27,
 "doc":"A post from  Posts ."
@@ -2057,6 +2105,18 @@ INDEX=[
 "ref":"pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromBulkMixin.get_liked_by",
 "url":27,
 "doc":"",
+"func":1
+},
+{
+"ref":"pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromBulkMixin.reply_to",
+"url":10,
+"doc":"Replies to this  Post with another  PreparedPost .",
+"func":1
+},
+{
+"ref":"pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromBulkMixin.edit",
+"url":10,
+"doc":"Edits the post.",
 "func":1
 },
 {
@@ -2081,12 +2141,6 @@ INDEX=[
 "ref":"pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromBulkMixin.delete",
 "url":10,
 "doc":"Removes the post forever.",
-"func":1
-},
-{
-"ref":"pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromBulkMixin.reply_to",
-"url":10,
-"doc":"Replies to this  Post with another  PreparedPost .",
 "func":1
 },
 {
@@ -2772,6 +2826,18 @@ INDEX=[
 "func":1
 },
 {
+"ref":"pyflarum.extensions.flarum.Flarum_Approval.ApprovalPostFromNotificationMixin.reply_to",
+"url":10,
+"doc":"Replies to this  Post with another  PreparedPost .",
+"func":1
+},
+{
+"ref":"pyflarum.extensions.flarum.Flarum_Approval.ApprovalPostFromNotificationMixin.edit",
+"url":10,
+"doc":"Edits the post.",
+"func":1
+},
+{
 "ref":"pyflarum.extensions.flarum.Flarum_Approval.ApprovalPostFromNotificationMixin.hide",
 "url":10,
 "doc":"Hides the post. Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
@@ -2793,12 +2859,6 @@ INDEX=[
 "ref":"pyflarum.extensions.flarum.Flarum_Approval.ApprovalPostFromNotificationMixin.delete",
 "url":10,
 "doc":"Removes the post forever.",
-"func":1
-},
-{
-"ref":"pyflarum.extensions.flarum.Flarum_Approval.ApprovalPostFromNotificationMixin.reply_to",
-"url":10,
-"doc":"Replies to this  Post with another  PreparedPost .",
 "func":1
 },
 {
@@ -3150,6 +3210,18 @@ INDEX=[
 "doc":""
 },
 {
+"ref":"pyflarum.extensions.flarum.Flarum_Flags.FlagsPostFromNotificationMixin.reply_to",
+"url":10,
+"doc":"Replies to this  Post with another  PreparedPost .",
+"func":1
+},
+{
+"ref":"pyflarum.extensions.flarum.Flarum_Flags.FlagsPostFromNotificationMixin.edit",
+"url":10,
+"doc":"Edits the post.",
+"func":1
+},
+{
 "ref":"pyflarum.extensions.flarum.Flarum_Flags.FlagsPostFromNotificationMixin.hide",
 "url":10,
 "doc":"Hides the post. Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
@@ -3171,12 +3243,6 @@ INDEX=[
 "ref":"pyflarum.extensions.flarum.Flarum_Flags.FlagsPostFromNotificationMixin.delete",
 "url":10,
 "doc":"Removes the post forever.",
-"func":1
-},
-{
-"ref":"pyflarum.extensions.flarum.Flarum_Flags.FlagsPostFromNotificationMixin.reply_to",
-"url":10,
-"doc":"Replies to this  Post with another  PreparedPost .",
 "func":1
 },
 {
