@@ -13,7 +13,7 @@ __author__      = "SKevo"
 __copyright__   = "Copyright 2021, SKevo"
 __credits__     = ["SKevo"]
 __license__     = "GPLv3"
-__version__     = "v1.0.5-beta"
+__version__     = "v1.0.4-beta"
 __maintainer__  = "SKevo"
 __email__       = "me@kevo.link"
 __status__      = "4 - Beta"
@@ -29,11 +29,16 @@ try:
 except FileNotFoundError:
     pass
 
-import pyflarum
-pyflarum.__doc__ = __readme__
 
-if __name__ == '__main__':
+__doc__ = __readme__
+
+
+if __name__ == "__main__":
     from typing import Union
 
-    # Prevent VSCode from reporting unused imports:
-    _: Union[FlarumUser, FlarumError, Discussion, Filter]
+    _: Union[
+        FlarumUser,
+        FlarumError,
+        Discussion,
+        Filter
+    ]

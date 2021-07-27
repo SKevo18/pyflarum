@@ -1,6 +1,7 @@
-from typing import Optional, List, Dict
+from typing import Optional, List, Dict, TYPE_CHECKING
+if TYPE_CHECKING:
+    from requests.models import Response
 
-from requests.models import Response
 from json.decoder import JSONDecodeError
 
 
@@ -27,7 +28,7 @@ class MissingExtensionWarning(Warning):
     pass
 
 
-def parse_request(request: Response):
+def parse_request(request: 'Response'):
     try:
         # Includes opening and closing brackets:
         if len(request.text) >= 2:
