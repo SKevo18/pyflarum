@@ -376,7 +376,8 @@ class DiscussionFromBulk(DiscussionFromNotification):
         else:
             return super().delete()
 
-
+# Circular:
+from ...flarum.core.posts import PostFromBulk
 class Discussion(DiscussionFromBulk):
     """
         A Flarum discussion.
@@ -394,8 +395,6 @@ class Discussion(DiscussionFromBulk):
 
 
     def get_posts(self):
-        from ...flarum.core.posts import PostFromBulk
-
         all_posts = list() # type: List[PostFromBulk]
         raw_posts = self.relationships.get("posts", {}).get("data", [{}]) # type: List[dict]
 
