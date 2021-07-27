@@ -1,5 +1,3 @@
-import warnings
-
 from pathlib import Path
 
 from .session import FlarumUser
@@ -15,7 +13,7 @@ __author__      = "SKevo"
 __copyright__   = "Copyright 2021, SKevo"
 __credits__     = ["SKevo"]
 __license__     = "GPLv3"
-__version__     = "v1.0.4-beta"
+__version__     = "v1.0.5-beta"
 __maintainer__  = "SKevo"
 __email__       = "me@kevo.link"
 __status__      = "4 - Beta"
@@ -29,7 +27,7 @@ try:
         __readme__ = readme.read()
 
 except FileNotFoundError:
-    warnings.warn("README file not found", Warning)
+    pass
 
 import pyflarum
 pyflarum.__doc__ = __readme__
