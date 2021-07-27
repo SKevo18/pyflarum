@@ -38,7 +38,7 @@ class FlarumSession(object):
         })
 
 
-        self.__authenticate(username, password)
+        self.authenticate(username, password)
 
 
     def __str__(self) -> str:
@@ -49,9 +49,9 @@ class FlarumSession(object):
         return self.__str__()
 
 
-    def __authenticate(self, username: Union[str]=None, password: Union[str, None]=None):
+    def authenticate(self, username: Union[str]=None, password: Union[str, None]=None):
         if username and password:
-            identification_data = {"identification": self.username, "password": password}
+            identification_data = {"identification": username, "password": password}
 
             raw = self.session.post(url=f'{self.forum_url}/api/token', json=identification_data)
             token_data = parse_request(raw)
@@ -70,6 +70,10 @@ class FlarumSession(object):
                 self.is_authenticated = False
 
         else:
+            self.session.headers.update({
+                "Authorization": None,
+            })
+
             self.is_authenticated = False
 
 
