@@ -25,11 +25,12 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/18ed30af63f66f44e540387afa9877eaea4a7c5d/pyflarum\error_handler.py#L0-L94" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/d75162cc9c538f82395fe345a7ddc0728ff716ed/pyflarum\error_handler.py#L0-L95" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">from typing import Optional, List, Dict
+<pre><code class="python">from typing import Optional, List, Dict, TYPE_CHECKING
+if TYPE_CHECKING:
+    from requests.models import Response
 
-from requests.models import Response
 from json.decoder import JSONDecodeError
 
 
@@ -56,7 +57,7 @@ class MissingExtensionWarning(Warning):
     pass
 
 
-def parse_request(request: Response):
+def parse_request(request: &#39;Response&#39;):
     try:
         # Includes opening and closing brackets:
         if len(request.text) &gt;= 2:
@@ -139,7 +140,7 @@ def handle_errors(errors: Optional[List[Dict[str, str]]]=None, status_code: Opti
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/18ed30af63f66f44e540387afa9877eaea4a7c5d/pyflarum\error_handler.py#L53-L95" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/d75162cc9c538f82395fe345a7ddc0728ff716ed/pyflarum\error_handler.py#L54-L96" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def handle_errors(errors: Optional[List[Dict[str, str]]]=None, status_code: Optional[str]=None):
     &#34;&#34;&#34;
@@ -187,16 +188,16 @@ def handle_errors(errors: Optional[List[Dict[str, str]]]=None, status_code: Opti
 </details>
 </dd>
 <dt id="pyflarum.error_handler.parse_request"><code class="name flex">
-<span>def <span class="ident">parse_request</span></span>(<span>request: requests.models.Response)</span>
+<span>def <span class="ident">parse_request</span></span>(<span>request: Response)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/18ed30af63f66f44e540387afa9877eaea4a7c5d/pyflarum\error_handler.py#L30-L50" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/d75162cc9c538f82395fe345a7ddc0728ff716ed/pyflarum\error_handler.py#L31-L51" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">def parse_request(request: Response):
+<pre><code class="python">def parse_request(request: &#39;Response&#39;):
     try:
         # Includes opening and closing brackets:
         if len(request.text) &gt;= 2:
@@ -233,7 +234,7 @@ def handle_errors(errors: Optional[List[Dict[str, str]]]=None, status_code: Opti
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/18ed30af63f66f44e540387afa9877eaea4a7c5d/pyflarum\error_handler.py#L7-L17" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/d75162cc9c538f82395fe345a7ddc0728ff716ed/pyflarum\error_handler.py#L8-L18" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class FlarumError(Exception):
     &#34;&#34;&#34;
@@ -262,7 +263,7 @@ def handle_errors(errors: Optional[List[Dict[str, str]]]=None, status_code: Opti
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/18ed30af63f66f44e540387afa9877eaea4a7c5d/pyflarum\error_handler.py#L20-L22" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/d75162cc9c538f82395fe345a7ddc0728ff716ed/pyflarum\error_handler.py#L21-L23" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class MissingExtensionError(Exception):
     &#34;&#34;&#34;Missing pyFlarum extension error.&#34;&#34;&#34;
@@ -283,7 +284,7 @@ def handle_errors(errors: Optional[List[Dict[str, str]]]=None, status_code: Opti
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/18ed30af63f66f44e540387afa9877eaea4a7c5d/pyflarum\error_handler.py#L25-L27" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/d75162cc9c538f82395fe345a7ddc0728ff716ed/pyflarum\error_handler.py#L26-L28" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class MissingExtensionWarning(Warning):
     &#34;&#34;&#34;Missing pyFlarum extension warning.&#34;&#34;&#34;

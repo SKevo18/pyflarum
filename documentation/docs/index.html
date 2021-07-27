@@ -23,15 +23,14 @@
 </header>
 <section id="section-intro">
 <h1 id="pyflarum">🐍 pyFlarum</h1>
-<p><img alt="GitHub issues" src="https://img.shields.io/github/issues/CWKevo/pyflarum?color=forestgreen&amp;label=Issues">
-<img alt="GitHub" src="https://img.shields.io/github/license/CWKevo/pyFlarum?color=yellow&amp;label=License"></p>
+<p><img alt="GitHub issues" src="https://img.shields.io/github/issues/CWKevo/pyflarum?color=forestgreen&amp;label=Issues"> <img alt="GitHub" src="https://img.shields.io/github/license/CWKevo/pyFlarum?color=yellow&amp;label=License"></p>
 <p>Somewhere at the beginning of this year, I have started a concept to build a Python Flarum API client. The goal was to provide everyone an easy and extensible system to interact with Flarum's public API and perform user-related tasks.</p>
 <p>Later, I began to work on rebasing FreeFlarum's code, so this idea was left in the dust. But after that was done, I revisited this project and started over now that I had learned more about Python.</p>
 <p>Thus, I present to you my first (real) Python package - <a href="https://pypi.org/project/pyFlarum">pyFlarum</a>.</p>
 <h2 id="useful-links">🔗 Useful links:</h2>
 <ul>
-<li><a href="https://discuss.flarum.org/d/">🗣 Discuss</a></li>
-<li><a href="https://cwkevo.github.io/pyflarum/docs">📚 Documentation</a></li>
+<li><a href="https://discuss.flarum.org/d/28221">🗣 Discuss</a></li>
+<li><a href="https://cwkevo.github.io/pyflarum/docs/">📚 Documentation</a></li>
 <li><a href="https://github.com/CWKevo/pyflarum">👨‍💻 GitHub repository</a></li>
 <li><a href="https://pypi.org/project/pyFlarum">🐍 PyPi link</a></li>
 </ul>
@@ -39,15 +38,15 @@
 <ul>
 <li>Complete support for creating, retrieving, updating and deleting data.</li>
 <li>(Almost) everything is object-oriented, with docstrings (still needs to be done) and examples to help you code faster.</li>
-<li>Very extensible, thanks to custom extension &amp; dependency system. The most common Flarum extensions are included out of the box, and more are still on the way. Read more about the extension system <a href="#-extensions">here</a>.</li>
+<li>Very extensible, thanks to custom extension &amp; dependency system. The most common Flarum extensions are included out of the box, and more are still on the way. Read more about the extension system <a href="https://cwkevo.github.io/pyflarum/docs/#extensions">here</a>.</li>
 <li>The data is fetched and stored as JSON, but the keys can be retrieved by using class properties, which also handles type conversions.</li>
 <li>This means that instead of using <code>discussion['data']['attributes']['title']</code>, it is as simple as <code>discussion.title</code>.</li>
 <li>Flarum's JSON API works in saving mode. What I mean is that when you fetch a discussion from notification, not all of the discussion's data is present in the JSON. On the other hand, obtaining the discussion directly by it's ID results in a much detailed JSON.</li>
-<li>To save you headaches, pyFlarum obviously handles this too and all of the objects have different hierarchy and inheritance. Example: <code>DiscussionFromNotification</code> is parent for <code>DiscussionFromBulk</code> and that's parent for <code>Discussion</code>, where <code>Discussion</code> object is discussion obtained directly from API, and therefore logically contains all properties of the previous objects (and JSON). This is all nicely rendered thanks to your editor's linting and type hints, so you won't make a mistake by accessing unexisting properties from parent objects. More about pyFlarum's inheritance system and it's flaws can be found <a href="#-class-inheritance">here</a>.</li>
+<li>To save you headaches, pyFlarum obviously handles this too and all of the objects have different hierarchy and inheritance. Example: <code>DiscussionFromNotification</code> is parent for <code>DiscussionFromBulk</code> and that's parent for <code>Discussion</code>, where <code>Discussion</code> object is discussion obtained directly from API, and therefore logically contains all properties of the previous objects (and JSON). This is all nicely rendered thanks to your editor's linting and type hints, so you won't make a mistake by accessing unexisting properties from parent objects. More about pyFlarum's inheritance system and it's flaws can be found <a href="https://cwkevo.github.io/pyflarum/docs/#class-inheritance">here</a>.</li>
 </ul>
 <h2 id="quickstart">🚀 Quickstart:</h2>
 <h3 id="installation">📀 Installation:</h3>
-<p>This package requires the <a href="https://pypi.org/project/requests">requests</a> library to be installed. Yep, that's the only dependency. Should there be more over time, you can install them all at once by using this command (but I assume that you're already familiar with all of this, so feel free to skip this part):</p>
+<p>This package requires Python 3.6+ and the <a href="https://pypi.org/project/requests">requests</a> library to be installed. Yep, that's the only dependency. Should there be more over time, you can install them all at once by using this command (but I assume that you're already familiar with all of this, so feel free to skip this part):</p>
 <pre><code class="language-shell">pip install -r requirements.txt
 # or:
 python -m pip install -r requirements.txt
@@ -77,16 +76,16 @@ USER = FlarumUser(forum_url=&quot;https://discuss.flarum.org&quot;)
 # `forum_url` parameter mustn't end with a slash, or it chokes on API URLs!
 
 # Now, let's get the discussion:
-discussion = USER.get_discussion_by_id(49)
+discussion = USER.get_discussion_by_id(28221)
 print(discussion.title)
 </code></pre>
 <p>That's just amazing 4 lines of code (without comments and newlines)!</p>
 <h3 id="whats-next">➡ What's next?</h3>
-<p>Check the <a href="">documentation</a> to dive deep into the concepts of this project and learn more! </p>
+<p>Check the <a href="https://cwkevo.github.io/pyflarum/docs/">documentation</a> to dive deep into the concepts of this project and learn more! </p>
 <p>I will now take a small break from maintaining this - I still want to do a bit more projects this summer now that I have some time. However, I am open for feature requests and bug reports at the <a href="https://github.com/CWKevo/pyflarum/issues">GitHub repository</a>.</p>
 <p>The documentation is still not finished yet, but that can wait for now until some people show some interest in this. My honest view is that I do not want to work on something that people will not enjoy, and I will likely require some motivation in order to keep this project alive. If no interest is shown, I will occassionaly push bugfixes and features for my personal use over time. I don't actually expect much people to use this, but I'd be surprised and happy if you would!</p>
 <h2 id="examples">📜 Examples:</h2>
-<p>I'll show you some more examples before we dive deep into the details at the <a href="https://cwkevo.github.io/pyflarum/docs">documentation</a>. All of the following snippets assume that you already have your <code>USER</code> object initialized.</p>
+<p>I'll show you some more examples before we dive deep into the details at the <a href="https://cwkevo.github.io/pyflarum/docs/">documentation</a>. All of the following snippets assume that you already have your <code>USER</code> object initialized.</p>
 <p>Get all discussions from the front page (<code>/api/discussions</code>) and print the title &amp; URL:</p>
 <pre><code class="language-python">for discussion in USER.all_discussions():
     print(discussion.title, discussion.url)
@@ -96,7 +95,7 @@ print(discussion.title)
 for group in user.get_groups():
     print(group.nameSingular)
 </code></pre>
-<p>You can find more examples in the sections below, or browse the <a href="https://github.com/CWKevo/pyflarum/tree/main/tests">tests</a> directory of the source code for full examples of various tasks. These will be regularly updated, <a href="#-whats-next">should this stay maintained</a>, to ensure that old stuff works and new features behave correctly too.</p>
+<p>You can find more examples in the sections below, or browse the <a href="https://github.com/CWKevo/pyflarum/tree/main/tests">tests</a> directory of the source code for full examples of various tasks. These will be regularly updated, <a href="#➡-whats-next">should this stay maintained</a>, to ensure that old stuff works and new features behave correctly too.</p>
 <h2 id="parameters">📡 Parameters</h2>
 <p>By default, pyFlarum works by just knowing the forum's URL. But there are more options to choose from. Let's go through the basic ones:</p>
 <h3 id="authentication">🔐 Authentication</h3>
@@ -174,7 +173,7 @@ discussion.isApproved # &lt;- no syntax highlighting
 discussion.isApproved # &lt;- syntax highlighting works
 </code></pre>
 <blockquote>
-<p><strong>Note:</strong> The <code>Flarum_Approval</code> extension contains only one mixin for discussions: <code>Flarum_Approval.ApprovalDiscussionFromNotificationMixin</code>. Since this is a parent of <code>Discussion</code> because of the <a href="#-class-inheritance">inheritance</a>, you can type-hint just that for it to work (no <code>Union</code> from <a href="https://docs.python.org/3/library/typing.html">typing</a> is required). You can check the <a href="https://cwkevo.github.io/pyflarum/docs/extensions">extensions documentation</a> for list of available mixins and extensions, or the <a href="https://github.com/CWKevo/pyflarum/tree/main/pyflarum/extensions">source code</a>.</p>
+<p><strong>Note:</strong> The <code>Flarum_Approval</code> extension contains only one mixin for discussions: <code>Flarum_Approval.ApprovalDiscussionFromNotificationMixin</code>. Since this is a parent of <code>Discussion</code> because of the <a href="#⬆-class-inheritance">inheritance</a>, you can type-hint just that for it to work (no <code>Union</code> from <a href="https://docs.python.org/3/library/typing.html">typing</a> is required). You can check the <a href="https://cwkevo.github.io/pyflarum/docs/extensions">extensions documentation</a> for list of available mixins and extensions, or the <a href="https://github.com/CWKevo/pyflarum/tree/main/pyflarum/extensions">source code</a>.</p>
 </blockquote>
 <h2 id="class-inheritance">⬆ Class Inheritance</h2>
 <p>pyFlarum's inhertitance needed to be wrapped around Flarum's API, so that these two can work together. To understand this system, we need to first understand how Flarum's API works:</p>
@@ -250,11 +249,9 @@ for discussion in USER.all_discussions():
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/18ed30af63f66f44e540387afa9877eaea4a7c5d/pyflarum\__init__.py#L0-L40" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/d75162cc9c538f82395fe345a7ddc0728ff716ed/pyflarum\__init__.py#L0-L43" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">import warnings
-
-from pathlib import Path
+<pre><code class="python">from pathlib import Path
 
 from .session import FlarumUser
 from .error_handler import FlarumError
@@ -269,7 +266,7 @@ __author__      = &#34;SKevo&#34;
 __copyright__   = &#34;Copyright 2021, SKevo&#34;
 __credits__     = [&#34;SKevo&#34;]
 __license__     = &#34;GPLv3&#34;
-__version__     = &#34;v1.0.2-beta&#34;
+__version__     = &#34;v1.0.4-beta&#34;
 __maintainer__  = &#34;SKevo&#34;
 __email__       = &#34;me@kevo.link&#34;
 __status__      = &#34;4 - Beta&#34;
@@ -283,16 +280,21 @@ try:
         __readme__ = readme.read()
 
 except FileNotFoundError:
-    warnings.warn(&#34;README file not found&#34;, Warning)
+    pass
 
-import pyflarum
-pyflarum.__doc__ = __readme__
 
-if __name__ == &#39;__main__&#39;:
+__doc__ = __readme__
+
+
+if __name__ == &#34;__main__&#34;:
     from typing import Union
 
-    # Prevent VSCode from reporting unused imports:
-    _: Union[FlarumUser, FlarumError, Discussion, Filter]</code></pre>
+    _: Union[
+        FlarumUser,
+        FlarumError,
+        Discussion,
+        Filter
+    ]</code></pre>
 </details>
 </section>
 <section>
