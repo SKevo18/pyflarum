@@ -25,7 +25,7 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/d75162cc9c538f82395fe345a7ddc0728ff716ed/pyflarum\extensions\commands.py#L0-L66" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\extensions\commands.py#L0-L66" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">from typing import List
 
@@ -180,7 +180,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/d75162cc9c538f82395fe345a7ddc0728ff716ed/pyflarum\extensions\commands.py#L53-L67" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\extensions\commands.py#L53-L67" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class CommandsExtension(ExtensionMixin, CommandsFlarumUserMixin):
     def __init__(self):
@@ -261,7 +261,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/d75162cc9c538f82395fe345a7ddc0728ff716ed/pyflarum\extensions\commands.py#L59-L63" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\extensions\commands.py#L59-L63" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_dependencies(self):
     return {
@@ -292,7 +292,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/d75162cc9c538f82395fe345a7ddc0728ff716ed/pyflarum\extensions\commands.py#L66-L67" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\extensions\commands.py#L66-L67" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def mixin(self):
     super().mixin(self, FlarumUser, CommandsFlarumUserMixin)</code></pre>
@@ -329,7 +329,7 @@ dict(one=1, two=2)</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/d75162cc9c538f82395fe345a7ddc0728ff716ed/pyflarum\extensions\commands.py#L18-L50" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\extensions\commands.py#L18-L50" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class CommandsFlarumUserMixin(FlarumUser):
     def is_mentioned_in(self, string: str):
@@ -436,7 +436,7 @@ dict(one=1, two=2)</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/d75162cc9c538f82395fe345a7ddc0728ff716ed/pyflarum\extensions\commands.py#L19-L26" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\extensions\commands.py#L19-L26" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def is_mentioned_in(self, string: str):
     match = re.search(rf&#39;@&#34;({self.username})&#34;#[a-z0-9]+&#39;, string)
@@ -459,7 +459,7 @@ dict(one=1, two=2)</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/d75162cc9c538f82395fe345a7ddc0728ff716ed/pyflarum\extensions\commands.py#L29-L50" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\extensions\commands.py#L29-L50" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def parse_as_command(self, string: str, is_mentioned: bool=True, split_at: str=&#39; &#39;):
     &#34;&#34;&#34;

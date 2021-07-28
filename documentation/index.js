@@ -3695,6 +3695,12 @@ INDEX=[
 "doc":""
 },
 {
+"ref":"pyflarum.session.FlarumSession.authenticate",
+"url":6,
+"doc":"",
+"func":1
+},
+{
 "ref":"pyflarum.session.FlarumSession.api_urls",
 "url":6,
 "doc":"Simple, hardcoded  'key: value'  dict of Flarum's API routes for quick access. API routes reference (old): https: github.com/flarum/flarum.github.io/blob/20322c0e6011e4f304ae7e95f41594a0b086bc27/_docs/api.md"
