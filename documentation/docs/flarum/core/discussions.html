@@ -25,9 +25,9 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\flarum\core\discussions.py#L0-L427" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\discussions.py#L0-L543" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">from typing import TYPE_CHECKING, Optional, List
+<pre><code class="python">from typing import Any, Literal, TYPE_CHECKING, Optional, List, Union
 
 # Avoid my greatest enemy in Python: circular import:
 if TYPE_CHECKING:
@@ -35,7 +35,7 @@ if TYPE_CHECKING:
 
 from datetime import datetime
 
-from ...flarum.core.users import User
+from ...flarum.core.users import UserFromBulk, UserFromNotification
 
 from ...error_handler import FlarumError, parse_request
 from ...datetime_conversions import flarum_to_datetime
@@ -334,34 +334,78 @@ class DiscussionFromBulk(DiscussionFromNotification):
 
     @property
     def _parent_included(self) -&gt; List[dict]:
+        # TODO: Move to README:
+        &#34;&#34;&#34;
+            Raw data of the parent&#39;s included JSON data.
+
+            In a nutshell, when you obtain `DiscussionFromBulk` from `Discussions`,
+            `Discussions.included` gets passed to `_parent_included`.
+
+            #### Long explanation for nerds (I am not good at explaining):
+            This is because of the way [Flarum&#39;s includes](https://cwkevo.github.io/pyflarum/docs/#included-data) work.
+            When you run a function such as `get_author()`, the data for the author is not directly in the `DiscussionFromBulk`&#39;s JSON.
+            This means that pyFlarum would have to make a new API call everytime you run `get_author()`, and you&#39;d see 429 sooner than usual.
+            Instead, the data is already in the parent&#39;s (`Discussions.included`) data. And since that gets passed to this object too, pyFlarum doesn&#39;t need to
+            make any more API calls - instead, it just picks the right author from that data.
+            
+            You can think of this as a cache in a nutshell, if it&#39;s unclear for you. And if things are still confusing you, you just don&#39;t need to worry about this
+            because pyFlarum handles everything for you in the background. Unless you are forging this object&#39;s JSON data by yourself,
+            and you don&#39;t pass the parent&#39;s included - this would mean that all functions that rely on that will break. I have never spotted any weird stuff by normal
+            usage of pyFlarum during testing, but there&#39;s perhaps a very tiny chance that this system can possibly bug out.
+        &#34;&#34;&#34;
+
         return self.get(&#34;_parent_included&#34;, [{}])
 
 
-    def get_author(self):
+    def get_author(self) -&gt; UserFromNotification:
+        &#34;&#34;&#34;
+            Obtains the author of the discussion.
+
+            It returns `pyflarum.flarum.core.users.UserFromNotification` because it&#39;s JSON
+            data matches the data of user from notification.
+
+            This works by fetching it from the `_parent_included` property.
+        &#34;&#34;&#34;
+
         id = self.relationships.get(&#34;user&#34;, {}).get(&#34;data&#34;, {}).get(&#34;id&#34;, None)
 
         for raw_user in self._parent_included:
             if raw_user.get(&#34;id&#34;, None) == id and raw_user.get(&#34;type&#34;, None) == &#39;users&#39;:
-                user = User(user=self.user, _fetched_data=dict(data=raw_user))
+                user = UserFromNotification(user=self.user, _fetched_data=dict(data=raw_user))
 
                 return user
 
         return None
 
 
-    def get_last_posted_user(self):
+    def get_last_posted_user(self) -&gt; UserFromNotification:
+        &#34;&#34;&#34;
+            Obtains the user that posted the latest post in the discussion.
+
+            It returns `pyflarum.flarum.core.users.UserFromNotification` because it&#39;s JSON
+            data matches the data of user from notification.
+
+            This works by fetching it from the `_parent_included` property.
+        &#34;&#34;&#34;
+
         id = self.relationships.get(&#34;lastPostedUser&#34;, {}).get(&#34;data&#34;, {}).get(&#34;id&#34;, None)
 
         for raw_user in self._parent_included:
             if raw_user.get(&#34;id&#34;, None) == id and raw_user.get(&#34;type&#34;, None) == &#39;users&#39;:
-                user = User(user=self.user, _fetched_data=dict(data=raw_user))
+                user = UserFromNotification(user=self.user, _fetched_data=dict(data=raw_user))
 
                 return user
 
         return None
 
 
-    def get_first_post(self):
+    def get_first_post(self) -&gt; PostFromDiscussion:
+        &#34;&#34;&#34;
+            Obtains the first post of the discussion.
+
+            This works by fetching it from the `_parent_included` property.
+        &#34;&#34;&#34;
+
         id = self.relationships.get(&#34;firstPost&#34;, {}).get(&#34;data&#34;, {}).get(&#34;id&#34;, None)
 
         for raw_post in self._parent_included:
@@ -374,6 +418,13 @@ class DiscussionFromBulk(DiscussionFromNotification):
 
 
     def __restore_or_hide(self, hide: bool, force: bool=False):
+        &#34;&#34;&#34;
+            Either restores or hides the post.
+
+            This function was made to prevent repetitve code, and you should use
+            `hide()` or `restore()` (`unhide()`) instead.
+        &#34;&#34;&#34;
+
         if hide:
             if self.isHidden and not force:
                 raise FlarumError(f&#34;Discussion {self.id} is already hidden. Use `force = True` to ignore this error.&#34;)
@@ -390,26 +441,47 @@ class DiscussionFromBulk(DiscussionFromNotification):
 
 
     def hide(self, force: bool=False):
+        &#34;&#34;&#34;
+            Hides the discussion from the sight of other unprivileged users
+            that are not worthy to view such thread.
+        &#34;&#34;&#34;
+
         return self.__restore_or_hide(hide=True, force=force)
 
 
     def restore(self, force: bool=False):
+        &#34;&#34;&#34;
+            Restores the discussion (unhides it), bringing it back to life.
+        &#34;&#34;&#34;
+
         return self.__restore_or_hide(hide=False, force=force)
     unhide = restore
 
 
     def delete(self, force: bool=False):
+        &#34;&#34;&#34;
+            Scronches the discussion forever. This cannot be reverted.
+
+            Use `force=True` to attempt to delete the discussion even if the API states that you can&#39;t.
+        &#34;&#34;&#34;
+
         if not self.canDelete and not force:
             raise FlarumError(f&#39;You do not have permission to delete this discussion ({self.id})&#39;)
 
         else:
             return super().delete()
 
+
 # Circular:
 from ...flarum.core.posts import PostFromBulk
 class Discussion(DiscussionFromBulk):
     &#34;&#34;&#34;
-        A Flarum discussion.
+        A Flarum discussion, obtained directly from the API by ID.
+        
+        This is the top-level discussion object that contains all the properties of a discussion, and
+        inherits properties from all previous discussion-like objects.
+
+        Learn more about inheritance [here](https://cwkevo.github.io/pyflarum/docs/#class-inheritance)
     &#34;&#34;&#34;
 
     def __init__(self, user: &#39;FlarumUser&#39;, _fetched_data: dict):
@@ -420,10 +492,54 @@ class Discussion(DiscussionFromBulk):
 
     @property
     def included(self) -&gt; List[dict]:
+        &#34;&#34;&#34;
+            Returns raw list of JSON included data.
+
+            `Discussion.get_author()`
+
+            Learn more about included data [here](https://cwkevo.github.io/pyflarum/docs/#included-data)
+        &#34;&#34;&#34;
+
         return self.get(&#34;included&#34;, [{}])
 
 
-    def get_posts(self):
+    def get_author(self, mode: Union[Literal[&#39;first_number&#39;], Any]=&#39;first_number&#39;) -&gt; UserFromBulk:
+        &#34;&#34;&#34;
+            Obtains the discussion&#39;s author, AKA. the author
+            of the post with number 1 in a discussion.
+
+            `mode` allows you to specify the mode that is used to determine whether or not the post is the first post
+            of the discussion.
+
+            - `&#39;first_number&#39;` - checks if the number of the post is 1 - if yes, it fetches that post&#39;s author.
+            - `Any` - if anything other than `&#39;first_number&#39;` is passed (e. g. `&#39;first_user``, but this can be anything), then this
+            returns the author of the first post in the JSON.
+            I am not sure how reliable is this, and whether or not the posts are actually ordered correctly in the API, so it&#39;s
+            probably a good idea to also check if the number of the post is 1 - but then again, what if the first post gets removed?
+        &#34;&#34;&#34;
+
+        for post in self.get_posts():
+            if mode == &#39;first_number&#39;:
+                if post.number == 1:
+                    author = post.get_author()
+
+                    return author
+
+            else:
+                author = post.get_author()
+                return author
+
+        return None
+
+
+    def get_posts(self) -&gt; List[PostFromBulk]:
+        &#34;&#34;&#34;
+            Returns a list of `pyflarum.flarum.core.posts.PostFromBulk` objects.
+
+            It might seem strange why this doesn&#39;t return `pyflarum.flarum.core.posts.PostFromDiscussion` instead,
+            but these posts are in fact identical to `pyflarum.flarum.core.posts.PostFromBulk`, that&#39;s why they are returned.
+        &#34;&#34;&#34;
+
         all_posts = list() # type: List[PostFromBulk]
         raw_posts = self.relationships.get(&#34;posts&#34;, {}).get(&#34;data&#34;, [{}]) # type: List[dict]
 
@@ -471,15 +587,23 @@ class Discussion(DiscussionFromBulk):
 <span>(</span><span>user: FlarumUser, _fetched_data: dict)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>A Flarum discussion.</p></div>
+<div class="desc"><p>A Flarum discussion, obtained directly from the API by ID.</p>
+<p>This is the top-level discussion object that contains all the properties of a discussion, and
+inherits properties from all previous discussion-like objects.</p>
+<p>Learn more about inheritance <a href="https://cwkevo.github.io/pyflarum/docs/#class-inheritance">here</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\flarum\core\discussions.py#L381-L428" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\discussions.py#L448-L544" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class Discussion(DiscussionFromBulk):
     &#34;&#34;&#34;
-        A Flarum discussion.
+        A Flarum discussion, obtained directly from the API by ID.
+        
+        This is the top-level discussion object that contains all the properties of a discussion, and
+        inherits properties from all previous discussion-like objects.
+
+        Learn more about inheritance [here](https://cwkevo.github.io/pyflarum/docs/#class-inheritance)
     &#34;&#34;&#34;
 
     def __init__(self, user: &#39;FlarumUser&#39;, _fetched_data: dict):
@@ -490,10 +614,54 @@ class Discussion(DiscussionFromBulk):
 
     @property
     def included(self) -&gt; List[dict]:
+        &#34;&#34;&#34;
+            Returns raw list of JSON included data.
+
+            `Discussion.get_author()`
+
+            Learn more about included data [here](https://cwkevo.github.io/pyflarum/docs/#included-data)
+        &#34;&#34;&#34;
+
         return self.get(&#34;included&#34;, [{}])
 
 
-    def get_posts(self):
+    def get_author(self, mode: Union[Literal[&#39;first_number&#39;], Any]=&#39;first_number&#39;) -&gt; UserFromBulk:
+        &#34;&#34;&#34;
+            Obtains the discussion&#39;s author, AKA. the author
+            of the post with number 1 in a discussion.
+
+            `mode` allows you to specify the mode that is used to determine whether or not the post is the first post
+            of the discussion.
+
+            - `&#39;first_number&#39;` - checks if the number of the post is 1 - if yes, it fetches that post&#39;s author.
+            - `Any` - if anything other than `&#39;first_number&#39;` is passed (e. g. `&#39;first_user``, but this can be anything), then this
+            returns the author of the first post in the JSON.
+            I am not sure how reliable is this, and whether or not the posts are actually ordered correctly in the API, so it&#39;s
+            probably a good idea to also check if the number of the post is 1 - but then again, what if the first post gets removed?
+        &#34;&#34;&#34;
+
+        for post in self.get_posts():
+            if mode == &#39;first_number&#39;:
+                if post.number == 1:
+                    author = post.get_author()
+
+                    return author
+
+            else:
+                author = post.get_author()
+                return author
+
+        return None
+
+
+    def get_posts(self) -&gt; List[PostFromBulk]:
+        &#34;&#34;&#34;
+            Returns a list of `pyflarum.flarum.core.posts.PostFromBulk` objects.
+
+            It might seem strange why this doesn&#39;t return `pyflarum.flarum.core.posts.PostFromDiscussion` instead,
+            but these posts are in fact identical to `pyflarum.flarum.core.posts.PostFromBulk`, that&#39;s why they are returned.
+        &#34;&#34;&#34;
+
         all_posts = list() # type: List[PostFromBulk]
         raw_posts = self.relationships.get(&#34;posts&#34;, {}).get(&#34;data&#34;, [{}]) # type: List[dict]
 
@@ -536,14 +704,24 @@ class Discussion(DiscussionFromBulk):
 <dl>
 <dt id="pyflarum.flarum.core.discussions.Discussion.included"><code class="name">var <span class="ident">included</span> : List[dict]</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Returns raw list of JSON included data.</p>
+<p><code><a title="pyflarum.flarum.core.discussions.Discussion.get_author" href="#pyflarum.flarum.core.discussions.Discussion.get_author">Discussion.get_author()</a></code></p>
+<p>Learn more about included data <a href="https://cwkevo.github.io/pyflarum/docs/#included-data">here</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\flarum\core\discussions.py#L392-L394" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\discussions.py#L464-L474" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def included(self) -&gt; List[dict]:
+    &#34;&#34;&#34;
+        Returns raw list of JSON included data.
+
+        `Discussion.get_author()`
+
+        Learn more about included data [here](https://cwkevo.github.io/pyflarum/docs/#included-data)
+    &#34;&#34;&#34;
+
     return self.get(&#34;included&#34;, [{}])</code></pre>
 </details>
 </dd>
@@ -558,7 +736,56 @@ def included(self) -&gt; List[dict]:
 <em>Inherited from:</em>
 <code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.delete" href="#pyflarum.flarum.core.discussions.DiscussionFromBulk.delete">delete</a></code>
 </p>
-<div class="desc inherited"><p>Deletes a discussion forever - this action is irreversible!</p></div>
+<div class="desc inherited"><p>Scronches the discussion forever. This cannot be reverted …</p></div>
+</dd>
+<dt id="pyflarum.flarum.core.discussions.Discussion.get_author"><code class="name flex">
+<span>def <span class="ident">get_author</span></span>(<span>self, mode: Union[Literal['first_number'], Any] = 'first_number') ‑> <a title="pyflarum.flarum.core.users.UserFromBulk" href="users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Obtains the discussion's author, AKA. the author
+of the post with number 1 in a discussion.</p>
+<p><code>mode</code> allows you to specify the mode that is used to determine whether or not the post is the first post
+of the discussion.</p>
+<ul>
+<li><code>'first_number'</code> - checks if the number of the post is 1 - if yes, it fetches that post's author.</li>
+<li><code>Any</code> - if anything other than <code>'first_number'</code> is passed (e. g. `'first_user``, but this can be anything), then this
+returns the author of the first post in the JSON.
+I am not sure how reliable is this, and whether or not the posts are actually ordered correctly in the API, so it's
+probably a good idea to also check if the number of the post is 1 - but then again, what if the first post gets removed?</li>
+</ul></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\discussions.py#L477-L503" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def get_author(self, mode: Union[Literal[&#39;first_number&#39;], Any]=&#39;first_number&#39;) -&gt; UserFromBulk:
+    &#34;&#34;&#34;
+        Obtains the discussion&#39;s author, AKA. the author
+        of the post with number 1 in a discussion.
+
+        `mode` allows you to specify the mode that is used to determine whether or not the post is the first post
+        of the discussion.
+
+        - `&#39;first_number&#39;` - checks if the number of the post is 1 - if yes, it fetches that post&#39;s author.
+        - `Any` - if anything other than `&#39;first_number&#39;` is passed (e. g. `&#39;first_user``, but this can be anything), then this
+        returns the author of the first post in the JSON.
+        I am not sure how reliable is this, and whether or not the posts are actually ordered correctly in the API, so it&#39;s
+        probably a good idea to also check if the number of the post is 1 - but then again, what if the first post gets removed?
+    &#34;&#34;&#34;
+
+    for post in self.get_posts():
+        if mode == &#39;first_number&#39;:
+            if post.number == 1:
+                author = post.get_author()
+
+                return author
+
+        else:
+            author = post.get_author()
+            return author
+
+    return None</code></pre>
+</details>
 </dd>
 <dt id="pyflarum.flarum.core.discussions.Discussion.get_first_post"><code class="name flex">
 <span>def <span class="ident">get_first_post</span></span>(<span>self)</span>
@@ -573,7 +800,7 @@ first_post = discussion.get_posts()[0]
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\flarum\core\discussions.py#L415-L428" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\discussions.py#L531-L544" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_first_post(self):
     &#34;&#34;&#34;
@@ -591,17 +818,36 @@ first_post = discussion.get_posts()[0]
     raise NotImplementedError(&#34;`Discussion` does not have the first post data to fetch. Please, use the snippet in this function&#39;s docstring instead to obtain the first post.&#34;)</code></pre>
 </details>
 </dd>
-<dt id="pyflarum.flarum.core.discussions.Discussion.get_posts"><code class="name flex">
-<span>def <span class="ident">get_posts</span></span>(<span>self)</span>
+<dt id="pyflarum.flarum.core.discussions.Discussion.get_last_posted_user"><code class="name flex">
+<span>def <span class="ident">get_last_posted_user</span></span>(<span>self) ‑> <a title="pyflarum.flarum.core.users.UserFromNotification" href="users.html#pyflarum.flarum.core.users.UserFromNotification">UserFromNotification</a></span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.get_last_posted_user" href="#pyflarum.flarum.core.discussions.DiscussionFromBulk.get_last_posted_user">get_last_posted_user</a></code>
+</p>
+<div class="desc inherited"><p>Obtains the user that posted the latest post in the discussion …</p></div>
+</dd>
+<dt id="pyflarum.flarum.core.discussions.Discussion.get_posts"><code class="name flex">
+<span>def <span class="ident">get_posts</span></span>(<span>self) ‑> List[<a title="pyflarum.flarum.core.posts.PostFromBulk" href="posts.html#pyflarum.flarum.core.posts.PostFromBulk">PostFromBulk</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns a list of <code><a title="pyflarum.flarum.core.posts.PostFromBulk" href="posts.html#pyflarum.flarum.core.posts.PostFromBulk">PostFromBulk</a></code> objects.</p>
+<p>It might seem strange why this doesn't return <code><a title="pyflarum.flarum.core.posts.PostFromDiscussion" href="posts.html#pyflarum.flarum.core.posts.PostFromDiscussion">PostFromDiscussion</a></code> instead,
+but these posts are in fact identical to <code><a title="pyflarum.flarum.core.posts.PostFromBulk" href="posts.html#pyflarum.flarum.core.posts.PostFromBulk">PostFromBulk</a></code>, that's why they are returned.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\flarum\core\discussions.py#L397-L412" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\discussions.py#L506-L528" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">def get_posts(self):
+<pre><code class="python">def get_posts(self) -&gt; List[PostFromBulk]:
+    &#34;&#34;&#34;
+        Returns a list of `pyflarum.flarum.core.posts.PostFromBulk` objects.
+
+        It might seem strange why this doesn&#39;t return `pyflarum.flarum.core.posts.PostFromDiscussion` instead,
+        but these posts are in fact identical to `pyflarum.flarum.core.posts.PostFromBulk`, that&#39;s why they are returned.
+    &#34;&#34;&#34;
+
     all_posts = list() # type: List[PostFromBulk]
     raw_posts = self.relationships.get(&#34;posts&#34;, {}).get(&#34;data&#34;, [{}]) # type: List[dict]
 
@@ -627,7 +873,8 @@ first_post = discussion.get_posts()[0]
 <em>Inherited from:</em>
 <code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.hide" href="#pyflarum.flarum.core.discussions.DiscussionFromBulk.hide">hide</a></code>
 </p>
-<div class="desc inherited"><p>Hides the discussion. Raises <code>FlarumError</code> or returns <code>False</code> if it failed, otherwise <code>True</code> is returned.</p></div>
+<div class="desc inherited"><p>Hides the discussion from the sight of other unprivileged users
+that are not worthy to view such thread.</p></div>
 </dd>
 <dt id="pyflarum.flarum.core.discussions.Discussion.restore"><code class="name flex">
 <span>def <span class="ident">restore</span></span>(<span>self, force: bool = False)</span>
@@ -637,7 +884,7 @@ first_post = discussion.get_posts()[0]
 <em>Inherited from:</em>
 <code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.restore" href="#pyflarum.flarum.core.discussions.DiscussionFromBulk.restore">restore</a></code>
 </p>
-<div class="desc inherited"><p>Restores the discussion (unhides). Raises <code>FlarumError</code> or returns <code>False</code> if it failed, otherwise <code>True</code> is returned.</p></div>
+<div class="desc inherited"><p>Restores the discussion (unhides it), bringing it back to life.</p></div>
 </dd>
 <dt id="pyflarum.flarum.core.discussions.Discussion.unhide"><code class="name flex">
 <span>def <span class="ident">unhide</span></span>(<span>self, force: bool = False)</span>
@@ -647,7 +894,7 @@ first_post = discussion.get_posts()[0]
 <em>Inherited from:</em>
 <code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.unhide" href="#pyflarum.flarum.core.discussions.DiscussionFromBulk.unhide">unhide</a></code>
 </p>
-<div class="desc inherited"><p>Restores the discussion (unhides). Raises <code>FlarumError</code> or returns <code>False</code> if it failed, otherwise <code>True</code> is returned.</p></div>
+<div class="desc inherited"><p>Restores the discussion (unhides it), bringing it back to life.</p></div>
 </dd>
 </dl>
 </dd>
@@ -660,7 +907,7 @@ first_post = discussion.get_posts()[0]
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\flarum\core\discussions.py#L209-L377" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\discussions.py#L209-L443" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class DiscussionFromBulk(DiscussionFromNotification):
     &#34;&#34;&#34;
@@ -761,34 +1008,78 @@ first_post = discussion.get_posts()[0]
 
     @property
     def _parent_included(self) -&gt; List[dict]:
+        # TODO: Move to README:
+        &#34;&#34;&#34;
+            Raw data of the parent&#39;s included JSON data.
+
+            In a nutshell, when you obtain `DiscussionFromBulk` from `Discussions`,
+            `Discussions.included` gets passed to `_parent_included`.
+
+            #### Long explanation for nerds (I am not good at explaining):
+            This is because of the way [Flarum&#39;s includes](https://cwkevo.github.io/pyflarum/docs/#included-data) work.
+            When you run a function such as `get_author()`, the data for the author is not directly in the `DiscussionFromBulk`&#39;s JSON.
+            This means that pyFlarum would have to make a new API call everytime you run `get_author()`, and you&#39;d see 429 sooner than usual.
+            Instead, the data is already in the parent&#39;s (`Discussions.included`) data. And since that gets passed to this object too, pyFlarum doesn&#39;t need to
+            make any more API calls - instead, it just picks the right author from that data.
+            
+            You can think of this as a cache in a nutshell, if it&#39;s unclear for you. And if things are still confusing you, you just don&#39;t need to worry about this
+            because pyFlarum handles everything for you in the background. Unless you are forging this object&#39;s JSON data by yourself,
+            and you don&#39;t pass the parent&#39;s included - this would mean that all functions that rely on that will break. I have never spotted any weird stuff by normal
+            usage of pyFlarum during testing, but there&#39;s perhaps a very tiny chance that this system can possibly bug out.
+        &#34;&#34;&#34;
+
         return self.get(&#34;_parent_included&#34;, [{}])
 
 
-    def get_author(self):
+    def get_author(self) -&gt; UserFromNotification:
+        &#34;&#34;&#34;
+            Obtains the author of the discussion.
+
+            It returns `pyflarum.flarum.core.users.UserFromNotification` because it&#39;s JSON
+            data matches the data of user from notification.
+
+            This works by fetching it from the `_parent_included` property.
+        &#34;&#34;&#34;
+
         id = self.relationships.get(&#34;user&#34;, {}).get(&#34;data&#34;, {}).get(&#34;id&#34;, None)
 
         for raw_user in self._parent_included:
             if raw_user.get(&#34;id&#34;, None) == id and raw_user.get(&#34;type&#34;, None) == &#39;users&#39;:
-                user = User(user=self.user, _fetched_data=dict(data=raw_user))
+                user = UserFromNotification(user=self.user, _fetched_data=dict(data=raw_user))
 
                 return user
 
         return None
 
 
-    def get_last_posted_user(self):
+    def get_last_posted_user(self) -&gt; UserFromNotification:
+        &#34;&#34;&#34;
+            Obtains the user that posted the latest post in the discussion.
+
+            It returns `pyflarum.flarum.core.users.UserFromNotification` because it&#39;s JSON
+            data matches the data of user from notification.
+
+            This works by fetching it from the `_parent_included` property.
+        &#34;&#34;&#34;
+
         id = self.relationships.get(&#34;lastPostedUser&#34;, {}).get(&#34;data&#34;, {}).get(&#34;id&#34;, None)
 
         for raw_user in self._parent_included:
             if raw_user.get(&#34;id&#34;, None) == id and raw_user.get(&#34;type&#34;, None) == &#39;users&#39;:
-                user = User(user=self.user, _fetched_data=dict(data=raw_user))
+                user = UserFromNotification(user=self.user, _fetched_data=dict(data=raw_user))
 
                 return user
 
         return None
 
 
-    def get_first_post(self):
+    def get_first_post(self) -&gt; PostFromDiscussion:
+        &#34;&#34;&#34;
+            Obtains the first post of the discussion.
+
+            This works by fetching it from the `_parent_included` property.
+        &#34;&#34;&#34;
+
         id = self.relationships.get(&#34;firstPost&#34;, {}).get(&#34;data&#34;, {}).get(&#34;id&#34;, None)
 
         for raw_post in self._parent_included:
@@ -801,6 +1092,13 @@ first_post = discussion.get_posts()[0]
 
 
     def __restore_or_hide(self, hide: bool, force: bool=False):
+        &#34;&#34;&#34;
+            Either restores or hides the post.
+
+            This function was made to prevent repetitve code, and you should use
+            `hide()` or `restore()` (`unhide()`) instead.
+        &#34;&#34;&#34;
+
         if hide:
             if self.isHidden and not force:
                 raise FlarumError(f&#34;Discussion {self.id} is already hidden. Use `force = True` to ignore this error.&#34;)
@@ -817,15 +1115,30 @@ first_post = discussion.get_posts()[0]
 
 
     def hide(self, force: bool=False):
+        &#34;&#34;&#34;
+            Hides the discussion from the sight of other unprivileged users
+            that are not worthy to view such thread.
+        &#34;&#34;&#34;
+
         return self.__restore_or_hide(hide=True, force=force)
 
 
     def restore(self, force: bool=False):
+        &#34;&#34;&#34;
+            Restores the discussion (unhides it), bringing it back to life.
+        &#34;&#34;&#34;
+
         return self.__restore_or_hide(hide=False, force=force)
     unhide = restore
 
 
     def delete(self, force: bool=False):
+        &#34;&#34;&#34;
+            Scronches the discussion forever. This cannot be reverted.
+
+            Use `force=True` to attempt to delete the discussion even if the API states that you can&#39;t.
+        &#34;&#34;&#34;
+
         if not self.canDelete and not force:
             raise FlarumError(f&#39;You do not have permission to delete this discussion ({self.id})&#39;)
 
@@ -839,10 +1152,6 @@ first_post = discussion.get_posts()[0]
 </ul>
 <h3>Subclasses</h3>
 <ul class="hlist">
-<li><a title="pyflarum.extensions.flarum.Askvortsov_ReplyTemplates.ReplyTemplatesDiscussionMixin" href="../../extensions/flarum/Askvortsov_ReplyTemplates.html#pyflarum.extensions.flarum.Askvortsov_ReplyTemplates.ReplyTemplatesDiscussionMixin">ReplyTemplatesDiscussionMixin</a></li>
-<li><a title="pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin" href="../../extensions/flarum/Blomstra_Realtime.html#pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin">RealtimeDiscussionMixin</a></li>
-<li><a title="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionMixin" href="../../extensions/flarum/Flarum_Lock.html#pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionMixin">LockDiscussionMixin</a></li>
-<li><a title="pyflarum.extensions.flarum.Flarum_Sticky.StickyDiscussionMixin" href="../../extensions/flarum/Flarum_Sticky.html#pyflarum.extensions.flarum.Flarum_Sticky.StickyDiscussionMixin">StickyDiscussionMixin</a></li>
 <li><a title="pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromBulkMixin" href="../../extensions/flarum/Flarum_Subscriptions.html#pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromBulkMixin">SubscriptionsDiscussionFromBulkMixin</a></li>
 <li><a title="pyflarum.extensions.flarum.Flarum_Tags.TagsDiscussionMixin" href="../../extensions/flarum/Flarum_Tags.html#pyflarum.extensions.flarum.Flarum_Tags.TagsDiscussionMixin">TagsDiscussionMixin</a></li>
 <li><a title="pyflarum.extensions.flarum.FoF_BestAnswer.BestAnswerDiscussionMixin" href="../../extensions/flarum/FoF_BestAnswer.html#pyflarum.extensions.flarum.FoF_BestAnswer.BestAnswerDiscussionMixin">BestAnswerDiscussionMixin</a></li>
@@ -860,7 +1169,7 @@ first_post = discussion.get_posts()[0]
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\flarum\core\discussions.py#L274-L276" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\discussions.py#L274-L276" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def canDelete(self) -&gt; bool:
@@ -873,7 +1182,7 @@ def canDelete(self) -&gt; bool:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\flarum\core\discussions.py#L279-L281" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\discussions.py#L279-L281" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def canHide(self) -&gt; bool:
@@ -886,7 +1195,7 @@ def canHide(self) -&gt; bool:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\flarum\core\discussions.py#L269-L271" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\discussions.py#L269-L271" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def canRename(self) -&gt; bool:
@@ -899,7 +1208,7 @@ def canRename(self) -&gt; bool:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\flarum\core\discussions.py#L264-L266" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\discussions.py#L264-L266" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def canReply(self) -&gt; bool:
@@ -912,7 +1221,7 @@ def canReply(self) -&gt; bool:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\flarum\core\discussions.py#L230-L232" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\discussions.py#L230-L232" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def commentCount(self) -&gt; Optional[str]:
@@ -925,7 +1234,7 @@ def commentCount(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\flarum\core\discussions.py#L240-L244" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\discussions.py#L240-L244" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def createdAt(self) -&gt; Optional[datetime]:
@@ -940,7 +1249,7 @@ def createdAt(self) -&gt; Optional[datetime]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\flarum\core\discussions.py#L291-L293" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\discussions.py#L291-L293" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def isHidden(self) -&gt; bool:
@@ -953,7 +1262,7 @@ def isHidden(self) -&gt; bool:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\flarum\core\discussions.py#L254-L256" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\discussions.py#L254-L256" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def lastPostNumber(self) -&gt; Optional[int]:
@@ -966,7 +1275,7 @@ def lastPostNumber(self) -&gt; Optional[int]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\flarum\core\discussions.py#L247-L251" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\discussions.py#L247-L251" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def lastPostedAt(self) -&gt; Optional[datetime]:
@@ -981,7 +1290,7 @@ def lastPostedAt(self) -&gt; Optional[datetime]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\flarum\core\discussions.py#L284-L288" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\discussions.py#L284-L288" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def lastReadAt(self) -&gt; Optional[datetime]:
@@ -996,7 +1305,7 @@ def lastReadAt(self) -&gt; Optional[datetime]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\flarum\core\discussions.py#L259-L261" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\discussions.py#L259-L261" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def lastReadPostNumber(self) -&gt; Optional[int]:
@@ -1009,7 +1318,7 @@ def lastReadPostNumber(self) -&gt; Optional[int]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\flarum\core\discussions.py#L235-L237" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\discussions.py#L235-L237" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def participantCount(self) -&gt; Optional[str]:
@@ -1022,7 +1331,7 @@ def participantCount(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\flarum\core\discussions.py#L301-L303" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\discussions.py#L301-L303" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def relationships(self) -&gt; dict:
@@ -1035,7 +1344,7 @@ def relationships(self) -&gt; dict:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\flarum\core\discussions.py#L296-L298" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\discussions.py#L296-L298" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def subscription(self) -&gt; Optional[str]:
@@ -1048,7 +1357,7 @@ def subscription(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\flarum\core\discussions.py#L219-L227" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\discussions.py#L219-L227" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def url(self):
@@ -1068,17 +1377,20 @@ def url(self):
 <span>def <span class="ident">delete</span></span>(<span>self, force: bool = False)</span>
 </code></dt>
 <dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification" href="#pyflarum.flarum.core.discussions.DiscussionFromNotification">DiscussionFromNotification</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification.delete" href="#pyflarum.flarum.core.discussions.DiscussionFromNotification.delete">delete</a></code>
-</p>
-<div class="desc inherited"><p>Deletes a discussion forever - this action is irreversible!</p></div>
+<div class="desc"><p>Scronches the discussion forever. This cannot be reverted.</p>
+<p>Use <code>force=True</code> to attempt to delete the discussion even if the API states that you can't.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\flarum\core\discussions.py#L372-L377" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\discussions.py#L432-L443" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def delete(self, force: bool=False):
+    &#34;&#34;&#34;
+        Scronches the discussion forever. This cannot be reverted.
+
+        Use `force=True` to attempt to delete the discussion even if the API states that you can&#39;t.
+    &#34;&#34;&#34;
+
     if not self.canDelete and not force:
         raise FlarumError(f&#39;You do not have permission to delete this discussion ({self.id})&#39;)
 
@@ -1087,21 +1399,33 @@ def url(self):
 </details>
 </dd>
 <dt id="pyflarum.flarum.core.discussions.DiscussionFromBulk.get_author"><code class="name flex">
-<span>def <span class="ident">get_author</span></span>(<span>self)</span>
+<span>def <span class="ident">get_author</span></span>(<span>self) ‑> <a title="pyflarum.flarum.core.users.UserFromNotification" href="users.html#pyflarum.flarum.core.users.UserFromNotification">UserFromNotification</a></span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Obtains the author of the discussion.</p>
+<p>It returns <code><a title="pyflarum.flarum.core.users.UserFromNotification" href="users.html#pyflarum.flarum.core.users.UserFromNotification">UserFromNotification</a></code> because it's JSON
+data matches the data of user from notification.</p>
+<p>This works by fetching it from the <code>_parent_included</code> property.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\flarum\core\discussions.py#L311-L320" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\discussions.py#L331-L349" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">def get_author(self):
+<pre><code class="python">def get_author(self) -&gt; UserFromNotification:
+    &#34;&#34;&#34;
+        Obtains the author of the discussion.
+
+        It returns `pyflarum.flarum.core.users.UserFromNotification` because it&#39;s JSON
+        data matches the data of user from notification.
+
+        This works by fetching it from the `_parent_included` property.
+    &#34;&#34;&#34;
+
     id = self.relationships.get(&#34;user&#34;, {}).get(&#34;data&#34;, {}).get(&#34;id&#34;, None)
 
     for raw_user in self._parent_included:
         if raw_user.get(&#34;id&#34;, None) == id and raw_user.get(&#34;type&#34;, None) == &#39;users&#39;:
-            user = User(user=self.user, _fetched_data=dict(data=raw_user))
+            user = UserFromNotification(user=self.user, _fetched_data=dict(data=raw_user))
 
             return user
 
@@ -1109,16 +1433,23 @@ def url(self):
 </details>
 </dd>
 <dt id="pyflarum.flarum.core.discussions.DiscussionFromBulk.get_first_post"><code class="name flex">
-<span>def <span class="ident">get_first_post</span></span>(<span>self)</span>
+<span>def <span class="ident">get_first_post</span></span>(<span>self) ‑> <a title="pyflarum.flarum.core.posts.PostFromDiscussion" href="posts.html#pyflarum.flarum.core.posts.PostFromDiscussion">PostFromDiscussion</a></span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Obtains the first post of the discussion.</p>
+<p>This works by fetching it from the <code>_parent_included</code> property.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\flarum\core\discussions.py#L335-L344" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\discussions.py#L373-L388" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">def get_first_post(self):
+<pre><code class="python">def get_first_post(self) -&gt; PostFromDiscussion:
+    &#34;&#34;&#34;
+        Obtains the first post of the discussion.
+
+        This works by fetching it from the `_parent_included` property.
+    &#34;&#34;&#34;
+
     id = self.relationships.get(&#34;firstPost&#34;, {}).get(&#34;data&#34;, {}).get(&#34;id&#34;, None)
 
     for raw_post in self._parent_included:
@@ -1131,21 +1462,33 @@ def url(self):
 </details>
 </dd>
 <dt id="pyflarum.flarum.core.discussions.DiscussionFromBulk.get_last_posted_user"><code class="name flex">
-<span>def <span class="ident">get_last_posted_user</span></span>(<span>self)</span>
+<span>def <span class="ident">get_last_posted_user</span></span>(<span>self) ‑> <a title="pyflarum.flarum.core.users.UserFromNotification" href="users.html#pyflarum.flarum.core.users.UserFromNotification">UserFromNotification</a></span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Obtains the user that posted the latest post in the discussion.</p>
+<p>It returns <code><a title="pyflarum.flarum.core.users.UserFromNotification" href="users.html#pyflarum.flarum.core.users.UserFromNotification">UserFromNotification</a></code> because it's JSON
+data matches the data of user from notification.</p>
+<p>This works by fetching it from the <code>_parent_included</code> property.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\flarum\core\discussions.py#L323-L332" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\discussions.py#L352-L370" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">def get_last_posted_user(self):
+<pre><code class="python">def get_last_posted_user(self) -&gt; UserFromNotification:
+    &#34;&#34;&#34;
+        Obtains the user that posted the latest post in the discussion.
+
+        It returns `pyflarum.flarum.core.users.UserFromNotification` because it&#39;s JSON
+        data matches the data of user from notification.
+
+        This works by fetching it from the `_parent_included` property.
+    &#34;&#34;&#34;
+
     id = self.relationships.get(&#34;lastPostedUser&#34;, {}).get(&#34;data&#34;, {}).get(&#34;id&#34;, None)
 
     for raw_user in self._parent_included:
         if raw_user.get(&#34;id&#34;, None) == id and raw_user.get(&#34;type&#34;, None) == &#39;users&#39;:
-            user = User(user=self.user, _fetched_data=dict(data=raw_user))
+            user = UserFromNotification(user=self.user, _fetched_data=dict(data=raw_user))
 
             return user
 
@@ -1156,17 +1499,19 @@ def url(self):
 <span>def <span class="ident">hide</span></span>(<span>self, force: bool = False)</span>
 </code></dt>
 <dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification" href="#pyflarum.flarum.core.discussions.DiscussionFromNotification">DiscussionFromNotification</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification.hide" href="#pyflarum.flarum.core.discussions.DiscussionFromNotification.hide">hide</a></code>
-</p>
-<div class="desc inherited"><p>Hides the discussion. Raises <code>FlarumError</code> or returns <code>False</code> if it failed, otherwise <code>True</code> is returned.</p></div>
+<div class="desc"><p>Hides the discussion from the sight of other unprivileged users
+that are not worthy to view such thread.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\flarum\core\discussions.py#L363-L364" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\discussions.py#L414-L420" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def hide(self, force: bool=False):
+    &#34;&#34;&#34;
+        Hides the discussion from the sight of other unprivileged users
+        that are not worthy to view such thread.
+    &#34;&#34;&#34;
+
     return self.__restore_or_hide(hide=True, force=force)</code></pre>
 </details>
 </dd>
@@ -1174,17 +1519,17 @@ def url(self):
 <span>def <span class="ident">restore</span></span>(<span>self, force: bool = False)</span>
 </code></dt>
 <dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification" href="#pyflarum.flarum.core.discussions.DiscussionFromNotification">DiscussionFromNotification</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification.restore" href="#pyflarum.flarum.core.discussions.DiscussionFromNotification.restore">restore</a></code>
-</p>
-<div class="desc inherited"><p>Restores the discussion (unhides). Raises <code>FlarumError</code> or returns <code>False</code> if it failed, otherwise <code>True</code> is returned.</p></div>
+<div class="desc"><p>Restores the discussion (unhides it), bringing it back to life.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\flarum\core\discussions.py#L367-L368" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\discussions.py#L423-L428" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def restore(self, force: bool=False):
+    &#34;&#34;&#34;
+        Restores the discussion (unhides it), bringing it back to life.
+    &#34;&#34;&#34;
+
     return self.__restore_or_hide(hide=False, force=force)</code></pre>
 </details>
 </dd>
@@ -1192,17 +1537,17 @@ def url(self):
 <span>def <span class="ident">unhide</span></span>(<span>self, force: bool = False)</span>
 </code></dt>
 <dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification" href="#pyflarum.flarum.core.discussions.DiscussionFromNotification">DiscussionFromNotification</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification.unhide" href="#pyflarum.flarum.core.discussions.DiscussionFromNotification.unhide">unhide</a></code>
-</p>
-<div class="desc inherited"><p>Restores the discussion (unhides). Raises <code>FlarumError</code> or returns <code>False</code> if it failed, otherwise <code>True</code> is returned.</p></div>
+<div class="desc"><p>Restores the discussion (unhides it), bringing it back to life.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\flarum\core\discussions.py#L367-L368" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\discussions.py#L423-L428" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def restore(self, force: bool=False):
+    &#34;&#34;&#34;
+        Restores the discussion (unhides it), bringing it back to life.
+    &#34;&#34;&#34;
+
     return self.__restore_or_hide(hide=False, force=force)</code></pre>
 </details>
 </dd>
@@ -1217,7 +1562,7 @@ def url(self):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\flarum\core\discussions.py#L114-L203" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\discussions.py#L114-L203" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class DiscussionFromNotification(dict):
     &#34;&#34;&#34;
@@ -1316,8 +1661,6 @@ def url(self):
 </ul>
 <h3>Subclasses</h3>
 <ul class="hlist">
-<li><a title="pyflarum.extensions.flarum.Flarum_Approval.ApprovalDiscussionFromNotificationMixin" href="../../extensions/flarum/Flarum_Approval.html#pyflarum.extensions.flarum.Flarum_Approval.ApprovalDiscussionFromNotificationMixin">ApprovalDiscussionFromNotificationMixin</a></li>
-<li><a title="pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromNotificationMixin" href="../../extensions/flarum/Flarum_Subscriptions.html#pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromNotificationMixin">SubscriptionsDiscussionFromNotificationMixin</a></li>
 <li><a title="pyflarum.extensions.flarum.FoF_BestAnswer.BestAnswerDiscussionNotificationMixin" href="../../extensions/flarum/FoF_BestAnswer.html#pyflarum.extensions.flarum.FoF_BestAnswer.BestAnswerDiscussionNotificationMixin">BestAnswerDiscussionNotificationMixin</a></li>
 <li><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></li>
 </ul>
@@ -1329,7 +1672,7 @@ def url(self):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\flarum\core\discussions.py#L146-L148" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\discussions.py#L146-L148" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def attributes(self) -&gt; dict:
@@ -1342,7 +1685,7 @@ def attributes(self) -&gt; dict:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\flarum\core\discussions.py#L131-L133" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\discussions.py#L131-L133" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def data(self) -&gt; dict:
@@ -1355,7 +1698,7 @@ def data(self) -&gt; dict:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\flarum\core\discussions.py#L141-L143" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\discussions.py#L141-L143" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def id(self) -&gt; Optional[int]:
@@ -1368,7 +1711,7 @@ def id(self) -&gt; Optional[int]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\flarum\core\discussions.py#L156-L158" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\discussions.py#L156-L158" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def slug(self) -&gt; Optional[str]:
@@ -1381,7 +1724,7 @@ def slug(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\flarum\core\discussions.py#L151-L153" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\discussions.py#L151-L153" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def title(self) -&gt; Optional[str]:
@@ -1394,7 +1737,7 @@ def title(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\flarum\core\discussions.py#L136-L138" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\discussions.py#L136-L138" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def type(self) -&gt; Optional[str]:
@@ -1412,7 +1755,7 @@ def type(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\flarum\core\discussions.py#L195-L203" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\discussions.py#L195-L203" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def delete(self):
     &#34;&#34;&#34;
@@ -1433,7 +1776,7 @@ def type(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\flarum\core\discussions.py#L124-L128" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\discussions.py#L124-L128" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_full_data(self):
     raw = self.user.session.get(f&#34;{self.user.api_urls[&#39;discussions&#39;]}/{self.id}&#34;)
@@ -1450,7 +1793,7 @@ def type(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\flarum\core\discussions.py#L178-L183" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\discussions.py#L178-L183" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def hide(self):
     &#34;&#34;&#34;
@@ -1468,7 +1811,7 @@ def type(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\flarum\core\discussions.py#L186-L191" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\discussions.py#L186-L191" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def restore(self):
     &#34;&#34;&#34;
@@ -1486,7 +1829,7 @@ def type(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\flarum\core\discussions.py#L186-L191" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\discussions.py#L186-L191" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def restore(self):
     &#34;&#34;&#34;
@@ -1507,7 +1850,7 @@ def type(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\flarum\core\discussions.py#L54-L111" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\discussions.py#L54-L111" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class Discussions(dict):
     &#34;&#34;&#34;
@@ -1580,7 +1923,7 @@ def type(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\flarum\core\discussions.py#L89-L91" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\discussions.py#L89-L91" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def data(self) -&gt; List[dict]:
@@ -1593,7 +1936,7 @@ def data(self) -&gt; List[dict]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\flarum\core\discussions.py#L74-L76" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\discussions.py#L74-L76" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def first_link(self) -&gt; Optional[str]:
@@ -1606,7 +1949,7 @@ def first_link(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\flarum\core\discussions.py#L94-L96" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\discussions.py#L94-L96" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def included(self) -&gt; List[dict]:
@@ -1619,7 +1962,7 @@ def included(self) -&gt; List[dict]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\flarum\core\discussions.py#L69-L71" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\discussions.py#L69-L71" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def links(self) -&gt; dict:
@@ -1632,7 +1975,7 @@ def links(self) -&gt; dict:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\flarum\core\discussions.py#L84-L86" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\discussions.py#L84-L86" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def next_link(self) -&gt; Optional[str]:
@@ -1645,7 +1988,7 @@ def next_link(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\flarum\core\discussions.py#L79-L81" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\discussions.py#L79-L81" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def previous_link(self) -&gt; Optional[str]:
@@ -1663,7 +2006,7 @@ def previous_link(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\flarum\core\discussions.py#L99-L111" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\discussions.py#L99-L111" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_discussions(self):
     &#34;&#34;&#34;
@@ -1701,7 +2044,7 @@ dict(one=1, two=2)</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\flarum\core\discussions.py#L15-L51" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\discussions.py#L15-L51" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class PreparedDiscussion(dict):
     def __init__(self, user: &#39;FlarumUser&#39;, title: Optional[str]=None, content: Optional[str]=None):
@@ -1753,7 +2096,7 @@ dict(one=1, two=2)</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\flarum\core\discussions.py#L24-L36" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\discussions.py#L24-L36" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def to_dict(self):
@@ -1781,7 +2124,7 @@ def to_dict(self):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\flarum\core\discussions.py#L39-L50" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\discussions.py#L39-L50" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def post(self):
     &#34;&#34;&#34;
@@ -1805,7 +2148,7 @@ def to_dict(self):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\flarum\core\discussions.py#L39-L50" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\discussions.py#L39-L50" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def post(self):
     &#34;&#34;&#34;
@@ -1887,9 +2230,11 @@ setTimeout(() => input.focus(), 100);
 <ul>
 <li>
 <h4><code><a title="pyflarum.flarum.core.discussions.Discussion" href="#pyflarum.flarum.core.discussions.Discussion">Discussion</a></code></h4>
-<ul class="two-column">
+<ul class="">
 <li><code><a title="pyflarum.flarum.core.discussions.Discussion.delete" href="#pyflarum.flarum.core.discussions.Discussion.delete">delete</a></code></li>
+<li><code><a title="pyflarum.flarum.core.discussions.Discussion.get_author" href="#pyflarum.flarum.core.discussions.Discussion.get_author">get_author</a></code></li>
 <li><code><a title="pyflarum.flarum.core.discussions.Discussion.get_first_post" href="#pyflarum.flarum.core.discussions.Discussion.get_first_post">get_first_post</a></code></li>
+<li><code><a title="pyflarum.flarum.core.discussions.Discussion.get_last_posted_user" href="#pyflarum.flarum.core.discussions.Discussion.get_last_posted_user">get_last_posted_user</a></code></li>
 <li><code><a title="pyflarum.flarum.core.discussions.Discussion.get_posts" href="#pyflarum.flarum.core.discussions.Discussion.get_posts">get_posts</a></code></li>
 <li><code><a title="pyflarum.flarum.core.discussions.Discussion.hide" href="#pyflarum.flarum.core.discussions.Discussion.hide">hide</a></code></li>
 <li><code><a title="pyflarum.flarum.core.discussions.Discussion.included" href="#pyflarum.flarum.core.discussions.Discussion.included">included</a></code></li>

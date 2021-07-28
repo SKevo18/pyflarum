@@ -1,3 +1,5 @@
+from typing import Union
+
 from .. import ExtensionMixin
 
 from ...flarum.core.discussions import DiscussionFromNotification
@@ -14,25 +16,42 @@ SOFT_DEPENDENCIES = []
 HARD_DEPENCENDIES = []
 
 
-class ApprovalDiscussionFromNotificationMixin(DiscussionFromNotification):
+
+class ApprovalDiscussionFromNotificationMixin:
     @property
-    def isApproved(self) -> bool:
+    def isApproved(self: DiscussionFromNotification) -> bool:
+        """
+            Whether or not the discussion is approved.
+        """
+
         return self.attributes.get("isApproved", False)
 
 
 
-class ApprovalPostFromNotificationMixin(PostFromNotification):
+class ApprovalPostFromNotificationMixin:
     @property
-    def isApproved(self) -> bool:
+    def isApproved(self: PostFromNotification) -> bool:
+        """
+            Whether or not the post is approved.
+        """
+
         return self.attributes.get("isApproved", False)
 
 
     @property
-    def canApprove(self) -> bool:
+    def canApprove(self: PostFromNotification) -> bool:
+        """
+            Whether or not you are able to approve the post
+        """
+
         return self.attributes.get("canApprove", False)
 
 
-    def approve(self, force: bool=False):
+    def approve(self: Union[PostFromNotification, 'ApprovalPostFromNotificationMixin'], force: bool=False) -> Post:
+        """
+            Approve the post. Use `force` to approve despite the post being approved already, and do not raise `FlarumError`.
+        """
+
         if self.isApproved and not force:
             raise FlarumError(f'Post ID {self.id} is already approved. Use `force = True` to bypass this error.')
 
@@ -55,6 +74,10 @@ class ApprovalPostFromNotificationMixin(PostFromNotification):
 
 
 class ApprovalExtension(ExtensionMixin):
+    """
+        https://packagist.org/packages/flarum/approval
+    """
+
     def get_dependencies(self):
         return {
             "soft": SOFT_DEPENDENCIES,

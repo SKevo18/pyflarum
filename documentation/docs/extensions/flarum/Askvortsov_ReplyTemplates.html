@@ -25,7 +25,7 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\extensions\flarum\Askvortsov_ReplyTemplates.py#L0-L34" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\flarum\Askvortsov_ReplyTemplates.py#L0-L47" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">from .. import ExtensionMixin
 
@@ -40,19 +40,32 @@ SOFT_DEPENDENCIES = []
 HARD_DEPENCENDIES = []
 
 
-class ReplyTemplatesDiscussionMixin(DiscussionFromBulk):
+
+class ReplyTemplatesDiscussionFromBulkMixin:
     @property
-    def replyTemplate(self) -&gt; str:
+    def replyTemplate(self: DiscussionFromBulk) -&gt; str:
+        &#34;&#34;&#34;
+            The reply template for the discussion.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;replyTemplate&#34;, &#34;&#34;)
 
 
     @property
-    def canManageReplyTemplates(self) -&gt; bool:
+    def canManageReplyTemplates(self: DiscussionFromBulk) -&gt; bool:
+        &#34;&#34;&#34;
+            Whether or not you are able to manage the discussion&#39;s reply templates.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;canManageReplyTemplates&#34;, False)
 
 
 
 class ReplyTemplatesExtension(ExtensionMixin):
+    &#34;&#34;&#34;
+        https://extiverse.com/extension/askvortsov/flarum-discussion-templates
+    &#34;&#34;&#34;
+
     def get_dependencies(self):
         return {
             &#34;soft&#34;: SOFT_DEPENDENCIES,
@@ -61,7 +74,7 @@ class ReplyTemplatesExtension(ExtensionMixin):
 
 
     def mixin(self):
-        super().mixin(self, DiscussionFromBulk, ReplyTemplatesDiscussionMixin)</code></pre>
+        super().mixin(self, DiscussionFromBulk, ReplyTemplatesDiscussionFromBulkMixin)</code></pre>
 </details>
 </section>
 <section>
@@ -73,103 +86,69 @@ class ReplyTemplatesExtension(ExtensionMixin):
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="pyflarum.extensions.flarum.Askvortsov_ReplyTemplates.ReplyTemplatesDiscussionMixin"><code class="flex name class">
-<span>class <span class="ident">ReplyTemplatesDiscussionMixin</span></span>
-<span>(</span><span>user: FlarumUser, _fetched_data: dict)</span>
+<dt id="pyflarum.extensions.flarum.Askvortsov_ReplyTemplates.ReplyTemplatesDiscussionFromBulkMixin"><code class="flex name class">
+<span>class <span class="ident">ReplyTemplatesDiscussionFromBulkMixin</span></span>
 </code></dt>
 <dd>
-<div class="desc"><p>A discussion from <code>Discussions</code>.</p></div>
+<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\extensions\flarum\Askvortsov_ReplyTemplates.py#L14-L22" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\flarum\Askvortsov_ReplyTemplates.py#L15-L31" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">class ReplyTemplatesDiscussionMixin(DiscussionFromBulk):
+<pre><code class="python">class ReplyTemplatesDiscussionFromBulkMixin:
     @property
-    def replyTemplate(self) -&gt; str:
+    def replyTemplate(self: DiscussionFromBulk) -&gt; str:
+        &#34;&#34;&#34;
+            The reply template for the discussion.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;replyTemplate&#34;, &#34;&#34;)
 
 
     @property
-    def canManageReplyTemplates(self) -&gt; bool:
+    def canManageReplyTemplates(self: DiscussionFromBulk) -&gt; bool:
+        &#34;&#34;&#34;
+            Whether or not you are able to manage the discussion&#39;s reply templates.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;canManageReplyTemplates&#34;, False)</code></pre>
 </details>
-<h3>Ancestors</h3>
-<ul class="hlist">
-<li><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></li>
-<li><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromNotification">DiscussionFromNotification</a></li>
-<li>builtins.dict</li>
-</ul>
 <h3>Instance variables</h3>
 <dl>
-<dt id="pyflarum.extensions.flarum.Askvortsov_ReplyTemplates.ReplyTemplatesDiscussionMixin.canManageReplyTemplates"><code class="name">var <span class="ident">canManageReplyTemplates</span> : bool</code></dt>
+<dt id="pyflarum.extensions.flarum.Askvortsov_ReplyTemplates.ReplyTemplatesDiscussionFromBulkMixin.canManageReplyTemplates"><code class="name">var <span class="ident">canManageReplyTemplates</span> : bool</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Whether or not you are able to manage the discussion's reply templates.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\extensions\flarum\Askvortsov_ReplyTemplates.py#L20-L22" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\flarum\Askvortsov_ReplyTemplates.py#L25-L31" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
-def canManageReplyTemplates(self) -&gt; bool:
+def canManageReplyTemplates(self: DiscussionFromBulk) -&gt; bool:
+    &#34;&#34;&#34;
+        Whether or not you are able to manage the discussion&#39;s reply templates.
+    &#34;&#34;&#34;
+
     return self.attributes.get(&#34;canManageReplyTemplates&#34;, False)</code></pre>
 </details>
 </dd>
-<dt id="pyflarum.extensions.flarum.Askvortsov_ReplyTemplates.ReplyTemplatesDiscussionMixin.replyTemplate"><code class="name">var <span class="ident">replyTemplate</span> : str</code></dt>
+<dt id="pyflarum.extensions.flarum.Askvortsov_ReplyTemplates.ReplyTemplatesDiscussionFromBulkMixin.replyTemplate"><code class="name">var <span class="ident">replyTemplate</span> : str</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The reply template for the discussion.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\extensions\flarum\Askvortsov_ReplyTemplates.py#L15-L17" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\flarum\Askvortsov_ReplyTemplates.py#L16-L22" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
-def replyTemplate(self) -&gt; str:
+def replyTemplate(self: DiscussionFromBulk) -&gt; str:
+    &#34;&#34;&#34;
+        The reply template for the discussion.
+    &#34;&#34;&#34;
+
     return self.attributes.get(&#34;replyTemplate&#34;, &#34;&#34;)</code></pre>
 </details>
-</dd>
-</dl>
-<h3>Methods</h3>
-<dl>
-<dt id="pyflarum.extensions.flarum.Askvortsov_ReplyTemplates.ReplyTemplatesDiscussionMixin.delete"><code class="name flex">
-<span>def <span class="ident">delete</span></span>(<span>self, force: bool = False)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.delete" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.delete">delete</a></code>
-</p>
-<div class="desc inherited"><p>Deletes a discussion forever - this action is irreversible!</p></div>
-</dd>
-<dt id="pyflarum.extensions.flarum.Askvortsov_ReplyTemplates.ReplyTemplatesDiscussionMixin.hide"><code class="name flex">
-<span>def <span class="ident">hide</span></span>(<span>self, force: bool = False)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.hide" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.hide">hide</a></code>
-</p>
-<div class="desc inherited"><p>Hides the discussion. Raises <code>FlarumError</code> or returns <code>False</code> if it failed, otherwise <code>True</code> is returned.</p></div>
-</dd>
-<dt id="pyflarum.extensions.flarum.Askvortsov_ReplyTemplates.ReplyTemplatesDiscussionMixin.restore"><code class="name flex">
-<span>def <span class="ident">restore</span></span>(<span>self, force: bool = False)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.restore" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.restore">restore</a></code>
-</p>
-<div class="desc inherited"><p>Restores the discussion (unhides). Raises <code>FlarumError</code> or returns <code>False</code> if it failed, otherwise <code>True</code> is returned.</p></div>
-</dd>
-<dt id="pyflarum.extensions.flarum.Askvortsov_ReplyTemplates.ReplyTemplatesDiscussionMixin.unhide"><code class="name flex">
-<span>def <span class="ident">unhide</span></span>(<span>self, force: bool = False)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.unhide" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.unhide">unhide</a></code>
-</p>
-<div class="desc inherited"><p>Restores the discussion (unhides). Raises <code>FlarumError</code> or returns <code>False</code> if it failed, otherwise <code>True</code> is returned.</p></div>
 </dd>
 </dl>
 </dd>
@@ -177,80 +156,17 @@ def replyTemplate(self) -&gt; str:
 <span>class <span class="ident">ReplyTemplatesExtension</span></span>
 </code></dt>
 <dd>
-<div class="desc"><p>A base class for mixing in custom classes (extensions) into another classes.</p>
-<h3 id="example-extension-code">Example extension code:</h3>
-<pre><code class="language-python">from pyflarum.extensions import ExtensionMixin
-from pyflarum.extensions.admin import AdminExtension
-from pyflarum.session import FlarumUser
-
-
-# Lowecase:
-AUTHOR = &quot;yourname&quot;
-NAME = &quot;extensionname&quot;
-ID = f&quot;{AUTHOR}-{NAME}&quot;
-
-# List of dependencies:
-SOFT_DEPENDENCIES = [AdminExtension] # uses methods from this extension, but can run without it
-HARD_DEPENCENDIES = []
-
-
-
-# I recommend to use the following naming pattern: `&lt;YourExtensionName&gt;&lt;ClassToMixin&gt;Mixin`
-# Example:
-class ExampleFlarumUserMixin(FlarumUser):
-    @property
-    def __example(self):
-        '''
-            Calling `FlarumUser(&lt;...&gt;).__example` would return this.
-        '''
-
-        return &quot;Example&quot;
-
-
-
-class ExampleExtension(ExtensionMixin):
-    def get_dependencies(self):
-        '''
-            Overwrite this method to make your own dependencies.
-
-            This should return the following `dict`:
-            ```python
-            {
-                &quot;hard&quot;: [&lt;class&gt;, &lt;class&gt;, ...],
-                &quot;soft&quot;: [&lt;class&gt;, &lt;class&gt;, ...]
-            }
-            ```
-
-            #### Hard-dependencies:
-            - Will raise an error when they're not found in the initialized `FlarumUser` object. It is impossible for the extension
-            to function without these.
-
-            #### Soft-dependencies:
-            - Will raise just a warning. It is possible for the extension to function without these, although with limitations
-            (such that some functions might be unavailable).
-        '''
-
-        return {
-            &quot;soft&quot;: SOFT_DEPENDENCIES,
-            &quot;hard&quot;: HARD_DEPENCENDIES
-        }
-
-
-    def mixin(self):
-        '''
-            This extends the `FlarumUser` class with features from `ExampleMixin`
-        '''
-
-        super().mixin(self, FlarumUser, ExampleMixin)
-
-</code></pre>
-<p>Initializes the <code>ExtensionMixin</code> object.</p></div>
+<div class="desc"><p><a href="https://extiverse.com/extension/askvortsov/flarum-discussion-templates">https://extiverse.com/extension/askvortsov/flarum-discussion-templates</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\extensions\flarum\Askvortsov_ReplyTemplates.py#L26-L35" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\flarum\Askvortsov_ReplyTemplates.py#L35-L48" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class ReplyTemplatesExtension(ExtensionMixin):
+    &#34;&#34;&#34;
+        https://extiverse.com/extension/askvortsov/flarum-discussion-templates
+    &#34;&#34;&#34;
+
     def get_dependencies(self):
         return {
             &#34;soft&#34;: SOFT_DEPENDENCIES,
@@ -259,7 +175,7 @@ class ExampleExtension(ExtensionMixin):
 
 
     def mixin(self):
-        super().mixin(self, DiscussionFromBulk, ReplyTemplatesDiscussionMixin)</code></pre>
+        super().mixin(self, DiscussionFromBulk, ReplyTemplatesDiscussionFromBulkMixin)</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -275,11 +191,16 @@ class ExampleExtension(ExtensionMixin):
 <em>Inherited from:</em>
 <code><a title="pyflarum.extensions.ExtensionMixin" href="../index.html#pyflarum.extensions.ExtensionMixin">ExtensionMixin</a></code>.<code><a title="pyflarum.extensions.ExtensionMixin.get_dependencies" href="../index.html#pyflarum.extensions.ExtensionMixin.get_dependencies">get_dependencies</a></code>
 </p>
-<div class="desc inherited"><p>Overwrite this method to make your own dependencies …</p></div>
+<div class="desc inherited"><p>This should return the following <code>dict</code>:
+<code>python
+{
+"hard": [&lt;class&gt;, &lt;class&gt;, ...],
+"soft": [&lt;class&gt;, &lt;class&gt;, ...]
+}</code> …</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\extensions\flarum\Askvortsov_ReplyTemplates.py#L27-L31" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\flarum\Askvortsov_ReplyTemplates.py#L40-L44" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_dependencies(self):
     return {
@@ -296,14 +217,14 @@ class ExampleExtension(ExtensionMixin):
 <em>Inherited from:</em>
 <code><a title="pyflarum.extensions.ExtensionMixin" href="../index.html#pyflarum.extensions.ExtensionMixin">ExtensionMixin</a></code>.<code><a title="pyflarum.extensions.ExtensionMixin.mixin" href="../index.html#pyflarum.extensions.ExtensionMixin.mixin">mixin</a></code>
 </p>
-<div class="desc inherited"><p>A boilerplate function for mixing …</p></div>
+<div class="desc inherited"><p>A function to mix-in/merge properties, methods, functions, etc&hellip; of one class into another …</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\extensions\flarum\Askvortsov_ReplyTemplates.py#L34-L35" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\flarum\Askvortsov_ReplyTemplates.py#L47-L48" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def mixin(self):
-    super().mixin(self, DiscussionFromBulk, ReplyTemplatesDiscussionMixin)</code></pre>
+    super().mixin(self, DiscussionFromBulk, ReplyTemplatesDiscussionFromBulkMixin)</code></pre>
 </details>
 </dd>
 </dl>
@@ -371,14 +292,10 @@ setTimeout(() => input.focus(), 100);
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="pyflarum.extensions.flarum.Askvortsov_ReplyTemplates.ReplyTemplatesDiscussionMixin" href="#pyflarum.extensions.flarum.Askvortsov_ReplyTemplates.ReplyTemplatesDiscussionMixin">ReplyTemplatesDiscussionMixin</a></code></h4>
+<h4><code><a title="pyflarum.extensions.flarum.Askvortsov_ReplyTemplates.ReplyTemplatesDiscussionFromBulkMixin" href="#pyflarum.extensions.flarum.Askvortsov_ReplyTemplates.ReplyTemplatesDiscussionFromBulkMixin">ReplyTemplatesDiscussionFromBulkMixin</a></code></h4>
 <ul class="">
-<li><code><a title="pyflarum.extensions.flarum.Askvortsov_ReplyTemplates.ReplyTemplatesDiscussionMixin.canManageReplyTemplates" href="#pyflarum.extensions.flarum.Askvortsov_ReplyTemplates.ReplyTemplatesDiscussionMixin.canManageReplyTemplates">canManageReplyTemplates</a></code></li>
-<li><code><a title="pyflarum.extensions.flarum.Askvortsov_ReplyTemplates.ReplyTemplatesDiscussionMixin.delete" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Askvortsov_ReplyTemplates.ReplyTemplatesDiscussionMixin.delete">delete</a></code></li>
-<li><code><a title="pyflarum.extensions.flarum.Askvortsov_ReplyTemplates.ReplyTemplatesDiscussionMixin.hide" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Askvortsov_ReplyTemplates.ReplyTemplatesDiscussionMixin.hide">hide</a></code></li>
-<li><code><a title="pyflarum.extensions.flarum.Askvortsov_ReplyTemplates.ReplyTemplatesDiscussionMixin.replyTemplate" href="#pyflarum.extensions.flarum.Askvortsov_ReplyTemplates.ReplyTemplatesDiscussionMixin.replyTemplate">replyTemplate</a></code></li>
-<li><code><a title="pyflarum.extensions.flarum.Askvortsov_ReplyTemplates.ReplyTemplatesDiscussionMixin.restore" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Askvortsov_ReplyTemplates.ReplyTemplatesDiscussionMixin.restore">restore</a></code></li>
-<li><code><a title="pyflarum.extensions.flarum.Askvortsov_ReplyTemplates.ReplyTemplatesDiscussionMixin.unhide" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Askvortsov_ReplyTemplates.ReplyTemplatesDiscussionMixin.unhide">unhide</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Askvortsov_ReplyTemplates.ReplyTemplatesDiscussionFromBulkMixin.canManageReplyTemplates" href="#pyflarum.extensions.flarum.Askvortsov_ReplyTemplates.ReplyTemplatesDiscussionFromBulkMixin.canManageReplyTemplates">canManageReplyTemplates</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Askvortsov_ReplyTemplates.ReplyTemplatesDiscussionFromBulkMixin.replyTemplate" href="#pyflarum.extensions.flarum.Askvortsov_ReplyTemplates.ReplyTemplatesDiscussionFromBulkMixin.replyTemplate">replyTemplate</a></code></li>
 </ul>
 </li>
 <li>

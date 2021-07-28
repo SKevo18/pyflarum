@@ -7,6 +7,8 @@ class ExtensionMixin:
 
         ### Example extension code:
         ```python
+        from typing import Type
+
         from pyflarum.extensions import ExtensionMixin
         from pyflarum.extensions.admin import AdminExtension
         from pyflarum.session import FlarumUser
@@ -25,39 +27,19 @@ class ExtensionMixin:
 
         # I recommend to use the following naming pattern: `<YourExtensionName><ClassToMixin>Mixin`
         # Example:
-        class ExampleFlarumUserMixin(FlarumUser):
+        class ExampleFlarumUserMixin:
             @property
-            def __example(self):
+            def example(self):
                 '''
-                    Calling `FlarumUser(<...>).__example` would return this.
+                    Calling `FlarumUser(<...>).example` would return this.
                 '''
 
                 return "Example"
-
+        ExampleFlarumUserMixin: Type[FlarumUser] # mimick class inheritance, without inheriting at runtime, acts just as a type hint
 
 
         class ExampleExtension(ExtensionMixin):
             def get_dependencies(self):
-                '''
-                    Overwrite this method to make your own dependencies.
-
-                    This should return the following `dict`:
-                    ```python
-                    {
-                        "hard": [<class>, <class>, ...],
-                        "soft": [<class>, <class>, ...]
-                    }
-                    ```
-
-                    #### Hard-dependencies:
-                    - Will raise an error when they're not found in the initialized `FlarumUser` object. It is impossible for the extension
-                    to function without these.
-
-                    #### Soft-dependencies:
-                    - Will raise just a warning. It is possible for the extension to function without these, although with limitations
-                    (such that some functions might be unavailable).
-                '''
-
                 return {
                     "soft": SOFT_DEPENDENCIES,
                     "hard": HARD_DEPENCENDIES
@@ -65,20 +47,12 @@ class ExtensionMixin:
 
 
             def mixin(self):
-                '''
-                    This extends the `FlarumUser` class with features from `ExampleMixin`
-                '''
-
-                super().mixin(self, FlarumUser, ExampleMixin)
+                super().mixin(self, FlarumUser, ExampleFlarumUserMixin)
 
         ```
     """
 
     def __init__(self):
-        """
-            Initializes the `ExtensionMixin` object.
-        """
-
         self.name = "Unknown"
         self.author = "Unknown"
         self.id = "N/A"
@@ -86,8 +60,6 @@ class ExtensionMixin:
 
     def get_dependencies(self) -> Dict[str, List[object]]:
         """
-            Overwrite this method to make your own dependencies.
-
             This should return the following `dict`:
             ```python
             {
@@ -95,6 +67,8 @@ class ExtensionMixin:
                 "soft": [<class>, <class>, ...]
             }
             ```
+
+            A dependency is anything that you can pass into `FlarumUser(extensions=[...])` (e. g. an extension class).
 
             #### Hard-dependencies:
             - Will raise an error when they're not found in the initialized `FlarumUser` object. It is impossible for the extension
@@ -111,9 +85,11 @@ class ExtensionMixin:
         }
 
 
-    def mixin(_, class_to_patch: object, class_to_mix_in: object):
+    def mixin(_, class_to_patch: object, class_to_mix_in: object, skip_protected: bool=True):
         """
-            A boilerplate function for mixing.
+            A function to mix-in/merge properties, methods, functions, etc... of one class into another.
+
+            This skips all functions and properties starting with `__` (double underscore), unless `skip_protected` is False.
             
             This sets/overwrites attributes of `class_to_patch` to attributes of
             `class_to_mix_in` (monkey-patch).
@@ -125,17 +101,7 @@ class ExtensionMixin:
         """
 
         for prop, value in vars(class_to_mix_in).items():
-            if not prop.startswith('__'):
-                setattr(class_to_patch, f'{prop}', value)
+            if prop.startswith('__') and skip_protected:
+                    continue
 
-
-# TODO: All included extensions
-from .flarum.Flarum_Approval import *
-from .flarum.FoF_BestAnswer import *
-
-
-if __name__ == '__main__':
-    print(
-        ApprovalDiscussionFromNotificationMixin, ApprovalExtension,
-        BestAnswerDiscussionMixin, BestAnswerExtension
-    )
+            setattr(class_to_patch, f'{prop}', value)

@@ -1,10 +1,13 @@
-from typing import List
+from typing import List, Optional, Type, Union
 
 from .. import ExtensionMixin
 
-from ...flarum.core.users import UserFromBulk
-from ...flarum.core.posts import Post, PostFromBulk, PostFromNotification
+from ...session import FlarumUser
 from ...error_handler import parse_request
+
+from ...flarum.core.users import UserFromBulk
+from ...flarum.core.posts import Post, PostFromBulk, PostFromNotification, PostFromDiscussion
+
 
 
 AUTHOR = 'flarum'
@@ -15,15 +18,13 @@ SOFT_DEPENDENCIES = []
 HARD_DEPENCENDIES = []
 
 
-class LikesPostFromNotificationMixin(PostFromNotification):
-    @property
-    def canLike(self) -> bool:
-        return self.attributes.get("canLike", False)
-    
 
-    def __like_or_unlike(self, liked: bool=True):
+class LikesPostFromDiscussionMixin:
+    def __like_or_unlike(self: PostFromDiscussion, liked: bool=True) -> Post:
         """
             A function to either like or unlike post, to prevent repetition.
+
+            Use `like()` or `unlike()` instead, please.
         """
 
         patch_data = {
@@ -42,7 +43,7 @@ class LikesPostFromNotificationMixin(PostFromNotification):
         return Post(user=self.user, _fetched_data=json)
 
 
-    def like(self):
+    def like(self) -> Post:
         """
             Likes a post.
         """
@@ -50,7 +51,7 @@ class LikesPostFromNotificationMixin(PostFromNotification):
         return self.__like_or_unlike(liked=True)
 
 
-    def unlike(self):
+    def unlike(self) -> Post:
         """
             Unlikes liked post.
         """
@@ -59,8 +60,19 @@ class LikesPostFromNotificationMixin(PostFromNotification):
 
 
 
-class LikesPostFromBulkMixin(PostFromBulk, LikesPostFromNotificationMixin):
-    def get_liked_by(self):
+class LikesPostFromNotificationMixin:
+    @property
+    def canLike(self: PostFromNotification) -> bool:
+        return self.attributes.get("canLike", False)
+LikesPostFromNotificationMixin: Type[LikesPostFromDiscussionMixin]
+
+
+class LikesPostFromBulkMixin:
+    def get_liked_by(self: PostFromBulk) -> List[UserFromBulk]:
+        """
+            Obtain the list of users that liked the post.
+        """
+
         all_users = list() # type: List[UserFromBulk]
 
         for raw_user in self.relationships.get("likes", {}).get("data", [{}]):
@@ -75,10 +87,15 @@ class LikesPostFromBulkMixin(PostFromBulk, LikesPostFromNotificationMixin):
                             all_users.append(user)
 
         return all_users
+LikesPostFromBulkMixin: Union[Type[LikesPostFromNotificationMixin], Optional[FlarumUser]]
 
 
 
 class LikesExtension(ExtensionMixin):
+    """
+        https://packagist.org/packages/flarum/likes
+    """
+
     def get_dependencies(self):
         return {
             "soft": SOFT_DEPENDENCIES,
@@ -87,5 +104,6 @@ class LikesExtension(ExtensionMixin):
 
 
     def mixin(self):
+        super().mixin(self, PostFromDiscussion, LikesPostFromDiscussionMixin)
         super().mixin(self, PostFromNotification, LikesPostFromNotificationMixin)
         super().mixin(self, PostFromBulk, LikesPostFromBulkMixin)

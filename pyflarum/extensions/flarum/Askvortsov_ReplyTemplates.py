@@ -11,19 +11,32 @@ SOFT_DEPENDENCIES = []
 HARD_DEPENCENDIES = []
 
 
-class ReplyTemplatesDiscussionMixin(DiscussionFromBulk):
+
+class ReplyTemplatesDiscussionFromBulkMixin:
     @property
-    def replyTemplate(self) -> str:
+    def replyTemplate(self: DiscussionFromBulk) -> str:
+        """
+            The reply template for the discussion.
+        """
+
         return self.attributes.get("replyTemplate", "")
 
 
     @property
-    def canManageReplyTemplates(self) -> bool:
+    def canManageReplyTemplates(self: DiscussionFromBulk) -> bool:
+        """
+            Whether or not you are able to manage the discussion's reply templates.
+        """
+
         return self.attributes.get("canManageReplyTemplates", False)
 
 
 
 class ReplyTemplatesExtension(ExtensionMixin):
+    """
+        https://extiverse.com/extension/askvortsov/flarum-discussion-templates
+    """
+
     def get_dependencies(self):
         return {
             "soft": SOFT_DEPENDENCIES,
@@ -32,4 +45,4 @@ class ReplyTemplatesExtension(ExtensionMixin):
 
 
     def mixin(self):
-        super().mixin(self, DiscussionFromBulk, ReplyTemplatesDiscussionMixin)
+        super().mixin(self, DiscussionFromBulk, ReplyTemplatesDiscussionFromBulkMixin)

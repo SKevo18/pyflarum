@@ -25,9 +25,11 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\extensions\flarum\Flarum_Approval.py#L0-L66" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\flarum\Flarum_Approval.py#L0-L89" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">from .. import ExtensionMixin
+<pre><code class="python">from typing import Union
+
+from .. import ExtensionMixin
 
 from ...flarum.core.discussions import DiscussionFromNotification
 from ...flarum.core.posts import Post, PostFromNotification
@@ -43,25 +45,42 @@ SOFT_DEPENDENCIES = []
 HARD_DEPENCENDIES = []
 
 
-class ApprovalDiscussionFromNotificationMixin(DiscussionFromNotification):
+
+class ApprovalDiscussionFromNotificationMixin:
     @property
-    def isApproved(self) -&gt; bool:
+    def isApproved(self: DiscussionFromNotification) -&gt; bool:
+        &#34;&#34;&#34;
+            Whether or not the discussion is approved.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;isApproved&#34;, False)
 
 
 
-class ApprovalPostFromNotificationMixin(PostFromNotification):
+class ApprovalPostFromNotificationMixin:
     @property
-    def isApproved(self) -&gt; bool:
+    def isApproved(self: PostFromNotification) -&gt; bool:
+        &#34;&#34;&#34;
+            Whether or not the post is approved.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;isApproved&#34;, False)
 
 
     @property
-    def canApprove(self) -&gt; bool:
+    def canApprove(self: PostFromNotification) -&gt; bool:
+        &#34;&#34;&#34;
+            Whether or not you are able to approve the post
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;canApprove&#34;, False)
 
 
-    def approve(self, force: bool=False):
+    def approve(self: Union[PostFromNotification, &#39;ApprovalPostFromNotificationMixin&#39;], force: bool=False) -&gt; Post:
+        &#34;&#34;&#34;
+            Approve the post. Use `force` to approve despite the post being approved already, and do not raise `FlarumError`.
+        &#34;&#34;&#34;
+
         if self.isApproved and not force:
             raise FlarumError(f&#39;Post ID {self.id} is already approved. Use `force = True` to bypass this error.&#39;)
 
@@ -84,6 +103,10 @@ class ApprovalPostFromNotificationMixin(PostFromNotification):
 
 
 class ApprovalExtension(ExtensionMixin):
+    &#34;&#34;&#34;
+        https://packagist.org/packages/flarum/approval
+    &#34;&#34;&#34;
+
     def get_dependencies(self):
         return {
             &#34;soft&#34;: SOFT_DEPENDENCIES,
@@ -107,82 +130,41 @@ class ApprovalExtension(ExtensionMixin):
 <dl>
 <dt id="pyflarum.extensions.flarum.Flarum_Approval.ApprovalDiscussionFromNotificationMixin"><code class="flex name class">
 <span>class <span class="ident">ApprovalDiscussionFromNotificationMixin</span></span>
-<span>(</span><span>user: FlarumUser, _fetched_data: dict)</span>
 </code></dt>
-<dd>
-<div class="desc"><p>A discussion from <code>BaseNotification</code></p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\extensions\flarum\Flarum_Approval.py#L17-L20" class="git-link">Browse git</a>
-</summary>
-<pre><code class="python">class ApprovalDiscussionFromNotificationMixin(DiscussionFromNotification):
-    @property
-    def isApproved(self) -&gt; bool:
-        return self.attributes.get(&#34;isApproved&#34;, False)</code></pre>
-</details>
-<h3>Ancestors</h3>
-<ul class="hlist">
-<li><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromNotification">DiscussionFromNotification</a></li>
-<li>builtins.dict</li>
-</ul>
-<h3>Instance variables</h3>
-<dl>
-<dt id="pyflarum.extensions.flarum.Flarum_Approval.ApprovalDiscussionFromNotificationMixin.isApproved"><code class="name">var <span class="ident">isApproved</span> : bool</code></dt>
 <dd>
 <div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\extensions\flarum\Flarum_Approval.py#L18-L20" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\flarum\Flarum_Approval.py#L20-L27" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">class ApprovalDiscussionFromNotificationMixin:
+    @property
+    def isApproved(self: DiscussionFromNotification) -&gt; bool:
+        &#34;&#34;&#34;
+            Whether or not the discussion is approved.
+        &#34;&#34;&#34;
+
+        return self.attributes.get(&#34;isApproved&#34;, False)</code></pre>
+</details>
+<h3>Instance variables</h3>
+<dl>
+<dt id="pyflarum.extensions.flarum.Flarum_Approval.ApprovalDiscussionFromNotificationMixin.isApproved"><code class="name">var <span class="ident">isApproved</span> : bool</code></dt>
+<dd>
+<div class="desc"><p>Whether or not the discussion is approved.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\flarum\Flarum_Approval.py#L21-L27" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
-def isApproved(self) -&gt; bool:
+def isApproved(self: DiscussionFromNotification) -&gt; bool:
+    &#34;&#34;&#34;
+        Whether or not the discussion is approved.
+    &#34;&#34;&#34;
+
     return self.attributes.get(&#34;isApproved&#34;, False)</code></pre>
 </details>
-</dd>
-</dl>
-<h3>Methods</h3>
-<dl>
-<dt id="pyflarum.extensions.flarum.Flarum_Approval.ApprovalDiscussionFromNotificationMixin.delete"><code class="name flex">
-<span>def <span class="ident">delete</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromNotification">DiscussionFromNotification</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification.delete" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromNotification.delete">delete</a></code>
-</p>
-<div class="desc inherited"><p>Deletes a discussion forever - this action is irreversible!</p></div>
-</dd>
-<dt id="pyflarum.extensions.flarum.Flarum_Approval.ApprovalDiscussionFromNotificationMixin.hide"><code class="name flex">
-<span>def <span class="ident">hide</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromNotification">DiscussionFromNotification</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification.hide" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromNotification.hide">hide</a></code>
-</p>
-<div class="desc inherited"><p>Hides the discussion. Raises <code>FlarumError</code> or returns <code>False</code> if it failed, otherwise <code>True</code> is returned.</p></div>
-</dd>
-<dt id="pyflarum.extensions.flarum.Flarum_Approval.ApprovalDiscussionFromNotificationMixin.restore"><code class="name flex">
-<span>def <span class="ident">restore</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromNotification">DiscussionFromNotification</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification.restore" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromNotification.restore">restore</a></code>
-</p>
-<div class="desc inherited"><p>Restores the discussion (unhides). Raises <code>FlarumError</code> or returns <code>False</code> if it failed, otherwise <code>True</code> is returned.</p></div>
-</dd>
-<dt id="pyflarum.extensions.flarum.Flarum_Approval.ApprovalDiscussionFromNotificationMixin.unhide"><code class="name flex">
-<span>def <span class="ident">unhide</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromNotification">DiscussionFromNotification</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification.unhide" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromNotification.unhide">unhide</a></code>
-</p>
-<div class="desc inherited"><p>Restores the discussion (unhides). Raises <code>FlarumError</code> or returns <code>False</code> if it failed, otherwise <code>True</code> is returned.</p></div>
 </dd>
 </dl>
 </dd>
@@ -190,80 +172,17 @@ def isApproved(self) -&gt; bool:
 <span>class <span class="ident">ApprovalExtension</span></span>
 </code></dt>
 <dd>
-<div class="desc"><p>A base class for mixing in custom classes (extensions) into another classes.</p>
-<h3 id="example-extension-code">Example extension code:</h3>
-<pre><code class="language-python">from pyflarum.extensions import ExtensionMixin
-from pyflarum.extensions.admin import AdminExtension
-from pyflarum.session import FlarumUser
-
-
-# Lowecase:
-AUTHOR = &quot;yourname&quot;
-NAME = &quot;extensionname&quot;
-ID = f&quot;{AUTHOR}-{NAME}&quot;
-
-# List of dependencies:
-SOFT_DEPENDENCIES = [AdminExtension] # uses methods from this extension, but can run without it
-HARD_DEPENCENDIES = []
-
-
-
-# I recommend to use the following naming pattern: `&lt;YourExtensionName&gt;&lt;ClassToMixin&gt;Mixin`
-# Example:
-class ExampleFlarumUserMixin(FlarumUser):
-    @property
-    def __example(self):
-        '''
-            Calling `FlarumUser(&lt;...&gt;).__example` would return this.
-        '''
-
-        return &quot;Example&quot;
-
-
-
-class ExampleExtension(ExtensionMixin):
-    def get_dependencies(self):
-        '''
-            Overwrite this method to make your own dependencies.
-
-            This should return the following `dict`:
-            ```python
-            {
-                &quot;hard&quot;: [&lt;class&gt;, &lt;class&gt;, ...],
-                &quot;soft&quot;: [&lt;class&gt;, &lt;class&gt;, ...]
-            }
-            ```
-
-            #### Hard-dependencies:
-            - Will raise an error when they're not found in the initialized `FlarumUser` object. It is impossible for the extension
-            to function without these.
-
-            #### Soft-dependencies:
-            - Will raise just a warning. It is possible for the extension to function without these, although with limitations
-            (such that some functions might be unavailable).
-        '''
-
-        return {
-            &quot;soft&quot;: SOFT_DEPENDENCIES,
-            &quot;hard&quot;: HARD_DEPENCENDIES
-        }
-
-
-    def mixin(self):
-        '''
-            This extends the `FlarumUser` class with features from `ExampleMixin`
-        '''
-
-        super().mixin(self, FlarumUser, ExampleMixin)
-
-</code></pre>
-<p>Initializes the <code>ExtensionMixin</code> object.</p></div>
+<div class="desc"><p><a href="https://packagist.org/packages/flarum/approval">https://packagist.org/packages/flarum/approval</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\extensions\flarum\Flarum_Approval.py#L57-L67" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\flarum\Flarum_Approval.py#L76-L90" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class ApprovalExtension(ExtensionMixin):
+    &#34;&#34;&#34;
+        https://packagist.org/packages/flarum/approval
+    &#34;&#34;&#34;
+
     def get_dependencies(self):
         return {
             &#34;soft&#34;: SOFT_DEPENDENCIES,
@@ -289,11 +208,16 @@ class ExampleExtension(ExtensionMixin):
 <em>Inherited from:</em>
 <code><a title="pyflarum.extensions.ExtensionMixin" href="../index.html#pyflarum.extensions.ExtensionMixin">ExtensionMixin</a></code>.<code><a title="pyflarum.extensions.ExtensionMixin.get_dependencies" href="../index.html#pyflarum.extensions.ExtensionMixin.get_dependencies">get_dependencies</a></code>
 </p>
-<div class="desc inherited"><p>Overwrite this method to make your own dependencies …</p></div>
+<div class="desc inherited"><p>This should return the following <code>dict</code>:
+<code>python
+{
+"hard": [&lt;class&gt;, &lt;class&gt;, ...],
+"soft": [&lt;class&gt;, &lt;class&gt;, ...]
+}</code> …</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\extensions\flarum\Flarum_Approval.py#L58-L62" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\flarum\Flarum_Approval.py#L81-L85" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_dependencies(self):
     return {
@@ -310,11 +234,11 @@ class ExampleExtension(ExtensionMixin):
 <em>Inherited from:</em>
 <code><a title="pyflarum.extensions.ExtensionMixin" href="../index.html#pyflarum.extensions.ExtensionMixin">ExtensionMixin</a></code>.<code><a title="pyflarum.extensions.ExtensionMixin.mixin" href="../index.html#pyflarum.extensions.ExtensionMixin.mixin">mixin</a></code>
 </p>
-<div class="desc inherited"><p>A boilerplate function for mixing …</p></div>
+<div class="desc inherited"><p>A function to mix-in/merge properties, methods, functions, etc&hellip; of one class into another …</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\extensions\flarum\Flarum_Approval.py#L65-L67" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\flarum\Flarum_Approval.py#L88-L90" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def mixin(self):
     super().mixin(self, DiscussionFromNotification, ApprovalDiscussionFromNotificationMixin)
@@ -325,27 +249,38 @@ class ExampleExtension(ExtensionMixin):
 </dd>
 <dt id="pyflarum.extensions.flarum.Flarum_Approval.ApprovalPostFromNotificationMixin"><code class="flex name class">
 <span>class <span class="ident">ApprovalPostFromNotificationMixin</span></span>
-<span>(</span><span>user: FlarumUser, _fetched_data: dict)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>A post from <code>Notification</code></p></div>
+<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\extensions\flarum\Flarum_Approval.py#L24-L53" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\flarum\Flarum_Approval.py#L31-L72" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">class ApprovalPostFromNotificationMixin(PostFromNotification):
+<pre><code class="python">class ApprovalPostFromNotificationMixin:
     @property
-    def isApproved(self) -&gt; bool:
+    def isApproved(self: PostFromNotification) -&gt; bool:
+        &#34;&#34;&#34;
+            Whether or not the post is approved.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;isApproved&#34;, False)
 
 
     @property
-    def canApprove(self) -&gt; bool:
+    def canApprove(self: PostFromNotification) -&gt; bool:
+        &#34;&#34;&#34;
+            Whether or not you are able to approve the post
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;canApprove&#34;, False)
 
 
-    def approve(self, force: bool=False):
+    def approve(self: Union[PostFromNotification, &#39;ApprovalPostFromNotificationMixin&#39;], force: bool=False) -&gt; Post:
+        &#34;&#34;&#34;
+            Approve the post. Use `force` to approve despite the post being approved already, and do not raise `FlarumError`.
+        &#34;&#34;&#34;
+
         if self.isApproved and not force:
             raise FlarumError(f&#39;Post ID {self.id} is already approved. Use `force = True` to bypass this error.&#39;)
 
@@ -365,37 +300,39 @@ class ExampleExtension(ExtensionMixin):
 
         return Post(user=self.user, _fetched_data=json)</code></pre>
 </details>
-<h3>Ancestors</h3>
-<ul class="hlist">
-<li><a title="pyflarum.flarum.core.posts.PostFromNotification" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromNotification">PostFromNotification</a></li>
-<li><a title="pyflarum.flarum.core.posts.PostFromDiscussion" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromDiscussion">PostFromDiscussion</a></li>
-<li>builtins.dict</li>
-</ul>
 <h3>Instance variables</h3>
 <dl>
 <dt id="pyflarum.extensions.flarum.Flarum_Approval.ApprovalPostFromNotificationMixin.canApprove"><code class="name">var <span class="ident">canApprove</span> : bool</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Whether or not you are able to approve the post</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\extensions\flarum\Flarum_Approval.py#L30-L32" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\flarum\Flarum_Approval.py#L41-L47" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
-def canApprove(self) -&gt; bool:
+def canApprove(self: PostFromNotification) -&gt; bool:
+    &#34;&#34;&#34;
+        Whether or not you are able to approve the post
+    &#34;&#34;&#34;
+
     return self.attributes.get(&#34;canApprove&#34;, False)</code></pre>
 </details>
 </dd>
 <dt id="pyflarum.extensions.flarum.Flarum_Approval.ApprovalPostFromNotificationMixin.isApproved"><code class="name">var <span class="ident">isApproved</span> : bool</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Whether or not the post is approved.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\extensions\flarum\Flarum_Approval.py#L25-L27" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\flarum\Flarum_Approval.py#L32-L38" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
-def isApproved(self) -&gt; bool:
+def isApproved(self: PostFromNotification) -&gt; bool:
+    &#34;&#34;&#34;
+        Whether or not the post is approved.
+    &#34;&#34;&#34;
+
     return self.attributes.get(&#34;isApproved&#34;, False)</code></pre>
 </details>
 </dd>
@@ -403,16 +340,20 @@ def isApproved(self) -&gt; bool:
 <h3>Methods</h3>
 <dl>
 <dt id="pyflarum.extensions.flarum.Flarum_Approval.ApprovalPostFromNotificationMixin.approve"><code class="name flex">
-<span>def <span class="ident">approve</span></span>(<span>self, force: bool = False)</span>
+<span>def <span class="ident">approve</span></span>(<span>self: Union[<a title="pyflarum.flarum.core.posts.PostFromNotification" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromNotification">PostFromNotification</a>, ForwardRef('<a title="pyflarum.extensions.flarum.Flarum_Approval.ApprovalPostFromNotificationMixin" href="#pyflarum.extensions.flarum.Flarum_Approval.ApprovalPostFromNotificationMixin">ApprovalPostFromNotificationMixin</a>')], force: bool = False) ‑> <a title="pyflarum.flarum.core.posts.Post" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.Post">Post</a></span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Approve the post. Use <code>force</code> to approve despite the post being approved already, and do not raise <code>FlarumError</code>.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\extensions\flarum\Flarum_Approval.py#L35-L53" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\flarum\Flarum_Approval.py#L50-L72" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">def approve(self, force: bool=False):
+<pre><code class="python">def approve(self: Union[PostFromNotification, &#39;ApprovalPostFromNotificationMixin&#39;], force: bool=False) -&gt; Post:
+    &#34;&#34;&#34;
+        Approve the post. Use `force` to approve despite the post being approved already, and do not raise `FlarumError`.
+    &#34;&#34;&#34;
+
     if self.isApproved and not force:
         raise FlarumError(f&#39;Post ID {self.id} is already approved. Use `force = True` to bypass this error.&#39;)
 
@@ -432,66 +373,6 @@ def isApproved(self) -&gt; bool:
 
     return Post(user=self.user, _fetched_data=json)</code></pre>
 </details>
-</dd>
-<dt id="pyflarum.extensions.flarum.Flarum_Approval.ApprovalPostFromNotificationMixin.delete"><code class="name flex">
-<span>def <span class="ident">delete</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.posts.PostFromNotification" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromNotification">PostFromNotification</a></code>.<code><a title="pyflarum.flarum.core.posts.PostFromNotification.delete" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromNotification.delete">delete</a></code>
-</p>
-<div class="desc inherited"><p>Removes the post forever.</p></div>
-</dd>
-<dt id="pyflarum.extensions.flarum.Flarum_Approval.ApprovalPostFromNotificationMixin.edit"><code class="name flex">
-<span>def <span class="ident">edit</span></span>(<span>self, new_data: <a title="pyflarum.flarum.core.posts.PreparedPost" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PreparedPost">PreparedPost</a>)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.posts.PostFromNotification" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromNotification">PostFromNotification</a></code>.<code><a title="pyflarum.flarum.core.posts.PostFromNotification.edit" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromNotification.edit">edit</a></code>
-</p>
-<div class="desc inherited"><p>Edits the post.</p></div>
-</dd>
-<dt id="pyflarum.extensions.flarum.Flarum_Approval.ApprovalPostFromNotificationMixin.hide"><code class="name flex">
-<span>def <span class="ident">hide</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.posts.PostFromNotification" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromNotification">PostFromNotification</a></code>.<code><a title="pyflarum.flarum.core.posts.PostFromNotification.hide" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromNotification.hide">hide</a></code>
-</p>
-<div class="desc inherited"><p>Hides the post. Raises <code>FlarumError</code> or returns <code>False</code> if it failed, otherwise <code>True</code> is returned.</p></div>
-</dd>
-<dt id="pyflarum.extensions.flarum.Flarum_Approval.ApprovalPostFromNotificationMixin.reply_to"><code class="name flex">
-<span>def <span class="ident">reply_to</span></span>(<span>self, post: <a title="pyflarum.flarum.core.posts.PreparedPost" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PreparedPost">PreparedPost</a>)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.posts.PostFromNotification" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromNotification">PostFromNotification</a></code>.<code><a title="pyflarum.flarum.core.posts.PostFromNotification.reply_to" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromNotification.reply_to">reply_to</a></code>
-</p>
-<div class="desc inherited"><p>Replies to this <code>Post</code> with another <code>PreparedPost</code>.</p></div>
-</dd>
-<dt id="pyflarum.extensions.flarum.Flarum_Approval.ApprovalPostFromNotificationMixin.restore"><code class="name flex">
-<span>def <span class="ident">restore</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.posts.PostFromNotification" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromNotification">PostFromNotification</a></code>.<code><a title="pyflarum.flarum.core.posts.PostFromNotification.restore" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromNotification.restore">restore</a></code>
-</p>
-<div class="desc inherited"><p>Restores the post (unhides). Raises <code>FlarumError</code> or returns <code>False</code> if it failed, otherwise <code>True</code> is returned.</p></div>
-</dd>
-<dt id="pyflarum.extensions.flarum.Flarum_Approval.ApprovalPostFromNotificationMixin.unhide"><code class="name flex">
-<span>def <span class="ident">unhide</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.posts.PostFromNotification" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromNotification">PostFromNotification</a></code>.<code><a title="pyflarum.flarum.core.posts.PostFromNotification.unhide" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromNotification.unhide">unhide</a></code>
-</p>
-<div class="desc inherited"><p>Restores the post (unhides). Raises <code>FlarumError</code> or returns <code>False</code> if it failed, otherwise <code>True</code> is returned.</p></div>
 </dd>
 </dl>
 </dd>
@@ -560,11 +441,7 @@ setTimeout(() => input.focus(), 100);
 <li>
 <h4><code><a title="pyflarum.extensions.flarum.Flarum_Approval.ApprovalDiscussionFromNotificationMixin" href="#pyflarum.extensions.flarum.Flarum_Approval.ApprovalDiscussionFromNotificationMixin">ApprovalDiscussionFromNotificationMixin</a></code></h4>
 <ul class="">
-<li><code><a title="pyflarum.extensions.flarum.Flarum_Approval.ApprovalDiscussionFromNotificationMixin.delete" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Flarum_Approval.ApprovalDiscussionFromNotificationMixin.delete">delete</a></code></li>
-<li><code><a title="pyflarum.extensions.flarum.Flarum_Approval.ApprovalDiscussionFromNotificationMixin.hide" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Flarum_Approval.ApprovalDiscussionFromNotificationMixin.hide">hide</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.Flarum_Approval.ApprovalDiscussionFromNotificationMixin.isApproved" href="#pyflarum.extensions.flarum.Flarum_Approval.ApprovalDiscussionFromNotificationMixin.isApproved">isApproved</a></code></li>
-<li><code><a title="pyflarum.extensions.flarum.Flarum_Approval.ApprovalDiscussionFromNotificationMixin.restore" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Flarum_Approval.ApprovalDiscussionFromNotificationMixin.restore">restore</a></code></li>
-<li><code><a title="pyflarum.extensions.flarum.Flarum_Approval.ApprovalDiscussionFromNotificationMixin.unhide" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Flarum_Approval.ApprovalDiscussionFromNotificationMixin.unhide">unhide</a></code></li>
 </ul>
 </li>
 <li>
@@ -576,16 +453,10 @@ setTimeout(() => input.focus(), 100);
 </li>
 <li>
 <h4><code><a title="pyflarum.extensions.flarum.Flarum_Approval.ApprovalPostFromNotificationMixin" href="#pyflarum.extensions.flarum.Flarum_Approval.ApprovalPostFromNotificationMixin">ApprovalPostFromNotificationMixin</a></code></h4>
-<ul class="two-column">
+<ul class="">
 <li><code><a title="pyflarum.extensions.flarum.Flarum_Approval.ApprovalPostFromNotificationMixin.approve" href="#pyflarum.extensions.flarum.Flarum_Approval.ApprovalPostFromNotificationMixin.approve">approve</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.Flarum_Approval.ApprovalPostFromNotificationMixin.canApprove" href="#pyflarum.extensions.flarum.Flarum_Approval.ApprovalPostFromNotificationMixin.canApprove">canApprove</a></code></li>
-<li><code><a title="pyflarum.extensions.flarum.Flarum_Approval.ApprovalPostFromNotificationMixin.delete" href="../../flarum/core/posts.html#pyflarum.extensions.flarum.Flarum_Approval.ApprovalPostFromNotificationMixin.delete">delete</a></code></li>
-<li><code><a title="pyflarum.extensions.flarum.Flarum_Approval.ApprovalPostFromNotificationMixin.edit" href="../../flarum/core/posts.html#pyflarum.extensions.flarum.Flarum_Approval.ApprovalPostFromNotificationMixin.edit">edit</a></code></li>
-<li><code><a title="pyflarum.extensions.flarum.Flarum_Approval.ApprovalPostFromNotificationMixin.hide" href="../../flarum/core/posts.html#pyflarum.extensions.flarum.Flarum_Approval.ApprovalPostFromNotificationMixin.hide">hide</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.Flarum_Approval.ApprovalPostFromNotificationMixin.isApproved" href="#pyflarum.extensions.flarum.Flarum_Approval.ApprovalPostFromNotificationMixin.isApproved">isApproved</a></code></li>
-<li><code><a title="pyflarum.extensions.flarum.Flarum_Approval.ApprovalPostFromNotificationMixin.reply_to" href="../../flarum/core/posts.html#pyflarum.extensions.flarum.Flarum_Approval.ApprovalPostFromNotificationMixin.reply_to">reply_to</a></code></li>
-<li><code><a title="pyflarum.extensions.flarum.Flarum_Approval.ApprovalPostFromNotificationMixin.restore" href="../../flarum/core/posts.html#pyflarum.extensions.flarum.Flarum_Approval.ApprovalPostFromNotificationMixin.restore">restore</a></code></li>
-<li><code><a title="pyflarum.extensions.flarum.Flarum_Approval.ApprovalPostFromNotificationMixin.unhide" href="../../flarum/core/posts.html#pyflarum.extensions.flarum.Flarum_Approval.ApprovalPostFromNotificationMixin.unhide">unhide</a></code></li>
 </ul>
 </li>
 </ul>

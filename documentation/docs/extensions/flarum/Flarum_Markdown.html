@@ -25,7 +25,7 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\extensions\flarum\Flarum_Markdown.py#L0-L30" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\flarum\Flarum_Markdown.py#L0-L38" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">from .. import ExtensionMixin
 
@@ -41,14 +41,22 @@ HARD_DEPENCENDIES = []
 
 
 
-class ForumMixin(Forum):
+class ForumMixin:
     @property
-    def markdown_mdarea(self) -&gt; bool:
+    def markdown_mdarea(self: Forum) -&gt; bool:
+        &#34;&#34;&#34;
+            Whether or not the MDArea is enabled for markdown.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;flarum-markdown.mdarea&#34;, False)
 
 
 
 class ExampleExtension(ExtensionMixin):
+    &#34;&#34;&#34;
+        https://packagist.org/packages/flarum/markdown
+    &#34;&#34;&#34;
+
     def get_dependencies(self):
         return {
             &#34;soft&#34;: SOFT_DEPENDENCIES,
@@ -73,80 +81,17 @@ class ExampleExtension(ExtensionMixin):
 <span>class <span class="ident">ExampleExtension</span></span>
 </code></dt>
 <dd>
-<div class="desc"><p>A base class for mixing in custom classes (extensions) into another classes.</p>
-<h3 id="example-extension-code">Example extension code:</h3>
-<pre><code class="language-python">from pyflarum.extensions import ExtensionMixin
-from pyflarum.extensions.admin import AdminExtension
-from pyflarum.session import FlarumUser
-
-
-# Lowecase:
-AUTHOR = &quot;yourname&quot;
-NAME = &quot;extensionname&quot;
-ID = f&quot;{AUTHOR}-{NAME}&quot;
-
-# List of dependencies:
-SOFT_DEPENDENCIES = [AdminExtension] # uses methods from this extension, but can run without it
-HARD_DEPENCENDIES = []
-
-
-
-# I recommend to use the following naming pattern: `&lt;YourExtensionName&gt;&lt;ClassToMixin&gt;Mixin`
-# Example:
-class ExampleFlarumUserMixin(FlarumUser):
-    @property
-    def __example(self):
-        '''
-            Calling `FlarumUser(&lt;...&gt;).__example` would return this.
-        '''
-
-        return &quot;Example&quot;
-
-
-
-class ExampleExtension(ExtensionMixin):
-    def get_dependencies(self):
-        '''
-            Overwrite this method to make your own dependencies.
-
-            This should return the following `dict`:
-            ```python
-            {
-                &quot;hard&quot;: [&lt;class&gt;, &lt;class&gt;, ...],
-                &quot;soft&quot;: [&lt;class&gt;, &lt;class&gt;, ...]
-            }
-            ```
-
-            #### Hard-dependencies:
-            - Will raise an error when they're not found in the initialized `FlarumUser` object. It is impossible for the extension
-            to function without these.
-
-            #### Soft-dependencies:
-            - Will raise just a warning. It is possible for the extension to function without these, although with limitations
-            (such that some functions might be unavailable).
-        '''
-
-        return {
-            &quot;soft&quot;: SOFT_DEPENDENCIES,
-            &quot;hard&quot;: HARD_DEPENCENDIES
-        }
-
-
-    def mixin(self):
-        '''
-            This extends the `FlarumUser` class with features from `ExampleMixin`
-        '''
-
-        super().mixin(self, FlarumUser, ExampleMixin)
-
-</code></pre>
-<p>Initializes the <code>ExtensionMixin</code> object.</p></div>
+<div class="desc"><p><a href="https://packagist.org/packages/flarum/markdown">https://packagist.org/packages/flarum/markdown</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\extensions\flarum\Flarum_Markdown.py#L22-L31" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\flarum\Flarum_Markdown.py#L26-L39" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class ExampleExtension(ExtensionMixin):
+    &#34;&#34;&#34;
+        https://packagist.org/packages/flarum/markdown
+    &#34;&#34;&#34;
+
     def get_dependencies(self):
         return {
             &#34;soft&#34;: SOFT_DEPENDENCIES,
@@ -171,11 +116,16 @@ class ExampleExtension(ExtensionMixin):
 <em>Inherited from:</em>
 <code><a title="pyflarum.extensions.ExtensionMixin" href="../index.html#pyflarum.extensions.ExtensionMixin">ExtensionMixin</a></code>.<code><a title="pyflarum.extensions.ExtensionMixin.get_dependencies" href="../index.html#pyflarum.extensions.ExtensionMixin.get_dependencies">get_dependencies</a></code>
 </p>
-<div class="desc inherited"><p>Overwrite this method to make your own dependencies …</p></div>
+<div class="desc inherited"><p>This should return the following <code>dict</code>:
+<code>python
+{
+"hard": [&lt;class&gt;, &lt;class&gt;, ...],
+"soft": [&lt;class&gt;, &lt;class&gt;, ...]
+}</code> …</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\extensions\flarum\Flarum_Markdown.py#L23-L27" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\flarum\Flarum_Markdown.py#L31-L35" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_dependencies(self):
     return {
@@ -192,11 +142,11 @@ class ExampleExtension(ExtensionMixin):
 <em>Inherited from:</em>
 <code><a title="pyflarum.extensions.ExtensionMixin" href="../index.html#pyflarum.extensions.ExtensionMixin">ExtensionMixin</a></code>.<code><a title="pyflarum.extensions.ExtensionMixin.mixin" href="../index.html#pyflarum.extensions.ExtensionMixin.mixin">mixin</a></code>
 </p>
-<div class="desc inherited"><p>A boilerplate function for mixing …</p></div>
+<div class="desc inherited"><p>A function to mix-in/merge properties, methods, functions, etc&hellip; of one class into another …</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\extensions\flarum\Flarum_Markdown.py#L30-L31" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\flarum\Flarum_Markdown.py#L38-L39" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def mixin(self):
     super().mixin(self, Forum, ForumMixin)</code></pre>
@@ -206,37 +156,39 @@ class ExampleExtension(ExtensionMixin):
 </dd>
 <dt id="pyflarum.extensions.flarum.Flarum_Markdown.ForumMixin"><code class="flex name class">
 <span>class <span class="ident">ForumMixin</span></span>
-<span>(</span><span>user: FlarumUser, _fetched_data: dict)</span>
 </code></dt>
-<dd>
-<div class="desc"><p>Forum JSON data</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\extensions\flarum\Flarum_Markdown.py#L15-L18" class="git-link">Browse git</a>
-</summary>
-<pre><code class="python">class ForumMixin(Forum):
-    @property
-    def markdown_mdarea(self) -&gt; bool:
-        return self.attributes.get(&#34;flarum-markdown.mdarea&#34;, False)</code></pre>
-</details>
-<h3>Ancestors</h3>
-<ul class="hlist">
-<li><a title="pyflarum.flarum.core.forum.Forum" href="../../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum">Forum</a></li>
-<li>builtins.dict</li>
-</ul>
-<h3>Instance variables</h3>
-<dl>
-<dt id="pyflarum.extensions.flarum.Flarum_Markdown.ForumMixin.markdown_mdarea"><code class="name">var <span class="ident">markdown_mdarea</span> : bool</code></dt>
 <dd>
 <div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\extensions\flarum\Flarum_Markdown.py#L16-L18" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\flarum\Flarum_Markdown.py#L15-L22" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">class ForumMixin:
+    @property
+    def markdown_mdarea(self: Forum) -&gt; bool:
+        &#34;&#34;&#34;
+            Whether or not the MDArea is enabled for markdown.
+        &#34;&#34;&#34;
+
+        return self.attributes.get(&#34;flarum-markdown.mdarea&#34;, False)</code></pre>
+</details>
+<h3>Instance variables</h3>
+<dl>
+<dt id="pyflarum.extensions.flarum.Flarum_Markdown.ForumMixin.markdown_mdarea"><code class="name">var <span class="ident">markdown_mdarea</span> : bool</code></dt>
+<dd>
+<div class="desc"><p>Whether or not the MDArea is enabled for markdown.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\flarum\Flarum_Markdown.py#L16-L22" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
-def markdown_mdarea(self) -&gt; bool:
+def markdown_mdarea(self: Forum) -&gt; bool:
+    &#34;&#34;&#34;
+        Whether or not the MDArea is enabled for markdown.
+    &#34;&#34;&#34;
+
     return self.attributes.get(&#34;flarum-markdown.mdarea&#34;, False)</code></pre>
 </details>
 </dd>

@@ -12,14 +12,22 @@ HARD_DEPENCENDIES = []
 
 
 
-class ForumMixin(Forum):
+class ForumMixin:
     @property
-    def markdown_mdarea(self) -> bool:
+    def markdown_mdarea(self: Forum) -> bool:
+        """
+            Whether or not the MDArea is enabled for markdown.
+        """
+
         return self.attributes.get("flarum-markdown.mdarea", False)
 
 
 
 class ExampleExtension(ExtensionMixin):
+    """
+        https://packagist.org/packages/flarum/markdown
+    """
+
     def get_dependencies(self):
         return {
             "soft": SOFT_DEPENDENCIES,

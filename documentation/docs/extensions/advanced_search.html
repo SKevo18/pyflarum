@@ -25,7 +25,7 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\extensions\advanced_search.py#L0-L48" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\advanced_search.py#L0-L48" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">from typing import List, Optional
 
@@ -93,7 +93,9 @@ class AdvancedSearchExtension(ExtensionMixin, AdvancedSearchFlarumUserMixin):
 <dd>
 <div class="desc"><p>A base class for mixing in custom classes (extensions) into another classes.</p>
 <h3 id="example-extension-code">Example extension code:</h3>
-<pre><code class="language-python">from pyflarum.extensions import ExtensionMixin
+<pre><code class="language-python">from typing import Type
+
+from pyflarum.extensions import ExtensionMixin
 from pyflarum.extensions.admin import AdminExtension
 from pyflarum.session import FlarumUser
 
@@ -111,39 +113,19 @@ HARD_DEPENCENDIES = []
 
 # I recommend to use the following naming pattern: `&lt;YourExtensionName&gt;&lt;ClassToMixin&gt;Mixin`
 # Example:
-class ExampleFlarumUserMixin(FlarumUser):
+class ExampleFlarumUserMixin:
     @property
-    def __example(self):
+    def example(self):
         '''
-            Calling `FlarumUser(&lt;...&gt;).__example` would return this.
+            Calling `FlarumUser(&lt;...&gt;).example` would return this.
         '''
 
         return &quot;Example&quot;
-
+ExampleFlarumUserMixin: Type[FlarumUser] # mimick class inheritance, without inheriting at runtime, acts just as a type hint
 
 
 class ExampleExtension(ExtensionMixin):
     def get_dependencies(self):
-        '''
-            Overwrite this method to make your own dependencies.
-
-            This should return the following `dict`:
-            ```python
-            {
-                &quot;hard&quot;: [&lt;class&gt;, &lt;class&gt;, ...],
-                &quot;soft&quot;: [&lt;class&gt;, &lt;class&gt;, ...]
-            }
-            ```
-
-            #### Hard-dependencies:
-            - Will raise an error when they're not found in the initialized `FlarumUser` object. It is impossible for the extension
-            to function without these.
-
-            #### Soft-dependencies:
-            - Will raise just a warning. It is possible for the extension to function without these, although with limitations
-            (such that some functions might be unavailable).
-        '''
-
         return {
             &quot;soft&quot;: SOFT_DEPENDENCIES,
             &quot;hard&quot;: HARD_DEPENCENDIES
@@ -151,18 +133,13 @@ class ExampleExtension(ExtensionMixin):
 
 
     def mixin(self):
-        '''
-            This extends the `FlarumUser` class with features from `ExampleMixin`
-        '''
+        super().mixin(self, FlarumUser, ExampleFlarumUserMixin)
 
-        super().mixin(self, FlarumUser, ExampleMixin)
-
-</code></pre>
-<p>Initializes the <code>ExtensionMixin</code> object.</p></div>
+</code></pre></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\extensions\advanced_search.py#L35-L49" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\advanced_search.py#L35-L49" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class AdvancedSearchExtension(ExtensionMixin, AdvancedSearchFlarumUserMixin):
     def __init__(self):
@@ -239,11 +216,16 @@ class ExampleExtension(ExtensionMixin):
 <em>Inherited from:</em>
 <code><a title="pyflarum.extensions.ExtensionMixin" href="index.html#pyflarum.extensions.ExtensionMixin">ExtensionMixin</a></code>.<code><a title="pyflarum.extensions.ExtensionMixin.get_dependencies" href="index.html#pyflarum.extensions.ExtensionMixin.get_dependencies">get_dependencies</a></code>
 </p>
-<div class="desc inherited"><p>Overwrite this method to make your own dependencies …</p></div>
+<div class="desc inherited"><p>This should return the following <code>dict</code>:
+<code>python
+{
+"hard": [&lt;class&gt;, &lt;class&gt;, ...],
+"soft": [&lt;class&gt;, &lt;class&gt;, ...]
+}</code> …</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\extensions\advanced_search.py#L41-L45" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\advanced_search.py#L41-L45" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_dependencies(self):
     return {
@@ -270,11 +252,11 @@ class ExampleExtension(ExtensionMixin):
 <em>Inherited from:</em>
 <code><a title="pyflarum.extensions.ExtensionMixin" href="index.html#pyflarum.extensions.ExtensionMixin">ExtensionMixin</a></code>.<code><a title="pyflarum.extensions.ExtensionMixin.mixin" href="index.html#pyflarum.extensions.ExtensionMixin.mixin">mixin</a></code>
 </p>
-<div class="desc inherited"><p>A boilerplate function for mixing …</p></div>
+<div class="desc inherited"><p>A function to mix-in/merge properties, methods, functions, etc&hellip; of one class into another …</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\extensions\advanced_search.py#L48-L49" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\advanced_search.py#L48-L49" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def mixin(self):
     super().mixin(self, FlarumUser, AdvancedSearchFlarumUserMixin)</code></pre>
@@ -301,7 +283,7 @@ dict(one=1, two=2)</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\extensions\advanced_search.py#L21-L32" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\advanced_search.py#L21-L32" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class AdvancedSearchFlarumUserMixin(FlarumUser):
     def get_user_by_username(self, username: str):
@@ -387,7 +369,7 @@ dict(one=1, two=2)</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\extensions\advanced_search.py#L22-L32" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\advanced_search.py#L22-L32" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_user_by_username(self, username: str):
     filter = Filter(query=username, limit=1)

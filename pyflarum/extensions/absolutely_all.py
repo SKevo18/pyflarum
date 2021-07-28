@@ -1,4 +1,10 @@
-from typing import Optional
+from typing import Generator, Optional, TYPE_CHECKING
+if TYPE_CHECKING:
+    from ..flarum.core.notifications import Notifications
+    from ..flarum.core.discussions import Discussions
+    from ..flarum.core.posts import Posts
+    from ..flarum.core.users import Users
+
 
 from . import ExtensionMixin
 from ..session import FlarumUser
@@ -15,8 +21,9 @@ SOFT_DEPENDENCIES = []
 HARD_DEPENCENDIES = []
 
 
-class AbsolutelyAllFlarumUserMixin(FlarumUser):
-    def absolutely_all_users(self, filter: Optional[Filter]=None):
+
+class AbsolutelyAllFlarumUserMixin:
+    def absolutely_all_users(self: FlarumUser, filter: Optional[Filter]=None)  -> Generator['Users', None, None]:
         """
             A generator that yields `Users` from entire forum, until there are `None` left. `Filter` compatible.
         """
@@ -26,9 +33,11 @@ class AbsolutelyAllFlarumUserMixin(FlarumUser):
 
         else:
             _filter = Filter()
-    
+
+
         _filter.page = 0
         users = self.all_users(_filter)
+
 
         while True:
             yield users
@@ -40,7 +49,7 @@ class AbsolutelyAllFlarumUserMixin(FlarumUser):
                 break
 
 
-    def absolutely_all_posts(self, filter: Optional[Filter]=None):
+    def absolutely_all_posts(self: FlarumUser, filter: Optional[Filter]=None) -> Generator['Posts', None, None]:
         """
             A generator that yields `Posts` from entire forum, until there are `None` left. `Filter` compatible.
         """
@@ -50,9 +59,11 @@ class AbsolutelyAllFlarumUserMixin(FlarumUser):
 
         else:
             _filter = Filter()
-    
+
+
         _filter.page = 0
         posts = self.all_posts(_filter)
+
 
         while True:
             yield posts
@@ -64,7 +75,7 @@ class AbsolutelyAllFlarumUserMixin(FlarumUser):
                 break
 
 
-    def absolutely_all_discussions(self, filter: Optional[Filter]=None):
+    def absolutely_all_discussions(self: FlarumUser, filter: Optional[Filter]=None) -> Generator['Discussions', None, None]:
         """
             A generator that yields `Discussions` from entire forum, until there are `None` left. `Filter` compatible.
         """
@@ -74,9 +85,11 @@ class AbsolutelyAllFlarumUserMixin(FlarumUser):
 
         else:
             _filter = Filter()
-    
+
+
         _filter.page = 0
         discussions = self.all_discussions(_filter)
+
 
         while True:
             yield discussions
@@ -88,7 +101,7 @@ class AbsolutelyAllFlarumUserMixin(FlarumUser):
                 break
 
 
-    def absolutely_all_notifications(self, filter: Optional[Filter]=None):
+    def absolutely_all_notifications(self: FlarumUser, filter: Optional[Filter]=None) -> Generator['Notifications', None, None]:
         """
             A generator that yields all of your `Notifications`, until there are `None` left. `Filter` compatible.
         """
@@ -98,9 +111,11 @@ class AbsolutelyAllFlarumUserMixin(FlarumUser):
 
         else:
             _filter = Filter()
-    
+
+
         _filter.page = 0
         discussions = self.get_notifications(_filter)
+
 
         while True:
             yield discussions
@@ -110,13 +125,23 @@ class AbsolutelyAllFlarumUserMixin(FlarumUser):
 
             if not discussions.next_link:
                 break
+# TODO: How to type hint inheritance? 
+# AbsolutelyAllFlarumUserMixin: Type[FlarumUser]
+
 
 
 class AbsolutelyAllExtension(ExtensionMixin):
+    """
+        A pyFlarum extension. Allows you to fetch all specific data from a forum (e. g.: all discussions, all posts, etc.), until there are none left.
+
+        Based on `Generator`, that yields in a while loop, until no `next_link` is present in the API.
+    """
+
     def __init__(self):
         self.name = NAME
         self.author = AUTHOR
         self.id = ID
+
 
     def get_dependencies(self):
         return {

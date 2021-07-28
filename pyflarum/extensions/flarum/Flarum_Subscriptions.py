@@ -1,4 +1,4 @@
-from typing import Literal
+from typing import Literal, Optional, Type
 
 from .. import ExtensionMixin
 
@@ -15,12 +15,19 @@ SOFT_DEPENDENCIES = []
 HARD_DEPENCENDIES = []
 
 
-class SubscriptionsDiscussionFromNotificationMixin(DiscussionFromNotification):
-    def __change_subscription_state(self, state: Literal['following', 'ignoring', None]):
+class SubscriptionsDiscussionFromNotificationMixin:
+    def __change_subscription_state(self: DiscussionFromNotification, state: Optional[Literal['following', 'ignoring']]):
+        """
+            Changes the subscription state of a discussion.
+
+            This function is intended to prevent code repetition - you are
+            supposed to be using `follow()`, `unfollow()` or `ignore()`.
+        """
+
         post_data = {
             "data": {
                 "type": "discussions",
-                "id": "15",
+                "id": self.id,
                 "attributes": {
                     "subscription": state
                 }
@@ -34,20 +41,42 @@ class SubscriptionsDiscussionFromNotificationMixin(DiscussionFromNotification):
     
 
     def follow(self):
+        """
+            Follow the discussion and be notified of all new activity.
+        """
+
         return self.__change_subscription_state(state='following')
 
 
     def unfollow(self):
+        """
+            Unfollow the discussion, but be notified when someone mentions you.
+        """
+
         return self.__change_subscription_state(state=None)
 
 
     def ignore(self):
+        """
+            Ignore the discussion, never be mentioned.
+
+            Note that this will also hide the discussion from `Discussions`.
+            Currently, the only ways to access ignored Flarum discussions that I am aware of are:
+            1. Accessing the discussion directly (by ID).
+            2. Using `pyflarum.flarum.core.filters.Filter` (e. g. `Filter(query="is:ignored")`).
+        """
         return self.__change_subscription_state(state='ignore')
+SubscriptionsDiscussionFromNotificationMixin: Type[DiscussionFromNotification]
+
 
 
 class SubscriptionsDiscussionFromBulkMixin(DiscussionFromBulk, SubscriptionsDiscussionFromNotificationMixin):
     @property
-    def subscription(self) -> bool:
+    def subscription(self) -> Optional[Literal['following', 'ignoring']]:
+        """
+            Get the current subscription state of the discussion.
+        """
+
         return self.attributes.get("subscription", None)
 
 

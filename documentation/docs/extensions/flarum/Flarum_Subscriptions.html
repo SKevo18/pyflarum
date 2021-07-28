@@ -25,9 +25,9 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\extensions\flarum\Flarum_Subscriptions.py#L0-L64" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\flarum\Flarum_Subscriptions.py#L0-L93" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">from typing import Literal
+<pre><code class="python">from typing import Literal, Optional, Type
 
 from .. import ExtensionMixin
 
@@ -44,12 +44,19 @@ SOFT_DEPENDENCIES = []
 HARD_DEPENCENDIES = []
 
 
-class SubscriptionsDiscussionFromNotificationMixin(DiscussionFromNotification):
-    def __change_subscription_state(self, state: Literal[&#39;following&#39;, &#39;ignoring&#39;, None]):
+class SubscriptionsDiscussionFromNotificationMixin:
+    def __change_subscription_state(self: DiscussionFromNotification, state: Optional[Literal[&#39;following&#39;, &#39;ignoring&#39;]]):
+        &#34;&#34;&#34;
+            Changes the subscription state of a discussion.
+
+            This function is intended to prevent code repetition - you are
+            supposed to be using `follow()`, `unfollow()` or `ignore()`.
+        &#34;&#34;&#34;
+
         post_data = {
             &#34;data&#34;: {
                 &#34;type&#34;: &#34;discussions&#34;,
-                &#34;id&#34;: &#34;15&#34;,
+                &#34;id&#34;: self.id,
                 &#34;attributes&#34;: {
                     &#34;subscription&#34;: state
                 }
@@ -63,20 +70,42 @@ class SubscriptionsDiscussionFromNotificationMixin(DiscussionFromNotification):
     
 
     def follow(self):
+        &#34;&#34;&#34;
+            Follow the discussion and be notified of all new activity.
+        &#34;&#34;&#34;
+
         return self.__change_subscription_state(state=&#39;following&#39;)
 
 
     def unfollow(self):
+        &#34;&#34;&#34;
+            Unfollow the discussion, but be notified when someone mentions you.
+        &#34;&#34;&#34;
+
         return self.__change_subscription_state(state=None)
 
 
     def ignore(self):
+        &#34;&#34;&#34;
+            Ignore the discussion, never be mentioned.
+
+            Note that this will also hide the discussion from `Discussions`.
+            Currently, the only ways to access ignored Flarum discussions that I am aware of are:
+            1. Accessing the discussion directly (by ID).
+            2. Using `pyflarum.flarum.core.filters.Filter` (e. g. `Filter(query=&#34;is:ignored&#34;)`).
+        &#34;&#34;&#34;
         return self.__change_subscription_state(state=&#39;ignore&#39;)
+SubscriptionsDiscussionFromNotificationMixin: Type[DiscussionFromNotification]
+
 
 
 class SubscriptionsDiscussionFromBulkMixin(DiscussionFromBulk, SubscriptionsDiscussionFromNotificationMixin):
     @property
-    def subscription(self) -&gt; bool:
+    def subscription(self) -&gt; Optional[Literal[&#39;following&#39;, &#39;ignoring&#39;]]:
+        &#34;&#34;&#34;
+            Get the current subscription state of the discussion.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;subscription&#34;, None)
 
 
@@ -112,32 +141,40 @@ class SubscriptionsExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\extensions\flarum\Flarum_Subscriptions.py#L48-L51" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\flarum\Flarum_Subscriptions.py#L73-L80" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class SubscriptionsDiscussionFromBulkMixin(DiscussionFromBulk, SubscriptionsDiscussionFromNotificationMixin):
     @property
-    def subscription(self) -&gt; bool:
+    def subscription(self) -&gt; Optional[Literal[&#39;following&#39;, &#39;ignoring&#39;]]:
+        &#34;&#34;&#34;
+            Get the current subscription state of the discussion.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;subscription&#34;, None)</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></li>
-<li><a title="pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromNotificationMixin" href="#pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromNotificationMixin">SubscriptionsDiscussionFromNotificationMixin</a></li>
 <li><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromNotification">DiscussionFromNotification</a></li>
 <li>builtins.dict</li>
+<li><a title="pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromNotificationMixin" href="#pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromNotificationMixin">SubscriptionsDiscussionFromNotificationMixin</a></li>
 </ul>
 <h3>Instance variables</h3>
 <dl>
-<dt id="pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromBulkMixin.subscription"><code class="name">var <span class="ident">subscription</span> : bool</code></dt>
+<dt id="pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromBulkMixin.subscription"><code class="name">var <span class="ident">subscription</span> : Optional[Literal['following', 'ignoring']]</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Get the current subscription state of the discussion.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\extensions\flarum\Flarum_Subscriptions.py#L49-L51" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\flarum\Flarum_Subscriptions.py#L74-L80" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
-def subscription(self) -&gt; bool:
+def subscription(self) -&gt; Optional[Literal[&#39;following&#39;, &#39;ignoring&#39;]]:
+    &#34;&#34;&#34;
+        Get the current subscription state of the discussion.
+    &#34;&#34;&#34;
+
     return self.attributes.get(&#34;subscription&#34;, None)</code></pre>
 </details>
 </dd>
@@ -152,7 +189,47 @@ def subscription(self) -&gt; bool:
 <em>Inherited from:</em>
 <code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.delete" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.delete">delete</a></code>
 </p>
-<div class="desc inherited"><p>Deletes a discussion forever - this action is irreversible!</p></div>
+<div class="desc inherited"><p>Scronches the discussion forever. This cannot be reverted …</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromBulkMixin.follow"><code class="name flex">
+<span>def <span class="ident">follow</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromNotificationMixin" href="#pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromNotificationMixin">SubscriptionsDiscussionFromNotificationMixin</a></code>.<code><a title="pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromNotificationMixin.follow" href="#pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromNotificationMixin.follow">follow</a></code>
+</p>
+<div class="desc inherited"><p>Follow the discussion and be notified of all new activity.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromBulkMixin.get_author"><code class="name flex">
+<span>def <span class="ident">get_author</span></span>(<span>self) ‑> <a title="pyflarum.flarum.core.users.UserFromNotification" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromNotification">UserFromNotification</a></span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.get_author" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.get_author">get_author</a></code>
+</p>
+<div class="desc inherited"><p>Obtains the author of the discussion …</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromBulkMixin.get_first_post"><code class="name flex">
+<span>def <span class="ident">get_first_post</span></span>(<span>self) ‑> <a title="pyflarum.flarum.core.posts.PostFromDiscussion" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromDiscussion">PostFromDiscussion</a></span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.get_first_post" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.get_first_post">get_first_post</a></code>
+</p>
+<div class="desc inherited"><p>Obtains the first post of the discussion …</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromBulkMixin.get_last_posted_user"><code class="name flex">
+<span>def <span class="ident">get_last_posted_user</span></span>(<span>self) ‑> <a title="pyflarum.flarum.core.users.UserFromNotification" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromNotification">UserFromNotification</a></span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.get_last_posted_user" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.get_last_posted_user">get_last_posted_user</a></code>
+</p>
+<div class="desc inherited"><p>Obtains the user that posted the latest post in the discussion …</p></div>
 </dd>
 <dt id="pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromBulkMixin.hide"><code class="name flex">
 <span>def <span class="ident">hide</span></span>(<span>self, force: bool = False)</span>
@@ -162,7 +239,18 @@ def subscription(self) -&gt; bool:
 <em>Inherited from:</em>
 <code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.hide" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.hide">hide</a></code>
 </p>
-<div class="desc inherited"><p>Hides the discussion. Raises <code>FlarumError</code> or returns <code>False</code> if it failed, otherwise <code>True</code> is returned.</p></div>
+<div class="desc inherited"><p>Hides the discussion from the sight of other unprivileged users
+that are not worthy to view such thread.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromBulkMixin.ignore"><code class="name flex">
+<span>def <span class="ident">ignore</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromNotificationMixin" href="#pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromNotificationMixin">SubscriptionsDiscussionFromNotificationMixin</a></code>.<code><a title="pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromNotificationMixin.ignore" href="#pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromNotificationMixin.ignore">ignore</a></code>
+</p>
+<div class="desc inherited"><p>Ignore the discussion, never be mentioned …</p></div>
 </dd>
 <dt id="pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromBulkMixin.restore"><code class="name flex">
 <span>def <span class="ident">restore</span></span>(<span>self, force: bool = False)</span>
@@ -172,7 +260,17 @@ def subscription(self) -&gt; bool:
 <em>Inherited from:</em>
 <code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.restore" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.restore">restore</a></code>
 </p>
-<div class="desc inherited"><p>Restores the discussion (unhides). Raises <code>FlarumError</code> or returns <code>False</code> if it failed, otherwise <code>True</code> is returned.</p></div>
+<div class="desc inherited"><p>Restores the discussion (unhides it), bringing it back to life.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromBulkMixin.unfollow"><code class="name flex">
+<span>def <span class="ident">unfollow</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromNotificationMixin" href="#pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromNotificationMixin">SubscriptionsDiscussionFromNotificationMixin</a></code>.<code><a title="pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromNotificationMixin.unfollow" href="#pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromNotificationMixin.unfollow">unfollow</a></code>
+</p>
+<div class="desc inherited"><p>Unfollow the discussion, but be notified when someone mentions you.</p></div>
 </dd>
 <dt id="pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromBulkMixin.unhide"><code class="name flex">
 <span>def <span class="ident">unhide</span></span>(<span>self, force: bool = False)</span>
@@ -182,27 +280,33 @@ def subscription(self) -&gt; bool:
 <em>Inherited from:</em>
 <code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.unhide" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.unhide">unhide</a></code>
 </p>
-<div class="desc inherited"><p>Restores the discussion (unhides). Raises <code>FlarumError</code> or returns <code>False</code> if it failed, otherwise <code>True</code> is returned.</p></div>
+<div class="desc inherited"><p>Restores the discussion (unhides it), bringing it back to life.</p></div>
 </dd>
 </dl>
 </dd>
 <dt id="pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromNotificationMixin"><code class="flex name class">
 <span>class <span class="ident">SubscriptionsDiscussionFromNotificationMixin</span></span>
-<span>(</span><span>user: FlarumUser, _fetched_data: dict)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>A discussion from <code>BaseNotification</code></p></div>
+<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\extensions\flarum\Flarum_Subscriptions.py#L18-L45" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\flarum\Flarum_Subscriptions.py#L18-L68" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">class SubscriptionsDiscussionFromNotificationMixin(DiscussionFromNotification):
-    def __change_subscription_state(self, state: Literal[&#39;following&#39;, &#39;ignoring&#39;, None]):
+<pre><code class="python">class SubscriptionsDiscussionFromNotificationMixin:
+    def __change_subscription_state(self: DiscussionFromNotification, state: Optional[Literal[&#39;following&#39;, &#39;ignoring&#39;]]):
+        &#34;&#34;&#34;
+            Changes the subscription state of a discussion.
+
+            This function is intended to prevent code repetition - you are
+            supposed to be using `follow()`, `unfollow()` or `ignore()`.
+        &#34;&#34;&#34;
+
         post_data = {
             &#34;data&#34;: {
                 &#34;type&#34;: &#34;discussions&#34;,
-                &#34;id&#34;: &#34;15&#34;,
+                &#34;id&#34;: self.id,
                 &#34;attributes&#34;: {
                     &#34;subscription&#34;: state
                 }
@@ -216,108 +320,99 @@ def subscription(self) -&gt; bool:
     
 
     def follow(self):
+        &#34;&#34;&#34;
+            Follow the discussion and be notified of all new activity.
+        &#34;&#34;&#34;
+
         return self.__change_subscription_state(state=&#39;following&#39;)
 
 
     def unfollow(self):
+        &#34;&#34;&#34;
+            Unfollow the discussion, but be notified when someone mentions you.
+        &#34;&#34;&#34;
+
         return self.__change_subscription_state(state=None)
 
 
     def ignore(self):
+        &#34;&#34;&#34;
+            Ignore the discussion, never be mentioned.
+
+            Note that this will also hide the discussion from `Discussions`.
+            Currently, the only ways to access ignored Flarum discussions that I am aware of are:
+            1. Accessing the discussion directly (by ID).
+            2. Using `pyflarum.flarum.core.filters.Filter` (e. g. `Filter(query=&#34;is:ignored&#34;)`).
+        &#34;&#34;&#34;
         return self.__change_subscription_state(state=&#39;ignore&#39;)</code></pre>
 </details>
-<h3>Ancestors</h3>
-<ul class="hlist">
-<li><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromNotification">DiscussionFromNotification</a></li>
-<li>builtins.dict</li>
-</ul>
 <h3>Subclasses</h3>
 <ul class="hlist">
 <li><a title="pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromBulkMixin" href="#pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromBulkMixin">SubscriptionsDiscussionFromBulkMixin</a></li>
 </ul>
 <h3>Methods</h3>
 <dl>
-<dt id="pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromNotificationMixin.delete"><code class="name flex">
-<span>def <span class="ident">delete</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromNotification">DiscussionFromNotification</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification.delete" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromNotification.delete">delete</a></code>
-</p>
-<div class="desc inherited"><p>Deletes a discussion forever - this action is irreversible!</p></div>
-</dd>
 <dt id="pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromNotificationMixin.follow"><code class="name flex">
 <span>def <span class="ident">follow</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Follow the discussion and be notified of all new activity.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\extensions\flarum\Flarum_Subscriptions.py#L36-L37" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\flarum\Flarum_Subscriptions.py#L43-L48" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def follow(self):
+    &#34;&#34;&#34;
+        Follow the discussion and be notified of all new activity.
+    &#34;&#34;&#34;
+
     return self.__change_subscription_state(state=&#39;following&#39;)</code></pre>
 </details>
-</dd>
-<dt id="pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromNotificationMixin.hide"><code class="name flex">
-<span>def <span class="ident">hide</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromNotification">DiscussionFromNotification</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification.hide" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromNotification.hide">hide</a></code>
-</p>
-<div class="desc inherited"><p>Hides the discussion. Raises <code>FlarumError</code> or returns <code>False</code> if it failed, otherwise <code>True</code> is returned.</p></div>
 </dd>
 <dt id="pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromNotificationMixin.ignore"><code class="name flex">
 <span>def <span class="ident">ignore</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Ignore the discussion, never be mentioned.</p>
+<p>Note that this will also hide the discussion from <code>Discussions</code>.
+Currently, the only ways to access ignored Flarum discussions that I am aware of are:
+1. Accessing the discussion directly (by ID).
+2. Using <code><a title="pyflarum.flarum.core.filters.Filter" href="../../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a></code> (e. g. <code>Filter(query="is:ignored")</code>).</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\extensions\flarum\Flarum_Subscriptions.py#L44-L45" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\flarum\Flarum_Subscriptions.py#L59-L68" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def ignore(self):
+    &#34;&#34;&#34;
+        Ignore the discussion, never be mentioned.
+
+        Note that this will also hide the discussion from `Discussions`.
+        Currently, the only ways to access ignored Flarum discussions that I am aware of are:
+        1. Accessing the discussion directly (by ID).
+        2. Using `pyflarum.flarum.core.filters.Filter` (e. g. `Filter(query=&#34;is:ignored&#34;)`).
+    &#34;&#34;&#34;
     return self.__change_subscription_state(state=&#39;ignore&#39;)</code></pre>
 </details>
-</dd>
-<dt id="pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromNotificationMixin.restore"><code class="name flex">
-<span>def <span class="ident">restore</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromNotification">DiscussionFromNotification</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification.restore" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromNotification.restore">restore</a></code>
-</p>
-<div class="desc inherited"><p>Restores the discussion (unhides). Raises <code>FlarumError</code> or returns <code>False</code> if it failed, otherwise <code>True</code> is returned.</p></div>
 </dd>
 <dt id="pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromNotificationMixin.unfollow"><code class="name flex">
 <span>def <span class="ident">unfollow</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Unfollow the discussion, but be notified when someone mentions you.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\extensions\flarum\Flarum_Subscriptions.py#L40-L41" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\flarum\Flarum_Subscriptions.py#L51-L56" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def unfollow(self):
+    &#34;&#34;&#34;
+        Unfollow the discussion, but be notified when someone mentions you.
+    &#34;&#34;&#34;
+
     return self.__change_subscription_state(state=None)</code></pre>
 </details>
-</dd>
-<dt id="pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromNotificationMixin.unhide"><code class="name flex">
-<span>def <span class="ident">unhide</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromNotification">DiscussionFromNotification</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification.unhide" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromNotification.unhide">unhide</a></code>
-</p>
-<div class="desc inherited"><p>Restores the discussion (unhides). Raises <code>FlarumError</code> or returns <code>False</code> if it failed, otherwise <code>True</code> is returned.</p></div>
 </dd>
 </dl>
 </dd>
@@ -327,7 +422,9 @@ def subscription(self) -&gt; bool:
 <dd>
 <div class="desc"><p>A base class for mixing in custom classes (extensions) into another classes.</p>
 <h3 id="example-extension-code">Example extension code:</h3>
-<pre><code class="language-python">from pyflarum.extensions import ExtensionMixin
+<pre><code class="language-python">from typing import Type
+
+from pyflarum.extensions import ExtensionMixin
 from pyflarum.extensions.admin import AdminExtension
 from pyflarum.session import FlarumUser
 
@@ -345,39 +442,19 @@ HARD_DEPENCENDIES = []
 
 # I recommend to use the following naming pattern: `&lt;YourExtensionName&gt;&lt;ClassToMixin&gt;Mixin`
 # Example:
-class ExampleFlarumUserMixin(FlarumUser):
+class ExampleFlarumUserMixin:
     @property
-    def __example(self):
+    def example(self):
         '''
-            Calling `FlarumUser(&lt;...&gt;).__example` would return this.
+            Calling `FlarumUser(&lt;...&gt;).example` would return this.
         '''
 
         return &quot;Example&quot;
-
+ExampleFlarumUserMixin: Type[FlarumUser] # mimick class inheritance, without inheriting at runtime, acts just as a type hint
 
 
 class ExampleExtension(ExtensionMixin):
     def get_dependencies(self):
-        '''
-            Overwrite this method to make your own dependencies.
-
-            This should return the following `dict`:
-            ```python
-            {
-                &quot;hard&quot;: [&lt;class&gt;, &lt;class&gt;, ...],
-                &quot;soft&quot;: [&lt;class&gt;, &lt;class&gt;, ...]
-            }
-            ```
-
-            #### Hard-dependencies:
-            - Will raise an error when they're not found in the initialized `FlarumUser` object. It is impossible for the extension
-            to function without these.
-
-            #### Soft-dependencies:
-            - Will raise just a warning. It is possible for the extension to function without these, although with limitations
-            (such that some functions might be unavailable).
-        '''
-
         return {
             &quot;soft&quot;: SOFT_DEPENDENCIES,
             &quot;hard&quot;: HARD_DEPENCENDIES
@@ -385,18 +462,13 @@ class ExampleExtension(ExtensionMixin):
 
 
     def mixin(self):
-        '''
-            This extends the `FlarumUser` class with features from `ExampleMixin`
-        '''
+        super().mixin(self, FlarumUser, ExampleFlarumUserMixin)
 
-        super().mixin(self, FlarumUser, ExampleMixin)
-
-</code></pre>
-<p>Initializes the <code>ExtensionMixin</code> object.</p></div>
+</code></pre></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\extensions\flarum\Flarum_Subscriptions.py#L55-L65" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\flarum\Flarum_Subscriptions.py#L84-L94" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class SubscriptionsExtension(ExtensionMixin):
     def get_dependencies(self):
@@ -424,11 +496,16 @@ class ExampleExtension(ExtensionMixin):
 <em>Inherited from:</em>
 <code><a title="pyflarum.extensions.ExtensionMixin" href="../index.html#pyflarum.extensions.ExtensionMixin">ExtensionMixin</a></code>.<code><a title="pyflarum.extensions.ExtensionMixin.get_dependencies" href="../index.html#pyflarum.extensions.ExtensionMixin.get_dependencies">get_dependencies</a></code>
 </p>
-<div class="desc inherited"><p>Overwrite this method to make your own dependencies …</p></div>
+<div class="desc inherited"><p>This should return the following <code>dict</code>:
+<code>python
+{
+"hard": [&lt;class&gt;, &lt;class&gt;, ...],
+"soft": [&lt;class&gt;, &lt;class&gt;, ...]
+}</code> …</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\extensions\flarum\Flarum_Subscriptions.py#L56-L60" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\flarum\Flarum_Subscriptions.py#L85-L89" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_dependencies(self):
     return {
@@ -445,11 +522,11 @@ class ExampleExtension(ExtensionMixin):
 <em>Inherited from:</em>
 <code><a title="pyflarum.extensions.ExtensionMixin" href="../index.html#pyflarum.extensions.ExtensionMixin">ExtensionMixin</a></code>.<code><a title="pyflarum.extensions.ExtensionMixin.mixin" href="../index.html#pyflarum.extensions.ExtensionMixin.mixin">mixin</a></code>
 </p>
-<div class="desc inherited"><p>A boilerplate function for mixing …</p></div>
+<div class="desc inherited"><p>A function to mix-in/merge properties, methods, functions, etc&hellip; of one class into another …</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\extensions\flarum\Flarum_Subscriptions.py#L63-L65" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\flarum\Flarum_Subscriptions.py#L92-L94" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def mixin(self):
     super().mixin(self, DiscussionFromNotification, SubscriptionsDiscussionFromNotificationMixin)
@@ -524,22 +601,24 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromBulkMixin" href="#pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromBulkMixin">SubscriptionsDiscussionFromBulkMixin</a></code></h4>
 <ul class="">
 <li><code><a title="pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromBulkMixin.delete" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromBulkMixin.delete">delete</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromBulkMixin.follow" href="#pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromBulkMixin.follow">follow</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromBulkMixin.get_author" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromBulkMixin.get_author">get_author</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromBulkMixin.get_first_post" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromBulkMixin.get_first_post">get_first_post</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromBulkMixin.get_last_posted_user" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromBulkMixin.get_last_posted_user">get_last_posted_user</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromBulkMixin.hide" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromBulkMixin.hide">hide</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromBulkMixin.ignore" href="#pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromBulkMixin.ignore">ignore</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromBulkMixin.restore" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromBulkMixin.restore">restore</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromBulkMixin.subscription" href="#pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromBulkMixin.subscription">subscription</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromBulkMixin.unfollow" href="#pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromBulkMixin.unfollow">unfollow</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromBulkMixin.unhide" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromBulkMixin.unhide">unhide</a></code></li>
 </ul>
 </li>
 <li>
 <h4><code><a title="pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromNotificationMixin" href="#pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromNotificationMixin">SubscriptionsDiscussionFromNotificationMixin</a></code></h4>
-<ul class="two-column">
-<li><code><a title="pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromNotificationMixin.delete" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromNotificationMixin.delete">delete</a></code></li>
+<ul class="">
 <li><code><a title="pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromNotificationMixin.follow" href="#pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromNotificationMixin.follow">follow</a></code></li>
-<li><code><a title="pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromNotificationMixin.hide" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromNotificationMixin.hide">hide</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromNotificationMixin.ignore" href="#pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromNotificationMixin.ignore">ignore</a></code></li>
-<li><code><a title="pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromNotificationMixin.restore" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromNotificationMixin.restore">restore</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromNotificationMixin.unfollow" href="#pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromNotificationMixin.unfollow">unfollow</a></code></li>
-<li><code><a title="pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromNotificationMixin.unhide" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromNotificationMixin.unhide">unhide</a></code></li>
 </ul>
 </li>
 <li>

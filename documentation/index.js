@@ -1,46 +1,46 @@
 URLS=[
-"pyflarum/index.html",
-"pyflarum/custom_types.html",
-"pyflarum/datetime_conversions.html",
-"pyflarum/error_handler.html",
-"pyflarum/extensions/index.html",
-"pyflarum/extensions/absolutely_all.html",
-"pyflarum/session.html",
-"pyflarum/extensions/admin.html",
-"pyflarum/extensions/advanced_search.html",
-"pyflarum/extensions/commands.html",
-"pyflarum/extensions/flarum/index.html",
-"pyflarum/extensions/flarum/Askvortsov_ModeratorWarnings.html",
-"pyflarum/extensions/flarum/Askvortsov_ReplyTemplates.html",
-"pyflarum/flarum/core/discussions.html",
-"pyflarum/extensions/flarum/Blomstra_Realtime.html",
-"pyflarum/extensions/flarum/Flarum_Approval.html",
-"pyflarum/flarum/core/posts.html",
-"pyflarum/extensions/flarum/Flarum_Flags.html",
-"pyflarum/extensions/flarum/Flarum_Likes.html",
-"pyflarum/extensions/flarum/Flarum_Lock.html",
-"pyflarum/extensions/flarum/Flarum_Markdown.html",
-"pyflarum/extensions/flarum/Flarum_Sticky.html",
-"pyflarum/extensions/flarum/Flarum_Subscriptions.html",
-"pyflarum/extensions/flarum/Flarum_Suspend.html",
-"pyflarum/extensions/flarum/Flarum_Tags.html",
-"pyflarum/extensions/flarum/FoF_BestAnswer.html",
-"pyflarum/extensions/flarum/FoF_Byobu.html",
-"pyflarum/extensions/flarum/FoF_Merge.html",
-"pyflarum/extensions/flarum/FoF_PreventNecrobumping.html",
-"pyflarum/extensions/flarum/FoF_Spamblock.html",
-"pyflarum/extensions/flarum/FoF_Split.html",
-"pyflarum/extensions/flarum/FoF_UserBio.html",
-"pyflarum/extensions/flarum/FoF_UsernameRequest.html",
-"pyflarum/extensions/flarum/Malago_Achievements.html",
-"pyflarum/extensions/watch.html",
-"pyflarum/flarum/index.html",
-"pyflarum/flarum/core/index.html",
-"pyflarum/flarum/core/filters.html",
-"pyflarum/flarum/core/forum.html",
-"pyflarum/flarum/core/groups.html",
-"pyflarum/flarum/core/notifications.html",
-"pyflarum/flarum/core/users.html"
+"docs/index.html",
+"docs/custom_types.html",
+"docs/datetime_conversions.html",
+"docs/error_handler.html",
+"docs/extensions/index.html",
+"docs/extensions/absolutely_all.html",
+"docs/extensions/admin.html",
+"docs/session.html",
+"docs/extensions/advanced_search.html",
+"docs/extensions/commands.html",
+"docs/extensions/flarum/index.html",
+"docs/extensions/flarum/Askvortsov_ModeratorWarnings.html",
+"docs/extensions/flarum/Askvortsov_ReplyTemplates.html",
+"docs/extensions/flarum/Blomstra_Realtime.html",
+"docs/extensions/flarum/Flarum_Approval.html",
+"docs/extensions/flarum/Flarum_Flags.html",
+"docs/extensions/flarum/Flarum_Likes.html",
+"docs/extensions/flarum/Flarum_Lock.html",
+"docs/extensions/flarum/Flarum_Markdown.html",
+"docs/extensions/flarum/Flarum_Sticky.html",
+"docs/extensions/flarum/Flarum_Subscriptions.html",
+"docs/flarum/core/discussions.html",
+"docs/extensions/flarum/Flarum_Suspend.html",
+"docs/extensions/flarum/Flarum_Tags.html",
+"docs/extensions/flarum/FoF_BestAnswer.html",
+"docs/extensions/flarum/FoF_Byobu.html",
+"docs/extensions/flarum/FoF_Merge.html",
+"docs/extensions/flarum/FoF_PreventNecrobumping.html",
+"docs/extensions/flarum/FoF_Spamblock.html",
+"docs/extensions/flarum/FoF_Split.html",
+"docs/extensions/flarum/FoF_UserBio.html",
+"docs/extensions/flarum/FoF_UsernameRequest.html",
+"docs/extensions/flarum/Malago_Achievements.html",
+"docs/extensions/watch.html",
+"docs/flarum/index.html",
+"docs/flarum/core/index.html",
+"docs/flarum/core/filters.html",
+"docs/flarum/core/forum.html",
+"docs/flarum/core/groups.html",
+"docs/flarum/core/notifications.html",
+"docs/flarum/core/posts.html",
+"docs/flarum/core/users.html"
 ];
 INDEX=[
 {
@@ -110,18 +110,18 @@ INDEX=[
 {
 "ref":"pyflarum.extensions.ExtensionMixin",
 "url":4,
-"doc":"A base class for mixing in custom classes (extensions) into another classes.  Example extension code:   from pyflarum.extensions import ExtensionMixin from pyflarum.extensions.admin import AdminExtension from pyflarum.session import FlarumUser  Lowecase: AUTHOR = \"yourname\" NAME = \"extensionname\" ID = f\"{AUTHOR}-{NAME}\"  List of dependencies: SOFT_DEPENDENCIES = [AdminExtension]  uses methods from this extension, but can run without it HARD_DEPENCENDIES = []  I recommend to use the following naming pattern:    Mixin  Example: class ExampleFlarumUserMixin(FlarumUser): @property def __example(self):  ' Calling  FlarumUser( ).__example would return this.  ' return \"Example\" class ExampleExtension(ExtensionMixin): def get_dependencies(self):  ' Overwrite this method to make your own dependencies. This should return the following  dict :  python { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }   Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).  ' return { \"soft\": SOFT_DEPENDENCIES, \"hard\": HARD_DEPENCENDIES } def mixin(self):  ' This extends the  FlarumUser class with features from  ExampleMixin  ' super().mixin(self, FlarumUser, ExampleMixin)   Initializes the  ExtensionMixin object."
+"doc":"A base class for mixing in custom classes (extensions) into another classes.  Example extension code:   from typing import Type from pyflarum.extensions import ExtensionMixin from pyflarum.extensions.admin import AdminExtension from pyflarum.session import FlarumUser  Lowecase: AUTHOR = \"yourname\" NAME = \"extensionname\" ID = f\"{AUTHOR}-{NAME}\"  List of dependencies: SOFT_DEPENDENCIES = [AdminExtension]  uses methods from this extension, but can run without it HARD_DEPENCENDIES = []  I recommend to use the following naming pattern:    Mixin  Example: class ExampleFlarumUserMixin: @property def example(self):  ' Calling  FlarumUser( ).example would return this.  ' return \"Example\" ExampleFlarumUserMixin: Type[FlarumUser]  mimick class inheritance, without inheriting at runtime, acts just as a type hint class ExampleExtension(ExtensionMixin): def get_dependencies(self): return { \"soft\": SOFT_DEPENDENCIES, \"hard\": HARD_DEPENCENDIES } def mixin(self): super().mixin(self, FlarumUser, ExampleFlarumUserMixin)  "
 },
 {
 "ref":"pyflarum.extensions.ExtensionMixin.get_dependencies",
 "url":4,
-"doc":"Overwrite this method to make your own dependencies. This should return the following  dict :   { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }    Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).",
+"doc":"This should return the following  dict :   { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }   A dependency is anything that you can pass into  FlarumUser(extensions=[ .]) (e. g. an extension class).  Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.ExtensionMixin.mixin",
 "url":4,
-"doc":"A boilerplate function for mixing. This sets/overwrites attributes of  class_to_patch to attributes of  class_to_mix_in (monkey-patch).  Example:   extension.mixin(myclass, pyflarum_class)  ",
+"doc":"A function to mix-in/merge properties, methods, functions, etc . of one class into another. This skips all functions and properties starting with  __ (double underscore), unless  skip_protected is False. This sets/overwrites attributes of  class_to_patch to attributes of  class_to_mix_in (monkey-patch).  Example:   extension.mixin(myclass, pyflarum_class)  ",
 "func":1
 },
 {
@@ -132,7 +132,7 @@ INDEX=[
 {
 "ref":"pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin",
 "url":5,
-"doc":"dict() -> new empty dictionary dict(mapping) -> new dictionary initialized from a mapping object's (key, value) pairs dict(iterable) -> new dictionary initialized as if via: d = {} for k, v in iterable: d[k] = v dict( kwargs) -> new dictionary initialized with the name=value pairs in the keyword argument list. For example: dict(one=1, two=2)"
+"doc":""
 },
 {
 "ref":"pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.absolutely_all_users",
@@ -159,319 +159,290 @@ INDEX=[
 "func":1
 },
 {
-"ref":"pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.all_discussions",
-"url":6,
-"doc":"Obtains all discussions from specific page by using  filter .",
-"func":1
-},
-{
-"ref":"pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.all_posts",
-"url":6,
-"doc":"Obtains all posts from specific page by using  filter .",
-"func":1
-},
-{
-"ref":"pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.all_users",
-"url":6,
-"doc":"Obtains all users from specific page by using  filter .",
-"func":1
-},
-{
-"ref":"pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.get_notifications",
-"url":6,
-"doc":"Obtains all notifications of your user.",
-"func":1
-},
-{
-"ref":"pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.api_urls",
-"url":6,
-"doc":"Simple, hardcoded  'key: value'  dict of Flarum's API routes for quick access. API routes reference (old): https: github.com/flarum/flarum.github.io/blob/20322c0e6011e4f304ae7e95f41594a0b086bc27/_docs/api.md"
-},
-{
 "ref":"pyflarum.extensions.absolutely_all.AbsolutelyAllExtension",
 "url":5,
-"doc":"A base class for mixing in custom classes (extensions) into another classes.  Example extension code:   from pyflarum.extensions import ExtensionMixin from pyflarum.extensions.admin import AdminExtension from pyflarum.session import FlarumUser  Lowecase: AUTHOR = \"yourname\" NAME = \"extensionname\" ID = f\"{AUTHOR}-{NAME}\"  List of dependencies: SOFT_DEPENDENCIES = [AdminExtension]  uses methods from this extension, but can run without it HARD_DEPENCENDIES = []  I recommend to use the following naming pattern:    Mixin  Example: class ExampleFlarumUserMixin(FlarumUser): @property def __example(self):  ' Calling  FlarumUser( ).__example would return this.  ' return \"Example\" class ExampleExtension(ExtensionMixin): def get_dependencies(self):  ' Overwrite this method to make your own dependencies. This should return the following  dict :  python { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }   Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).  ' return { \"soft\": SOFT_DEPENDENCIES, \"hard\": HARD_DEPENCENDIES } def mixin(self):  ' This extends the  FlarumUser class with features from  ExampleMixin  ' super().mixin(self, FlarumUser, ExampleMixin)   Initializes the  ExtensionMixin object."
+"doc":"A pyFlarum extension. Allows you to fetch all specific data from a forum (e. g.: all discussions, all posts, etc.), until there are none left. Based on  Generator , that yields in a while loop, until no  next_link is present in the API."
 },
 {
 "ref":"pyflarum.extensions.absolutely_all.AbsolutelyAllExtension.get_dependencies",
 "url":5,
-"doc":"Overwrite this method to make your own dependencies. This should return the following  dict :   { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }    Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).",
+"doc":"This should return the following  dict :   { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }   A dependency is anything that you can pass into  FlarumUser(extensions=[ .]) (e. g. an extension class).  Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.absolutely_all.AbsolutelyAllExtension.mixin",
 "url":5,
-"doc":"A boilerplate function for mixing. This sets/overwrites attributes of  class_to_patch to attributes of  class_to_mix_in (monkey-patch).  Example:   extension.mixin(myclass, pyflarum_class)  ",
+"doc":"A function to mix-in/merge properties, methods, functions, etc . of one class into another. This skips all functions and properties starting with  __ (double underscore), unless  skip_protected is False. This sets/overwrites attributes of  class_to_patch to attributes of  class_to_mix_in (monkey-patch).  Example:   extension.mixin(myclass, pyflarum_class)  ",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.admin",
-"url":7,
+"url":6,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.admin.MailSettings",
-"url":7,
+"url":6,
 "doc":"dict() -> new empty dictionary dict(mapping) -> new dictionary initialized from a mapping object's (key, value) pairs dict(iterable) -> new dictionary initialized as if via: d = {} for k, v in iterable: d[k] = v dict( kwargs) -> new dictionary initialized with the name=value pairs in the keyword argument list. For example: dict(one=1, two=2)"
 },
 {
 "ref":"pyflarum.extensions.admin.MailSettings.data",
-"url":7,
+"url":6,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.admin.MailSettings.type",
-"url":7,
+"url":6,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.admin.MailSettings.id",
-"url":7,
+"url":6,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.admin.MailSettings.attributes",
-"url":7,
+"url":6,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.admin.MailSettings.fields",
-"url":7,
+"url":6,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.admin.MailSettings.mail",
-"url":7,
+"url":6,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.admin.MailSettings.mailgun",
-"url":7,
+"url":6,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.admin.MailSettings.mailgun_secret",
-"url":7,
+"url":6,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.admin.MailSettings.mailgun_domain",
-"url":7,
+"url":6,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.admin.MailSettings.log",
-"url":7,
+"url":6,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.admin.MailSettings.smtp",
-"url":7,
+"url":6,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.admin.MailSettings.mail_host",
-"url":7,
+"url":6,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.admin.MailSettings.mail_port",
-"url":7,
+"url":6,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.admin.MailSettings.mail_encryption",
-"url":7,
+"url":6,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.admin.MailSettings.mail_username",
-"url":7,
+"url":6,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.admin.MailSettings.mail_password",
-"url":7,
+"url":6,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.admin.MailSettings.sending",
-"url":7,
+"url":6,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.admin.MailSettings.errors",
-"url":7,
+"url":6,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.admin.AdminFlarumUserMixin",
-"url":7,
+"url":6,
 "doc":"dict() -> new empty dictionary dict(mapping) -> new dictionary initialized from a mapping object's (key, value) pairs dict(iterable) -> new dictionary initialized as if via: d = {} for k, v in iterable: d[k] = v dict( kwargs) -> new dictionary initialized with the name=value pairs in the keyword argument list. For example: dict(one=1, two=2)"
 },
 {
 "ref":"pyflarum.extensions.admin.AdminFlarumUserMixin.enable_extension",
-"url":7,
+"url":6,
 "doc":"",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.admin.AdminFlarumUserMixin.disable_extension",
-"url":7,
+"url":6,
 "doc":"",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.admin.AdminFlarumUserMixin.clear_cache",
-"url":7,
+"url":6,
 "doc":"",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.admin.AdminFlarumUserMixin.update_forum_info",
-"url":7,
+"url":6,
 "doc":"",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.admin.AdminFlarumUserMixin.get_mail_settings",
-"url":7,
+"url":6,
 "doc":"",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.admin.AdminFlarumUserMixin.update_mail_settings",
-"url":7,
+"url":6,
 "doc":"",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.admin.AdminFlarumUserMixin.send_test_mail",
-"url":7,
+"url":6,
 "doc":"",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.admin.AdminFlarumUserMixin.update_appearance",
-"url":7,
+"url":6,
 "doc":"",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.admin.AdminFlarumUserMixin.upload_logo",
-"url":7,
+"url":6,
 "doc":"",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.admin.AdminFlarumUserMixin.remove_logo",
-"url":7,
+"url":6,
 "doc":"",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.admin.AdminFlarumUserMixin.upload_favicon",
-"url":7,
+"url":6,
 "doc":"",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.admin.AdminFlarumUserMixin.remove_favicon",
-"url":7,
+"url":6,
 "doc":"",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.admin.AdminFlarumUserMixin.update_custom_header",
-"url":7,
+"url":6,
 "doc":"",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.admin.AdminFlarumUserMixin.update_custom_footer",
-"url":7,
+"url":6,
 "doc":"",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.admin.AdminFlarumUserMixin.update_custom_css",
-"url":7,
+"url":6,
 "doc":"",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.admin.AdminFlarumUserMixin.all_discussions",
-"url":6,
+"url":7,
 "doc":"Obtains all discussions from specific page by using  filter .",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.admin.AdminFlarumUserMixin.all_posts",
-"url":6,
+"url":7,
 "doc":"Obtains all posts from specific page by using  filter .",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.admin.AdminFlarumUserMixin.all_users",
-"url":6,
+"url":7,
 "doc":"Obtains all users from specific page by using  filter .",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.admin.AdminFlarumUserMixin.get_notifications",
-"url":6,
+"url":7,
 "doc":"Obtains all notifications of your user.",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.admin.AdminFlarumUserMixin.api_urls",
-"url":6,
+"url":7,
 "doc":"Simple, hardcoded  'key: value'  dict of Flarum's API routes for quick access. API routes reference (old): https: github.com/flarum/flarum.github.io/blob/20322c0e6011e4f304ae7e95f41594a0b086bc27/_docs/api.md"
 },
 {
 "ref":"pyflarum.extensions.admin.AdminExtension",
-"url":7,
-"doc":"A base class for mixing in custom classes (extensions) into another classes.  Example extension code:   from pyflarum.extensions import ExtensionMixin from pyflarum.extensions.admin import AdminExtension from pyflarum.session import FlarumUser  Lowecase: AUTHOR = \"yourname\" NAME = \"extensionname\" ID = f\"{AUTHOR}-{NAME}\"  List of dependencies: SOFT_DEPENDENCIES = [AdminExtension]  uses methods from this extension, but can run without it HARD_DEPENCENDIES = []  I recommend to use the following naming pattern:    Mixin  Example: class ExampleFlarumUserMixin(FlarumUser): @property def __example(self):  ' Calling  FlarumUser( ).__example would return this.  ' return \"Example\" class ExampleExtension(ExtensionMixin): def get_dependencies(self):  ' Overwrite this method to make your own dependencies. This should return the following  dict :  python { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }   Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).  ' return { \"soft\": SOFT_DEPENDENCIES, \"hard\": HARD_DEPENCENDIES } def mixin(self):  ' This extends the  FlarumUser class with features from  ExampleMixin  ' super().mixin(self, FlarumUser, ExampleMixin)   Initializes the  ExtensionMixin object."
+"url":6,
+"doc":"A base class for mixing in custom classes (extensions) into another classes.  Example extension code:   from typing import Type from pyflarum.extensions import ExtensionMixin from pyflarum.extensions.admin import AdminExtension from pyflarum.session import FlarumUser  Lowecase: AUTHOR = \"yourname\" NAME = \"extensionname\" ID = f\"{AUTHOR}-{NAME}\"  List of dependencies: SOFT_DEPENDENCIES = [AdminExtension]  uses methods from this extension, but can run without it HARD_DEPENCENDIES = []  I recommend to use the following naming pattern:    Mixin  Example: class ExampleFlarumUserMixin: @property def example(self):  ' Calling  FlarumUser( ).example would return this.  ' return \"Example\" ExampleFlarumUserMixin: Type[FlarumUser]  mimick class inheritance, without inheriting at runtime, acts just as a type hint class ExampleExtension(ExtensionMixin): def get_dependencies(self): return { \"soft\": SOFT_DEPENDENCIES, \"hard\": HARD_DEPENCENDIES } def mixin(self): super().mixin(self, FlarumUser, ExampleFlarumUserMixin)  "
 },
 {
 "ref":"pyflarum.extensions.admin.AdminExtension.get_dependencies",
-"url":7,
-"doc":"Overwrite this method to make your own dependencies. This should return the following  dict :   { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }    Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).",
+"url":6,
+"doc":"This should return the following  dict :   { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }   A dependency is anything that you can pass into  FlarumUser(extensions=[ .]) (e. g. an extension class).  Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.admin.AdminExtension.mixin",
-"url":7,
-"doc":"A boilerplate function for mixing. This sets/overwrites attributes of  class_to_patch to attributes of  class_to_mix_in (monkey-patch).  Example:   extension.mixin(myclass, pyflarum_class)  ",
+"url":6,
+"doc":"A function to mix-in/merge properties, methods, functions, etc . of one class into another. This skips all functions and properties starting with  __ (double underscore), unless  skip_protected is False. This sets/overwrites attributes of  class_to_patch to attributes of  class_to_mix_in (monkey-patch).  Example:   extension.mixin(myclass, pyflarum_class)  ",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.admin.AdminExtension.all_discussions",
-"url":6,
+"url":7,
 "doc":"Obtains all discussions from specific page by using  filter .",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.admin.AdminExtension.all_posts",
-"url":6,
+"url":7,
 "doc":"Obtains all posts from specific page by using  filter .",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.admin.AdminExtension.all_users",
-"url":6,
+"url":7,
 "doc":"Obtains all users from specific page by using  filter .",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.admin.AdminExtension.get_notifications",
-"url":6,
+"url":7,
 "doc":"Obtains all notifications of your user.",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.admin.AdminExtension.api_urls",
-"url":6,
+"url":7,
 "doc":"Simple, hardcoded  'key: value'  dict of Flarum's API routes for quick access. API routes reference (old): https: github.com/flarum/flarum.github.io/blob/20322c0e6011e4f304ae7e95f41594a0b086bc27/_docs/api.md"
 },
 {
@@ -492,77 +463,77 @@ INDEX=[
 },
 {
 "ref":"pyflarum.extensions.advanced_search.AdvancedSearchFlarumUserMixin.all_discussions",
-"url":6,
+"url":7,
 "doc":"Obtains all discussions from specific page by using  filter .",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.advanced_search.AdvancedSearchFlarumUserMixin.all_posts",
-"url":6,
+"url":7,
 "doc":"Obtains all posts from specific page by using  filter .",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.advanced_search.AdvancedSearchFlarumUserMixin.all_users",
-"url":6,
+"url":7,
 "doc":"Obtains all users from specific page by using  filter .",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.advanced_search.AdvancedSearchFlarumUserMixin.get_notifications",
-"url":6,
+"url":7,
 "doc":"Obtains all notifications of your user.",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.advanced_search.AdvancedSearchFlarumUserMixin.api_urls",
-"url":6,
+"url":7,
 "doc":"Simple, hardcoded  'key: value'  dict of Flarum's API routes for quick access. API routes reference (old): https: github.com/flarum/flarum.github.io/blob/20322c0e6011e4f304ae7e95f41594a0b086bc27/_docs/api.md"
 },
 {
 "ref":"pyflarum.extensions.advanced_search.AdvancedSearchExtension",
 "url":8,
-"doc":"A base class for mixing in custom classes (extensions) into another classes.  Example extension code:   from pyflarum.extensions import ExtensionMixin from pyflarum.extensions.admin import AdminExtension from pyflarum.session import FlarumUser  Lowecase: AUTHOR = \"yourname\" NAME = \"extensionname\" ID = f\"{AUTHOR}-{NAME}\"  List of dependencies: SOFT_DEPENDENCIES = [AdminExtension]  uses methods from this extension, but can run without it HARD_DEPENCENDIES = []  I recommend to use the following naming pattern:    Mixin  Example: class ExampleFlarumUserMixin(FlarumUser): @property def __example(self):  ' Calling  FlarumUser( ).__example would return this.  ' return \"Example\" class ExampleExtension(ExtensionMixin): def get_dependencies(self):  ' Overwrite this method to make your own dependencies. This should return the following  dict :  python { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }   Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).  ' return { \"soft\": SOFT_DEPENDENCIES, \"hard\": HARD_DEPENCENDIES } def mixin(self):  ' This extends the  FlarumUser class with features from  ExampleMixin  ' super().mixin(self, FlarumUser, ExampleMixin)   Initializes the  ExtensionMixin object."
+"doc":"A base class for mixing in custom classes (extensions) into another classes.  Example extension code:   from typing import Type from pyflarum.extensions import ExtensionMixin from pyflarum.extensions.admin import AdminExtension from pyflarum.session import FlarumUser  Lowecase: AUTHOR = \"yourname\" NAME = \"extensionname\" ID = f\"{AUTHOR}-{NAME}\"  List of dependencies: SOFT_DEPENDENCIES = [AdminExtension]  uses methods from this extension, but can run without it HARD_DEPENCENDIES = []  I recommend to use the following naming pattern:    Mixin  Example: class ExampleFlarumUserMixin: @property def example(self):  ' Calling  FlarumUser( ).example would return this.  ' return \"Example\" ExampleFlarumUserMixin: Type[FlarumUser]  mimick class inheritance, without inheriting at runtime, acts just as a type hint class ExampleExtension(ExtensionMixin): def get_dependencies(self): return { \"soft\": SOFT_DEPENDENCIES, \"hard\": HARD_DEPENCENDIES } def mixin(self): super().mixin(self, FlarumUser, ExampleFlarumUserMixin)  "
 },
 {
 "ref":"pyflarum.extensions.advanced_search.AdvancedSearchExtension.get_dependencies",
 "url":8,
-"doc":"Overwrite this method to make your own dependencies. This should return the following  dict :   { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }    Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).",
+"doc":"This should return the following  dict :   { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }   A dependency is anything that you can pass into  FlarumUser(extensions=[ .]) (e. g. an extension class).  Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.advanced_search.AdvancedSearchExtension.mixin",
 "url":8,
-"doc":"A boilerplate function for mixing. This sets/overwrites attributes of  class_to_patch to attributes of  class_to_mix_in (monkey-patch).  Example:   extension.mixin(myclass, pyflarum_class)  ",
+"doc":"A function to mix-in/merge properties, methods, functions, etc . of one class into another. This skips all functions and properties starting with  __ (double underscore), unless  skip_protected is False. This sets/overwrites attributes of  class_to_patch to attributes of  class_to_mix_in (monkey-patch).  Example:   extension.mixin(myclass, pyflarum_class)  ",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.advanced_search.AdvancedSearchExtension.all_discussions",
-"url":6,
+"url":7,
 "doc":"Obtains all discussions from specific page by using  filter .",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.advanced_search.AdvancedSearchExtension.all_posts",
-"url":6,
+"url":7,
 "doc":"Obtains all posts from specific page by using  filter .",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.advanced_search.AdvancedSearchExtension.all_users",
-"url":6,
+"url":7,
 "doc":"Obtains all users from specific page by using  filter .",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.advanced_search.AdvancedSearchExtension.get_notifications",
-"url":6,
+"url":7,
 "doc":"Obtains all notifications of your user.",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.advanced_search.AdvancedSearchExtension.api_urls",
-"url":6,
+"url":7,
 "doc":"Simple, hardcoded  'key: value'  dict of Flarum's API routes for quick access. API routes reference (old): https: github.com/flarum/flarum.github.io/blob/20322c0e6011e4f304ae7e95f41594a0b086bc27/_docs/api.md"
 },
 {
@@ -589,48 +560,48 @@ INDEX=[
 },
 {
 "ref":"pyflarum.extensions.commands.CommandsFlarumUserMixin.all_discussions",
-"url":6,
+"url":7,
 "doc":"Obtains all discussions from specific page by using  filter .",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.commands.CommandsFlarumUserMixin.all_posts",
-"url":6,
+"url":7,
 "doc":"Obtains all posts from specific page by using  filter .",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.commands.CommandsFlarumUserMixin.all_users",
-"url":6,
+"url":7,
 "doc":"Obtains all users from specific page by using  filter .",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.commands.CommandsFlarumUserMixin.get_notifications",
-"url":6,
+"url":7,
 "doc":"Obtains all notifications of your user.",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.commands.CommandsFlarumUserMixin.api_urls",
-"url":6,
+"url":7,
 "doc":"Simple, hardcoded  'key: value'  dict of Flarum's API routes for quick access. API routes reference (old): https: github.com/flarum/flarum.github.io/blob/20322c0e6011e4f304ae7e95f41594a0b086bc27/_docs/api.md"
 },
 {
 "ref":"pyflarum.extensions.commands.CommandsExtension",
 "url":9,
-"doc":"A base class for mixing in custom classes (extensions) into another classes.  Example extension code:   from pyflarum.extensions import ExtensionMixin from pyflarum.extensions.admin import AdminExtension from pyflarum.session import FlarumUser  Lowecase: AUTHOR = \"yourname\" NAME = \"extensionname\" ID = f\"{AUTHOR}-{NAME}\"  List of dependencies: SOFT_DEPENDENCIES = [AdminExtension]  uses methods from this extension, but can run without it HARD_DEPENCENDIES = []  I recommend to use the following naming pattern:    Mixin  Example: class ExampleFlarumUserMixin(FlarumUser): @property def __example(self):  ' Calling  FlarumUser( ).__example would return this.  ' return \"Example\" class ExampleExtension(ExtensionMixin): def get_dependencies(self):  ' Overwrite this method to make your own dependencies. This should return the following  dict :  python { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }   Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).  ' return { \"soft\": SOFT_DEPENDENCIES, \"hard\": HARD_DEPENCENDIES } def mixin(self):  ' This extends the  FlarumUser class with features from  ExampleMixin  ' super().mixin(self, FlarumUser, ExampleMixin)   Initializes the  ExtensionMixin object."
+"doc":"A base class for mixing in custom classes (extensions) into another classes.  Example extension code:   from typing import Type from pyflarum.extensions import ExtensionMixin from pyflarum.extensions.admin import AdminExtension from pyflarum.session import FlarumUser  Lowecase: AUTHOR = \"yourname\" NAME = \"extensionname\" ID = f\"{AUTHOR}-{NAME}\"  List of dependencies: SOFT_DEPENDENCIES = [AdminExtension]  uses methods from this extension, but can run without it HARD_DEPENCENDIES = []  I recommend to use the following naming pattern:    Mixin  Example: class ExampleFlarumUserMixin: @property def example(self):  ' Calling  FlarumUser( ).example would return this.  ' return \"Example\" ExampleFlarumUserMixin: Type[FlarumUser]  mimick class inheritance, without inheriting at runtime, acts just as a type hint class ExampleExtension(ExtensionMixin): def get_dependencies(self): return { \"soft\": SOFT_DEPENDENCIES, \"hard\": HARD_DEPENCENDIES } def mixin(self): super().mixin(self, FlarumUser, ExampleFlarumUserMixin)  "
 },
 {
 "ref":"pyflarum.extensions.commands.CommandsExtension.get_dependencies",
 "url":9,
-"doc":"Overwrite this method to make your own dependencies. This should return the following  dict :   { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }    Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).",
+"doc":"This should return the following  dict :   { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }   A dependency is anything that you can pass into  FlarumUser(extensions=[ .]) (e. g. an extension class).  Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.commands.CommandsExtension.mixin",
 "url":9,
-"doc":"A boilerplate function for mixing. This sets/overwrites attributes of  class_to_patch to attributes of  class_to_mix_in (monkey-patch).  Example:   extension.mixin(myclass, pyflarum_class)  ",
+"doc":"A function to mix-in/merge properties, methods, functions, etc . of one class into another. This skips all functions and properties starting with  __ (double underscore), unless  skip_protected is False. This sets/overwrites attributes of  class_to_patch to attributes of  class_to_mix_in (monkey-patch).  Example:   extension.mixin(myclass, pyflarum_class)  ",
 "func":1
 },
 {
@@ -641,31 +612,31 @@ INDEX=[
 },
 {
 "ref":"pyflarum.extensions.commands.CommandsExtension.all_discussions",
-"url":6,
+"url":7,
 "doc":"Obtains all discussions from specific page by using  filter .",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.commands.CommandsExtension.all_posts",
-"url":6,
+"url":7,
 "doc":"Obtains all posts from specific page by using  filter .",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.commands.CommandsExtension.all_users",
-"url":6,
+"url":7,
 "doc":"Obtains all users from specific page by using  filter .",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.commands.CommandsExtension.get_notifications",
-"url":6,
+"url":7,
 "doc":"Obtains all notifications of your user.",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.commands.CommandsExtension.api_urls",
-"url":6,
+"url":7,
 "doc":"Simple, hardcoded  'key: value'  dict of Flarum's API routes for quick access. API routes reference (old): https: github.com/flarum/flarum.github.io/blob/20322c0e6011e4f304ae7e95f41594a0b086bc27/_docs/api.md"
 },
 {
@@ -679,45 +650,45 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserMixin",
-"url":11,
-"doc":"An user from  Users ."
-},
-{
-"ref":"pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserMixin.canViewWarnings",
-"url":11,
-"doc":"Whether or not you can view the warnings of this user."
-},
-{
-"ref":"pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserMixin.canManageWarnings",
+"ref":"pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin",
 "url":11,
 "doc":""
 },
 {
-"ref":"pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserMixin.canDeleteWarnings",
+"ref":"pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.canViewWarnings",
 "url":11,
-"doc":""
+"doc":"Whether or not you can view the warnings of the user."
 },
 {
-"ref":"pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserMixin.visibleWarningCount",
+"ref":"pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.canManageWarnings",
 "url":11,
-"doc":""
+"doc":"Whether or not you are able to manage the user's warnings."
+},
+{
+"ref":"pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.canDeleteWarnings",
+"url":11,
+"doc":"Whether or not you can delete the user's warnings."
+},
+{
+"ref":"pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.visibleWarningCount",
+"url":11,
+"doc":"The amount of warnings that you can see that belong to the user."
 },
 {
 "ref":"pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsExtension",
 "url":11,
-"doc":"A base class for mixing in custom classes (extensions) into another classes.  Example extension code:   from pyflarum.extensions import ExtensionMixin from pyflarum.extensions.admin import AdminExtension from pyflarum.session import FlarumUser  Lowecase: AUTHOR = \"yourname\" NAME = \"extensionname\" ID = f\"{AUTHOR}-{NAME}\"  List of dependencies: SOFT_DEPENDENCIES = [AdminExtension]  uses methods from this extension, but can run without it HARD_DEPENCENDIES = []  I recommend to use the following naming pattern:    Mixin  Example: class ExampleFlarumUserMixin(FlarumUser): @property def __example(self):  ' Calling  FlarumUser( ).__example would return this.  ' return \"Example\" class ExampleExtension(ExtensionMixin): def get_dependencies(self):  ' Overwrite this method to make your own dependencies. This should return the following  dict :  python { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }   Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).  ' return { \"soft\": SOFT_DEPENDENCIES, \"hard\": HARD_DEPENCENDIES } def mixin(self):  ' This extends the  FlarumUser class with features from  ExampleMixin  ' super().mixin(self, FlarumUser, ExampleMixin)   Initializes the  ExtensionMixin object."
+"doc":"https: extiverse.com/extension/askvortsov/flarum-moderator-warnings"
 },
 {
 "ref":"pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsExtension.get_dependencies",
 "url":11,
-"doc":"Overwrite this method to make your own dependencies. This should return the following  dict :   { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }    Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).",
+"doc":"This should return the following  dict :   { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }   A dependency is anything that you can pass into  FlarumUser(extensions=[ .]) (e. g. an extension class).  Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsExtension.mixin",
 "url":11,
-"doc":"A boilerplate function for mixing. This sets/overwrites attributes of  class_to_patch to attributes of  class_to_mix_in (monkey-patch).  Example:   extension.mixin(myclass, pyflarum_class)  ",
+"doc":"A function to mix-in/merge properties, methods, functions, etc . of one class into another. This skips all functions and properties starting with  __ (double underscore), unless  skip_protected is False. This sets/overwrites attributes of  class_to_patch to attributes of  class_to_mix_in (monkey-patch).  Example:   extension.mixin(myclass, pyflarum_class)  ",
 "func":1
 },
 {
@@ -726,2800 +697,2695 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"pyflarum.extensions.flarum.Askvortsov_ReplyTemplates.ReplyTemplatesDiscussionMixin",
-"url":12,
-"doc":"A discussion from  Discussions ."
-},
-{
-"ref":"pyflarum.extensions.flarum.Askvortsov_ReplyTemplates.ReplyTemplatesDiscussionMixin.replyTemplate",
+"ref":"pyflarum.extensions.flarum.Askvortsov_ReplyTemplates.ReplyTemplatesDiscussionFromBulkMixin",
 "url":12,
 "doc":""
 },
 {
-"ref":"pyflarum.extensions.flarum.Askvortsov_ReplyTemplates.ReplyTemplatesDiscussionMixin.canManageReplyTemplates",
+"ref":"pyflarum.extensions.flarum.Askvortsov_ReplyTemplates.ReplyTemplatesDiscussionFromBulkMixin.replyTemplate",
 "url":12,
-"doc":""
+"doc":"The reply template for the discussion."
 },
 {
-"ref":"pyflarum.extensions.flarum.Askvortsov_ReplyTemplates.ReplyTemplatesDiscussionMixin.hide",
-"url":13,
-"doc":"Hides the discussion. Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
-"func":1
-},
-{
-"ref":"pyflarum.extensions.flarum.Askvortsov_ReplyTemplates.ReplyTemplatesDiscussionMixin.restore",
-"url":13,
-"doc":"Restores the discussion (unhides). Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
-"func":1
-},
-{
-"ref":"pyflarum.extensions.flarum.Askvortsov_ReplyTemplates.ReplyTemplatesDiscussionMixin.unhide",
-"url":13,
-"doc":"Restores the discussion (unhides). Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
-"func":1
-},
-{
-"ref":"pyflarum.extensions.flarum.Askvortsov_ReplyTemplates.ReplyTemplatesDiscussionMixin.delete",
-"url":13,
-"doc":"Deletes a discussion forever - this action is irreversible!",
-"func":1
+"ref":"pyflarum.extensions.flarum.Askvortsov_ReplyTemplates.ReplyTemplatesDiscussionFromBulkMixin.canManageReplyTemplates",
+"url":12,
+"doc":"Whether or not you are able to manage the discussion's reply templates."
 },
 {
 "ref":"pyflarum.extensions.flarum.Askvortsov_ReplyTemplates.ReplyTemplatesExtension",
 "url":12,
-"doc":"A base class for mixing in custom classes (extensions) into another classes.  Example extension code:   from pyflarum.extensions import ExtensionMixin from pyflarum.extensions.admin import AdminExtension from pyflarum.session import FlarumUser  Lowecase: AUTHOR = \"yourname\" NAME = \"extensionname\" ID = f\"{AUTHOR}-{NAME}\"  List of dependencies: SOFT_DEPENDENCIES = [AdminExtension]  uses methods from this extension, but can run without it HARD_DEPENCENDIES = []  I recommend to use the following naming pattern:    Mixin  Example: class ExampleFlarumUserMixin(FlarumUser): @property def __example(self):  ' Calling  FlarumUser( ).__example would return this.  ' return \"Example\" class ExampleExtension(ExtensionMixin): def get_dependencies(self):  ' Overwrite this method to make your own dependencies. This should return the following  dict :  python { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }   Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).  ' return { \"soft\": SOFT_DEPENDENCIES, \"hard\": HARD_DEPENCENDIES } def mixin(self):  ' This extends the  FlarumUser class with features from  ExampleMixin  ' super().mixin(self, FlarumUser, ExampleMixin)   Initializes the  ExtensionMixin object."
+"doc":"https: extiverse.com/extension/askvortsov/flarum-discussion-templates"
 },
 {
 "ref":"pyflarum.extensions.flarum.Askvortsov_ReplyTemplates.ReplyTemplatesExtension.get_dependencies",
 "url":12,
-"doc":"Overwrite this method to make your own dependencies. This should return the following  dict :   { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }    Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).",
+"doc":"This should return the following  dict :   { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }   A dependency is anything that you can pass into  FlarumUser(extensions=[ .]) (e. g. an extension class).  Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.Askvortsov_ReplyTemplates.ReplyTemplatesExtension.mixin",
 "url":12,
-"doc":"A boilerplate function for mixing. This sets/overwrites attributes of  class_to_patch to attributes of  class_to_mix_in (monkey-patch).  Example:   extension.mixin(myclass, pyflarum_class)  ",
+"doc":"A function to mix-in/merge properties, methods, functions, etc . of one class into another. This skips all functions and properties starting with  __ (double underscore), unless  skip_protected is False. This sets/overwrites attributes of  class_to_patch to attributes of  class_to_mix_in (monkey-patch).  Example:   extension.mixin(myclass, pyflarum_class)  ",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.Blomstra_Realtime",
-"url":14,
+"url":13,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin",
-"url":14,
-"doc":"A discussion from  Discussions ."
-},
-{
-"ref":"pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.canViewWhoTypes",
-"url":14,
+"url":13,
 "doc":""
 },
 {
-"ref":"pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.hide",
+"ref":"pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.canViewWhoTypes",
 "url":13,
-"doc":"Hides the discussion. Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
-"func":1
-},
-{
-"ref":"pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.restore",
-"url":13,
-"doc":"Restores the discussion (unhides). Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
-"func":1
-},
-{
-"ref":"pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.unhide",
-"url":13,
-"doc":"Restores the discussion (unhides). Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
-"func":1
-},
-{
-"ref":"pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.delete",
-"url":13,
-"doc":"Deletes a discussion forever - this action is irreversible!",
-"func":1
+"doc":"Whether or not you can view who is typing in real time."
 },
 {
 "ref":"pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeExtension",
-"url":14,
-"doc":"A base class for mixing in custom classes (extensions) into another classes.  Example extension code:   from pyflarum.extensions import ExtensionMixin from pyflarum.extensions.admin import AdminExtension from pyflarum.session import FlarumUser  Lowecase: AUTHOR = \"yourname\" NAME = \"extensionname\" ID = f\"{AUTHOR}-{NAME}\"  List of dependencies: SOFT_DEPENDENCIES = [AdminExtension]  uses methods from this extension, but can run without it HARD_DEPENCENDIES = []  I recommend to use the following naming pattern:    Mixin  Example: class ExampleFlarumUserMixin(FlarumUser): @property def __example(self):  ' Calling  FlarumUser( ).__example would return this.  ' return \"Example\" class ExampleExtension(ExtensionMixin): def get_dependencies(self):  ' Overwrite this method to make your own dependencies. This should return the following  dict :  python { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }   Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).  ' return { \"soft\": SOFT_DEPENDENCIES, \"hard\": HARD_DEPENCENDIES } def mixin(self):  ' This extends the  FlarumUser class with features from  ExampleMixin  ' super().mixin(self, FlarumUser, ExampleMixin)   Initializes the  ExtensionMixin object."
+"url":13,
+"doc":"https: extiverse.com/extension/blomstra/realtime"
 },
 {
 "ref":"pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeExtension.get_dependencies",
-"url":14,
-"doc":"Overwrite this method to make your own dependencies. This should return the following  dict :   { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }    Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).",
+"url":13,
+"doc":"This should return the following  dict :   { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }   A dependency is anything that you can pass into  FlarumUser(extensions=[ .]) (e. g. an extension class).  Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeExtension.mixin",
-"url":14,
-"doc":"A boilerplate function for mixing. This sets/overwrites attributes of  class_to_patch to attributes of  class_to_mix_in (monkey-patch).  Example:   extension.mixin(myclass, pyflarum_class)  ",
+"url":13,
+"doc":"A function to mix-in/merge properties, methods, functions, etc . of one class into another. This skips all functions and properties starting with  __ (double underscore), unless  skip_protected is False. This sets/overwrites attributes of  class_to_patch to attributes of  class_to_mix_in (monkey-patch).  Example:   extension.mixin(myclass, pyflarum_class)  ",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Approval",
-"url":15,
+"url":14,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Approval.ApprovalDiscussionFromNotificationMixin",
-"url":15,
-"doc":"A discussion from  BaseNotification "
+"url":14,
+"doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Approval.ApprovalDiscussionFromNotificationMixin.isApproved",
-"url":15,
-"doc":""
-},
-{
-"ref":"pyflarum.extensions.flarum.Flarum_Approval.ApprovalDiscussionFromNotificationMixin.hide",
-"url":13,
-"doc":"Hides the discussion. Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
-"func":1
-},
-{
-"ref":"pyflarum.extensions.flarum.Flarum_Approval.ApprovalDiscussionFromNotificationMixin.restore",
-"url":13,
-"doc":"Restores the discussion (unhides). Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
-"func":1
-},
-{
-"ref":"pyflarum.extensions.flarum.Flarum_Approval.ApprovalDiscussionFromNotificationMixin.unhide",
-"url":13,
-"doc":"Restores the discussion (unhides). Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
-"func":1
-},
-{
-"ref":"pyflarum.extensions.flarum.Flarum_Approval.ApprovalDiscussionFromNotificationMixin.delete",
-"url":13,
-"doc":"Deletes a discussion forever - this action is irreversible!",
-"func":1
+"url":14,
+"doc":"Whether or not the discussion is approved."
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Approval.ApprovalPostFromNotificationMixin",
-"url":15,
-"doc":"A post from  Notification "
+"url":14,
+"doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Approval.ApprovalPostFromNotificationMixin.isApproved",
-"url":15,
-"doc":""
+"url":14,
+"doc":"Whether or not the post is approved."
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Approval.ApprovalPostFromNotificationMixin.canApprove",
-"url":15,
-"doc":""
+"url":14,
+"doc":"Whether or not you are able to approve the post"
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Approval.ApprovalPostFromNotificationMixin.approve",
-"url":15,
-"doc":"",
-"func":1
-},
-{
-"ref":"pyflarum.extensions.flarum.Flarum_Approval.ApprovalPostFromNotificationMixin.reply_to",
-"url":16,
-"doc":"Replies to this  Post with another  PreparedPost .",
-"func":1
-},
-{
-"ref":"pyflarum.extensions.flarum.Flarum_Approval.ApprovalPostFromNotificationMixin.edit",
-"url":16,
-"doc":"Edits the post.",
-"func":1
-},
-{
-"ref":"pyflarum.extensions.flarum.Flarum_Approval.ApprovalPostFromNotificationMixin.hide",
-"url":16,
-"doc":"Hides the post. Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
-"func":1
-},
-{
-"ref":"pyflarum.extensions.flarum.Flarum_Approval.ApprovalPostFromNotificationMixin.restore",
-"url":16,
-"doc":"Restores the post (unhides). Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
-"func":1
-},
-{
-"ref":"pyflarum.extensions.flarum.Flarum_Approval.ApprovalPostFromNotificationMixin.unhide",
-"url":16,
-"doc":"Restores the post (unhides). Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
-"func":1
-},
-{
-"ref":"pyflarum.extensions.flarum.Flarum_Approval.ApprovalPostFromNotificationMixin.delete",
-"url":16,
-"doc":"Removes the post forever.",
+"url":14,
+"doc":"Approve the post. Use  force to approve despite the post being approved already, and do not raise  FlarumError .",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Approval.ApprovalExtension",
-"url":15,
-"doc":"A base class for mixing in custom classes (extensions) into another classes.  Example extension code:   from pyflarum.extensions import ExtensionMixin from pyflarum.extensions.admin import AdminExtension from pyflarum.session import FlarumUser  Lowecase: AUTHOR = \"yourname\" NAME = \"extensionname\" ID = f\"{AUTHOR}-{NAME}\"  List of dependencies: SOFT_DEPENDENCIES = [AdminExtension]  uses methods from this extension, but can run without it HARD_DEPENCENDIES = []  I recommend to use the following naming pattern:    Mixin  Example: class ExampleFlarumUserMixin(FlarumUser): @property def __example(self):  ' Calling  FlarumUser( ).__example would return this.  ' return \"Example\" class ExampleExtension(ExtensionMixin): def get_dependencies(self):  ' Overwrite this method to make your own dependencies. This should return the following  dict :  python { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }   Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).  ' return { \"soft\": SOFT_DEPENDENCIES, \"hard\": HARD_DEPENCENDIES } def mixin(self):  ' This extends the  FlarumUser class with features from  ExampleMixin  ' super().mixin(self, FlarumUser, ExampleMixin)   Initializes the  ExtensionMixin object."
+"url":14,
+"doc":"https: packagist.org/packages/flarum/approval"
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Approval.ApprovalExtension.get_dependencies",
-"url":15,
-"doc":"Overwrite this method to make your own dependencies. This should return the following  dict :   { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }    Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).",
+"url":14,
+"doc":"This should return the following  dict :   { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }   A dependency is anything that you can pass into  FlarumUser(extensions=[ .]) (e. g. an extension class).  Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Approval.ApprovalExtension.mixin",
-"url":15,
-"doc":"A boilerplate function for mixing. This sets/overwrites attributes of  class_to_patch to attributes of  class_to_mix_in (monkey-patch).  Example:   extension.mixin(myclass, pyflarum_class)  ",
+"url":14,
+"doc":"A function to mix-in/merge properties, methods, functions, etc . of one class into another. This skips all functions and properties starting with  __ (double underscore), unless  skip_protected is False. This sets/overwrites attributes of  class_to_patch to attributes of  class_to_mix_in (monkey-patch).  Example:   extension.mixin(myclass, pyflarum_class)  ",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Flags",
-"url":17,
+"url":15,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Flags.FlagsForumMixin",
-"url":17,
-"doc":"Forum JSON data"
+"url":15,
+"doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Flags.FlagsForumMixin.canViewFlags",
-"url":17,
-"doc":""
+"url":15,
+"doc":"Whether or not you can view all the flags on the forum."
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Flags.FlagsForumMixin.flagCount",
-"url":17,
-"doc":""
+"url":15,
+"doc":"The total flagged post/discussion count (forum-wide)."
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Flags.FlagsForumMixin.guidelinesUrl",
-"url":17,
-"doc":""
+"url":15,
+"doc":"The URL of the forum's guidelines, if specified by the admin."
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Flags.FlagsPostFromNotificationMixin",
-"url":17,
-"doc":"A post from  Notification "
-},
-{
-"ref":"pyflarum.extensions.flarum.Flarum_Flags.FlagsPostFromNotificationMixin.canFlag",
-"url":17,
+"url":15,
 "doc":""
 },
 {
-"ref":"pyflarum.extensions.flarum.Flarum_Flags.FlagsPostFromNotificationMixin.reply_to",
-"url":16,
-"doc":"Replies to this  Post with another  PreparedPost .",
-"func":1
-},
-{
-"ref":"pyflarum.extensions.flarum.Flarum_Flags.FlagsPostFromNotificationMixin.edit",
-"url":16,
-"doc":"Edits the post.",
-"func":1
-},
-{
-"ref":"pyflarum.extensions.flarum.Flarum_Flags.FlagsPostFromNotificationMixin.hide",
-"url":16,
-"doc":"Hides the post. Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
-"func":1
-},
-{
-"ref":"pyflarum.extensions.flarum.Flarum_Flags.FlagsPostFromNotificationMixin.restore",
-"url":16,
-"doc":"Restores the post (unhides). Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
-"func":1
-},
-{
-"ref":"pyflarum.extensions.flarum.Flarum_Flags.FlagsPostFromNotificationMixin.unhide",
-"url":16,
-"doc":"Restores the post (unhides). Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
-"func":1
-},
-{
-"ref":"pyflarum.extensions.flarum.Flarum_Flags.FlagsPostFromNotificationMixin.delete",
-"url":16,
-"doc":"Removes the post forever.",
-"func":1
+"ref":"pyflarum.extensions.flarum.Flarum_Flags.FlagsPostFromNotificationMixin.canFlag",
+"url":15,
+"doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Flags.FlagsExtension",
-"url":17,
-"doc":"A base class for mixing in custom classes (extensions) into another classes.  Example extension code:   from pyflarum.extensions import ExtensionMixin from pyflarum.extensions.admin import AdminExtension from pyflarum.session import FlarumUser  Lowecase: AUTHOR = \"yourname\" NAME = \"extensionname\" ID = f\"{AUTHOR}-{NAME}\"  List of dependencies: SOFT_DEPENDENCIES = [AdminExtension]  uses methods from this extension, but can run without it HARD_DEPENCENDIES = []  I recommend to use the following naming pattern:    Mixin  Example: class ExampleFlarumUserMixin(FlarumUser): @property def __example(self):  ' Calling  FlarumUser( ).__example would return this.  ' return \"Example\" class ExampleExtension(ExtensionMixin): def get_dependencies(self):  ' Overwrite this method to make your own dependencies. This should return the following  dict :  python { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }   Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).  ' return { \"soft\": SOFT_DEPENDENCIES, \"hard\": HARD_DEPENCENDIES } def mixin(self):  ' This extends the  FlarumUser class with features from  ExampleMixin  ' super().mixin(self, FlarumUser, ExampleMixin)   Initializes the  ExtensionMixin object."
+"url":15,
+"doc":"https: packagist.org/packages/flarum/flags"
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Flags.FlagsExtension.get_dependencies",
-"url":17,
-"doc":"Overwrite this method to make your own dependencies. This should return the following  dict :   { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }    Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).",
+"url":15,
+"doc":"This should return the following  dict :   { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }   A dependency is anything that you can pass into  FlarumUser(extensions=[ .]) (e. g. an extension class).  Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Flags.FlagsExtension.mixin",
-"url":17,
-"doc":"A boilerplate function for mixing. This sets/overwrites attributes of  class_to_patch to attributes of  class_to_mix_in (monkey-patch).  Example:   extension.mixin(myclass, pyflarum_class)  ",
+"url":15,
+"doc":"A function to mix-in/merge properties, methods, functions, etc . of one class into another. This skips all functions and properties starting with  __ (double underscore), unless  skip_protected is False. This sets/overwrites attributes of  class_to_patch to attributes of  class_to_mix_in (monkey-patch).  Example:   extension.mixin(myclass, pyflarum_class)  ",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Likes",
-"url":18,
+"url":16,
 "doc":""
+},
+{
+"ref":"pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromDiscussionMixin",
+"url":16,
+"doc":""
+},
+{
+"ref":"pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromDiscussionMixin.like",
+"url":16,
+"doc":"Likes a post.",
+"func":1
+},
+{
+"ref":"pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromDiscussionMixin.unlike",
+"url":16,
+"doc":"Unlikes liked post.",
+"func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromNotificationMixin",
-"url":18,
-"doc":"A post from  Notification "
-},
-{
-"ref":"pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromNotificationMixin.canLike",
-"url":18,
+"url":16,
 "doc":""
 },
 {
-"ref":"pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromNotificationMixin.like",
-"url":18,
-"doc":"Likes a post.",
-"func":1
-},
-{
-"ref":"pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromNotificationMixin.unlike",
-"url":18,
-"doc":"Unlikes liked post.",
-"func":1
-},
-{
-"ref":"pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromNotificationMixin.reply_to",
+"ref":"pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromNotificationMixin.canLike",
 "url":16,
-"doc":"Replies to this  Post with another  PreparedPost .",
-"func":1
-},
-{
-"ref":"pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromNotificationMixin.edit",
-"url":16,
-"doc":"Edits the post.",
-"func":1
-},
-{
-"ref":"pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromNotificationMixin.hide",
-"url":16,
-"doc":"Hides the post. Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
-"func":1
-},
-{
-"ref":"pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromNotificationMixin.restore",
-"url":16,
-"doc":"Restores the post (unhides). Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
-"func":1
-},
-{
-"ref":"pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromNotificationMixin.unhide",
-"url":16,
-"doc":"Restores the post (unhides). Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
-"func":1
-},
-{
-"ref":"pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromNotificationMixin.delete",
-"url":16,
-"doc":"Removes the post forever.",
-"func":1
+"doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromBulkMixin",
-"url":18,
-"doc":"A post from  Posts ."
+"url":16,
+"doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromBulkMixin.get_liked_by",
-"url":18,
-"doc":"",
-"func":1
-},
-{
-"ref":"pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromBulkMixin.reply_to",
 "url":16,
-"doc":"Replies to this  Post with another  PreparedPost .",
-"func":1
-},
-{
-"ref":"pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromBulkMixin.edit",
-"url":16,
-"doc":"Edits the post.",
-"func":1
-},
-{
-"ref":"pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromBulkMixin.hide",
-"url":16,
-"doc":"Hides the post. Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
-"func":1
-},
-{
-"ref":"pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromBulkMixin.restore",
-"url":16,
-"doc":"Restores the post (unhides). Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
-"func":1
-},
-{
-"ref":"pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromBulkMixin.unhide",
-"url":16,
-"doc":"Restores the post (unhides). Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
-"func":1
-},
-{
-"ref":"pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromBulkMixin.delete",
-"url":16,
-"doc":"Removes the post forever.",
-"func":1
-},
-{
-"ref":"pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromBulkMixin.like",
-"url":18,
-"doc":"Likes a post.",
-"func":1
-},
-{
-"ref":"pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromBulkMixin.unlike",
-"url":18,
-"doc":"Unlikes liked post.",
+"doc":"Obtain the list of users that liked the post.",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Likes.LikesExtension",
-"url":18,
-"doc":"A base class for mixing in custom classes (extensions) into another classes.  Example extension code:   from pyflarum.extensions import ExtensionMixin from pyflarum.extensions.admin import AdminExtension from pyflarum.session import FlarumUser  Lowecase: AUTHOR = \"yourname\" NAME = \"extensionname\" ID = f\"{AUTHOR}-{NAME}\"  List of dependencies: SOFT_DEPENDENCIES = [AdminExtension]  uses methods from this extension, but can run without it HARD_DEPENCENDIES = []  I recommend to use the following naming pattern:    Mixin  Example: class ExampleFlarumUserMixin(FlarumUser): @property def __example(self):  ' Calling  FlarumUser( ).__example would return this.  ' return \"Example\" class ExampleExtension(ExtensionMixin): def get_dependencies(self):  ' Overwrite this method to make your own dependencies. This should return the following  dict :  python { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }   Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).  ' return { \"soft\": SOFT_DEPENDENCIES, \"hard\": HARD_DEPENCENDIES } def mixin(self):  ' This extends the  FlarumUser class with features from  ExampleMixin  ' super().mixin(self, FlarumUser, ExampleMixin)   Initializes the  ExtensionMixin object."
+"url":16,
+"doc":"https: packagist.org/packages/flarum/likes"
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Likes.LikesExtension.get_dependencies",
-"url":18,
-"doc":"Overwrite this method to make your own dependencies. This should return the following  dict :   { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }    Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).",
+"url":16,
+"doc":"This should return the following  dict :   { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }   A dependency is anything that you can pass into  FlarumUser(extensions=[ .]) (e. g. an extension class).  Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Likes.LikesExtension.mixin",
-"url":18,
-"doc":"A boilerplate function for mixing. This sets/overwrites attributes of  class_to_patch to attributes of  class_to_mix_in (monkey-patch).  Example:   extension.mixin(myclass, pyflarum_class)  ",
+"url":16,
+"doc":"A function to mix-in/merge properties, methods, functions, etc . of one class into another. This skips all functions and properties starting with  __ (double underscore), unless  skip_protected is False. This sets/overwrites attributes of  class_to_patch to attributes of  class_to_mix_in (monkey-patch).  Example:   extension.mixin(myclass, pyflarum_class)  ",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Lock",
-"url":19,
+"url":17,
 "doc":""
 },
 {
-"ref":"pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionMixin",
-"url":19,
-"doc":"A discussion from  Discussions ."
-},
-{
-"ref":"pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionMixin.isLocked",
-"url":19,
+"ref":"pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromNotificationMixin",
+"url":17,
 "doc":""
 },
 {
-"ref":"pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionMixin.canLock",
-"url":19,
+"ref":"pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromNotificationMixin.lock",
+"url":17,
+"doc":"Locks the discussion.",
+"func":1
+},
+{
+"ref":"pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromNotificationMixin.unlock",
+"url":17,
+"doc":"Unlocks the discussion.",
+"func":1
+},
+{
+"ref":"pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin",
+"url":17,
 "doc":""
 },
 {
-"ref":"pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionMixin.hide",
-"url":13,
-"doc":"Hides the discussion. Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
+"ref":"pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.isLocked",
+"url":17,
+"doc":"Whether or not the discussion is locked."
+},
+{
+"ref":"pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.canLock",
+"url":17,
+"doc":"Whether or not you are able to lock the discussion."
+},
+{
+"ref":"pyflarum.extensions.flarum.Flarum_Lock.LockExtension",
+"url":17,
+"doc":"https: packagist.org/packages/flarum/lock"
+},
+{
+"ref":"pyflarum.extensions.flarum.Flarum_Lock.LockExtension.get_dependencies",
+"url":17,
+"doc":"This should return the following  dict :   { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }   A dependency is anything that you can pass into  FlarumUser(extensions=[ .]) (e. g. an extension class).  Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).",
 "func":1
 },
 {
-"ref":"pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionMixin.restore",
-"url":13,
-"doc":"Restores the discussion (unhides). Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
-"func":1
-},
-{
-"ref":"pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionMixin.unhide",
-"url":13,
-"doc":"Restores the discussion (unhides). Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
-"func":1
-},
-{
-"ref":"pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionMixin.delete",
-"url":13,
-"doc":"Deletes a discussion forever - this action is irreversible!",
-"func":1
-},
-{
-"ref":"pyflarum.extensions.flarum.Flarum_Lock.StickyExtension",
-"url":19,
-"doc":"A base class for mixing in custom classes (extensions) into another classes.  Example extension code:   from pyflarum.extensions import ExtensionMixin from pyflarum.extensions.admin import AdminExtension from pyflarum.session import FlarumUser  Lowecase: AUTHOR = \"yourname\" NAME = \"extensionname\" ID = f\"{AUTHOR}-{NAME}\"  List of dependencies: SOFT_DEPENDENCIES = [AdminExtension]  uses methods from this extension, but can run without it HARD_DEPENCENDIES = []  I recommend to use the following naming pattern:    Mixin  Example: class ExampleFlarumUserMixin(FlarumUser): @property def __example(self):  ' Calling  FlarumUser( ).__example would return this.  ' return \"Example\" class ExampleExtension(ExtensionMixin): def get_dependencies(self):  ' Overwrite this method to make your own dependencies. This should return the following  dict :  python { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }   Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).  ' return { \"soft\": SOFT_DEPENDENCIES, \"hard\": HARD_DEPENCENDIES } def mixin(self):  ' This extends the  FlarumUser class with features from  ExampleMixin  ' super().mixin(self, FlarumUser, ExampleMixin)   Initializes the  ExtensionMixin object."
-},
-{
-"ref":"pyflarum.extensions.flarum.Flarum_Lock.StickyExtension.get_dependencies",
-"url":19,
-"doc":"Overwrite this method to make your own dependencies. This should return the following  dict :   { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }    Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).",
-"func":1
-},
-{
-"ref":"pyflarum.extensions.flarum.Flarum_Lock.StickyExtension.mixin",
-"url":19,
-"doc":"A boilerplate function for mixing. This sets/overwrites attributes of  class_to_patch to attributes of  class_to_mix_in (monkey-patch).  Example:   extension.mixin(myclass, pyflarum_class)  ",
+"ref":"pyflarum.extensions.flarum.Flarum_Lock.LockExtension.mixin",
+"url":17,
+"doc":"A function to mix-in/merge properties, methods, functions, etc . of one class into another. This skips all functions and properties starting with  __ (double underscore), unless  skip_protected is False. This sets/overwrites attributes of  class_to_patch to attributes of  class_to_mix_in (monkey-patch).  Example:   extension.mixin(myclass, pyflarum_class)  ",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Markdown",
-"url":20,
+"url":18,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Markdown.ForumMixin",
-"url":20,
-"doc":"Forum JSON data"
-},
-{
-"ref":"pyflarum.extensions.flarum.Flarum_Markdown.ForumMixin.markdown_mdarea",
-"url":20,
+"url":18,
 "doc":""
 },
 {
+"ref":"pyflarum.extensions.flarum.Flarum_Markdown.ForumMixin.markdown_mdarea",
+"url":18,
+"doc":"Whether or not the MDArea is enabled for markdown."
+},
+{
 "ref":"pyflarum.extensions.flarum.Flarum_Markdown.ExampleExtension",
-"url":20,
-"doc":"A base class for mixing in custom classes (extensions) into another classes.  Example extension code:   from pyflarum.extensions import ExtensionMixin from pyflarum.extensions.admin import AdminExtension from pyflarum.session import FlarumUser  Lowecase: AUTHOR = \"yourname\" NAME = \"extensionname\" ID = f\"{AUTHOR}-{NAME}\"  List of dependencies: SOFT_DEPENDENCIES = [AdminExtension]  uses methods from this extension, but can run without it HARD_DEPENCENDIES = []  I recommend to use the following naming pattern:    Mixin  Example: class ExampleFlarumUserMixin(FlarumUser): @property def __example(self):  ' Calling  FlarumUser( ).__example would return this.  ' return \"Example\" class ExampleExtension(ExtensionMixin): def get_dependencies(self):  ' Overwrite this method to make your own dependencies. This should return the following  dict :  python { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }   Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).  ' return { \"soft\": SOFT_DEPENDENCIES, \"hard\": HARD_DEPENCENDIES } def mixin(self):  ' This extends the  FlarumUser class with features from  ExampleMixin  ' super().mixin(self, FlarumUser, ExampleMixin)   Initializes the  ExtensionMixin object."
+"url":18,
+"doc":"https: packagist.org/packages/flarum/markdown"
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Markdown.ExampleExtension.get_dependencies",
-"url":20,
-"doc":"Overwrite this method to make your own dependencies. This should return the following  dict :   { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }    Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).",
+"url":18,
+"doc":"This should return the following  dict :   { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }   A dependency is anything that you can pass into  FlarumUser(extensions=[ .]) (e. g. an extension class).  Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Markdown.ExampleExtension.mixin",
-"url":20,
-"doc":"A boilerplate function for mixing. This sets/overwrites attributes of  class_to_patch to attributes of  class_to_mix_in (monkey-patch).  Example:   extension.mixin(myclass, pyflarum_class)  ",
+"url":18,
+"doc":"A function to mix-in/merge properties, methods, functions, etc . of one class into another. This skips all functions and properties starting with  __ (double underscore), unless  skip_protected is False. This sets/overwrites attributes of  class_to_patch to attributes of  class_to_mix_in (monkey-patch).  Example:   extension.mixin(myclass, pyflarum_class)  ",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Sticky",
-"url":21,
+"url":19,
 "doc":""
 },
 {
-"ref":"pyflarum.extensions.flarum.Flarum_Sticky.StickyDiscussionMixin",
-"url":21,
-"doc":"A discussion from  Discussions ."
-},
-{
-"ref":"pyflarum.extensions.flarum.Flarum_Sticky.StickyDiscussionMixin.isSticky",
-"url":21,
+"ref":"pyflarum.extensions.flarum.Flarum_Sticky.StickyDiscussionFromNotificationMixin",
+"url":19,
 "doc":""
 },
 {
-"ref":"pyflarum.extensions.flarum.Flarum_Sticky.StickyDiscussionMixin.canSticky",
-"url":21,
+"ref":"pyflarum.extensions.flarum.Flarum_Sticky.StickyDiscussionFromNotificationMixin.stick",
+"url":19,
+"doc":"Stickies a discussion.",
+"func":1
+},
+{
+"ref":"pyflarum.extensions.flarum.Flarum_Sticky.StickyDiscussionFromNotificationMixin.unstick",
+"url":19,
+"doc":"Unstickies a discussion.",
+"func":1
+},
+{
+"ref":"pyflarum.extensions.flarum.Flarum_Sticky.StickyDiscussionFromBulkMixin",
+"url":19,
 "doc":""
 },
 {
-"ref":"pyflarum.extensions.flarum.Flarum_Sticky.StickyDiscussionMixin.hide",
-"url":13,
-"doc":"Hides the discussion. Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
-"func":1
+"ref":"pyflarum.extensions.flarum.Flarum_Sticky.StickyDiscussionFromBulkMixin.isSticky",
+"url":19,
+"doc":"Whether or not the discussion is stickied."
 },
 {
-"ref":"pyflarum.extensions.flarum.Flarum_Sticky.StickyDiscussionMixin.restore",
-"url":13,
-"doc":"Restores the discussion (unhides). Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
-"func":1
-},
-{
-"ref":"pyflarum.extensions.flarum.Flarum_Sticky.StickyDiscussionMixin.unhide",
-"url":13,
-"doc":"Restores the discussion (unhides). Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
-"func":1
-},
-{
-"ref":"pyflarum.extensions.flarum.Flarum_Sticky.StickyDiscussionMixin.delete",
-"url":13,
-"doc":"Deletes a discussion forever - this action is irreversible!",
-"func":1
+"ref":"pyflarum.extensions.flarum.Flarum_Sticky.StickyDiscussionFromBulkMixin.canSticky",
+"url":19,
+"doc":"Whether or not you are able to stick this discussion."
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Sticky.StickyExtension",
-"url":21,
-"doc":"A base class for mixing in custom classes (extensions) into another classes.  Example extension code:   from pyflarum.extensions import ExtensionMixin from pyflarum.extensions.admin import AdminExtension from pyflarum.session import FlarumUser  Lowecase: AUTHOR = \"yourname\" NAME = \"extensionname\" ID = f\"{AUTHOR}-{NAME}\"  List of dependencies: SOFT_DEPENDENCIES = [AdminExtension]  uses methods from this extension, but can run without it HARD_DEPENCENDIES = []  I recommend to use the following naming pattern:    Mixin  Example: class ExampleFlarumUserMixin(FlarumUser): @property def __example(self):  ' Calling  FlarumUser( ).__example would return this.  ' return \"Example\" class ExampleExtension(ExtensionMixin): def get_dependencies(self):  ' Overwrite this method to make your own dependencies. This should return the following  dict :  python { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }   Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).  ' return { \"soft\": SOFT_DEPENDENCIES, \"hard\": HARD_DEPENCENDIES } def mixin(self):  ' This extends the  FlarumUser class with features from  ExampleMixin  ' super().mixin(self, FlarumUser, ExampleMixin)   Initializes the  ExtensionMixin object."
+"url":19,
+"doc":"A base class for mixing in custom classes (extensions) into another classes.  Example extension code:   from typing import Type from pyflarum.extensions import ExtensionMixin from pyflarum.extensions.admin import AdminExtension from pyflarum.session import FlarumUser  Lowecase: AUTHOR = \"yourname\" NAME = \"extensionname\" ID = f\"{AUTHOR}-{NAME}\"  List of dependencies: SOFT_DEPENDENCIES = [AdminExtension]  uses methods from this extension, but can run without it HARD_DEPENCENDIES = []  I recommend to use the following naming pattern:    Mixin  Example: class ExampleFlarumUserMixin: @property def example(self):  ' Calling  FlarumUser( ).example would return this.  ' return \"Example\" ExampleFlarumUserMixin: Type[FlarumUser]  mimick class inheritance, without inheriting at runtime, acts just as a type hint class ExampleExtension(ExtensionMixin): def get_dependencies(self): return { \"soft\": SOFT_DEPENDENCIES, \"hard\": HARD_DEPENCENDIES } def mixin(self): super().mixin(self, FlarumUser, ExampleFlarumUserMixin)  "
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Sticky.StickyExtension.get_dependencies",
-"url":21,
-"doc":"Overwrite this method to make your own dependencies. This should return the following  dict :   { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }    Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).",
+"url":19,
+"doc":"This should return the following  dict :   { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }   A dependency is anything that you can pass into  FlarumUser(extensions=[ .]) (e. g. an extension class).  Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Sticky.StickyExtension.mixin",
-"url":21,
-"doc":"A boilerplate function for mixing. This sets/overwrites attributes of  class_to_patch to attributes of  class_to_mix_in (monkey-patch).  Example:   extension.mixin(myclass, pyflarum_class)  ",
+"url":19,
+"doc":"A function to mix-in/merge properties, methods, functions, etc . of one class into another. This skips all functions and properties starting with  __ (double underscore), unless  skip_protected is False. This sets/overwrites attributes of  class_to_patch to attributes of  class_to_mix_in (monkey-patch).  Example:   extension.mixin(myclass, pyflarum_class)  ",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Subscriptions",
-"url":22,
+"url":20,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromNotificationMixin",
-"url":22,
-"doc":"A discussion from  BaseNotification "
+"url":20,
+"doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromNotificationMixin.follow",
-"url":22,
-"doc":"",
+"url":20,
+"doc":"Follow the discussion and be notified of all new activity.",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromNotificationMixin.unfollow",
-"url":22,
-"doc":"",
+"url":20,
+"doc":"Unfollow the discussion, but be notified when someone mentions you.",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromNotificationMixin.ignore",
-"url":22,
-"doc":"",
-"func":1
-},
-{
-"ref":"pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromNotificationMixin.hide",
-"url":13,
-"doc":"Hides the discussion. Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
-"func":1
-},
-{
-"ref":"pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromNotificationMixin.restore",
-"url":13,
-"doc":"Restores the discussion (unhides). Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
-"func":1
-},
-{
-"ref":"pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromNotificationMixin.unhide",
-"url":13,
-"doc":"Restores the discussion (unhides). Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
-"func":1
-},
-{
-"ref":"pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromNotificationMixin.delete",
-"url":13,
-"doc":"Deletes a discussion forever - this action is irreversible!",
+"url":20,
+"doc":"Ignore the discussion, never be mentioned. Note that this will also hide the discussion from  Discussions . Currently, the only ways to access ignored Flarum discussions that I am aware of are: 1. Accessing the discussion directly (by ID). 2. Using  pyflarum.flarum.core.filters.Filter (e. g.  Filter(query=\"is:ignored\") ).",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromBulkMixin",
-"url":22,
+"url":20,
 "doc":"A discussion from  Discussions ."
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromBulkMixin.subscription",
-"url":22,
-"doc":""
+"url":20,
+"doc":"Get the current subscription state of the discussion."
+},
+{
+"ref":"pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromBulkMixin.get_author",
+"url":21,
+"doc":"Obtains the author of the discussion. It returns  pyflarum.flarum.core.users.UserFromNotification because it's JSON data matches the data of user from notification. This works by fetching it from the  _parent_included property.",
+"func":1
+},
+{
+"ref":"pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromBulkMixin.get_last_posted_user",
+"url":21,
+"doc":"Obtains the user that posted the latest post in the discussion. It returns  pyflarum.flarum.core.users.UserFromNotification because it's JSON data matches the data of user from notification. This works by fetching it from the  _parent_included property.",
+"func":1
+},
+{
+"ref":"pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromBulkMixin.get_first_post",
+"url":21,
+"doc":"Obtains the first post of the discussion. This works by fetching it from the  _parent_included property.",
+"func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromBulkMixin.hide",
-"url":13,
-"doc":"Hides the discussion. Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
+"url":21,
+"doc":"Hides the discussion from the sight of other unprivileged users that are not worthy to view such thread.",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromBulkMixin.restore",
-"url":13,
-"doc":"Restores the discussion (unhides). Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
+"url":21,
+"doc":"Restores the discussion (unhides it), bringing it back to life.",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromBulkMixin.unhide",
-"url":13,
-"doc":"Restores the discussion (unhides). Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
+"url":21,
+"doc":"Restores the discussion (unhides it), bringing it back to life.",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromBulkMixin.delete",
-"url":13,
-"doc":"Deletes a discussion forever - this action is irreversible!",
+"url":21,
+"doc":"Scronches the discussion forever. This cannot be reverted. Use  force=True to attempt to delete the discussion even if the API states that you can't.",
+"func":1
+},
+{
+"ref":"pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromBulkMixin.follow",
+"url":20,
+"doc":"Follow the discussion and be notified of all new activity.",
+"func":1
+},
+{
+"ref":"pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromBulkMixin.unfollow",
+"url":20,
+"doc":"Unfollow the discussion, but be notified when someone mentions you.",
+"func":1
+},
+{
+"ref":"pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromBulkMixin.ignore",
+"url":20,
+"doc":"Ignore the discussion, never be mentioned. Note that this will also hide the discussion from  Discussions . Currently, the only ways to access ignored Flarum discussions that I am aware of are: 1. Accessing the discussion directly (by ID). 2. Using  pyflarum.flarum.core.filters.Filter (e. g.  Filter(query=\"is:ignored\") ).",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsExtension",
-"url":22,
-"doc":"A base class for mixing in custom classes (extensions) into another classes.  Example extension code:   from pyflarum.extensions import ExtensionMixin from pyflarum.extensions.admin import AdminExtension from pyflarum.session import FlarumUser  Lowecase: AUTHOR = \"yourname\" NAME = \"extensionname\" ID = f\"{AUTHOR}-{NAME}\"  List of dependencies: SOFT_DEPENDENCIES = [AdminExtension]  uses methods from this extension, but can run without it HARD_DEPENCENDIES = []  I recommend to use the following naming pattern:    Mixin  Example: class ExampleFlarumUserMixin(FlarumUser): @property def __example(self):  ' Calling  FlarumUser( ).__example would return this.  ' return \"Example\" class ExampleExtension(ExtensionMixin): def get_dependencies(self):  ' Overwrite this method to make your own dependencies. This should return the following  dict :  python { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }   Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).  ' return { \"soft\": SOFT_DEPENDENCIES, \"hard\": HARD_DEPENCENDIES } def mixin(self):  ' This extends the  FlarumUser class with features from  ExampleMixin  ' super().mixin(self, FlarumUser, ExampleMixin)   Initializes the  ExtensionMixin object."
+"url":20,
+"doc":"A base class for mixing in custom classes (extensions) into another classes.  Example extension code:   from typing import Type from pyflarum.extensions import ExtensionMixin from pyflarum.extensions.admin import AdminExtension from pyflarum.session import FlarumUser  Lowecase: AUTHOR = \"yourname\" NAME = \"extensionname\" ID = f\"{AUTHOR}-{NAME}\"  List of dependencies: SOFT_DEPENDENCIES = [AdminExtension]  uses methods from this extension, but can run without it HARD_DEPENCENDIES = []  I recommend to use the following naming pattern:    Mixin  Example: class ExampleFlarumUserMixin: @property def example(self):  ' Calling  FlarumUser( ).example would return this.  ' return \"Example\" ExampleFlarumUserMixin: Type[FlarumUser]  mimick class inheritance, without inheriting at runtime, acts just as a type hint class ExampleExtension(ExtensionMixin): def get_dependencies(self): return { \"soft\": SOFT_DEPENDENCIES, \"hard\": HARD_DEPENCENDIES } def mixin(self): super().mixin(self, FlarumUser, ExampleFlarumUserMixin)  "
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsExtension.get_dependencies",
-"url":22,
-"doc":"Overwrite this method to make your own dependencies. This should return the following  dict :   { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }    Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).",
+"url":20,
+"doc":"This should return the following  dict :   { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }   A dependency is anything that you can pass into  FlarumUser(extensions=[ .]) (e. g. an extension class).  Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsExtension.mixin",
-"url":22,
-"doc":"A boilerplate function for mixing. This sets/overwrites attributes of  class_to_patch to attributes of  class_to_mix_in (monkey-patch).  Example:   extension.mixin(myclass, pyflarum_class)  ",
+"url":20,
+"doc":"A function to mix-in/merge properties, methods, functions, etc . of one class into another. This skips all functions and properties starting with  __ (double underscore), unless  skip_protected is False. This sets/overwrites attributes of  class_to_patch to attributes of  class_to_mix_in (monkey-patch).  Example:   extension.mixin(myclass, pyflarum_class)  ",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Suspend",
-"url":23,
+"url":22,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Suspend.SuspendUserMixin",
-"url":23,
+"url":22,
 "doc":"An user from  Users ."
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Suspend.SuspendUserMixin.canSuspend",
-"url":23,
+"url":22,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Suspend.SuspendUserMixin.suspendedUntil",
-"url":23,
+"url":22,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Suspend.SuspendUserMixin.suspend",
-"url":23,
+"url":22,
 "doc":"",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Suspend.SuspendExtension",
-"url":23,
-"doc":"A base class for mixing in custom classes (extensions) into another classes.  Example extension code:   from pyflarum.extensions import ExtensionMixin from pyflarum.extensions.admin import AdminExtension from pyflarum.session import FlarumUser  Lowecase: AUTHOR = \"yourname\" NAME = \"extensionname\" ID = f\"{AUTHOR}-{NAME}\"  List of dependencies: SOFT_DEPENDENCIES = [AdminExtension]  uses methods from this extension, but can run without it HARD_DEPENCENDIES = []  I recommend to use the following naming pattern:    Mixin  Example: class ExampleFlarumUserMixin(FlarumUser): @property def __example(self):  ' Calling  FlarumUser( ).__example would return this.  ' return \"Example\" class ExampleExtension(ExtensionMixin): def get_dependencies(self):  ' Overwrite this method to make your own dependencies. This should return the following  dict :  python { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }   Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).  ' return { \"soft\": SOFT_DEPENDENCIES, \"hard\": HARD_DEPENCENDIES } def mixin(self):  ' This extends the  FlarumUser class with features from  ExampleMixin  ' super().mixin(self, FlarumUser, ExampleMixin)   Initializes the  ExtensionMixin object."
+"url":22,
+"doc":"A base class for mixing in custom classes (extensions) into another classes.  Example extension code:   from typing import Type from pyflarum.extensions import ExtensionMixin from pyflarum.extensions.admin import AdminExtension from pyflarum.session import FlarumUser  Lowecase: AUTHOR = \"yourname\" NAME = \"extensionname\" ID = f\"{AUTHOR}-{NAME}\"  List of dependencies: SOFT_DEPENDENCIES = [AdminExtension]  uses methods from this extension, but can run without it HARD_DEPENCENDIES = []  I recommend to use the following naming pattern:    Mixin  Example: class ExampleFlarumUserMixin: @property def example(self):  ' Calling  FlarumUser( ).example would return this.  ' return \"Example\" ExampleFlarumUserMixin: Type[FlarumUser]  mimick class inheritance, without inheriting at runtime, acts just as a type hint class ExampleExtension(ExtensionMixin): def get_dependencies(self): return { \"soft\": SOFT_DEPENDENCIES, \"hard\": HARD_DEPENCENDIES } def mixin(self): super().mixin(self, FlarumUser, ExampleFlarumUserMixin)  "
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Suspend.SuspendExtension.get_dependencies",
-"url":23,
-"doc":"Overwrite this method to make your own dependencies. This should return the following  dict :   { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }    Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).",
+"url":22,
+"doc":"This should return the following  dict :   { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }   A dependency is anything that you can pass into  FlarumUser(extensions=[ .]) (e. g. an extension class).  Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Suspend.SuspendExtension.mixin",
-"url":23,
-"doc":"A boilerplate function for mixing. This sets/overwrites attributes of  class_to_patch to attributes of  class_to_mix_in (monkey-patch).  Example:   extension.mixin(myclass, pyflarum_class)  ",
+"url":22,
+"doc":"A function to mix-in/merge properties, methods, functions, etc . of one class into another. This skips all functions and properties starting with  __ (double underscore), unless  skip_protected is False. This sets/overwrites attributes of  class_to_patch to attributes of  class_to_mix_in (monkey-patch).  Example:   extension.mixin(myclass, pyflarum_class)  ",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Tags",
-"url":24,
+"url":23,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Tags.Tag",
-"url":24,
+"url":23,
 "doc":"A Flarum tag."
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Tags.Tag.data",
-"url":24,
+"url":23,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Tags.Tag.type",
-"url":24,
+"url":23,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Tags.Tag.id",
-"url":24,
+"url":23,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Tags.Tag.attributes",
-"url":24,
+"url":23,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Tags.Tag.name",
-"url":24,
+"url":23,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Tags.Tag.description",
-"url":24,
+"url":23,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Tags.Tag.slug",
-"url":24,
+"url":23,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Tags.Tag.color",
-"url":24,
+"url":23,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Tags.Tag.backgroundUrl",
-"url":24,
+"url":23,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Tags.Tag.backgroundMode",
-"url":24,
+"url":23,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Tags.Tag.icon",
-"url":24,
+"url":23,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Tags.Tag.discussionCount",
-"url":24,
+"url":23,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Tags.Tag.position",
-"url":24,
+"url":23,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Tags.Tag.defaultSort",
-"url":24,
+"url":23,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Tags.Tag.isChild",
-"url":24,
+"url":23,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Tags.Tag.isHidden",
-"url":24,
+"url":23,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Tags.Tag.lastPostedAt",
-"url":24,
+"url":23,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Tags.Tag.canStartDiscussion",
-"url":24,
+"url":23,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Tags.Tag.canAddToDiscussion",
-"url":24,
+"url":23,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Tags.Tag.subscription",
-"url":24,
+"url":23,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Tags.Tag.template",
-"url":24,
+"url":23,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Tags.Tag.relationships",
-"url":24,
+"url":23,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Tags.Tag.get_parent_tag",
-"url":24,
+"url":23,
 "doc":"",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Tags.Tag.restrict_permissions",
-"url":24,
+"url":23,
 "doc":"",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Tags.Tag.unrestrict_permissions",
-"url":24,
+"url":23,
 "doc":"",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Tags.TagsForumMixin",
-"url":24,
+"url":23,
 "doc":"Forum JSON data"
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Tags.TagsForumMixin.canBypassTagCounts",
-"url":24,
+"url":23,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Tags.TagsForumMixin.minPrimaryTags",
-"url":24,
+"url":23,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Tags.TagsForumMixin.maxPrimaryTags",
-"url":24,
+"url":23,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Tags.TagsForumMixin.minSecondaryTags",
-"url":24,
+"url":23,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Tags.TagsForumMixin.maxSecondaryTags",
-"url":24,
+"url":23,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Tags.TagsDiscussionMixin",
-"url":24,
+"url":23,
 "doc":"A discussion from  Discussions ."
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Tags.TagsDiscussionMixin.canTag",
-"url":24,
+"url":23,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Tags.TagsDiscussionMixin.get_tags",
-"url":24,
+"url":23,
 "doc":"",
 "func":1
 },
 {
+"ref":"pyflarum.extensions.flarum.Flarum_Tags.TagsDiscussionMixin.get_author",
+"url":21,
+"doc":"Obtains the author of the discussion. It returns  pyflarum.flarum.core.users.UserFromNotification because it's JSON data matches the data of user from notification. This works by fetching it from the  _parent_included property.",
+"func":1
+},
+{
+"ref":"pyflarum.extensions.flarum.Flarum_Tags.TagsDiscussionMixin.get_last_posted_user",
+"url":21,
+"doc":"Obtains the user that posted the latest post in the discussion. It returns  pyflarum.flarum.core.users.UserFromNotification because it's JSON data matches the data of user from notification. This works by fetching it from the  _parent_included property.",
+"func":1
+},
+{
+"ref":"pyflarum.extensions.flarum.Flarum_Tags.TagsDiscussionMixin.get_first_post",
+"url":21,
+"doc":"Obtains the first post of the discussion. This works by fetching it from the  _parent_included property.",
+"func":1
+},
+{
 "ref":"pyflarum.extensions.flarum.Flarum_Tags.TagsDiscussionMixin.hide",
-"url":13,
-"doc":"Hides the discussion. Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
+"url":21,
+"doc":"Hides the discussion from the sight of other unprivileged users that are not worthy to view such thread.",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Tags.TagsDiscussionMixin.restore",
-"url":13,
-"doc":"Restores the discussion (unhides). Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
+"url":21,
+"doc":"Restores the discussion (unhides it), bringing it back to life.",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Tags.TagsDiscussionMixin.unhide",
-"url":13,
-"doc":"Restores the discussion (unhides). Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
+"url":21,
+"doc":"Restores the discussion (unhides it), bringing it back to life.",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Tags.TagsDiscussionMixin.delete",
-"url":13,
-"doc":"Deletes a discussion forever - this action is irreversible!",
+"url":21,
+"doc":"Scronches the discussion forever. This cannot be reverted. Use  force=True to attempt to delete the discussion even if the API states that you can't.",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Tags.TagsExtension",
-"url":24,
-"doc":"A base class for mixing in custom classes (extensions) into another classes.  Example extension code:   from pyflarum.extensions import ExtensionMixin from pyflarum.extensions.admin import AdminExtension from pyflarum.session import FlarumUser  Lowecase: AUTHOR = \"yourname\" NAME = \"extensionname\" ID = f\"{AUTHOR}-{NAME}\"  List of dependencies: SOFT_DEPENDENCIES = [AdminExtension]  uses methods from this extension, but can run without it HARD_DEPENCENDIES = []  I recommend to use the following naming pattern:    Mixin  Example: class ExampleFlarumUserMixin(FlarumUser): @property def __example(self):  ' Calling  FlarumUser( ).__example would return this.  ' return \"Example\" class ExampleExtension(ExtensionMixin): def get_dependencies(self):  ' Overwrite this method to make your own dependencies. This should return the following  dict :  python { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }   Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).  ' return { \"soft\": SOFT_DEPENDENCIES, \"hard\": HARD_DEPENCENDIES } def mixin(self):  ' This extends the  FlarumUser class with features from  ExampleMixin  ' super().mixin(self, FlarumUser, ExampleMixin)   Initializes the  ExtensionMixin object."
+"url":23,
+"doc":"A base class for mixing in custom classes (extensions) into another classes.  Example extension code:   from typing import Type from pyflarum.extensions import ExtensionMixin from pyflarum.extensions.admin import AdminExtension from pyflarum.session import FlarumUser  Lowecase: AUTHOR = \"yourname\" NAME = \"extensionname\" ID = f\"{AUTHOR}-{NAME}\"  List of dependencies: SOFT_DEPENDENCIES = [AdminExtension]  uses methods from this extension, but can run without it HARD_DEPENCENDIES = []  I recommend to use the following naming pattern:    Mixin  Example: class ExampleFlarumUserMixin: @property def example(self):  ' Calling  FlarumUser( ).example would return this.  ' return \"Example\" ExampleFlarumUserMixin: Type[FlarumUser]  mimick class inheritance, without inheriting at runtime, acts just as a type hint class ExampleExtension(ExtensionMixin): def get_dependencies(self): return { \"soft\": SOFT_DEPENDENCIES, \"hard\": HARD_DEPENCENDIES } def mixin(self): super().mixin(self, FlarumUser, ExampleFlarumUserMixin)  "
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Tags.TagsExtension.get_dependencies",
-"url":24,
-"doc":"Overwrite this method to make your own dependencies. This should return the following  dict :   { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }    Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).",
+"url":23,
+"doc":"This should return the following  dict :   { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }   A dependency is anything that you can pass into  FlarumUser(extensions=[ .]) (e. g. an extension class).  Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.Flarum_Tags.TagsExtension.mixin",
-"url":24,
-"doc":"A boilerplate function for mixing. This sets/overwrites attributes of  class_to_patch to attributes of  class_to_mix_in (monkey-patch).  Example:   extension.mixin(myclass, pyflarum_class)  ",
+"url":23,
+"doc":"A function to mix-in/merge properties, methods, functions, etc . of one class into another. This skips all functions and properties starting with  __ (double underscore), unless  skip_protected is False. This sets/overwrites attributes of  class_to_patch to attributes of  class_to_mix_in (monkey-patch).  Example:   extension.mixin(myclass, pyflarum_class)  ",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_BestAnswer",
-"url":25,
+"url":24,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_BestAnswer.BestAnswerDiscussionNotificationMixin",
-"url":25,
+"url":24,
 "doc":"A discussion from  BaseNotification "
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_BestAnswer.BestAnswerDiscussionNotificationMixin.hasBestAnswer",
-"url":25,
+"url":24,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_BestAnswer.BestAnswerDiscussionNotificationMixin.bestAnswerSetAt",
-"url":25,
+"url":24,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_BestAnswer.BestAnswerDiscussionNotificationMixin.hide",
-"url":13,
+"url":21,
 "doc":"Hides the discussion. Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_BestAnswer.BestAnswerDiscussionNotificationMixin.restore",
-"url":13,
+"url":21,
 "doc":"Restores the discussion (unhides). Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_BestAnswer.BestAnswerDiscussionNotificationMixin.unhide",
-"url":13,
+"url":21,
 "doc":"Restores the discussion (unhides). Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_BestAnswer.BestAnswerDiscussionNotificationMixin.delete",
-"url":13,
+"url":21,
 "doc":"Deletes a discussion forever - this action is irreversible!",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_BestAnswer.BestAnswerDiscussionMixin",
-"url":25,
+"url":24,
 "doc":"A discussion from  Discussions ."
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_BestAnswer.BestAnswerDiscussionMixin.canSelectBestAnswer",
-"url":25,
+"url":24,
 "doc":""
 },
 {
+"ref":"pyflarum.extensions.flarum.FoF_BestAnswer.BestAnswerDiscussionMixin.get_author",
+"url":21,
+"doc":"Obtains the author of the discussion. It returns  pyflarum.flarum.core.users.UserFromNotification because it's JSON data matches the data of user from notification. This works by fetching it from the  _parent_included property.",
+"func":1
+},
+{
+"ref":"pyflarum.extensions.flarum.FoF_BestAnswer.BestAnswerDiscussionMixin.get_last_posted_user",
+"url":21,
+"doc":"Obtains the user that posted the latest post in the discussion. It returns  pyflarum.flarum.core.users.UserFromNotification because it's JSON data matches the data of user from notification. This works by fetching it from the  _parent_included property.",
+"func":1
+},
+{
+"ref":"pyflarum.extensions.flarum.FoF_BestAnswer.BestAnswerDiscussionMixin.get_first_post",
+"url":21,
+"doc":"Obtains the first post of the discussion. This works by fetching it from the  _parent_included property.",
+"func":1
+},
+{
 "ref":"pyflarum.extensions.flarum.FoF_BestAnswer.BestAnswerDiscussionMixin.hide",
-"url":13,
-"doc":"Hides the discussion. Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
+"url":21,
+"doc":"Hides the discussion from the sight of other unprivileged users that are not worthy to view such thread.",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_BestAnswer.BestAnswerDiscussionMixin.restore",
-"url":13,
-"doc":"Restores the discussion (unhides). Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
+"url":21,
+"doc":"Restores the discussion (unhides it), bringing it back to life.",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_BestAnswer.BestAnswerDiscussionMixin.unhide",
-"url":13,
-"doc":"Restores the discussion (unhides). Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
+"url":21,
+"doc":"Restores the discussion (unhides it), bringing it back to life.",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_BestAnswer.BestAnswerDiscussionMixin.delete",
-"url":13,
-"doc":"Deletes a discussion forever - this action is irreversible!",
+"url":21,
+"doc":"Scronches the discussion forever. This cannot be reverted. Use  force=True to attempt to delete the discussion even if the API states that you can't.",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_BestAnswer.BestAnswerExtension",
-"url":25,
-"doc":"A base class for mixing in custom classes (extensions) into another classes.  Example extension code:   from pyflarum.extensions import ExtensionMixin from pyflarum.extensions.admin import AdminExtension from pyflarum.session import FlarumUser  Lowecase: AUTHOR = \"yourname\" NAME = \"extensionname\" ID = f\"{AUTHOR}-{NAME}\"  List of dependencies: SOFT_DEPENDENCIES = [AdminExtension]  uses methods from this extension, but can run without it HARD_DEPENCENDIES = []  I recommend to use the following naming pattern:    Mixin  Example: class ExampleFlarumUserMixin(FlarumUser): @property def __example(self):  ' Calling  FlarumUser( ).__example would return this.  ' return \"Example\" class ExampleExtension(ExtensionMixin): def get_dependencies(self):  ' Overwrite this method to make your own dependencies. This should return the following  dict :  python { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }   Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).  ' return { \"soft\": SOFT_DEPENDENCIES, \"hard\": HARD_DEPENCENDIES } def mixin(self):  ' This extends the  FlarumUser class with features from  ExampleMixin  ' super().mixin(self, FlarumUser, ExampleMixin)   Initializes the  ExtensionMixin object."
+"url":24,
+"doc":"A base class for mixing in custom classes (extensions) into another classes.  Example extension code:   from typing import Type from pyflarum.extensions import ExtensionMixin from pyflarum.extensions.admin import AdminExtension from pyflarum.session import FlarumUser  Lowecase: AUTHOR = \"yourname\" NAME = \"extensionname\" ID = f\"{AUTHOR}-{NAME}\"  List of dependencies: SOFT_DEPENDENCIES = [AdminExtension]  uses methods from this extension, but can run without it HARD_DEPENCENDIES = []  I recommend to use the following naming pattern:    Mixin  Example: class ExampleFlarumUserMixin: @property def example(self):  ' Calling  FlarumUser( ).example would return this.  ' return \"Example\" ExampleFlarumUserMixin: Type[FlarumUser]  mimick class inheritance, without inheriting at runtime, acts just as a type hint class ExampleExtension(ExtensionMixin): def get_dependencies(self): return { \"soft\": SOFT_DEPENDENCIES, \"hard\": HARD_DEPENCENDIES } def mixin(self): super().mixin(self, FlarumUser, ExampleFlarumUserMixin)  "
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_BestAnswer.BestAnswerExtension.get_dependencies",
-"url":25,
-"doc":"Overwrite this method to make your own dependencies. This should return the following  dict :   { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }    Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).",
+"url":24,
+"doc":"This should return the following  dict :   { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }   A dependency is anything that you can pass into  FlarumUser(extensions=[ .]) (e. g. an extension class).  Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_BestAnswer.BestAnswerExtension.mixin",
-"url":25,
-"doc":"A boilerplate function for mixing. This sets/overwrites attributes of  class_to_patch to attributes of  class_to_mix_in (monkey-patch).  Example:   extension.mixin(myclass, pyflarum_class)  ",
+"url":24,
+"doc":"A function to mix-in/merge properties, methods, functions, etc . of one class into another. This skips all functions and properties starting with  __ (double underscore), unless  skip_protected is False. This sets/overwrites attributes of  class_to_patch to attributes of  class_to_mix_in (monkey-patch).  Example:   extension.mixin(myclass, pyflarum_class)  ",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_Byobu",
-"url":26,
+"url":25,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin",
-"url":26,
+"url":25,
 "doc":"A discussion from  Discussions ."
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.canEditRecipients",
-"url":26,
+"url":25,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.canEditUserRecipients",
-"url":26,
+"url":25,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.canEditGroupRecipients",
-"url":26,
+"url":25,
 "doc":""
 },
 {
+"ref":"pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.get_author",
+"url":21,
+"doc":"Obtains the author of the discussion. It returns  pyflarum.flarum.core.users.UserFromNotification because it's JSON data matches the data of user from notification. This works by fetching it from the  _parent_included property.",
+"func":1
+},
+{
+"ref":"pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.get_last_posted_user",
+"url":21,
+"doc":"Obtains the user that posted the latest post in the discussion. It returns  pyflarum.flarum.core.users.UserFromNotification because it's JSON data matches the data of user from notification. This works by fetching it from the  _parent_included property.",
+"func":1
+},
+{
+"ref":"pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.get_first_post",
+"url":21,
+"doc":"Obtains the first post of the discussion. This works by fetching it from the  _parent_included property.",
+"func":1
+},
+{
 "ref":"pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.hide",
-"url":13,
-"doc":"Hides the discussion. Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
+"url":21,
+"doc":"Hides the discussion from the sight of other unprivileged users that are not worthy to view such thread.",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.restore",
-"url":13,
-"doc":"Restores the discussion (unhides). Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
+"url":21,
+"doc":"Restores the discussion (unhides it), bringing it back to life.",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.unhide",
-"url":13,
-"doc":"Restores the discussion (unhides). Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
+"url":21,
+"doc":"Restores the discussion (unhides it), bringing it back to life.",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.delete",
-"url":13,
-"doc":"Deletes a discussion forever - this action is irreversible!",
+"url":21,
+"doc":"Scronches the discussion forever. This cannot be reverted. Use  force=True to attempt to delete the discussion even if the API states that you can't.",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin",
-"url":26,
+"url":25,
 "doc":"An user from  Users ."
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin.blocksPd",
-"url":26,
+"url":25,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin.cannotBeDirectlyMessaged",
-"url":26,
+"url":25,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_Byobu.ByobuExtension",
-"url":26,
-"doc":"A base class for mixing in custom classes (extensions) into another classes.  Example extension code:   from pyflarum.extensions import ExtensionMixin from pyflarum.extensions.admin import AdminExtension from pyflarum.session import FlarumUser  Lowecase: AUTHOR = \"yourname\" NAME = \"extensionname\" ID = f\"{AUTHOR}-{NAME}\"  List of dependencies: SOFT_DEPENDENCIES = [AdminExtension]  uses methods from this extension, but can run without it HARD_DEPENCENDIES = []  I recommend to use the following naming pattern:    Mixin  Example: class ExampleFlarumUserMixin(FlarumUser): @property def __example(self):  ' Calling  FlarumUser( ).__example would return this.  ' return \"Example\" class ExampleExtension(ExtensionMixin): def get_dependencies(self):  ' Overwrite this method to make your own dependencies. This should return the following  dict :  python { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }   Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).  ' return { \"soft\": SOFT_DEPENDENCIES, \"hard\": HARD_DEPENCENDIES } def mixin(self):  ' This extends the  FlarumUser class with features from  ExampleMixin  ' super().mixin(self, FlarumUser, ExampleMixin)   Initializes the  ExtensionMixin object."
+"url":25,
+"doc":"A base class for mixing in custom classes (extensions) into another classes.  Example extension code:   from typing import Type from pyflarum.extensions import ExtensionMixin from pyflarum.extensions.admin import AdminExtension from pyflarum.session import FlarumUser  Lowecase: AUTHOR = \"yourname\" NAME = \"extensionname\" ID = f\"{AUTHOR}-{NAME}\"  List of dependencies: SOFT_DEPENDENCIES = [AdminExtension]  uses methods from this extension, but can run without it HARD_DEPENCENDIES = []  I recommend to use the following naming pattern:    Mixin  Example: class ExampleFlarumUserMixin: @property def example(self):  ' Calling  FlarumUser( ).example would return this.  ' return \"Example\" ExampleFlarumUserMixin: Type[FlarumUser]  mimick class inheritance, without inheriting at runtime, acts just as a type hint class ExampleExtension(ExtensionMixin): def get_dependencies(self): return { \"soft\": SOFT_DEPENDENCIES, \"hard\": HARD_DEPENCENDIES } def mixin(self): super().mixin(self, FlarumUser, ExampleFlarumUserMixin)  "
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_Byobu.ByobuExtension.get_dependencies",
-"url":26,
-"doc":"Overwrite this method to make your own dependencies. This should return the following  dict :   { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }    Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).",
+"url":25,
+"doc":"This should return the following  dict :   { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }   A dependency is anything that you can pass into  FlarumUser(extensions=[ .]) (e. g. an extension class).  Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_Byobu.ByobuExtension.mixin",
-"url":26,
-"doc":"A boilerplate function for mixing. This sets/overwrites attributes of  class_to_patch to attributes of  class_to_mix_in (monkey-patch).  Example:   extension.mixin(myclass, pyflarum_class)  ",
+"url":25,
+"doc":"A function to mix-in/merge properties, methods, functions, etc . of one class into another. This skips all functions and properties starting with  __ (double underscore), unless  skip_protected is False. This sets/overwrites attributes of  class_to_patch to attributes of  class_to_mix_in (monkey-patch).  Example:   extension.mixin(myclass, pyflarum_class)  ",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_Merge",
-"url":27,
+"url":26,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_Merge.MergeDiscussionMixin",
-"url":27,
+"url":26,
 "doc":"A discussion from  Discussions ."
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_Merge.MergeDiscussionMixin.canMerge",
-"url":27,
+"url":26,
 "doc":""
 },
 {
+"ref":"pyflarum.extensions.flarum.FoF_Merge.MergeDiscussionMixin.get_author",
+"url":21,
+"doc":"Obtains the author of the discussion. It returns  pyflarum.flarum.core.users.UserFromNotification because it's JSON data matches the data of user from notification. This works by fetching it from the  _parent_included property.",
+"func":1
+},
+{
+"ref":"pyflarum.extensions.flarum.FoF_Merge.MergeDiscussionMixin.get_last_posted_user",
+"url":21,
+"doc":"Obtains the user that posted the latest post in the discussion. It returns  pyflarum.flarum.core.users.UserFromNotification because it's JSON data matches the data of user from notification. This works by fetching it from the  _parent_included property.",
+"func":1
+},
+{
+"ref":"pyflarum.extensions.flarum.FoF_Merge.MergeDiscussionMixin.get_first_post",
+"url":21,
+"doc":"Obtains the first post of the discussion. This works by fetching it from the  _parent_included property.",
+"func":1
+},
+{
 "ref":"pyflarum.extensions.flarum.FoF_Merge.MergeDiscussionMixin.hide",
-"url":13,
-"doc":"Hides the discussion. Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
+"url":21,
+"doc":"Hides the discussion from the sight of other unprivileged users that are not worthy to view such thread.",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_Merge.MergeDiscussionMixin.restore",
-"url":13,
-"doc":"Restores the discussion (unhides). Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
+"url":21,
+"doc":"Restores the discussion (unhides it), bringing it back to life.",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_Merge.MergeDiscussionMixin.unhide",
-"url":13,
-"doc":"Restores the discussion (unhides). Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
+"url":21,
+"doc":"Restores the discussion (unhides it), bringing it back to life.",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_Merge.MergeDiscussionMixin.delete",
-"url":13,
-"doc":"Deletes a discussion forever - this action is irreversible!",
+"url":21,
+"doc":"Scronches the discussion forever. This cannot be reverted. Use  force=True to attempt to delete the discussion even if the API states that you can't.",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_Merge.MergeExtension",
-"url":27,
-"doc":"A base class for mixing in custom classes (extensions) into another classes.  Example extension code:   from pyflarum.extensions import ExtensionMixin from pyflarum.extensions.admin import AdminExtension from pyflarum.session import FlarumUser  Lowecase: AUTHOR = \"yourname\" NAME = \"extensionname\" ID = f\"{AUTHOR}-{NAME}\"  List of dependencies: SOFT_DEPENDENCIES = [AdminExtension]  uses methods from this extension, but can run without it HARD_DEPENCENDIES = []  I recommend to use the following naming pattern:    Mixin  Example: class ExampleFlarumUserMixin(FlarumUser): @property def __example(self):  ' Calling  FlarumUser( ).__example would return this.  ' return \"Example\" class ExampleExtension(ExtensionMixin): def get_dependencies(self):  ' Overwrite this method to make your own dependencies. This should return the following  dict :  python { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }   Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).  ' return { \"soft\": SOFT_DEPENDENCIES, \"hard\": HARD_DEPENCENDIES } def mixin(self):  ' This extends the  FlarumUser class with features from  ExampleMixin  ' super().mixin(self, FlarumUser, ExampleMixin)   Initializes the  ExtensionMixin object."
+"url":26,
+"doc":"A base class for mixing in custom classes (extensions) into another classes.  Example extension code:   from typing import Type from pyflarum.extensions import ExtensionMixin from pyflarum.extensions.admin import AdminExtension from pyflarum.session import FlarumUser  Lowecase: AUTHOR = \"yourname\" NAME = \"extensionname\" ID = f\"{AUTHOR}-{NAME}\"  List of dependencies: SOFT_DEPENDENCIES = [AdminExtension]  uses methods from this extension, but can run without it HARD_DEPENCENDIES = []  I recommend to use the following naming pattern:    Mixin  Example: class ExampleFlarumUserMixin: @property def example(self):  ' Calling  FlarumUser( ).example would return this.  ' return \"Example\" ExampleFlarumUserMixin: Type[FlarumUser]  mimick class inheritance, without inheriting at runtime, acts just as a type hint class ExampleExtension(ExtensionMixin): def get_dependencies(self): return { \"soft\": SOFT_DEPENDENCIES, \"hard\": HARD_DEPENCENDIES } def mixin(self): super().mixin(self, FlarumUser, ExampleFlarumUserMixin)  "
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_Merge.MergeExtension.get_dependencies",
-"url":27,
-"doc":"Overwrite this method to make your own dependencies. This should return the following  dict :   { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }    Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).",
+"url":26,
+"doc":"This should return the following  dict :   { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }   A dependency is anything that you can pass into  FlarumUser(extensions=[ .]) (e. g. an extension class).  Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_Merge.MergeExtension.mixin",
-"url":27,
-"doc":"A boilerplate function for mixing. This sets/overwrites attributes of  class_to_patch to attributes of  class_to_mix_in (monkey-patch).  Example:   extension.mixin(myclass, pyflarum_class)  ",
+"url":26,
+"doc":"A function to mix-in/merge properties, methods, functions, etc . of one class into another. This skips all functions and properties starting with  __ (double underscore), unless  skip_protected is False. This sets/overwrites attributes of  class_to_patch to attributes of  class_to_mix_in (monkey-patch).  Example:   extension.mixin(myclass, pyflarum_class)  ",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_PreventNecrobumping",
-"url":28,
+"url":27,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_PreventNecrobumping.PreventNecrobumpingDiscussionMixin",
-"url":28,
+"url":27,
 "doc":"A discussion from  Discussions ."
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_PreventNecrobumping.PreventNecrobumpingDiscussionMixin.fof_prevent_necrobumping",
-"url":28,
+"url":27,
 "doc":"I have no idea what this does either, sorry."
 },
 {
+"ref":"pyflarum.extensions.flarum.FoF_PreventNecrobumping.PreventNecrobumpingDiscussionMixin.get_author",
+"url":21,
+"doc":"Obtains the author of the discussion. It returns  pyflarum.flarum.core.users.UserFromNotification because it's JSON data matches the data of user from notification. This works by fetching it from the  _parent_included property.",
+"func":1
+},
+{
+"ref":"pyflarum.extensions.flarum.FoF_PreventNecrobumping.PreventNecrobumpingDiscussionMixin.get_last_posted_user",
+"url":21,
+"doc":"Obtains the user that posted the latest post in the discussion. It returns  pyflarum.flarum.core.users.UserFromNotification because it's JSON data matches the data of user from notification. This works by fetching it from the  _parent_included property.",
+"func":1
+},
+{
+"ref":"pyflarum.extensions.flarum.FoF_PreventNecrobumping.PreventNecrobumpingDiscussionMixin.get_first_post",
+"url":21,
+"doc":"Obtains the first post of the discussion. This works by fetching it from the  _parent_included property.",
+"func":1
+},
+{
 "ref":"pyflarum.extensions.flarum.FoF_PreventNecrobumping.PreventNecrobumpingDiscussionMixin.hide",
-"url":13,
-"doc":"Hides the discussion. Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
+"url":21,
+"doc":"Hides the discussion from the sight of other unprivileged users that are not worthy to view such thread.",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_PreventNecrobumping.PreventNecrobumpingDiscussionMixin.restore",
-"url":13,
-"doc":"Restores the discussion (unhides). Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
+"url":21,
+"doc":"Restores the discussion (unhides it), bringing it back to life.",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_PreventNecrobumping.PreventNecrobumpingDiscussionMixin.unhide",
-"url":13,
-"doc":"Restores the discussion (unhides). Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
+"url":21,
+"doc":"Restores the discussion (unhides it), bringing it back to life.",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_PreventNecrobumping.PreventNecrobumpingDiscussionMixin.delete",
-"url":13,
-"doc":"Deletes a discussion forever - this action is irreversible!",
+"url":21,
+"doc":"Scronches the discussion forever. This cannot be reverted. Use  force=True to attempt to delete the discussion even if the API states that you can't.",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_PreventNecrobumping.PreventNecrobumpingExtension",
-"url":28,
-"doc":"A base class for mixing in custom classes (extensions) into another classes.  Example extension code:   from pyflarum.extensions import ExtensionMixin from pyflarum.extensions.admin import AdminExtension from pyflarum.session import FlarumUser  Lowecase: AUTHOR = \"yourname\" NAME = \"extensionname\" ID = f\"{AUTHOR}-{NAME}\"  List of dependencies: SOFT_DEPENDENCIES = [AdminExtension]  uses methods from this extension, but can run without it HARD_DEPENCENDIES = []  I recommend to use the following naming pattern:    Mixin  Example: class ExampleFlarumUserMixin(FlarumUser): @property def __example(self):  ' Calling  FlarumUser( ).__example would return this.  ' return \"Example\" class ExampleExtension(ExtensionMixin): def get_dependencies(self):  ' Overwrite this method to make your own dependencies. This should return the following  dict :  python { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }   Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).  ' return { \"soft\": SOFT_DEPENDENCIES, \"hard\": HARD_DEPENCENDIES } def mixin(self):  ' This extends the  FlarumUser class with features from  ExampleMixin  ' super().mixin(self, FlarumUser, ExampleMixin)   Initializes the  ExtensionMixin object."
+"url":27,
+"doc":"A base class for mixing in custom classes (extensions) into another classes.  Example extension code:   from typing import Type from pyflarum.extensions import ExtensionMixin from pyflarum.extensions.admin import AdminExtension from pyflarum.session import FlarumUser  Lowecase: AUTHOR = \"yourname\" NAME = \"extensionname\" ID = f\"{AUTHOR}-{NAME}\"  List of dependencies: SOFT_DEPENDENCIES = [AdminExtension]  uses methods from this extension, but can run without it HARD_DEPENCENDIES = []  I recommend to use the following naming pattern:    Mixin  Example: class ExampleFlarumUserMixin: @property def example(self):  ' Calling  FlarumUser( ).example would return this.  ' return \"Example\" ExampleFlarumUserMixin: Type[FlarumUser]  mimick class inheritance, without inheriting at runtime, acts just as a type hint class ExampleExtension(ExtensionMixin): def get_dependencies(self): return { \"soft\": SOFT_DEPENDENCIES, \"hard\": HARD_DEPENCENDIES } def mixin(self): super().mixin(self, FlarumUser, ExampleFlarumUserMixin)  "
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_PreventNecrobumping.PreventNecrobumpingExtension.get_dependencies",
-"url":28,
-"doc":"Overwrite this method to make your own dependencies. This should return the following  dict :   { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }    Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).",
+"url":27,
+"doc":"This should return the following  dict :   { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }   A dependency is anything that you can pass into  FlarumUser(extensions=[ .]) (e. g. an extension class).  Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_PreventNecrobumping.PreventNecrobumpingExtension.mixin",
-"url":28,
-"doc":"A boilerplate function for mixing. This sets/overwrites attributes of  class_to_patch to attributes of  class_to_mix_in (monkey-patch).  Example:   extension.mixin(myclass, pyflarum_class)  ",
+"url":27,
+"doc":"A function to mix-in/merge properties, methods, functions, etc . of one class into another. This skips all functions and properties starting with  __ (double underscore), unless  skip_protected is False. This sets/overwrites attributes of  class_to_patch to attributes of  class_to_mix_in (monkey-patch).  Example:   extension.mixin(myclass, pyflarum_class)  ",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_Spamblock",
-"url":29,
+"url":28,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_Spamblock.SpamblockUserFromNotificationMixin",
-"url":29,
+"url":28,
 "doc":"An user from  BaseNotification "
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_Spamblock.SpamblockUserFromNotificationMixin.spamblock",
-"url":29,
+"url":28,
 "doc":"",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_Spamblock.SpamblockUserMixin",
-"url":29,
+"url":28,
 "doc":"An user that was fetched from the API."
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_Spamblock.SpamblockUserMixin.canSpamblock",
-"url":29,
+"url":28,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_Spamblock.SpamblockExtension",
-"url":29,
-"doc":"A base class for mixing in custom classes (extensions) into another classes.  Example extension code:   from pyflarum.extensions import ExtensionMixin from pyflarum.extensions.admin import AdminExtension from pyflarum.session import FlarumUser  Lowecase: AUTHOR = \"yourname\" NAME = \"extensionname\" ID = f\"{AUTHOR}-{NAME}\"  List of dependencies: SOFT_DEPENDENCIES = [AdminExtension]  uses methods from this extension, but can run without it HARD_DEPENCENDIES = []  I recommend to use the following naming pattern:    Mixin  Example: class ExampleFlarumUserMixin(FlarumUser): @property def __example(self):  ' Calling  FlarumUser( ).__example would return this.  ' return \"Example\" class ExampleExtension(ExtensionMixin): def get_dependencies(self):  ' Overwrite this method to make your own dependencies. This should return the following  dict :  python { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }   Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).  ' return { \"soft\": SOFT_DEPENDENCIES, \"hard\": HARD_DEPENCENDIES } def mixin(self):  ' This extends the  FlarumUser class with features from  ExampleMixin  ' super().mixin(self, FlarumUser, ExampleMixin)   Initializes the  ExtensionMixin object."
+"url":28,
+"doc":"A base class for mixing in custom classes (extensions) into another classes.  Example extension code:   from typing import Type from pyflarum.extensions import ExtensionMixin from pyflarum.extensions.admin import AdminExtension from pyflarum.session import FlarumUser  Lowecase: AUTHOR = \"yourname\" NAME = \"extensionname\" ID = f\"{AUTHOR}-{NAME}\"  List of dependencies: SOFT_DEPENDENCIES = [AdminExtension]  uses methods from this extension, but can run without it HARD_DEPENCENDIES = []  I recommend to use the following naming pattern:    Mixin  Example: class ExampleFlarumUserMixin: @property def example(self):  ' Calling  FlarumUser( ).example would return this.  ' return \"Example\" ExampleFlarumUserMixin: Type[FlarumUser]  mimick class inheritance, without inheriting at runtime, acts just as a type hint class ExampleExtension(ExtensionMixin): def get_dependencies(self): return { \"soft\": SOFT_DEPENDENCIES, \"hard\": HARD_DEPENCENDIES } def mixin(self): super().mixin(self, FlarumUser, ExampleFlarumUserMixin)  "
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_Spamblock.SpamblockExtension.get_dependencies",
-"url":29,
-"doc":"Overwrite this method to make your own dependencies. This should return the following  dict :   { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }    Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).",
+"url":28,
+"doc":"This should return the following  dict :   { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }   A dependency is anything that you can pass into  FlarumUser(extensions=[ .]) (e. g. an extension class).  Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_Spamblock.SpamblockExtension.mixin",
-"url":29,
-"doc":"A boilerplate function for mixing. This sets/overwrites attributes of  class_to_patch to attributes of  class_to_mix_in (monkey-patch).  Example:   extension.mixin(myclass, pyflarum_class)  ",
+"url":28,
+"doc":"A function to mix-in/merge properties, methods, functions, etc . of one class into another. This skips all functions and properties starting with  __ (double underscore), unless  skip_protected is False. This sets/overwrites attributes of  class_to_patch to attributes of  class_to_mix_in (monkey-patch).  Example:   extension.mixin(myclass, pyflarum_class)  ",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_Split",
-"url":30,
+"url":29,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_Split.SplitDiscussionMixin",
-"url":30,
+"url":29,
 "doc":"A discussion from  Discussions ."
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_Split.SplitDiscussionMixin.canSplit",
-"url":30,
+"url":29,
 "doc":""
 },
 {
+"ref":"pyflarum.extensions.flarum.FoF_Split.SplitDiscussionMixin.get_author",
+"url":21,
+"doc":"Obtains the author of the discussion. It returns  pyflarum.flarum.core.users.UserFromNotification because it's JSON data matches the data of user from notification. This works by fetching it from the  _parent_included property.",
+"func":1
+},
+{
+"ref":"pyflarum.extensions.flarum.FoF_Split.SplitDiscussionMixin.get_last_posted_user",
+"url":21,
+"doc":"Obtains the user that posted the latest post in the discussion. It returns  pyflarum.flarum.core.users.UserFromNotification because it's JSON data matches the data of user from notification. This works by fetching it from the  _parent_included property.",
+"func":1
+},
+{
+"ref":"pyflarum.extensions.flarum.FoF_Split.SplitDiscussionMixin.get_first_post",
+"url":21,
+"doc":"Obtains the first post of the discussion. This works by fetching it from the  _parent_included property.",
+"func":1
+},
+{
 "ref":"pyflarum.extensions.flarum.FoF_Split.SplitDiscussionMixin.hide",
-"url":13,
-"doc":"Hides the discussion. Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
+"url":21,
+"doc":"Hides the discussion from the sight of other unprivileged users that are not worthy to view such thread.",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_Split.SplitDiscussionMixin.restore",
-"url":13,
-"doc":"Restores the discussion (unhides). Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
+"url":21,
+"doc":"Restores the discussion (unhides it), bringing it back to life.",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_Split.SplitDiscussionMixin.unhide",
-"url":13,
-"doc":"Restores the discussion (unhides). Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
+"url":21,
+"doc":"Restores the discussion (unhides it), bringing it back to life.",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_Split.SplitDiscussionMixin.delete",
-"url":13,
-"doc":"Deletes a discussion forever - this action is irreversible!",
+"url":21,
+"doc":"Scronches the discussion forever. This cannot be reverted. Use  force=True to attempt to delete the discussion even if the API states that you can't.",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_Split.SplitExtension",
-"url":30,
-"doc":"A base class for mixing in custom classes (extensions) into another classes.  Example extension code:   from pyflarum.extensions import ExtensionMixin from pyflarum.extensions.admin import AdminExtension from pyflarum.session import FlarumUser  Lowecase: AUTHOR = \"yourname\" NAME = \"extensionname\" ID = f\"{AUTHOR}-{NAME}\"  List of dependencies: SOFT_DEPENDENCIES = [AdminExtension]  uses methods from this extension, but can run without it HARD_DEPENCENDIES = []  I recommend to use the following naming pattern:    Mixin  Example: class ExampleFlarumUserMixin(FlarumUser): @property def __example(self):  ' Calling  FlarumUser( ).__example would return this.  ' return \"Example\" class ExampleExtension(ExtensionMixin): def get_dependencies(self):  ' Overwrite this method to make your own dependencies. This should return the following  dict :  python { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }   Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).  ' return { \"soft\": SOFT_DEPENDENCIES, \"hard\": HARD_DEPENCENDIES } def mixin(self):  ' This extends the  FlarumUser class with features from  ExampleMixin  ' super().mixin(self, FlarumUser, ExampleMixin)   Initializes the  ExtensionMixin object."
+"url":29,
+"doc":"A base class for mixing in custom classes (extensions) into another classes.  Example extension code:   from typing import Type from pyflarum.extensions import ExtensionMixin from pyflarum.extensions.admin import AdminExtension from pyflarum.session import FlarumUser  Lowecase: AUTHOR = \"yourname\" NAME = \"extensionname\" ID = f\"{AUTHOR}-{NAME}\"  List of dependencies: SOFT_DEPENDENCIES = [AdminExtension]  uses methods from this extension, but can run without it HARD_DEPENCENDIES = []  I recommend to use the following naming pattern:    Mixin  Example: class ExampleFlarumUserMixin: @property def example(self):  ' Calling  FlarumUser( ).example would return this.  ' return \"Example\" ExampleFlarumUserMixin: Type[FlarumUser]  mimick class inheritance, without inheriting at runtime, acts just as a type hint class ExampleExtension(ExtensionMixin): def get_dependencies(self): return { \"soft\": SOFT_DEPENDENCIES, \"hard\": HARD_DEPENCENDIES } def mixin(self): super().mixin(self, FlarumUser, ExampleFlarumUserMixin)  "
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_Split.SplitExtension.get_dependencies",
-"url":30,
-"doc":"Overwrite this method to make your own dependencies. This should return the following  dict :   { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }    Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).",
+"url":29,
+"doc":"This should return the following  dict :   { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }   A dependency is anything that you can pass into  FlarumUser(extensions=[ .]) (e. g. an extension class).  Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_Split.SplitExtension.mixin",
-"url":30,
-"doc":"A boilerplate function for mixing. This sets/overwrites attributes of  class_to_patch to attributes of  class_to_mix_in (monkey-patch).  Example:   extension.mixin(myclass, pyflarum_class)  ",
+"url":29,
+"doc":"A function to mix-in/merge properties, methods, functions, etc . of one class into another. This skips all functions and properties starting with  __ (double underscore), unless  skip_protected is False. This sets/overwrites attributes of  class_to_patch to attributes of  class_to_mix_in (monkey-patch).  Example:   extension.mixin(myclass, pyflarum_class)  ",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_UserBio",
-"url":31,
+"url":30,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin",
-"url":31,
+"url":30,
 "doc":"Forum JSON data"
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.max_bio_length",
-"url":31,
+"url":30,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin",
-"url":31,
+"url":30,
 "doc":"dict() -> new empty dictionary dict(mapping) -> new dictionary initialized from a mapping object's (key, value) pairs dict(iterable) -> new dictionary initialized as if via: d = {} for k, v in iterable: d[k] = v dict( kwargs) -> new dictionary initialized with the name=value pairs in the keyword argument list. For example: dict(one=1, two=2)"
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.update_user_bio",
-"url":31,
+"url":30,
 "doc":"",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.all_discussions",
-"url":6,
+"url":7,
 "doc":"Obtains all discussions from specific page by using  filter .",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.all_posts",
-"url":6,
+"url":7,
 "doc":"Obtains all posts from specific page by using  filter .",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.all_users",
-"url":6,
+"url":7,
 "doc":"Obtains all users from specific page by using  filter .",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.get_notifications",
-"url":6,
+"url":7,
 "doc":"Obtains all notifications of your user.",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.api_urls",
-"url":6,
+"url":7,
 "doc":"Simple, hardcoded  'key: value'  dict of Flarum's API routes for quick access. API routes reference (old): https: github.com/flarum/flarum.github.io/blob/20322c0e6011e4f304ae7e95f41594a0b086bc27/_docs/api.md"
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin",
-"url":31,
+"url":30,
 "doc":"An user from  Users ."
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.bio",
-"url":31,
+"url":30,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.canViewBio",
-"url":31,
+"url":30,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.canEditBio",
-"url":31,
+"url":30,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_UserBio.UserBioExtension",
-"url":31,
-"doc":"A base class for mixing in custom classes (extensions) into another classes.  Example extension code:   from pyflarum.extensions import ExtensionMixin from pyflarum.extensions.admin import AdminExtension from pyflarum.session import FlarumUser  Lowecase: AUTHOR = \"yourname\" NAME = \"extensionname\" ID = f\"{AUTHOR}-{NAME}\"  List of dependencies: SOFT_DEPENDENCIES = [AdminExtension]  uses methods from this extension, but can run without it HARD_DEPENCENDIES = []  I recommend to use the following naming pattern:    Mixin  Example: class ExampleFlarumUserMixin(FlarumUser): @property def __example(self):  ' Calling  FlarumUser( ).__example would return this.  ' return \"Example\" class ExampleExtension(ExtensionMixin): def get_dependencies(self):  ' Overwrite this method to make your own dependencies. This should return the following  dict :  python { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }   Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).  ' return { \"soft\": SOFT_DEPENDENCIES, \"hard\": HARD_DEPENCENDIES } def mixin(self):  ' This extends the  FlarumUser class with features from  ExampleMixin  ' super().mixin(self, FlarumUser, ExampleMixin)   Initializes the  ExtensionMixin object."
+"url":30,
+"doc":"A base class for mixing in custom classes (extensions) into another classes.  Example extension code:   from typing import Type from pyflarum.extensions import ExtensionMixin from pyflarum.extensions.admin import AdminExtension from pyflarum.session import FlarumUser  Lowecase: AUTHOR = \"yourname\" NAME = \"extensionname\" ID = f\"{AUTHOR}-{NAME}\"  List of dependencies: SOFT_DEPENDENCIES = [AdminExtension]  uses methods from this extension, but can run without it HARD_DEPENCENDIES = []  I recommend to use the following naming pattern:    Mixin  Example: class ExampleFlarumUserMixin: @property def example(self):  ' Calling  FlarumUser( ).example would return this.  ' return \"Example\" ExampleFlarumUserMixin: Type[FlarumUser]  mimick class inheritance, without inheriting at runtime, acts just as a type hint class ExampleExtension(ExtensionMixin): def get_dependencies(self): return { \"soft\": SOFT_DEPENDENCIES, \"hard\": HARD_DEPENCENDIES } def mixin(self): super().mixin(self, FlarumUser, ExampleFlarumUserMixin)  "
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_UserBio.UserBioExtension.get_dependencies",
-"url":31,
-"doc":"Overwrite this method to make your own dependencies. This should return the following  dict :   { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }    Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).",
+"url":30,
+"doc":"This should return the following  dict :   { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }   A dependency is anything that you can pass into  FlarumUser(extensions=[ .]) (e. g. an extension class).  Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_UserBio.UserBioExtension.mixin",
-"url":31,
-"doc":"A boilerplate function for mixing. This sets/overwrites attributes of  class_to_patch to attributes of  class_to_mix_in (monkey-patch).  Example:   extension.mixin(myclass, pyflarum_class)  ",
+"url":30,
+"doc":"A function to mix-in/merge properties, methods, functions, etc . of one class into another. This skips all functions and properties starting with  __ (double underscore), unless  skip_protected is False. This sets/overwrites attributes of  class_to_patch to attributes of  class_to_mix_in (monkey-patch).  Example:   extension.mixin(myclass, pyflarum_class)  ",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_UsernameRequest",
-"url":32,
+"url":31,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_UsernameRequest.UsernameRequestUserMixin",
-"url":32,
+"url":31,
 "doc":"An user from  Users ."
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_UsernameRequest.UsernameRequestUserMixin.usernameHistory",
-"url":32,
+"url":31,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_UsernameRequest.UsernameRequestExtension",
-"url":32,
-"doc":"A base class for mixing in custom classes (extensions) into another classes.  Example extension code:   from pyflarum.extensions import ExtensionMixin from pyflarum.extensions.admin import AdminExtension from pyflarum.session import FlarumUser  Lowecase: AUTHOR = \"yourname\" NAME = \"extensionname\" ID = f\"{AUTHOR}-{NAME}\"  List of dependencies: SOFT_DEPENDENCIES = [AdminExtension]  uses methods from this extension, but can run without it HARD_DEPENCENDIES = []  I recommend to use the following naming pattern:    Mixin  Example: class ExampleFlarumUserMixin(FlarumUser): @property def __example(self):  ' Calling  FlarumUser( ).__example would return this.  ' return \"Example\" class ExampleExtension(ExtensionMixin): def get_dependencies(self):  ' Overwrite this method to make your own dependencies. This should return the following  dict :  python { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }   Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).  ' return { \"soft\": SOFT_DEPENDENCIES, \"hard\": HARD_DEPENCENDIES } def mixin(self):  ' This extends the  FlarumUser class with features from  ExampleMixin  ' super().mixin(self, FlarumUser, ExampleMixin)   Initializes the  ExtensionMixin object."
+"url":31,
+"doc":"A base class for mixing in custom classes (extensions) into another classes.  Example extension code:   from typing import Type from pyflarum.extensions import ExtensionMixin from pyflarum.extensions.admin import AdminExtension from pyflarum.session import FlarumUser  Lowecase: AUTHOR = \"yourname\" NAME = \"extensionname\" ID = f\"{AUTHOR}-{NAME}\"  List of dependencies: SOFT_DEPENDENCIES = [AdminExtension]  uses methods from this extension, but can run without it HARD_DEPENCENDIES = []  I recommend to use the following naming pattern:    Mixin  Example: class ExampleFlarumUserMixin: @property def example(self):  ' Calling  FlarumUser( ).example would return this.  ' return \"Example\" ExampleFlarumUserMixin: Type[FlarumUser]  mimick class inheritance, without inheriting at runtime, acts just as a type hint class ExampleExtension(ExtensionMixin): def get_dependencies(self): return { \"soft\": SOFT_DEPENDENCIES, \"hard\": HARD_DEPENCENDIES } def mixin(self): super().mixin(self, FlarumUser, ExampleFlarumUserMixin)  "
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_UsernameRequest.UsernameRequestExtension.get_dependencies",
-"url":32,
-"doc":"Overwrite this method to make your own dependencies. This should return the following  dict :   { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }    Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).",
+"url":31,
+"doc":"This should return the following  dict :   { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }   A dependency is anything that you can pass into  FlarumUser(extensions=[ .]) (e. g. an extension class).  Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.FoF_UsernameRequest.UsernameRequestExtension.mixin",
-"url":32,
-"doc":"A boilerplate function for mixing. This sets/overwrites attributes of  class_to_patch to attributes of  class_to_mix_in (monkey-patch).  Example:   extension.mixin(myclass, pyflarum_class)  ",
+"url":31,
+"doc":"A function to mix-in/merge properties, methods, functions, etc . of one class into another. This skips all functions and properties starting with  __ (double underscore), unless  skip_protected is False. This sets/overwrites attributes of  class_to_patch to attributes of  class_to_mix_in (monkey-patch).  Example:   extension.mixin(myclass, pyflarum_class)  ",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.Malago_Achievements",
-"url":33,
+"url":32,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.Malago_Achievements.Achievement",
-"url":33,
+"url":32,
 "doc":"An achievement (Malago's Achievements extension)."
 },
 {
 "ref":"pyflarum.extensions.flarum.Malago_Achievements.Achievement.data",
-"url":33,
+"url":32,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.Malago_Achievements.Achievement.type",
-"url":33,
+"url":32,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.Malago_Achievements.Achievement.attributes",
-"url":33,
+"url":32,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.Malago_Achievements.Achievement.name",
-"url":33,
+"url":32,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.Malago_Achievements.Achievement.description",
-"url":33,
+"url":32,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.Malago_Achievements.Achievement.computation",
-"url":33,
+"url":32,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.Malago_Achievements.Achievement.points",
-"url":33,
+"url":32,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.Malago_Achievements.Achievement.icon",
-"url":33,
+"url":32,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.Malago_Achievements.Achievement.rectangle",
-"url":33,
+"url":32,
 "doc":"No, I have no idea what this is either."
 },
 {
 "ref":"pyflarum.extensions.flarum.Malago_Achievements.Achievement.active",
-"url":33,
+"url":32,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.Malago_Achievements.Achievement.hidden",
-"url":33,
+"url":32,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.Malago_Achievements.Achievement.new",
-"url":33,
+"url":32,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.Malago_Achievements.AchievementsForumMixin",
-"url":33,
+"url":32,
 "doc":"Forum JSON data"
 },
 {
 "ref":"pyflarum.extensions.flarum.Malago_Achievements.AchievementsForumMixin.show_achievements_in_post_footer",
-"url":33,
+"url":32,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.Malago_Achievements.AchievementsForumMixin.show_achievements_in_user_card",
-"url":33,
+"url":32,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.flarum.Malago_Achievements.AchievementsAdminFlarumUserMixin",
-"url":33,
+"url":32,
 "doc":"dict() -> new empty dictionary dict(mapping) -> new dictionary initialized from a mapping object's (key, value) pairs dict(iterable) -> new dictionary initialized as if via: d = {} for k, v in iterable: d[k] = v dict( kwargs) -> new dictionary initialized with the name=value pairs in the keyword argument list. For example: dict(one=1, two=2)"
 },
 {
 "ref":"pyflarum.extensions.flarum.Malago_Achievements.AchievementsAdminFlarumUserMixin.update_settings",
-"url":33,
+"url":32,
 "doc":"",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.Malago_Achievements.AchievementsAdminFlarumUserMixin.create_achievement",
-"url":33,
+"url":32,
 "doc":"",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.Malago_Achievements.AchievementsAdminFlarumUserMixin.get_all_achievements",
-"url":33,
+"url":32,
 "doc":"",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.Malago_Achievements.AchievementsAdminFlarumUserMixin.all_discussions",
-"url":6,
+"url":7,
 "doc":"Obtains all discussions from specific page by using  filter .",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.Malago_Achievements.AchievementsAdminFlarumUserMixin.all_posts",
-"url":6,
+"url":7,
 "doc":"Obtains all posts from specific page by using  filter .",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.Malago_Achievements.AchievementsAdminFlarumUserMixin.all_users",
-"url":6,
+"url":7,
 "doc":"Obtains all users from specific page by using  filter .",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.Malago_Achievements.AchievementsAdminFlarumUserMixin.get_notifications",
-"url":6,
+"url":7,
 "doc":"Obtains all notifications of your user.",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.Malago_Achievements.AchievementsAdminFlarumUserMixin.api_urls",
-"url":6,
+"url":7,
 "doc":"Simple, hardcoded  'key: value'  dict of Flarum's API routes for quick access. API routes reference (old): https: github.com/flarum/flarum.github.io/blob/20322c0e6011e4f304ae7e95f41594a0b086bc27/_docs/api.md"
 },
 {
 "ref":"pyflarum.extensions.flarum.Malago_Achievements.AchievementsExtension",
-"url":33,
-"doc":"A base class for mixing in custom classes (extensions) into another classes.  Example extension code:   from pyflarum.extensions import ExtensionMixin from pyflarum.extensions.admin import AdminExtension from pyflarum.session import FlarumUser  Lowecase: AUTHOR = \"yourname\" NAME = \"extensionname\" ID = f\"{AUTHOR}-{NAME}\"  List of dependencies: SOFT_DEPENDENCIES = [AdminExtension]  uses methods from this extension, but can run without it HARD_DEPENCENDIES = []  I recommend to use the following naming pattern:    Mixin  Example: class ExampleFlarumUserMixin(FlarumUser): @property def __example(self):  ' Calling  FlarumUser( ).__example would return this.  ' return \"Example\" class ExampleExtension(ExtensionMixin): def get_dependencies(self):  ' Overwrite this method to make your own dependencies. This should return the following  dict :  python { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }   Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).  ' return { \"soft\": SOFT_DEPENDENCIES, \"hard\": HARD_DEPENCENDIES } def mixin(self):  ' This extends the  FlarumUser class with features from  ExampleMixin  ' super().mixin(self, FlarumUser, ExampleMixin)   Initializes the  ExtensionMixin object."
+"url":32,
+"doc":"A base class for mixing in custom classes (extensions) into another classes.  Example extension code:   from typing import Type from pyflarum.extensions import ExtensionMixin from pyflarum.extensions.admin import AdminExtension from pyflarum.session import FlarumUser  Lowecase: AUTHOR = \"yourname\" NAME = \"extensionname\" ID = f\"{AUTHOR}-{NAME}\"  List of dependencies: SOFT_DEPENDENCIES = [AdminExtension]  uses methods from this extension, but can run without it HARD_DEPENCENDIES = []  I recommend to use the following naming pattern:    Mixin  Example: class ExampleFlarumUserMixin: @property def example(self):  ' Calling  FlarumUser( ).example would return this.  ' return \"Example\" ExampleFlarumUserMixin: Type[FlarumUser]  mimick class inheritance, without inheriting at runtime, acts just as a type hint class ExampleExtension(ExtensionMixin): def get_dependencies(self): return { \"soft\": SOFT_DEPENDENCIES, \"hard\": HARD_DEPENCENDIES } def mixin(self): super().mixin(self, FlarumUser, ExampleFlarumUserMixin)  "
 },
 {
 "ref":"pyflarum.extensions.flarum.Malago_Achievements.AchievementsExtension.get_dependencies",
-"url":33,
-"doc":"Overwrite this method to make your own dependencies. This should return the following  dict :   { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }    Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).",
+"url":32,
+"doc":"This should return the following  dict :   { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }   A dependency is anything that you can pass into  FlarumUser(extensions=[ .]) (e. g. an extension class).  Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.flarum.Malago_Achievements.AchievementsExtension.mixin",
-"url":33,
-"doc":"A boilerplate function for mixing. This sets/overwrites attributes of  class_to_patch to attributes of  class_to_mix_in (monkey-patch).  Example:   extension.mixin(myclass, pyflarum_class)  ",
+"url":32,
+"doc":"A function to mix-in/merge properties, methods, functions, etc . of one class into another. This skips all functions and properties starting with  __ (double underscore), unless  skip_protected is False. This sets/overwrites attributes of  class_to_patch to attributes of  class_to_mix_in (monkey-patch).  Example:   extension.mixin(myclass, pyflarum_class)  ",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.watch",
-"url":34,
+"url":33,
 "doc":""
 },
 {
 "ref":"pyflarum.extensions.watch.WatchFlarumUserMixin",
-"url":34,
+"url":33,
 "doc":"dict() -> new empty dictionary dict(mapping) -> new dictionary initialized from a mapping object's (key, value) pairs dict(iterable) -> new dictionary initialized as if via: d = {} for k, v in iterable: d[k] = v dict( kwargs) -> new dictionary initialized with the name=value pairs in the keyword argument list. For example: dict(one=1, two=2)"
 },
 {
 "ref":"pyflarum.extensions.watch.WatchFlarumUserMixin.watch_notifications",
-"url":34,
+"url":33,
 "doc":"",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.watch.WatchFlarumUserMixin.all_discussions",
-"url":6,
+"url":7,
 "doc":"Obtains all discussions from specific page by using  filter .",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.watch.WatchFlarumUserMixin.all_posts",
-"url":6,
+"url":7,
 "doc":"Obtains all posts from specific page by using  filter .",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.watch.WatchFlarumUserMixin.all_users",
-"url":6,
+"url":7,
 "doc":"Obtains all users from specific page by using  filter .",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.watch.WatchFlarumUserMixin.get_notifications",
-"url":6,
+"url":7,
 "doc":"Obtains all notifications of your user.",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.watch.WatchFlarumUserMixin.api_urls",
-"url":6,
+"url":7,
 "doc":"Simple, hardcoded  'key: value'  dict of Flarum's API routes for quick access. API routes reference (old): https: github.com/flarum/flarum.github.io/blob/20322c0e6011e4f304ae7e95f41594a0b086bc27/_docs/api.md"
 },
 {
 "ref":"pyflarum.extensions.watch.WatchExtension",
-"url":34,
-"doc":"A base class for mixing in custom classes (extensions) into another classes.  Example extension code:   from pyflarum.extensions import ExtensionMixin from pyflarum.extensions.admin import AdminExtension from pyflarum.session import FlarumUser  Lowecase: AUTHOR = \"yourname\" NAME = \"extensionname\" ID = f\"{AUTHOR}-{NAME}\"  List of dependencies: SOFT_DEPENDENCIES = [AdminExtension]  uses methods from this extension, but can run without it HARD_DEPENCENDIES = []  I recommend to use the following naming pattern:    Mixin  Example: class ExampleFlarumUserMixin(FlarumUser): @property def __example(self):  ' Calling  FlarumUser( ).__example would return this.  ' return \"Example\" class ExampleExtension(ExtensionMixin): def get_dependencies(self):  ' Overwrite this method to make your own dependencies. This should return the following  dict :  python { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }   Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).  ' return { \"soft\": SOFT_DEPENDENCIES, \"hard\": HARD_DEPENCENDIES } def mixin(self):  ' This extends the  FlarumUser class with features from  ExampleMixin  ' super().mixin(self, FlarumUser, ExampleMixin)   Initializes the  ExtensionMixin object."
+"url":33,
+"doc":"A base class for mixing in custom classes (extensions) into another classes.  Example extension code:   from typing import Type from pyflarum.extensions import ExtensionMixin from pyflarum.extensions.admin import AdminExtension from pyflarum.session import FlarumUser  Lowecase: AUTHOR = \"yourname\" NAME = \"extensionname\" ID = f\"{AUTHOR}-{NAME}\"  List of dependencies: SOFT_DEPENDENCIES = [AdminExtension]  uses methods from this extension, but can run without it HARD_DEPENCENDIES = []  I recommend to use the following naming pattern:    Mixin  Example: class ExampleFlarumUserMixin: @property def example(self):  ' Calling  FlarumUser( ).example would return this.  ' return \"Example\" ExampleFlarumUserMixin: Type[FlarumUser]  mimick class inheritance, without inheriting at runtime, acts just as a type hint class ExampleExtension(ExtensionMixin): def get_dependencies(self): return { \"soft\": SOFT_DEPENDENCIES, \"hard\": HARD_DEPENCENDIES } def mixin(self): super().mixin(self, FlarumUser, ExampleFlarumUserMixin)  "
 },
 {
 "ref":"pyflarum.extensions.watch.WatchExtension.get_dependencies",
-"url":34,
-"doc":"Overwrite this method to make your own dependencies. This should return the following  dict :   { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }    Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).",
+"url":33,
+"doc":"This should return the following  dict :   { \"hard\": [ ,  ,  .], \"soft\": [ ,  ,  .] }   A dependency is anything that you can pass into  FlarumUser(extensions=[ .]) (e. g. an extension class).  Hard-dependencies: - Will raise an error when they're not found in the initialized  FlarumUser object. It is impossible for the extension to function without these.  Soft-dependencies: - Will raise just a warning. It is possible for the extension to function without these, although with limitations (such that some functions might be unavailable).",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.watch.WatchExtension.mixin",
-"url":34,
-"doc":"A boilerplate function for mixing. This sets/overwrites attributes of  class_to_patch to attributes of  class_to_mix_in (monkey-patch).  Example:   extension.mixin(myclass, pyflarum_class)  ",
+"url":33,
+"doc":"A function to mix-in/merge properties, methods, functions, etc . of one class into another. This skips all functions and properties starting with  __ (double underscore), unless  skip_protected is False. This sets/overwrites attributes of  class_to_patch to attributes of  class_to_mix_in (monkey-patch).  Example:   extension.mixin(myclass, pyflarum_class)  ",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.watch.WatchExtension.all_discussions",
-"url":6,
+"url":7,
 "doc":"Obtains all discussions from specific page by using  filter .",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.watch.WatchExtension.all_posts",
-"url":6,
+"url":7,
 "doc":"Obtains all posts from specific page by using  filter .",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.watch.WatchExtension.all_users",
-"url":6,
+"url":7,
 "doc":"Obtains all users from specific page by using  filter .",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.watch.WatchExtension.get_notifications",
-"url":6,
+"url":7,
 "doc":"Obtains all notifications of your user.",
 "func":1
 },
 {
 "ref":"pyflarum.extensions.watch.WatchExtension.api_urls",
-"url":6,
+"url":7,
 "doc":"Simple, hardcoded  'key: value'  dict of Flarum's API routes for quick access. API routes reference (old): https: github.com/flarum/flarum.github.io/blob/20322c0e6011e4f304ae7e95f41594a0b086bc27/_docs/api.md"
 },
 {
 "ref":"pyflarum.flarum",
-"url":35,
+"url":34,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core",
-"url":36,
+"url":35,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.discussions",
-"url":13,
+"url":21,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.discussions.PreparedDiscussion",
-"url":13,
+"url":21,
 "doc":"dict() -> new empty dictionary dict(mapping) -> new dictionary initialized from a mapping object's (key, value) pairs dict(iterable) -> new dictionary initialized as if via: d = {} for k, v in iterable: d[k] = v dict( kwargs) -> new dictionary initialized with the name=value pairs in the keyword argument list. For example: dict(one=1, two=2)"
 },
 {
 "ref":"pyflarum.flarum.core.discussions.PreparedDiscussion.to_dict",
-"url":13,
+"url":21,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.discussions.PreparedDiscussion.post",
-"url":13,
+"url":21,
 "doc":"Posts/creates the discussion. Raises  FlarumError or returns  False if it failed, otherwise the new  Discussion is returned.",
 "func":1
 },
 {
 "ref":"pyflarum.flarum.core.discussions.PreparedDiscussion.create",
-"url":13,
+"url":21,
 "doc":"Posts/creates the discussion. Raises  FlarumError or returns  False if it failed, otherwise the new  Discussion is returned.",
 "func":1
 },
 {
 "ref":"pyflarum.flarum.core.discussions.Discussions",
-"url":13,
+"url":21,
 "doc":"A data of multiple discussions fetched from the API."
 },
 {
 "ref":"pyflarum.flarum.core.discussions.Discussions.links",
-"url":13,
+"url":21,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.discussions.Discussions.first_link",
-"url":13,
+"url":21,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.discussions.Discussions.previous_link",
-"url":13,
+"url":21,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.discussions.Discussions.next_link",
-"url":13,
+"url":21,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.discussions.Discussions.data",
-"url":13,
+"url":21,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.discussions.Discussions.included",
-"url":13,
+"url":21,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.discussions.Discussions.get_discussions",
-"url":13,
+"url":21,
 "doc":"All discussions from the  Discussions object.",
 "func":1
 },
 {
 "ref":"pyflarum.flarum.core.discussions.DiscussionFromNotification",
-"url":13,
+"url":21,
 "doc":"A discussion from  BaseNotification "
 },
 {
 "ref":"pyflarum.flarum.core.discussions.DiscussionFromNotification.get_full_data",
-"url":13,
+"url":21,
 "doc":"",
 "func":1
 },
 {
 "ref":"pyflarum.flarum.core.discussions.DiscussionFromNotification.data",
-"url":13,
+"url":21,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.discussions.DiscussionFromNotification.type",
-"url":13,
+"url":21,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.discussions.DiscussionFromNotification.id",
-"url":13,
+"url":21,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.discussions.DiscussionFromNotification.attributes",
-"url":13,
+"url":21,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.discussions.DiscussionFromNotification.title",
-"url":13,
+"url":21,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.discussions.DiscussionFromNotification.slug",
-"url":13,
+"url":21,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.discussions.DiscussionFromNotification.hide",
-"url":13,
+"url":21,
 "doc":"Hides the discussion. Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
 "func":1
 },
 {
 "ref":"pyflarum.flarum.core.discussions.DiscussionFromNotification.restore",
-"url":13,
+"url":21,
 "doc":"Restores the discussion (unhides). Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
 "func":1
 },
 {
 "ref":"pyflarum.flarum.core.discussions.DiscussionFromNotification.unhide",
-"url":13,
+"url":21,
 "doc":"Restores the discussion (unhides). Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
 "func":1
 },
 {
 "ref":"pyflarum.flarum.core.discussions.DiscussionFromNotification.delete",
-"url":13,
+"url":21,
 "doc":"Deletes a discussion forever - this action is irreversible!",
 "func":1
 },
 {
 "ref":"pyflarum.flarum.core.discussions.DiscussionFromBulk",
-"url":13,
+"url":21,
 "doc":"A discussion from  Discussions ."
 },
 {
 "ref":"pyflarum.flarum.core.discussions.DiscussionFromBulk.url",
-"url":13,
+"url":21,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.discussions.DiscussionFromBulk.commentCount",
-"url":13,
+"url":21,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.discussions.DiscussionFromBulk.participantCount",
-"url":13,
+"url":21,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.discussions.DiscussionFromBulk.createdAt",
-"url":13,
+"url":21,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.discussions.DiscussionFromBulk.lastPostedAt",
-"url":13,
+"url":21,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.discussions.DiscussionFromBulk.lastPostNumber",
-"url":13,
+"url":21,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.discussions.DiscussionFromBulk.lastReadPostNumber",
-"url":13,
+"url":21,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.discussions.DiscussionFromBulk.canReply",
-"url":13,
+"url":21,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.discussions.DiscussionFromBulk.canRename",
-"url":13,
+"url":21,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.discussions.DiscussionFromBulk.canDelete",
-"url":13,
+"url":21,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.discussions.DiscussionFromBulk.canHide",
-"url":13,
+"url":21,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.discussions.DiscussionFromBulk.lastReadAt",
-"url":13,
+"url":21,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.discussions.DiscussionFromBulk.isHidden",
-"url":13,
+"url":21,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.discussions.DiscussionFromBulk.subscription",
-"url":13,
+"url":21,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.discussions.DiscussionFromBulk.relationships",
-"url":13,
+"url":21,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.discussions.DiscussionFromBulk.get_author",
-"url":13,
-"doc":"",
+"url":21,
+"doc":"Obtains the author of the discussion. It returns  pyflarum.flarum.core.users.UserFromNotification because it's JSON data matches the data of user from notification. This works by fetching it from the  _parent_included property.",
 "func":1
 },
 {
 "ref":"pyflarum.flarum.core.discussions.DiscussionFromBulk.get_last_posted_user",
-"url":13,
-"doc":"",
+"url":21,
+"doc":"Obtains the user that posted the latest post in the discussion. It returns  pyflarum.flarum.core.users.UserFromNotification because it's JSON data matches the data of user from notification. This works by fetching it from the  _parent_included property.",
 "func":1
 },
 {
 "ref":"pyflarum.flarum.core.discussions.DiscussionFromBulk.get_first_post",
-"url":13,
-"doc":"",
+"url":21,
+"doc":"Obtains the first post of the discussion. This works by fetching it from the  _parent_included property.",
 "func":1
 },
 {
 "ref":"pyflarum.flarum.core.discussions.DiscussionFromBulk.hide",
-"url":13,
-"doc":"Hides the discussion. Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
+"url":21,
+"doc":"Hides the discussion from the sight of other unprivileged users that are not worthy to view such thread.",
 "func":1
 },
 {
 "ref":"pyflarum.flarum.core.discussions.DiscussionFromBulk.restore",
-"url":13,
-"doc":"Restores the discussion (unhides). Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
+"url":21,
+"doc":"Restores the discussion (unhides it), bringing it back to life.",
 "func":1
 },
 {
 "ref":"pyflarum.flarum.core.discussions.DiscussionFromBulk.unhide",
-"url":13,
-"doc":"Restores the discussion (unhides). Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
+"url":21,
+"doc":"Restores the discussion (unhides it), bringing it back to life.",
 "func":1
 },
 {
 "ref":"pyflarum.flarum.core.discussions.DiscussionFromBulk.delete",
-"url":13,
-"doc":"Deletes a discussion forever - this action is irreversible!",
+"url":21,
+"doc":"Scronches the discussion forever. This cannot be reverted. Use  force=True to attempt to delete the discussion even if the API states that you can't.",
 "func":1
 },
 {
 "ref":"pyflarum.flarum.core.discussions.Discussion",
-"url":13,
-"doc":"A Flarum discussion."
+"url":21,
+"doc":"A Flarum discussion, obtained directly from the API by ID. This is the top-level discussion object that contains all the properties of a discussion, and inherits properties from all previous discussion-like objects. Learn more about inheritance [here](https: cwkevo.github.io/pyflarum/docs/ class-inheritance)"
 },
 {
 "ref":"pyflarum.flarum.core.discussions.Discussion.included",
-"url":13,
-"doc":""
+"url":21,
+"doc":"Returns raw list of JSON included data.  Discussion.get_author() Learn more about included data [here](https: cwkevo.github.io/pyflarum/docs/ included-data)"
+},
+{
+"ref":"pyflarum.flarum.core.discussions.Discussion.get_author",
+"url":21,
+"doc":"Obtains the discussion's author, AKA. the author of the post with number 1 in a discussion.  mode allows you to specify the mode that is used to determine whether or not the post is the first post of the discussion. -  'first_number' - checks if the number of the post is 1 - if yes, it fetches that post's author. -  Any - if anything other than  'first_number' is passed (e. g.  'first_user , but this can be anything), then this returns the author of the first post in the JSON. I am not sure how reliable is this, and whether or not the posts are actually ordered correctly in the API, so it's probably a good idea to also check if the number of the post is 1 - but then again, what if the first post gets removed?",
+"func":1
 },
 {
 "ref":"pyflarum.flarum.core.discussions.Discussion.get_posts",
-"url":13,
-"doc":"",
+"url":21,
+"doc":"Returns a list of  pyflarum.flarum.core.posts.PostFromBulk objects. It might seem strange why this doesn't return  pyflarum.flarum.core.posts.PostFromDiscussion instead, but these posts are in fact identical to  pyflarum.flarum.core.posts.PostFromBulk , that's why they are returned.",
 "func":1
 },
 {
 "ref":"pyflarum.flarum.core.discussions.Discussion.get_first_post",
-"url":13,
+"url":21,
 "doc":"The  Discussion object does not have the first post's JSON data in it's own JSON. Because of Python's subclass inheritance, this function was included in  Discussion , but it does not work!  Alternative:   discussion = user.get_discussion_by_id(1) first_post = discussion.get_posts()[0]  ",
 "func":1
 },
 {
+"ref":"pyflarum.flarum.core.discussions.Discussion.get_last_posted_user",
+"url":21,
+"doc":"Obtains the user that posted the latest post in the discussion. It returns  pyflarum.flarum.core.users.UserFromNotification because it's JSON data matches the data of user from notification. This works by fetching it from the  _parent_included property.",
+"func":1
+},
+{
 "ref":"pyflarum.flarum.core.discussions.Discussion.hide",
-"url":13,
-"doc":"Hides the discussion. Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
+"url":21,
+"doc":"Hides the discussion from the sight of other unprivileged users that are not worthy to view such thread.",
 "func":1
 },
 {
 "ref":"pyflarum.flarum.core.discussions.Discussion.restore",
-"url":13,
-"doc":"Restores the discussion (unhides). Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
+"url":21,
+"doc":"Restores the discussion (unhides it), bringing it back to life.",
 "func":1
 },
 {
 "ref":"pyflarum.flarum.core.discussions.Discussion.unhide",
-"url":13,
-"doc":"Restores the discussion (unhides). Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
+"url":21,
+"doc":"Restores the discussion (unhides it), bringing it back to life.",
 "func":1
 },
 {
 "ref":"pyflarum.flarum.core.discussions.Discussion.delete",
-"url":13,
-"doc":"Deletes a discussion forever - this action is irreversible!",
+"url":21,
+"doc":"Scronches the discussion forever. This cannot be reverted. Use  force=True to attempt to delete the discussion even if the API states that you can't.",
 "func":1
 },
 {
 "ref":"pyflarum.flarum.core.filters",
-"url":37,
+"url":36,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.filters.Filter",
-"url":37,
+"url":36,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.filters.Filter.to_dict",
-"url":37,
+"url":36,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.forum",
-"url":38,
+"url":37,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.forum.Forum",
-"url":38,
+"url":37,
 "doc":"Forum JSON data"
 },
 {
 "ref":"pyflarum.flarum.core.forum.Forum.data",
-"url":38,
+"url":37,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.forum.Forum.type",
-"url":38,
+"url":37,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.forum.Forum.id",
-"url":38,
+"url":37,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.forum.Forum.attributes",
-"url":38,
+"url":37,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.forum.Forum.title",
-"url":38,
+"url":37,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.forum.Forum.description",
-"url":38,
+"url":37,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.forum.Forum.showLanguageSelector",
-"url":38,
+"url":37,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.forum.Forum.baseUrl",
-"url":38,
+"url":37,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.forum.Forum.basePath",
-"url":38,
+"url":37,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.forum.Forum.debug",
-"url":38,
+"url":37,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.forum.Forum.apiUrl",
-"url":38,
+"url":37,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.forum.Forum.welcomeTitle",
-"url":38,
+"url":37,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.forum.Forum.welcomeMessage",
-"url":38,
+"url":37,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.forum.Forum.themePrimaryColor",
-"url":38,
+"url":37,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.forum.Forum.themeSecondaryColor",
-"url":38,
+"url":37,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.forum.Forum.logoUrl",
-"url":38,
+"url":37,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.forum.Forum.faviconUrl",
-"url":38,
+"url":37,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.forum.Forum.headerHtml",
-"url":38,
+"url":37,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.forum.Forum.footerHtml",
-"url":38,
+"url":37,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.forum.Forum.allowSignUp",
-"url":38,
+"url":37,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.forum.Forum.defaultRoute",
-"url":38,
+"url":37,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.forum.Forum.canViewForum",
-"url":38,
+"url":37,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.forum.Forum.canStartDiscussion",
-"url":38,
+"url":37,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.forum.Forum.canSearchUsers",
-"url":38,
+"url":37,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.forum.Forum.adminUrl",
-"url":38,
+"url":37,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.forum.Forum.version",
-"url":38,
+"url":37,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.forum.Forum.allowUsernameMentionFormat",
-"url":38,
+"url":37,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.forum.Forum.relationships",
-"url":38,
+"url":37,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.forum.Forum.get_groups",
-"url":38,
+"url":37,
 "doc":"",
 "func":1
 },
 {
 "ref":"pyflarum.flarum.core.forum.Forum.included",
-"url":38,
+"url":37,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.groups",
-"url":39,
+"url":38,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.groups.PreparedGroup",
-"url":39,
+"url":38,
 "doc":"dict() -> new empty dictionary dict(mapping) -> new dictionary initialized from a mapping object's (key, value) pairs dict(iterable) -> new dictionary initialized as if via: d = {} for k, v in iterable: d[k] = v dict( kwargs) -> new dictionary initialized with the name=value pairs in the keyword argument list. For example: dict(one=1, two=2)"
 },
 {
 "ref":"pyflarum.flarum.core.groups.PreparedGroup.to_dict",
-"url":39,
+"url":38,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.groups.PreparedGroup.create",
-"url":39,
+"url":38,
 "doc":"Creates the group. Returns the created  Group .",
 "func":1
 },
 {
 "ref":"pyflarum.flarum.core.groups.Groups",
-"url":39,
+"url":38,
 "doc":"A data of multiple groups fetched from the API."
 },
 {
 "ref":"pyflarum.flarum.core.groups.Groups.links",
-"url":39,
+"url":38,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.groups.Groups.first_link",
-"url":39,
+"url":38,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.groups.Groups.previous_link",
-"url":39,
+"url":38,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.groups.Groups.next_link",
-"url":39,
+"url":38,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.groups.Groups.data",
-"url":39,
+"url":38,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.groups.Groups.included",
-"url":39,
+"url":38,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.groups.Groups.get_groups",
-"url":39,
+"url":38,
 "doc":"All groups from the  Groups object.",
 "func":1
 },
 {
 "ref":"pyflarum.flarum.core.groups.Group",
-"url":39,
+"url":38,
 "doc":"A Flarum group."
 },
 {
 "ref":"pyflarum.flarum.core.groups.Group.data",
-"url":39,
+"url":38,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.groups.Group.type",
-"url":39,
+"url":38,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.groups.Group.id",
-"url":39,
+"url":38,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.groups.Group.attributes",
-"url":39,
+"url":38,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.groups.Group.nameSingular",
-"url":39,
+"url":38,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.groups.Group.namePlural",
-"url":39,
+"url":38,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.groups.Group.color",
-"url":39,
+"url":38,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.groups.Group.icon",
-"url":39,
+"url":38,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.groups.Group.isHidden",
-"url":39,
+"url":38,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.groups.Group.edit",
-"url":39,
+"url":38,
 "doc":"",
 "func":1
 },
 {
 "ref":"pyflarum.flarum.core.groups.Group.delete",
-"url":39,
+"url":38,
 "doc":"",
 "func":1
 },
 {
 "ref":"pyflarum.flarum.core.groups.Group.get_groups",
-"url":39,
+"url":38,
 "doc":"All groups from the  Groups object.",
 "func":1
 },
 {
 "ref":"pyflarum.flarum.core.notifications",
-"url":40,
+"url":39,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.notifications.Notifications",
-"url":40,
+"url":39,
 "doc":"A data of multiple notifications fetched from the API."
 },
 {
 "ref":"pyflarum.flarum.core.notifications.Notifications.links",
-"url":40,
+"url":39,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.notifications.Notifications.first_link",
-"url":40,
+"url":39,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.notifications.Notifications.previous_link",
-"url":40,
+"url":39,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.notifications.Notifications.next_link",
-"url":40,
+"url":39,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.notifications.Notifications.data",
-"url":40,
+"url":39,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.notifications.Notifications.included",
-"url":40,
+"url":39,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.notifications.Notifications.get_notifications",
-"url":40,
+"url":39,
 "doc":"All notifications from the  Notifications object.",
 "func":1
 },
 {
 "ref":"pyflarum.flarum.core.notifications.Notifications.mark_all_as_read",
-"url":40,
+"url":39,
 "doc":"",
 "func":1
 },
 {
 "ref":"pyflarum.flarum.core.notifications.Notification",
-"url":40,
+"url":39,
 "doc":"Notification, that always has properties defined."
 },
 {
 "ref":"pyflarum.flarum.core.notifications.Notification.data",
-"url":40,
+"url":39,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.notifications.Notification.type",
-"url":40,
+"url":39,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.notifications.Notification.id",
-"url":40,
+"url":39,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.notifications.Notification.attributes",
-"url":40,
+"url":39,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.notifications.Notification.contentType",
-"url":40,
+"url":39,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.notifications.Notification.content",
-"url":40,
+"url":39,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.notifications.Notification.new_post_number",
-"url":40,
+"url":39,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.notifications.Notification.reply_number",
-"url":40,
+"url":39,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.notifications.Notification.createdAt",
-"url":40,
+"url":39,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.notifications.Notification.isRead",
-"url":40,
+"url":39,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.notifications.Notification.relationships",
-"url":40,
+"url":39,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.notifications.Notification.from_user",
-"url":40,
+"url":39,
 "doc":"",
 "func":1
 },
 {
 "ref":"pyflarum.flarum.core.notifications.Notification.get_subject",
-"url":40,
+"url":39,
 "doc":"",
 "func":1
 },
 {
 "ref":"pyflarum.flarum.core.notifications.Notification.mark_as_read",
-"url":40,
+"url":39,
 "doc":"",
 "func":1
 },
 {
 "ref":"pyflarum.flarum.core.posts",
-"url":16,
+"url":40,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.posts.PreparedPost",
-"url":16,
+"url":40,
 "doc":"dict() -> new empty dictionary dict(mapping) -> new dictionary initialized from a mapping object's (key, value) pairs dict(iterable) -> new dictionary initialized as if via: d = {} for k, v in iterable: d[k] = v dict( kwargs) -> new dictionary initialized with the name=value pairs in the keyword argument list. For example: dict(one=1, two=2)"
 },
 {
 "ref":"pyflarum.flarum.core.posts.PreparedPost.to_dict",
-"url":16,
+"url":40,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.posts.PreparedPost.post",
-"url":16,
+"url":40,
 "doc":"Posts/creates the post. Returns the created  Post .",
 "func":1
 },
 {
 "ref":"pyflarum.flarum.core.posts.PreparedPost.create",
-"url":16,
+"url":40,
 "doc":"Posts/creates the post. Returns the created  Post .",
 "func":1
 },
 {
 "ref":"pyflarum.flarum.core.posts.Posts",
-"url":16,
+"url":40,
 "doc":"A data of multiple posts fetched from the API."
 },
 {
 "ref":"pyflarum.flarum.core.posts.Posts.links",
-"url":16,
+"url":40,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.posts.Posts.first_link",
-"url":16,
+"url":40,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.posts.Posts.previous_link",
-"url":16,
+"url":40,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.posts.Posts.next_link",
-"url":16,
+"url":40,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.posts.Posts.data",
-"url":16,
+"url":40,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.posts.Posts.included",
-"url":16,
+"url":40,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.posts.Posts.get_posts",
-"url":16,
+"url":40,
 "doc":"All posts from the  Posts object.",
 "func":1
 },
 {
 "ref":"pyflarum.flarum.core.posts.PostFromDiscussion",
-"url":16,
+"url":40,
 "doc":"A post from  Discussion "
 },
 {
 "ref":"pyflarum.flarum.core.posts.PostFromDiscussion.data",
-"url":16,
+"url":40,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.posts.PostFromDiscussion.type",
-"url":16,
+"url":40,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.posts.PostFromDiscussion.id",
-"url":16,
+"url":40,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.posts.PostFromDiscussion.attributes",
-"url":16,
+"url":40,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.posts.PostFromDiscussion.number",
-"url":16,
+"url":40,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.posts.PostFromDiscussion.createdAt",
-"url":16,
+"url":40,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.posts.PostFromDiscussion.contentType",
-"url":16,
+"url":40,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.posts.PostFromDiscussion.contentHtml",
-"url":16,
+"url":40,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.posts.PostFromDiscussion.hide",
-"url":16,
+"url":40,
 "doc":"Hides the post. Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
 "func":1
 },
 {
 "ref":"pyflarum.flarum.core.posts.PostFromDiscussion.restore",
-"url":16,
+"url":40,
 "doc":"Restores the post (unhides). Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
 "func":1
 },
 {
 "ref":"pyflarum.flarum.core.posts.PostFromDiscussion.unhide",
-"url":16,
+"url":40,
 "doc":"Restores the post (unhides). Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
 "func":1
 },
 {
 "ref":"pyflarum.flarum.core.posts.PostFromDiscussion.delete",
-"url":16,
+"url":40,
 "doc":"Removes the post forever.",
 "func":1
 },
 {
 "ref":"pyflarum.flarum.core.posts.PostFromDiscussion.edit",
-"url":16,
+"url":40,
 "doc":"Edits the post.",
 "func":1
 },
 {
 "ref":"pyflarum.flarum.core.posts.PostFromNotification",
-"url":16,
+"url":40,
 "doc":"A post from  Notification "
 },
 {
 "ref":"pyflarum.flarum.core.posts.PostFromNotification.content",
-"url":16,
+"url":40,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.posts.PostFromNotification.ipAddress",
-"url":16,
+"url":40,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.posts.PostFromNotification.editedAt",
-"url":16,
+"url":40,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.posts.PostFromNotification.canEdit",
-"url":16,
+"url":40,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.posts.PostFromNotification.canDelete",
-"url":16,
+"url":40,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.posts.PostFromNotification.canHide",
-"url":16,
+"url":40,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.posts.PostFromNotification.relationships",
-"url":16,
+"url":40,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.posts.PostFromNotification.url",
-"url":16,
+"url":40,
 "doc":""
 },
 {
 "ref":"pyflarum.flarum.core.posts.PostFromNotification.get_discussion",
-"url":16,
+"url":40,
 "doc":"",
 "func":1
 },
 {
 "ref":"pyflarum.flarum.core.posts.PostFromNotification.reply_to",
-"url":16,
+"url":40,
 "doc":"Replies to this  Post with another  PreparedPost .",
 "func":1
 },
 {
 "ref":"pyflarum.flarum.core.posts.PostFromNotification.get_author",
-"url":16,
+"url":40,
 "doc":"",
 "func":1
 },
 {
 "ref":"pyflarum.flarum.core.posts.PostFromNotification.edit",
-"url":16,
+"url":40,
 "doc":"Edits the post.",
 "func":1
 },
 {
 "ref":"pyflarum.flarum.core.posts.PostFromNotification.hide",
-"url":16,
+"url":40,
 "doc":"Hides the post. Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
 "func":1
 },
 {
 "ref":"pyflarum.flarum.core.posts.PostFromNotification.restore",
-"url":16,
+"url":40,
 "doc":"Restores the post (unhides). Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
 "func":1
 },
 {
 "ref":"pyflarum.flarum.core.posts.PostFromNotification.unhide",
-"url":16,
+"url":40,
 "doc":"Restores the post (unhides). Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
 "func":1
 },
 {
 "ref":"pyflarum.flarum.core.posts.PostFromNotification.delete",
-"url":16,
+"url":40,
 "doc":"Removes the post forever.",
 "func":1
 },
 {
 "ref":"pyflarum.flarum.core.posts.PostFromBulk",
-"url":16,
+"url":40,
 "doc":"A post from  Posts ."
 },
 {
 "ref":"pyflarum.flarum.core.posts.PostFromBulk.reply_to",
-"url":16,
+"url":40,
 "doc":"Replies to this  Post with another  PreparedPost .",
 "func":1
 },
 {
 "ref":"pyflarum.flarum.core.posts.PostFromBulk.edit",
-"url":16,
+"url":40,
 "doc":"Edits the post.",
 "func":1
 },
 {
 "ref":"pyflarum.flarum.core.posts.PostFromBulk.hide",
-"url":16,
+"url":40,
 "doc":"Hides the post. Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
 "func":1
 },
 {
 "ref":"pyflarum.flarum.core.posts.PostFromBulk.restore",
-"url":16,
+"url":40,
 "doc":"Restores the post (unhides). Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
 "func":1
 },
 {
 "ref":"pyflarum.flarum.core.posts.PostFromBulk.unhide",
-"url":16,
+"url":40,
 "doc":"Restores the post (unhides). Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
 "func":1
 },
 {
 "ref":"pyflarum.flarum.core.posts.PostFromBulk.delete",
-"url":16,
+"url":40,
 "doc":"Removes the post forever.",
 "func":1
 },
 {
 "ref":"pyflarum.flarum.core.posts.Post",
-"url":16,
+"url":40,
 "doc":"A Flarum group."
 },
 {
 "ref":"pyflarum.flarum.core.posts.Post.reply_to",
-"url":16,
+"url":40,
 "doc":"Replies to this  Post with another  PreparedPost .",
 "func":1
 },
 {
 "ref":"pyflarum.flarum.core.posts.Post.edit",
-"url":16,
+"url":40,
 "doc":"Edits the post.",
 "func":1
 },
 {
 "ref":"pyflarum.flarum.core.posts.Post.hide",
-"url":16,
+"url":40,
 "doc":"Hides the post. Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
 "func":1
 },
 {
 "ref":"pyflarum.flarum.core.posts.Post.restore",
-"url":16,
+"url":40,
 "doc":"Restores the post (unhides). Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
 "func":1
 },
 {
 "ref":"pyflarum.flarum.core.posts.Post.unhide",
-"url":16,
+"url":40,
 "doc":"Restores the post (unhides). Raises  FlarumError or returns  False if it failed, otherwise  True is returned.",
 "func":1
 },
 {
 "ref":"pyflarum.flarum.core.posts.Post.delete",
-"url":16,
+"url":40,
 "doc":"Removes the post forever.",
 "func":1
 },
@@ -3686,135 +3552,135 @@ INDEX=[
 },
 {
 "ref":"pyflarum.session",
-"url":6,
+"url":7,
 "doc":""
 },
 {
 "ref":"pyflarum.session.FlarumSession",
-"url":6,
+"url":7,
 "doc":""
 },
 {
 "ref":"pyflarum.session.FlarumSession.authenticate",
-"url":6,
+"url":7,
 "doc":"",
 "func":1
 },
 {
 "ref":"pyflarum.session.FlarumSession.api_urls",
-"url":6,
+"url":7,
 "doc":"Simple, hardcoded  'key: value'  dict of Flarum's API routes for quick access. API routes reference (old): https: github.com/flarum/flarum.github.io/blob/20322c0e6011e4f304ae7e95f41594a0b086bc27/_docs/api.md"
 },
 {
 "ref":"pyflarum.session.FlarumUser",
-"url":6,
+"url":7,
 "doc":"dict() -> new empty dictionary dict(mapping) -> new dictionary initialized from a mapping object's (key, value) pairs dict(iterable) -> new dictionary initialized as if via: d = {} for k, v in iterable: d[k] = v dict( kwargs) -> new dictionary initialized with the name=value pairs in the keyword argument list. For example: dict(one=1, two=2)"
 },
 {
 "ref":"pyflarum.session.FlarumUser.get_forum_data",
-"url":6,
+"url":7,
 "doc":"",
 "func":1
 },
 {
 "ref":"pyflarum.session.FlarumUser.get_discussion_by_id",
-"url":6,
+"url":7,
 "doc":"",
 "func":1
 },
 {
 "ref":"pyflarum.session.FlarumUser.get_post_by_id",
-"url":6,
+"url":7,
 "doc":"",
 "func":1
 },
 {
 "ref":"pyflarum.session.FlarumUser.all_discussions",
-"url":6,
+"url":7,
 "doc":"Obtains all discussions from specific page by using  filter .",
 "func":1
 },
 {
 "ref":"pyflarum.session.FlarumUser.all_posts",
-"url":6,
+"url":7,
 "doc":"Obtains all posts from specific page by using  filter .",
 "func":1
 },
 {
 "ref":"pyflarum.session.FlarumUser.all_users",
-"url":6,
+"url":7,
 "doc":"Obtains all users from specific page by using  filter .",
 "func":1
 },
 {
 "ref":"pyflarum.session.FlarumUser.get_notifications",
-"url":6,
+"url":7,
 "doc":"Obtains all notifications of your user.",
 "func":1
 },
 {
 "ref":"pyflarum.session.FlarumUser.mark_all_discussions_as_read",
-"url":6,
+"url":7,
 "doc":"",
 "func":1
 },
 {
 "ref":"pyflarum.session.FlarumUser.mark_all_notifications_as_read",
-"url":6,
+"url":7,
 "doc":"",
 "func":1
 },
 {
 "ref":"pyflarum.session.FlarumUser.get_groups",
-"url":6,
+"url":7,
 "doc":"",
 "func":1
 },
 {
 "ref":"pyflarum.session.FlarumUser.get_user_by_id",
-"url":6,
+"url":7,
 "doc":"",
 "func":1
 },
 {
 "ref":"pyflarum.session.FlarumUser.update_user_info",
-"url":6,
+"url":7,
 "doc":"",
 "func":1
 },
 {
 "ref":"pyflarum.session.FlarumUser.send_password_reset_email",
-"url":6,
+"url":7,
 "doc":"",
 "func":1
 },
 {
 "ref":"pyflarum.session.FlarumUser.update_preferences",
-"url":6,
+"url":7,
 "doc":"",
 "func":1
 },
 {
 "ref":"pyflarum.session.FlarumUser.change_email",
-"url":6,
+"url":7,
 "doc":"",
 "func":1
 },
 {
 "ref":"pyflarum.session.FlarumUser.upload_user_avatar",
-"url":6,
+"url":7,
 "doc":"",
 "func":1
 },
 {
 "ref":"pyflarum.session.FlarumUser.remove_user_avatar",
-"url":6,
+"url":7,
 "doc":"",
 "func":1
 },
 {
 "ref":"pyflarum.session.FlarumUser.api_urls",
-"url":6,
+"url":7,
 "doc":"Simple, hardcoded  'key: value'  dict of Flarum's API routes for quick access. API routes reference (old): https: github.com/flarum/flarum.github.io/blob/20322c0e6011e4f304ae7e95f41594a0b086bc27/_docs/api.md"
 }
 ]

@@ -25,7 +25,7 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\extensions\__init__.py#L0-L140" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\__init__.py#L0-L106" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">from typing import Dict, List
 
@@ -36,6 +36,8 @@ class ExtensionMixin:
 
         ### Example extension code:
         ```python
+        from typing import Type
+
         from pyflarum.extensions import ExtensionMixin
         from pyflarum.extensions.admin import AdminExtension
         from pyflarum.session import FlarumUser
@@ -54,39 +56,19 @@ class ExtensionMixin:
 
         # I recommend to use the following naming pattern: `&lt;YourExtensionName&gt;&lt;ClassToMixin&gt;Mixin`
         # Example:
-        class ExampleFlarumUserMixin(FlarumUser):
+        class ExampleFlarumUserMixin:
             @property
-            def __example(self):
+            def example(self):
                 &#39;&#39;&#39;
-                    Calling `FlarumUser(&lt;...&gt;).__example` would return this.
+                    Calling `FlarumUser(&lt;...&gt;).example` would return this.
                 &#39;&#39;&#39;
 
                 return &#34;Example&#34;
-
+        ExampleFlarumUserMixin: Type[FlarumUser] # mimick class inheritance, without inheriting at runtime, acts just as a type hint
 
 
         class ExampleExtension(ExtensionMixin):
             def get_dependencies(self):
-                &#39;&#39;&#39;
-                    Overwrite this method to make your own dependencies.
-
-                    This should return the following `dict`:
-                    ```python
-                    {
-                        &#34;hard&#34;: [&lt;class&gt;, &lt;class&gt;, ...],
-                        &#34;soft&#34;: [&lt;class&gt;, &lt;class&gt;, ...]
-                    }
-                    ```
-
-                    #### Hard-dependencies:
-                    - Will raise an error when they&#39;re not found in the initialized `FlarumUser` object. It is impossible for the extension
-                    to function without these.
-
-                    #### Soft-dependencies:
-                    - Will raise just a warning. It is possible for the extension to function without these, although with limitations
-                    (such that some functions might be unavailable).
-                &#39;&#39;&#39;
-
                 return {
                     &#34;soft&#34;: SOFT_DEPENDENCIES,
                     &#34;hard&#34;: HARD_DEPENCENDIES
@@ -94,20 +76,12 @@ class ExtensionMixin:
 
 
             def mixin(self):
-                &#39;&#39;&#39;
-                    This extends the `FlarumUser` class with features from `ExampleMixin`
-                &#39;&#39;&#39;
-
-                super().mixin(self, FlarumUser, ExampleMixin)
+                super().mixin(self, FlarumUser, ExampleFlarumUserMixin)
 
         ```
     &#34;&#34;&#34;
 
     def __init__(self):
-        &#34;&#34;&#34;
-            Initializes the `ExtensionMixin` object.
-        &#34;&#34;&#34;
-
         self.name = &#34;Unknown&#34;
         self.author = &#34;Unknown&#34;
         self.id = &#34;N/A&#34;
@@ -115,8 +89,6 @@ class ExtensionMixin:
 
     def get_dependencies(self) -&gt; Dict[str, List[object]]:
         &#34;&#34;&#34;
-            Overwrite this method to make your own dependencies.
-
             This should return the following `dict`:
             ```python
             {
@@ -124,6 +96,8 @@ class ExtensionMixin:
                 &#34;soft&#34;: [&lt;class&gt;, &lt;class&gt;, ...]
             }
             ```
+
+            A dependency is anything that you can pass into `FlarumUser(extensions=[...])` (e. g. an extension class).
 
             #### Hard-dependencies:
             - Will raise an error when they&#39;re not found in the initialized `FlarumUser` object. It is impossible for the extension
@@ -140,9 +114,11 @@ class ExtensionMixin:
         }
 
 
-    def mixin(_, class_to_patch: object, class_to_mix_in: object):
+    def mixin(_, class_to_patch: object, class_to_mix_in: object, skip_protected: bool=True):
         &#34;&#34;&#34;
-            A boilerplate function for mixing.
+            A function to mix-in/merge properties, methods, functions, etc... of one class into another.
+
+            This skips all functions and properties starting with `__` (double underscore), unless `skip_protected` is False.
             
             This sets/overwrites attributes of `class_to_patch` to attributes of
             `class_to_mix_in` (monkey-patch).
@@ -154,20 +130,10 @@ class ExtensionMixin:
         &#34;&#34;&#34;
 
         for prop, value in vars(class_to_mix_in).items():
-            if not prop.startswith(&#39;__&#39;):
-                setattr(class_to_patch, f&#39;{prop}&#39;, value)
+            if prop.startswith(&#39;__&#39;) and skip_protected:
+                    continue
 
-
-# TODO: All included extensions
-from .flarum.Flarum_Approval import *
-from .flarum.FoF_BestAnswer import *
-
-
-if __name__ == &#39;__main__&#39;:
-    print(
-        ApprovalDiscussionFromNotificationMixin, ApprovalExtension,
-        BestAnswerDiscussionMixin, BestAnswerExtension
-    )</code></pre>
+            setattr(class_to_patch, f&#39;{prop}&#39;, value)</code></pre>
 </details>
 </section>
 <section>
@@ -212,7 +178,9 @@ if __name__ == &#39;__main__&#39;:
 <dd>
 <div class="desc"><p>A base class for mixing in custom classes (extensions) into another classes.</p>
 <h3 id="example-extension-code">Example extension code:</h3>
-<pre><code class="language-python">from pyflarum.extensions import ExtensionMixin
+<pre><code class="language-python">from typing import Type
+
+from pyflarum.extensions import ExtensionMixin
 from pyflarum.extensions.admin import AdminExtension
 from pyflarum.session import FlarumUser
 
@@ -230,39 +198,19 @@ HARD_DEPENCENDIES = []
 
 # I recommend to use the following naming pattern: `&lt;YourExtensionName&gt;&lt;ClassToMixin&gt;Mixin`
 # Example:
-class ExampleFlarumUserMixin(FlarumUser):
+class ExampleFlarumUserMixin:
     @property
-    def __example(self):
+    def example(self):
         '''
-            Calling `FlarumUser(&lt;...&gt;).__example` would return this.
+            Calling `FlarumUser(&lt;...&gt;).example` would return this.
         '''
 
         return &quot;Example&quot;
-
+ExampleFlarumUserMixin: Type[FlarumUser] # mimick class inheritance, without inheriting at runtime, acts just as a type hint
 
 
 class ExampleExtension(ExtensionMixin):
     def get_dependencies(self):
-        '''
-            Overwrite this method to make your own dependencies.
-
-            This should return the following `dict`:
-            ```python
-            {
-                &quot;hard&quot;: [&lt;class&gt;, &lt;class&gt;, ...],
-                &quot;soft&quot;: [&lt;class&gt;, &lt;class&gt;, ...]
-            }
-            ```
-
-            #### Hard-dependencies:
-            - Will raise an error when they're not found in the initialized `FlarumUser` object. It is impossible for the extension
-            to function without these.
-
-            #### Soft-dependencies:
-            - Will raise just a warning. It is possible for the extension to function without these, although with limitations
-            (such that some functions might be unavailable).
-        '''
-
         return {
             &quot;soft&quot;: SOFT_DEPENDENCIES,
             &quot;hard&quot;: HARD_DEPENCENDIES
@@ -270,18 +218,13 @@ class ExampleExtension(ExtensionMixin):
 
 
     def mixin(self):
-        '''
-            This extends the `FlarumUser` class with features from `ExampleMixin`
-        '''
+        super().mixin(self, FlarumUser, ExampleFlarumUserMixin)
 
-        super().mixin(self, FlarumUser, ExampleMixin)
-
-</code></pre>
-<p>Initializes the <code><a title="pyflarum.extensions.ExtensionMixin" href="#pyflarum.extensions.ExtensionMixin">ExtensionMixin</a></code> object.</p></div>
+</code></pre></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\extensions\__init__.py#L4-L129" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\__init__.py#L4-L107" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class ExtensionMixin:
     &#34;&#34;&#34;
@@ -289,6 +232,8 @@ class ExampleExtension(ExtensionMixin):
 
         ### Example extension code:
         ```python
+        from typing import Type
+
         from pyflarum.extensions import ExtensionMixin
         from pyflarum.extensions.admin import AdminExtension
         from pyflarum.session import FlarumUser
@@ -307,39 +252,19 @@ class ExampleExtension(ExtensionMixin):
 
         # I recommend to use the following naming pattern: `&lt;YourExtensionName&gt;&lt;ClassToMixin&gt;Mixin`
         # Example:
-        class ExampleFlarumUserMixin(FlarumUser):
+        class ExampleFlarumUserMixin:
             @property
-            def __example(self):
+            def example(self):
                 &#39;&#39;&#39;
-                    Calling `FlarumUser(&lt;...&gt;).__example` would return this.
+                    Calling `FlarumUser(&lt;...&gt;).example` would return this.
                 &#39;&#39;&#39;
 
                 return &#34;Example&#34;
-
+        ExampleFlarumUserMixin: Type[FlarumUser] # mimick class inheritance, without inheriting at runtime, acts just as a type hint
 
 
         class ExampleExtension(ExtensionMixin):
             def get_dependencies(self):
-                &#39;&#39;&#39;
-                    Overwrite this method to make your own dependencies.
-
-                    This should return the following `dict`:
-                    ```python
-                    {
-                        &#34;hard&#34;: [&lt;class&gt;, &lt;class&gt;, ...],
-                        &#34;soft&#34;: [&lt;class&gt;, &lt;class&gt;, ...]
-                    }
-                    ```
-
-                    #### Hard-dependencies:
-                    - Will raise an error when they&#39;re not found in the initialized `FlarumUser` object. It is impossible for the extension
-                    to function without these.
-
-                    #### Soft-dependencies:
-                    - Will raise just a warning. It is possible for the extension to function without these, although with limitations
-                    (such that some functions might be unavailable).
-                &#39;&#39;&#39;
-
                 return {
                     &#34;soft&#34;: SOFT_DEPENDENCIES,
                     &#34;hard&#34;: HARD_DEPENCENDIES
@@ -347,20 +272,12 @@ class ExampleExtension(ExtensionMixin):
 
 
             def mixin(self):
-                &#39;&#39;&#39;
-                    This extends the `FlarumUser` class with features from `ExampleMixin`
-                &#39;&#39;&#39;
-
-                super().mixin(self, FlarumUser, ExampleMixin)
+                super().mixin(self, FlarumUser, ExampleFlarumUserMixin)
 
         ```
     &#34;&#34;&#34;
 
     def __init__(self):
-        &#34;&#34;&#34;
-            Initializes the `ExtensionMixin` object.
-        &#34;&#34;&#34;
-
         self.name = &#34;Unknown&#34;
         self.author = &#34;Unknown&#34;
         self.id = &#34;N/A&#34;
@@ -368,8 +285,6 @@ class ExampleExtension(ExtensionMixin):
 
     def get_dependencies(self) -&gt; Dict[str, List[object]]:
         &#34;&#34;&#34;
-            Overwrite this method to make your own dependencies.
-
             This should return the following `dict`:
             ```python
             {
@@ -377,6 +292,8 @@ class ExampleExtension(ExtensionMixin):
                 &#34;soft&#34;: [&lt;class&gt;, &lt;class&gt;, ...]
             }
             ```
+
+            A dependency is anything that you can pass into `FlarumUser(extensions=[...])` (e. g. an extension class).
 
             #### Hard-dependencies:
             - Will raise an error when they&#39;re not found in the initialized `FlarumUser` object. It is impossible for the extension
@@ -393,9 +310,11 @@ class ExampleExtension(ExtensionMixin):
         }
 
 
-    def mixin(_, class_to_patch: object, class_to_mix_in: object):
+    def mixin(_, class_to_patch: object, class_to_mix_in: object, skip_protected: bool=True):
         &#34;&#34;&#34;
-            A boilerplate function for mixing.
+            A function to mix-in/merge properties, methods, functions, etc... of one class into another.
+
+            This skips all functions and properties starting with `__` (double underscore), unless `skip_protected` is False.
             
             This sets/overwrites attributes of `class_to_patch` to attributes of
             `class_to_mix_in` (monkey-patch).
@@ -407,8 +326,10 @@ class ExampleExtension(ExtensionMixin):
         &#34;&#34;&#34;
 
         for prop, value in vars(class_to_mix_in).items():
-            if not prop.startswith(&#39;__&#39;):
-                setattr(class_to_patch, f&#39;{prop}&#39;, value)</code></pre>
+            if prop.startswith(&#39;__&#39;) and skip_protected:
+                    continue
+
+            setattr(class_to_patch, f&#39;{prop}&#39;, value)</code></pre>
 </details>
 <h3>Subclasses</h3>
 <ul class="hlist">
@@ -422,7 +343,7 @@ class ExampleExtension(ExtensionMixin):
 <li><a title="pyflarum.extensions.flarum.Flarum_Approval.ApprovalExtension" href="flarum/Flarum_Approval.html#pyflarum.extensions.flarum.Flarum_Approval.ApprovalExtension">ApprovalExtension</a></li>
 <li><a title="pyflarum.extensions.flarum.Flarum_Flags.FlagsExtension" href="flarum/Flarum_Flags.html#pyflarum.extensions.flarum.Flarum_Flags.FlagsExtension">FlagsExtension</a></li>
 <li><a title="pyflarum.extensions.flarum.Flarum_Likes.LikesExtension" href="flarum/Flarum_Likes.html#pyflarum.extensions.flarum.Flarum_Likes.LikesExtension">LikesExtension</a></li>
-<li><a title="pyflarum.extensions.flarum.Flarum_Lock.StickyExtension" href="flarum/Flarum_Lock.html#pyflarum.extensions.flarum.Flarum_Lock.StickyExtension">StickyExtension</a></li>
+<li><a title="pyflarum.extensions.flarum.Flarum_Lock.LockExtension" href="flarum/Flarum_Lock.html#pyflarum.extensions.flarum.Flarum_Lock.LockExtension">LockExtension</a></li>
 <li><a title="pyflarum.extensions.flarum.Flarum_Markdown.ExampleExtension" href="flarum/Flarum_Markdown.html#pyflarum.extensions.flarum.Flarum_Markdown.ExampleExtension">ExampleExtension</a></li>
 <li><a title="pyflarum.extensions.flarum.Flarum_Sticky.StickyExtension" href="flarum/Flarum_Sticky.html#pyflarum.extensions.flarum.Flarum_Sticky.StickyExtension">StickyExtension</a></li>
 <li><a title="pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsExtension" href="flarum/Flarum_Subscriptions.html#pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsExtension">SubscriptionsExtension</a></li>
@@ -445,13 +366,13 @@ class ExampleExtension(ExtensionMixin):
 <span>def <span class="ident">get_dependencies</span></span>(<span>self) ‑> Dict[str, List[object]]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Overwrite this method to make your own dependencies.</p>
-<p>This should return the following <code>dict</code>:</p>
+<div class="desc"><p>This should return the following <code>dict</code>:</p>
 <pre><code class="language-python">{
     &quot;hard&quot;: [&lt;class&gt;, &lt;class&gt;, ...],
     &quot;soft&quot;: [&lt;class&gt;, &lt;class&gt;, ...]
 }
 </code></pre>
+<p>A dependency is anything that you can pass into <code>FlarumUser(extensions=[...])</code> (e. g. an extension class).</p>
 <h4 id="hard-dependencies">Hard-dependencies:</h4>
 <ul>
 <li>Will raise an error when they're not found in the initialized <code>FlarumUser</code> object. It is impossible for the extension
@@ -465,12 +386,10 @@ to function without these.</li>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\extensions\__init__.py#L87-L111" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\__init__.py#L61-L85" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_dependencies(self) -&gt; Dict[str, List[object]]:
     &#34;&#34;&#34;
-        Overwrite this method to make your own dependencies.
-
         This should return the following `dict`:
         ```python
         {
@@ -478,6 +397,8 @@ to function without these.</li>
             &#34;soft&#34;: [&lt;class&gt;, &lt;class&gt;, ...]
         }
         ```
+
+        A dependency is anything that you can pass into `FlarumUser(extensions=[...])` (e. g. an extension class).
 
         #### Hard-dependencies:
         - Will raise an error when they&#39;re not found in the initialized `FlarumUser` object. It is impossible for the extension
@@ -495,10 +416,11 @@ to function without these.</li>
 </details>
 </dd>
 <dt id="pyflarum.extensions.ExtensionMixin.mixin"><code class="name flex">
-<span>def <span class="ident">mixin</span></span>(<span>_, class_to_patch: object, class_to_mix_in: object)</span>
+<span>def <span class="ident">mixin</span></span>(<span>_, class_to_patch: object, class_to_mix_in: object, skip_protected: bool = True)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>A boilerplate function for mixing.</p>
+<div class="desc"><p>A function to mix-in/merge properties, methods, functions, etc&hellip; of one class into another.</p>
+<p>This skips all functions and properties starting with <code>__</code> (double underscore), unless <code>skip_protected</code> is False.</p>
 <p>This sets/overwrites attributes of <code>class_to_patch</code> to attributes of
 <code>class_to_mix_in</code> (monkey-patch).</p>
 <h3 id="example">Example:</h3>
@@ -507,11 +429,13 @@ to function without these.</li>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum\extensions\__init__.py#L114-L129" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\__init__.py#L88-L107" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">def mixin(_, class_to_patch: object, class_to_mix_in: object):
+<pre><code class="python">def mixin(_, class_to_patch: object, class_to_mix_in: object, skip_protected: bool=True):
     &#34;&#34;&#34;
-        A boilerplate function for mixing.
+        A function to mix-in/merge properties, methods, functions, etc... of one class into another.
+
+        This skips all functions and properties starting with `__` (double underscore), unless `skip_protected` is False.
         
         This sets/overwrites attributes of `class_to_patch` to attributes of
         `class_to_mix_in` (monkey-patch).
@@ -523,8 +447,10 @@ to function without these.</li>
     &#34;&#34;&#34;
 
     for prop, value in vars(class_to_mix_in).items():
-        if not prop.startswith(&#39;__&#39;):
-            setattr(class_to_patch, f&#39;{prop}&#39;, value)</code></pre>
+        if prop.startswith(&#39;__&#39;) and skip_protected:
+                continue
+
+        setattr(class_to_patch, f&#39;{prop}&#39;, value)</code></pre>
 </details>
 </dd>
 </dl>
