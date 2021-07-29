@@ -1,4 +1,5 @@
-from typing import TYPE_CHECKING, Optional, List
+from pyflarum.flarum.core import BaseFlarumBulkObject, BaseFlarumIndividualObject
+from typing import Literal, TYPE_CHECKING, Optional, List
 
 # Avoid my greatest enemy in Python: circular import:
 if TYPE_CHECKING:
@@ -8,7 +9,7 @@ from ...error_handler import parse_request
 
 
 
-class PreparedGroup(dict):
+class PreparedGroup(BaseFlarumIndividualObject):
     def __init__(self, user: 'FlarumUser', nameSingular: str, namePlural: Optional[str]=None, color: Optional[str]=None, icon: Optional[str]=None, isHidden: bool=False):
         self.user = user
 
@@ -17,10 +18,21 @@ class PreparedGroup(dict):
         self.color = color
         self.icon = icon
         self.isHidden = isHidden
-    
+
+        self.as_json = self.to_dict
+        super().__init__(user=self.user, _fetched_data=self.as_json)
+
 
     @property
     def to_dict(self):
+        """
+            Converts the group to a `dict`, so that
+            it can be sent to the API.
+
+            An extension might add additional data during runtime. This is the
+            most basic template that Flarum requires when creating a group.
+        """
+
         data = {
             "data": {
                 "type": "groups",
@@ -37,66 +49,31 @@ class PreparedGroup(dict):
         return data
 
 
-    def create(self):
+    def create(self) -> 'Group':
         """
             Creates the group. Returns the created `Group`.
         """
 
-        raw = self.user.session.post(self.user.api_urls['groups'], json=self.to_dict)
+        raw = self.user.session.post(self.user.api_urls['groups'], json=self.as_json)
         json = parse_request(raw)
 
         return Group(user=self.user, _fetched_data=json)
 
 
 
-class Groups(dict):
+class Groups(BaseFlarumBulkObject):
     """
         A data of multiple groups fetched from the API.
     """
-
-    def __init__(self, user: 'FlarumUser', _fetched_data: dict):
-        self.user = user
-
-        super().__init__(_fetched_data)
 
 
     def __iter__(self):
         return iter(self.get_groups())
 
 
-    @property
-    def links(self) -> dict:
-        return self.get("links", {})
-
-
-    @property
-    def first_link(self) -> Optional[str]:
-        return self.links.get("first", None)
-
-
-    @property
-    def previous_link(self) -> Optional[str]:
-        return self.links.get("prev", None)
-
-
-    @property
-    def next_link(self) -> Optional[str]:
-        return self.links.get("next", None)
-
-
-    @property
-    def data(self) -> List[dict]:
-        return self.get("data", [{}])
-
-
-    @property
-    def included(self) -> List[dict]:
-        return self.get("included", [{}])
-
-
-    def get_groups(self):
+    def get_groups(self) -> List['Group']:
         """
-            All groups from the `Groups` object.
+            All groups from the `Groups` object, as a `list` of `Group` objects.
         """
 
         all_groups = [] # type: List[Group]
@@ -111,72 +88,77 @@ class Groups(dict):
 
 
 
-class Group(Groups):
+class Group(BaseFlarumIndividualObject):
     """
         A Flarum group.
     """
 
-    def __init__(self, user: 'FlarumUser', _fetched_data: dict):
-        self.user = user
-
-        super().__init__(user=self.user, _fetched_data=_fetched_data)
-
-
-    @property
-    def data(self) -> dict:
-        return self.get("data", {})
-
-
-    @property
-    def type(self) -> Optional[str]:
-        return self.data.get("type", None)
-
-
-    @property
-    def id(self) -> Optional[int]:
-        raw = self.data.get("id", None)
-
-        if raw:
-            return int(raw)
-
-    @property
-    def attributes(self) -> dict:
-        return self.data.get("attributes", {})
-
 
     @property
     def nameSingular(self) -> Optional[str]:
+        """
+            Singular form of the group's name.
+        """
+
         return self.attributes.get("nameSingular", None)
 
 
     @property
     def namePlural(self) -> Optional[str]:
+        """
+            Plural form of the group's name.
+        """
+
         return self.attributes.get("namePlural", None)
 
 
     @property
     def color(self) -> Optional[str]:
+        """
+            The color of the group.
+        """
+
         return self.attributes.get("color", None)
 
 
     @property
     def icon(self) -> Optional[str]:
+        """
+            [FontAwesome](https://fontawesome.com/v5.15/icons?d=gallery) icon of the group.
+        """
+
         return self.attributes.get("icon", None)
 
 
     @property
     def isHidden(self) -> bool:
+        """
+            Whether or not the group is hidden on the forum.
+        """
+
         return bool(self.attributes.get("isHidden", 0))
 
 
-    def edit(self, new_data: PreparedGroup):
+    def edit(self, new_data: PreparedGroup) -> 'Group':
+        """
+            Edits the group with new `PreparedGroup`.
+
+            Returns the edited `Group`
+        """
+
         raw = self.user.session.patch(f"{self.user.api_urls['groups']}/{self.id}", json=new_data.to_dict)
         json = parse_request(raw)
 
         return Group(user=self.user, _fetched_data=json)
 
 
-    def delete(self):
+    def delete(self) -> Literal[True]:
+        """
+            Removes the group forever. This is irreversible!
+
+            Returns `True` when the deletion was successful.
+        """
+
         raw = self.user.session.delete(f"{self.user.api_urls['groups']}/{self.id}")
         parse_request(raw)
 

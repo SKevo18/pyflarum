@@ -1,61 +1,24 @@
-from pyflarum.flarum.core.discussions import DiscussionFromNotification
-from typing import TYPE_CHECKING, Optional, List
+from typing import Literal, TYPE_CHECKING, Optional, List
 
 from datetime import datetime
 
-# Avoid my greatest enemy in Python: circular import:
-if TYPE_CHECKING:
-    from ...session import FlarumUser
-
+from ...flarum.core import BaseFlarumBulkObject, BaseFlarumIndividualObject
+from ...flarum.core.discussions import DiscussionFromNotification
 from ...flarum.core.users import UserFromNotification
 from ...flarum.core.posts import PostFromNotification
+
 from ...error_handler import parse_request
 from ...datetime_conversions import flarum_to_datetime
 
 
-class Notifications(dict):
+class Notifications(BaseFlarumBulkObject):
     """
         A data of multiple notifications fetched from the API.
     """
 
-    def __init__(self, user: 'FlarumUser', _fetched_data: dict):
-        self.user = user
-
-        super().__init__(_fetched_data)
-
 
     def __iter__(self):
         return iter(self.get_notifications())
-
-
-    @property
-    def links(self) -> dict:
-        return self.get("links", {})
-
-
-    @property
-    def first_link(self) -> Optional[str]:
-        return self.links.get("first", None)
-
-
-    @property
-    def previous_link(self) -> Optional[str]:
-        return self.links.get("prev", None)
-
-
-    @property
-    def next_link(self) -> Optional[str]:
-        return self.links.get("next", None)
-
-
-    @property
-    def data(self) -> List[dict]:
-        return self.get("data", [{}])
-
-
-    @property
-    def included(self) -> List[dict]:
-        return self.get("included", [{}])
 
 
     def get_notifications(self):
@@ -73,59 +36,48 @@ class Notifications(dict):
         return all_notifications
 
 
-    def mark_all_as_read(self) -> bool:
-        raw = self.user.session.post(f"{self.user.api_urls['notifications']}/read")
-        parse_request(raw)
+    def mark_all_as_read(self) -> Literal[True]:
+        """
+            Marks all notifications as read. Returns `True` when successful.
+        """
 
-        return True
+        return super().user.mark_all_notifications_as_read()
 
 
 
-class Notification(dict):
+class Notification(BaseFlarumIndividualObject):
     """
-        Notification, that always has properties defined.
+        Notification.
     """
-
-    def __init__(self, user: 'FlarumUser', _fetched_data: dict):
-        self.user = user
-        super().__init__(_fetched_data)
-
-
-    @property
-    def data(self) -> dict:
-        return self.get("data", {})
-
-
-    @property
-    def type(self) -> Optional[str]:
-        return self.data.get("type", None)
-
-
-    @property
-    def id(self) -> Optional[int]:
-        raw = self.data.get("id", None)
-
-        if raw:
-            return int(raw)
-
-
-    @property
-    def attributes(self) -> dict:
-        return self.data.get("attributes", {})
 
 
     @property
     def contentType(self) -> Optional[str]:
+        """
+            The content type of the notification.
+
+            Examples: `newPost`, `postLiked`, etc...
+        """
+
         return self.attributes.get("contentType", None)
 
 
     @property
     def content(self) -> Optional[dict]:
+        """
+            The `dict` of the notification's content.
+        """
+
         return self.attributes.get("content", None)
 
 
     @property
     def new_post_number(self) -> Optional[int]:
+        """
+            The new number of the potential post that triggered
+            the notification.
+        """
+
         if self.content and self.contentType == "newPost":
             post_number = self.content.get("postNumber", None)
 
@@ -135,6 +87,11 @@ class Notification(dict):
 
     @property
     def reply_number(self) -> Optional[int]:
+        """
+            The number of the reply post that possibly triggered
+            the notification.
+        """
+
         if self.content and self.contentType == "postMentioned":
             reply_number = self.content.get("replyNumber", None)
 
@@ -144,6 +101,10 @@ class Notification(dict):
 
     @property
     def createdAt(self) -> Optional[datetime]:
+        """
+            The `datetime` of when was this notification triggered/created at.
+        """
+
         raw = self.attributes.get("createdAt", None)
 
         return flarum_to_datetime(raw)
@@ -151,20 +112,20 @@ class Notification(dict):
 
     @property
     def isRead(self) -> bool:
+        """
+            Whether or not the notification was read by you.
+        """
+
         return self.attributes.get("isRead", False)
 
 
-    @property
-    def relationships(self) -> dict:
-        return self.data.get("relationships", {})
-
-
-    @property
-    def _parent_included(self) -> List[dict]:
-        return self.get("_parent_included", [{}])
-
-
     def from_user(self):
+        """
+            From which user does the notification originate from?
+
+            Returns `pyflarum.flarum.core.users.UserFromNotification`.
+        """
+
         id = self.relationships.get("fromUser", {}).get("data", {}).get("id", None)
         
         for raw_user in self._parent_included:
@@ -176,6 +137,12 @@ class Notification(dict):
 
 
     def get_subject(self):
+        """
+            Returns the subject of the notification, either one of these:
+            - `pyflarum.flarum.core.discussions.DiscussionFromNotification`
+            - `pyflarum.flarum.core.posts.PostFromNotification`
+        """
+
         id = self.relationships.get("subject", {}).get("data", {}).get("id", None)
         
         for raw_subject in self._parent_included:
@@ -192,6 +159,12 @@ class Notification(dict):
 
 
     def mark_as_read(self):
+        """
+            Marks the notification as read.
+
+            Returns `True` when successful.
+        """
+
         post_data = {"is_read": True}
         raw = self.user.session.patch(f"{self.user.api_urls['notifications']}/{self.id}", json=post_data)
         parse_request(raw)

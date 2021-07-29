@@ -1,4 +1,4 @@
-from typing import Any, Literal, TYPE_CHECKING, Optional, List, Union
+from typing import Any, Literal, NoReturn, TYPE_CHECKING, Optional, List, Union
 
 # Avoid my greatest enemy in Python: circular import:
 if TYPE_CHECKING:
@@ -6,23 +6,45 @@ if TYPE_CHECKING:
 
 from datetime import datetime
 
+from ...flarum.core import BaseFlarumBulkObject, BaseFlarumIndividualObject
 from ...flarum.core.users import UserFromBulk, UserFromNotification
-
 from ...error_handler import FlarumError, parse_request
 from ...datetime_conversions import flarum_to_datetime
 
 
-class PreparedDiscussion(dict):
+
+class PreparedDiscussion(BaseFlarumIndividualObject):
+    """
+        A prepared discussion that can be sent to the API.
+    """
+
     def __init__(self, user: 'FlarumUser', title: Optional[str]=None, content: Optional[str]=None):
+        """
+            ### Parameters:
+            - `user` - the `pyflarum.session.FlarumUser` object that will create the discussion
+            (see `PreparedDiscussion.post()`).
+            - `title` - the discussion's title.
+            - `content` - discussion's content. You can use the traditional Flarum's markdown syntax.
+        """
+
         self.user = user
         self.title = title
         self.content = content
 
-        super().__init__()
+        self.as_json = self.to_dict
+        super().__init__(user=self.user, _fetched_data=self.as_json)
 
 
     @property
-    def to_dict(self):
+    def to_dict(self) -> dict:
+        """
+            Converts the discussion to a `dict`, so that
+            it can be sent to the API.
+
+            An extension might add additional data during runtime. This is the
+            most basic template that Flarum requires when creating a discussion.
+        """
+
         data = {
             "data": {
                 "type": "discussions",
@@ -36,69 +58,37 @@ class PreparedDiscussion(dict):
         return data
 
 
-    def post(self):
+    def post(self) -> 'Discussion':
         """
-            Posts/creates the discussion. Raises `FlarumError` or returns `False` if it failed, otherwise the new `Discussion` is returned.
+            Posts/creates the discussion. Raises `FlarumError` if it failed, otherwise the new `Discussion` is returned.
+            This is the same as `PreparedDiscussion.create()`.
         """
 
         if not isinstance(self.title, str) or not isinstance(self.content, str):
             raise TypeError(f"Both `title` and `content` parameters must be a `str`.")
 
-        raw = self.user.session.post(self.user.api_urls['discussions'], json=self.to_dict)
+        raw = self.user.session.post(self.user.api_urls['discussions'], json=self.as_json)
         json = parse_request(raw)
 
         return Discussion(user=self.user, _fetched_data=json)
     create = post
 
 
-class Discussions(dict):
-    """
-        A data of multiple discussions fetched from the API.
-    """
 
-    def __init__(self, user: 'FlarumUser', _fetched_data: dict):
-        self.user = user
-
-        super().__init__(_fetched_data)
+class Discussions(BaseFlarumBulkObject):
+    """
+        A data of multiple discussions fetched from `/api/discussions`.
+    """
 
 
     def __iter__(self):
         return iter(self.get_discussions())
 
 
-    @property
-    def links(self) -> dict:
-        return self.get("links", {})
-
-
-    @property
-    def first_link(self) -> Optional[str]:
-        return self.links.get("first", None)
-
-
-    @property
-    def previous_link(self) -> Optional[str]:
-        return self.links.get("prev", None)
-
-
-    @property
-    def next_link(self) -> Optional[str]:
-        return self.links.get("next", None)
-
-
-    @property
-    def data(self) -> List[dict]:
-        return self.get("data", [{}])
-
-
-    @property
-    def included(self) -> List[dict]:
-        return self.get("included", [{}])
-
-
-    def get_discussions(self):
+    def get_discussions(self) -> List['DiscussionFromBulk']:
         """
-            All discussions from the `Discussions` object.
+            Obtains all discussions from the `Discussions` object as a `list`.
+            Returns a `list` of `DiscussionFromBulk`.
         """
 
         all_discussions = [] # type: List[DiscussionFromBulk]
@@ -111,17 +101,21 @@ class Discussions(dict):
         return all_discussions
 
 
-class DiscussionFromNotification(dict):
+class DiscussionFromNotification(BaseFlarumIndividualObject):
     """
-        A discussion from `BaseNotification`
+        A discussion from `Notification`. Contains the least
+        data from all of the discussion classes (see [inheritance](https://cwkevo.github.io/pyflarum/docs/#class-inheritance)).
     """
 
-    def __init__(self, user: 'FlarumUser', _fetched_data: dict):
-        self.user = user
-        super().__init__(_fetched_data)
 
+    def get_full_data(self) -> 'Discussion':
+        """
+            Makes an additional API call to fetch the full data of the discussion, e. g.
+            the top-level discussion class (`Discussion`).
 
-    def get_full_data(self):
+            Learn more about [inheritance](https://cwkevo.github.io/pyflarum/docs/#class-inheritance).
+        """
+
         raw = self.user.session.get(f"{self.user.api_urls['discussions']}/{self.id}")
         json = parse_request(raw)
 
@@ -129,36 +123,33 @@ class DiscussionFromNotification(dict):
 
 
     @property
-    def data(self) -> dict:
-        return self.get("data", {})
-
-
-    @property
-    def type(self) -> Optional[str]:
-        return self.data.get("type", None)
-
-
-    @property
-    def id(self) -> Optional[int]:
-        return self.data.get("id", None)
-
-
-    @property
-    def attributes(self) -> dict:
-        return self.data.get("attributes", {})
-
-
-    @property
     def title(self) -> Optional[str]:
+        """
+            Returns the discussion's title.
+        """
+
         return self.attributes.get("title", None)
 
 
     @property
     def slug(self) -> Optional[str]:
+        """
+            Returns the discussion's slug
+            (consists of ID and dash separated words from discussion's title,
+            e. g. `123-some-title`).
+        """
+
         return self.attributes.get("slug", None)
 
 
-    def __restore_or_hide(self, hide: bool):
+    def __restore_or_hide(self, hide: bool) -> 'Discussion':
+        """
+            Either restores or hides the discussion.
+
+            This function was made to prevent code repetition - please
+            use `Discussion.hide()` and `Discussion.restore()` instead.
+        """
+
         patch_data = {
             "data": {
                 "type": "discussions",
@@ -170,31 +161,36 @@ class DiscussionFromNotification(dict):
         }
 
         raw = self.user.session.patch(f"{self.user.api_urls['discussions']}/{self.id}", json=patch_data)
-        parse_request(raw)
+        json = parse_request(raw)
 
-        return True
+        return Discussion(user=self.user, _fetched_data=json)
 
 
-    def hide(self):
+    def hide(self) -> 'Discussion':
         """
-            Hides the discussion. Raises `FlarumError` or returns `False` if it failed, otherwise `True` is returned.
+            Hides the discussion.
+            Raises `FlarumError` if it failed, otherwise the new discussion is returned.
         """
 
         return self.__restore_or_hide(hide=True)
 
 
-    def restore(self):
+    def restore(self) -> 'Discussion':
         """
-            Restores the discussion (unhides). Raises `FlarumError` or returns `False` if it failed, otherwise `True` is returned.
+            Restores the discussion (unhides).
+            Raises `FlarumError` if it failed, otherwise the new discussion is returned.
+
+            `Discussion.unhide()` does the same thing.
         """
 
         return self.__restore_or_hide(hide=False)
     unhide = restore
 
 
-    def delete(self):
+    def delete(self) -> 'Discussion':
         """
             Deletes a discussion forever - this action is irreversible!
+            Returns `True` on success, `FlarumError` otherwise.
         """
 
         raw = self.user.session.delete(f"{self.user.api_urls['discussions']}/{self.id}")
@@ -211,13 +207,13 @@ class DiscussionFromBulk(DiscussionFromNotification):
         A discussion from `Discussions`.
     """
 
-    def __init__(self, user: 'FlarumUser', _fetched_data: dict):
-        self.user = user
-        super().__init__(user=self.user, _fetched_data=_fetched_data)
-
 
     @property
     def url(self):
+        """
+            Returns the discussion's URL (including slug, if it's available).
+        """
+
         slug = self.slug
 
         if slug:
@@ -229,16 +225,32 @@ class DiscussionFromBulk(DiscussionFromNotification):
 
     @property
     def commentCount(self) -> Optional[str]:
+        """
+            Obtains the comment count of the discussion.
+
+            A comment is a post made by an user.
+        """
+
         return self.attributes.get("commentCount", None)
 
 
     @property
     def participantCount(self) -> Optional[str]:
+        """
+            The participant count of the discussion. This is
+            the number of all users that have participated in a
+            discussion by posting.
+        """
+
         return self.attributes.get("participantCount", None)
 
 
     @property
     def createdAt(self) -> Optional[datetime]:
+        """
+            The `datetime` of when this discussion was created at.
+        """
+
         raw = self.attributes.get("createdAt", None)
 
         return flarum_to_datetime(raw)
@@ -246,6 +258,12 @@ class DiscussionFromBulk(DiscussionFromNotification):
 
     @property
     def lastPostedAt(self) -> Optional[datetime]:
+        """
+            The `datetime` of when the last post in this
+            discussion was made, e. g. when was this
+            discussion last updated at.
+        """
+
         raw = self.attributes.get("lastPostedAt", None)
 
         return flarum_to_datetime(raw)
@@ -253,36 +271,65 @@ class DiscussionFromBulk(DiscussionFromNotification):
 
     @property
     def lastPostNumber(self) -> Optional[int]:
+        """
+            Returns the number of the newest post in the
+            discussion.
+        """
+
         return self.attributes.get("lastPostNumber", None)
 
 
     @property
     def lastReadPostNumber(self) -> Optional[int]:
+        """
+            Number of a post that you've last read in the discussion.
+        """
+
         return self.attributes.get("lastReadPostNumber", None)
 
 
     @property
     def canReply(self) -> bool:
+        """
+            Whether or not you are able to create a post in the discussion.
+        """
+
         return self.attributes.get("canReply", False)
 
 
     @property
     def canRename(self) -> bool:
+        """
+            Whether or not you are able to rename the discussion.
+        """
+
         return self.attributes.get("canRename", False)
 
 
     @property
     def canDelete(self) -> bool:
+        """
+            Whether or not you are able to delete the discussion.
+        """
+
         return self.attributes.get("canDelete", False)
 
 
     @property
     def canHide(self) -> bool:
+        """
+            Whether or not you are able to hide the discussion.
+        """
+
         return self.attributes.get("canHide", False)
 
 
     @property
     def lastReadAt(self) -> Optional[datetime]:
+        """
+            The `datetime` when you last read that discussion.
+        """
+
         raw = self.attributes.get("lastReadAt", None)
 
         return flarum_to_datetime(raw)
@@ -290,50 +337,21 @@ class DiscussionFromBulk(DiscussionFromNotification):
 
     @property
     def isHidden(self) -> bool:
+        """
+            Whether or not the discussion is hidden. This happens when
+            you delete the discussion for the first time.
+        """
+
         return self.attributes.get("isHidden", False)
 
 
-    @property
-    def subscription(self) -> Optional[str]:
-        return self.attributes.get("subscription", None)
-
-
-    @property
-    def relationships(self) -> dict:
-        return self.data.get("relationships", {})
-
-
-    @property
-    def _parent_included(self) -> List[dict]:
-        # TODO: Move to README:
-        """
-            Raw data of the parent's included JSON data.
-
-            In a nutshell, when you obtain `DiscussionFromBulk` from `Discussions`,
-            `Discussions.included` gets passed to `_parent_included`.
-
-            #### Long explanation for nerds (I am not good at explaining):
-            This is because of the way [Flarum's includes](https://cwkevo.github.io/pyflarum/docs/#included-data) work.
-            When you run a function such as `get_author()`, the data for the author is not directly in the `DiscussionFromBulk`'s JSON.
-            This means that pyFlarum would have to make a new API call everytime you run `get_author()`, and you'd see 429 sooner than usual.
-            Instead, the data is already in the parent's (`Discussions.included`) data. And since that gets passed to this object too, pyFlarum doesn't need to
-            make any more API calls - instead, it just picks the right author from that data.
-            
-            You can think of this as a cache in a nutshell, if it's unclear for you. And if things are still confusing you, you just don't need to worry about this
-            because pyFlarum handles everything for you in the background. Unless you are forging this object's JSON data by yourself,
-            and you don't pass the parent's included - this would mean that all functions that rely on that will break. I have never spotted any weird stuff by normal
-            usage of pyFlarum during testing, but there's perhaps a very tiny chance that this system can possibly bug out.
-        """
-
-        return self.get("_parent_included", [{}])
-
-
-    def get_author(self) -> UserFromNotification:
+    def get_author(self) -> Optional[UserFromNotification]:
         """
             Obtains the author of the discussion.
 
             It returns `pyflarum.flarum.core.users.UserFromNotification` because it's JSON
-            data matches the data of user from notification.
+            data matches the data of user from notification. If no user is found, `None` is
+            returned.
 
             This works by fetching it from the `_parent_included` property.
         """
@@ -349,12 +367,12 @@ class DiscussionFromBulk(DiscussionFromNotification):
         return None
 
 
-    def get_last_posted_user(self) -> UserFromNotification:
+    def get_last_posted_user(self) -> Optional[UserFromNotification]:
         """
             Obtains the user that posted the latest post in the discussion.
 
             It returns `pyflarum.flarum.core.users.UserFromNotification` because it's JSON
-            data matches the data of user from notification.
+            data matches the data of user from notification. If no user is found, `None` is returned.
 
             This works by fetching it from the `_parent_included` property.
         """
@@ -370,9 +388,10 @@ class DiscussionFromBulk(DiscussionFromNotification):
         return None
 
 
-    def get_first_post(self) -> PostFromDiscussion:
+    def get_first_post(self) -> Optional[PostFromDiscussion]:
         """
-            Obtains the first post of the discussion.
+            Obtains the first post of the discussion. If no post is found,
+            `None` is returned.
 
             This works by fetching it from the `_parent_included` property.
         """
@@ -429,7 +448,7 @@ class DiscussionFromBulk(DiscussionFromNotification):
     unhide = restore
 
 
-    def delete(self, force: bool=False):
+    def delete(self, force: bool=False) -> bool:
         """
             Scronches the discussion forever. This cannot be reverted.
 
@@ -454,11 +473,6 @@ class Discussion(DiscussionFromBulk):
 
         Learn more about inheritance [here](https://cwkevo.github.io/pyflarum/docs/#class-inheritance)
     """
-
-    def __init__(self, user: 'FlarumUser', _fetched_data: dict):
-        self.user = user
-
-        super().__init__(user=self.user, _fetched_data=_fetched_data)
 
 
     @property
@@ -526,7 +540,7 @@ class Discussion(DiscussionFromBulk):
         return all_posts
 
 
-    def get_first_post(self):
+    def get_first_post(self) -> NoReturn:
         """
             The `Discussion` object does not have the first post's JSON data in it's own JSON. Because of Python's subclass inheritance, this
             function was included in `Discussion`, but it does not work!

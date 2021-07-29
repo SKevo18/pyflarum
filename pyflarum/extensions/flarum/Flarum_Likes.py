@@ -57,14 +57,14 @@ class LikesPostFromDiscussionMixin:
         """
 
         return self.__like_or_unlike(liked=False)
-
+LikesPostFromDiscussionMixin: Union[Type[LikesPostFromDiscussionMixin], Type[PostFromDiscussion]]
 
 
 class LikesPostFromNotificationMixin:
     @property
     def canLike(self: PostFromNotification) -> bool:
         return self.attributes.get("canLike", False)
-LikesPostFromNotificationMixin: Type[LikesPostFromDiscussionMixin]
+LikesPostFromNotificationMixin: Union[Type[LikesPostFromNotificationMixin], Type[LikesPostFromDiscussionMixin]]
 
 
 class LikesPostFromBulkMixin:
@@ -87,7 +87,7 @@ class LikesPostFromBulkMixin:
                             all_users.append(user)
 
         return all_users
-LikesPostFromBulkMixin: Union[Type[LikesPostFromNotificationMixin], Optional[FlarumUser]]
+LikesPostFromBulkMixin: Union[Type[LikesPostFromBulkMixin], Type[LikesPostFromNotificationMixin]]
 
 
 

@@ -27,10 +27,10 @@ Thus, I present to you my first (real) Python package - [pyFlarum](https://pypi.
   - To save you headaches, pyFlarum obviously handles this too and all of the objects have different hierarchy and inheritance. Example: `DiscussionFromNotification` is parent for `DiscussionFromBulk` and that's parent for `Discussion`, where `Discussion` object is discussion obtained directly from API, and therefore logically contains all properties of the previous objects (and JSON). This is all nicely rendered thanks to your editor's linting and type hints, so you won't make a mistake by accessing unexisting properties from parent objects. More about pyFlarum's inheritance system and it's flaws can be found [here](https://cwkevo.github.io/pyflarum/docs/#class-inheritance).
 
 
+
 ## 🚀 Quickstart:
 
 ### 📀 Installation:
-
 This package requires Python 3.6+ and the [requests](https://pypi.org/project/requests) library to be installed. Yep, that's the only dependency. Should there be more over time, you can install them all at once by using this command (but I assume that you're already familiar with all of this, so feel free to skip this part):
 
 ```shell
@@ -60,8 +60,8 @@ python -m pip uninstall pyflarum
 pip uninstall pyflarum
 ```
 
-### 📜 Quickstart Example:
 
+### 📜 Quickstart Example:
 How easy is it to fetch a specific discussion and print it's title?
 
 The answer - luckily, it's actually quite easy:
@@ -80,8 +80,8 @@ print(discussion.title)
 
 That's just amazing 4 lines of code (without comments and newlines)!
 
-### ➡ What's next?
 
+### ➡ What's next?
 Check the [documentation](https://cwkevo.github.io/pyflarum/docs/) to dive deep into the concepts of this project and learn more! 
 
 I will now take a small break from maintaining this - I still want to do a bit more projects this summer now that I have some time. However, I am open for feature requests and bug reports at the [GitHub repository](https://github.com/CWKevo/pyflarum/issues).
@@ -184,6 +184,7 @@ USER = FlarumUser(
 # ...
 ```
 
+
 ### 🐲 Dealing with type hints
 
 I really tried to make this work, but I couldn't. In case you haven't head about them, read [this](https://docs.python.org/3/library/typing.html). Basically, they help you read your code before it's run.
@@ -244,6 +245,7 @@ Notifications       >>       Notification       >>       PostFromNotification   
                                                             (is parent for)             (is parent for)
 ```
 
+
 ### 📜 Example:
 
 Fetch all discussions from the front page:
@@ -271,6 +273,7 @@ for discussion in USER.all_discussions():
     for posts in full_discussion.get_posts():
         print(post.url)
 ```
+
 
 ### 👀 Included data
 
@@ -311,12 +314,31 @@ Let's examine a wild JSON spotted in the real world:
 }
 ```
 
-This is a simplified syntax of how might a JSON for `/api/discussions` look like. We can see a discussion with ID `1`, that has a special `relationships` array (or dictionary, if you're a Pythonista). This array contains a reference for the `firstPost` (unsurprisingly, that's the first post of the discussion). The full data is in the `included` section of the JSON, where we indeed can see a post object with the corresponding ID of `1`.
+This is a simplified syntax of how might a JSON for `/api/discussions` look like. We can see a discussion with ID `1`, that has a special `pyflarum.flarum.core.discussions.DiscussionFromBulk.relationships` array (or dictionary, if you're a Pythonista). This array contains a reference for `firstPost` (unsurprisingly, that's the first post of the discussion). The full data is in the `pyflarum.flarum.core.discussions.Discussions.included` section of the JSON, where we indeed can see a post object with the corresponding ID of `1`.
 
-Again, I put together what I could to make this work for you instead of you working for it. Whenever pyFlarum makes an API call to a top-level route such as `/api/discussions`, obtaining a discussion from that will include the parent `included` in that discussion as well. So now, whenever you would like to obtain a post from that discussion, the reference for that post is found in the `relationships` array and then it gets recursively matched to the resulting `PostFromDiscussion` in the `included` section.
+Again, I put together what I could to make this work for you instead of you working for it. Whenever pyFlarum makes an API call to a top-level route such as `/api/discussions`, obtaining a discussion from that will include the parent `pyflarum.flarum.core.discussions.Discussions.included` in that discussion as well. So now, whenever you would like to obtain a post from that discussion, the reference for that post is found in the `relationships` array and then it gets recursively matched to the resulting `pyflarum.flarum.core.posts.PostFromDiscussion` in the `pyflarum.flarum.core.discussions.Discussions.included` section. See [parent included](https://cwkevo.github.io/pyflarum/docs/#parent-included) below.
 
-From Flarum's side, this was done to eliminate frequent API calls and to save on the JSON's size. Including the full data would possibly make the JSON contain duplicates, if for example, all posts were made by the same user. This way, the user is included only once in the `included` section, and we saved some bytes to transfer. People using paid mobile networks will be grateful to save some cents.
+From Flarum's side, this was done to eliminate frequent API calls and to save on the JSON's size. Including the full data would possibly make the JSON contain duplicates, if for example, all posts were made by the same user. This way, the user is included only once in the `pyflarum.flarum.core.discussions.Discussions.included` section, and we saved some bytes to transfer. People using paid mobile networks will be grateful to save some cents.
 
 You might be asking, why keep tossing the parent `included` into every object? Well, from pyFlarum's side this was done to save on the amount of requests and to speed the package up. Of course, instead of looking things in `included`, you could make a direct API call to retrieve the full data of the object you want. But this would slow things down drastically, when you're operating with large amounts of data at the same time (e. g. fetching all discussions and posts - you'd need to make separate API call for every post in order to obtain the data - this way, everything's already in `included`).
 
 This is very complicated, and I can't explain things, so it might be worthy checking the source code, if you care to learn more about how pyFlarum handles this.
+
+
+### 📚 Parent included
+
+It is a JSON data of the parent's included JSON data.
+
+> I put together what I could to make this work for you instead of you working for it. Whenever pyFlarum makes an API call to a top-level route such as `/api/discussions`, obtaining a discussion from that will include the parent `pyflarum.flarum.core.discussions.Discussions.included` in that discussion as well. So now, whenever you would like to obtain a post from that discussion, the reference for that post is found in the `relationships` array and then it gets recursively matched to the resulting `pyflarum.flarum.core.posts.PostFromDiscussion` in the `pyflarum.flarum.core.discussions.Discussions.included` section.
+
+#### Long explanation for nerds (I am not good at explaining):
+This is because of the way [Flarum's includes](https://cwkevo.github.io/pyflarum/docs/#included-data) work.
+When you run a function such as `pyflarum.flarum.core.discussions.DiscussionFromBulk.get_author()`, the data for the author is not directly in the `pyflarum.flarum.core.discussions.DiscussionFromBulk`'s JSON.
+This means that pyFlarum would have to make a new API call everytime you run `pyflarum.flarum.core.discussions.DiscussionFromBulk.get_author()`, and you'd see 429 sooner than usual.
+Instead, the data is already in the parent's (`pyflarum.flarum.core.discussions.Discussions.included`) data. And since that gets passed to this object too, pyFlarum doesn't need to
+make any more API calls - instead, it just picks the right author from that data.
+
+You can think of this as a cache in a nutshell, if it's unclear for you. And if things are still confusing you, you just don't need to worry about this
+because pyFlarum handles everything for you in the background. Unless you are forging this object's JSON data by yourself,
+and you don't pass the parent's included - this would mean that all functions that rely on that will break. I have never spotted any weird stuff by normal
+usage of pyFlarum during testing, but there's perhaps a very tiny chance that this system can possibly bug out.

@@ -1,7 +1,13 @@
 from typing import Literal, Optional, List
 
 
-class Filter():
+class Filter:
+    """
+        Represents a Flarum API filter as a `dict`.
+
+        It allows you to filter discussions without having to manually specify URL parameters.
+    """
+
     def __init__(self, order_by: Optional[Literal['commentCount', '-commentCount', 'createdAt', '-createdAt']]=None, query: Optional[str]=None, limit: int=20, page: Optional[int]=None, include: Optional[List[str]]=None, additional_data: Optional[dict]=None):
         self.order_by = order_by
         self.query = query
@@ -10,9 +16,18 @@ class Filter():
         self.include = include
         self.additional_data = additional_data
 
+        self.as_json = self.to_dict
+
 
     @property
-    def to_dict(self):
+    def to_dict(self) -> dict:
+        """
+            Converts the filter to a `dict`, so that
+            it can be sent to the API.
+
+            An extension might add additional data during runtime.
+        """
+
         __data = {}
 
         if self.order_by:

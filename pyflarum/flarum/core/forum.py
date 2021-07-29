@@ -1,157 +1,212 @@
-from pyflarum.flarum.core.groups import Group
-from typing import TYPE_CHECKING, Optional, List
-
-# Avoid my greatest enemy in Python: circular import:
-if TYPE_CHECKING:
-    from ...session import FlarumUser
-
-from datetime import datetime
-
-from ...error_handler import FlarumError, parse_request
-from ...datetime_conversions import flarum_to_datetime
+from typing import Optional, List
 
 
-class Forum(dict):
+from ...flarum.core import BaseFlarumIndividualObject
+from ...flarum.core.groups import Group
+
+
+
+class Forum(BaseFlarumIndividualObject):
     """
-        Forum JSON data
+        Entire forum, lives under the main `/api` route.
     """
-
-    def __init__(self, user: 'FlarumUser', _fetched_data: dict):
-        self.user = user
-
-        super().__init__(_fetched_data)
-
-
-    @property
-    def data(self) -> dict:
-        return self.get("data", {})
-
-
-    @property
-    def type(self) -> Optional[str]:
-        return self.data.get("type", None)
-
-
-    @property
-    def id(self) -> Optional[int]:
-        raw = self.data.get("id", None)
-
-        if raw:
-            return int(raw)
-
-
-    @property
-    def attributes(self) -> dict:
-        return self.data.get("attributes", {})
 
 
     @property
     def title(self) -> Optional[str]:
+        """
+            The forum's title.
+        """
+
         return self.attributes.get("title", None)
 
 
     @property
     def description(self) -> Optional[str]:
+        """
+            The description of the forum.
+        """
+
         return self.attributes.get("description", None)
 
 
     @property
     def showLanguageSelector(self) -> bool:
+        """
+            Whether or not the language selector is available.
+        """
+
         return self.attributes.get("showLanguageSelector", False)
 
 
     @property
     def baseUrl(self) -> Optional[str]:
+        """
+            Base URL of the forum/where the forum is located at.
+        """
+
         return self.attributes.get("baseUrl", None)
 
 
     @property
     def basePath(self) -> Optional[str]:
+        """
+            Base path to the forum.
+        """
+
         return self.attributes.get("basePath", None)
 
 
     @property
     def debug(self) -> bool:
+        """
+            Whether or not debug mode is enabled.
+        """
+
         return self.attributes.get("debug", False)
 
 
     @property
     def apiUrl(self) -> Optional[str]:
+        """
+            The API URL of the forum.
+        """
+
         return self.attributes.get("apiUrl", None)
 
 
     @property
     def welcomeTitle(self) -> Optional[str]:
+        """
+            The title of the welcome message box of the forum.
+        """
+
         return self.attributes.get("welcomeTitle", None)
 
 
     @property
     def welcomeMessage(self) -> Optional[str]:
+        """
+            The welcome message of the forum (shown in the welcome box).
+        """
+
         return self.attributes.get("welcomeMessage", None)
 
 
     @property
     def themePrimaryColor(self) -> Optional[str]:
+        """
+            Forum's primary color in HEX format.
+        """
+
         return self.attributes.get("themePrimaryColor", None)
 
 
     @property
     def themeSecondaryColor(self) -> Optional[str]:
+        """
+            Forum's secondary color in HEX format.
+        """
+
         return self.attributes.get("themeSecondaryColor", None)
 
 
     @property
     def logoUrl(self) -> Optional[str]:
+        """
+            URL to forum's logo.
+        """
+
         return self.attributes.get("logoUrl", None)
 
 
     @property
     def faviconUrl(self) -> Optional[str]:
+        """
+            URL to forum's favicon.
+        """
+
         return self.attributes.get("faviconUrl", None)
 
 
     @property
     def headerHtml(self) -> Optional[str]:
+        """
+            The header HTML of the forum.
+        """
+
         return self.attributes.get("headerHtml", None)
 
 
     @property
     def footerHtml(self) -> Optional[str]:
+        """
+            The footer HTML of the forum.
+        """
+
         return self.attributes.get("footerHtml", None)
 
 
     @property
     def allowSignUp(self) -> bool:
+        """
+            Whether or not signup is allowed.
+        """
+
         return self.attributes.get("allowSignUp", False)
 
 
     @property
     def defaultRoute(self) -> Optional[str]:
+        """
+            The homepage of the forum (default route)
+        """
+
         return self.attributes.get("defaultRoute", None)
 
 
     @property
     def canViewForum(self) -> bool:
+        """
+            Whether or not you are allowed to view the forum.
+        """
+
         return self.attributes.get("canViewForum", False)
 
 
     @property
     def canStartDiscussion(self) -> bool:
+        """
+            Whether or not you are allowed to start a discussion.
+        """
+
         return self.attributes.get("canStartDiscussion", False)
 
 
     @property
     def canSearchUsers(self) -> bool:
+        """
+            Whether or not you are able to search for users.
+        """
+
         return self.attributes.get("canSearchUsers", False)
 
 
     @property
     def adminUrl(self) -> Optional[str]:
+        """
+            The administration panel URL of the forum.
+        """
+
         return self.attributes.get("adminUrl", None)
 
 
     @property
     def version(self) -> Optional[str]:
+        """
+            The Flarum version this forum is running on.
+        """
+
         return self.attributes.get("version", None)
 
 
@@ -160,12 +215,13 @@ class Forum(dict):
         return self.attributes.get("allowUsernameMentionFormat", False)
 
 
-    @property
-    def relationships(self) -> dict:
-        return self.get("relationships", {})
+    def get_groups(self) -> List[Group]:
+        """
+            Obtains the forum groups.
 
+            Returns a list of `Group` objects.
+        """
 
-    def get_groups(self):
         all_groups = list() # type: List[Group]
 
         for raw_group in self.relationships.get("groups", {}).get("data", [{}]):
@@ -177,6 +233,11 @@ class Forum(dict):
         return all_groups
 
 
+    # Required: `Forum` is not a standard bulk route, can't include from that.
     @property
     def included(self) -> List[dict]:
+        """
+            Raw `list[dict]` of the forum's included objects.
+        """
+
         return self.get("included", [{}])

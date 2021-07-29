@@ -11,7 +11,7 @@ from .flarum.core.forum import Forum
 
 from .flarum.core.users import MyUser, User, Users
 from .flarum.core.notifications import Notifications
-from .flarum.core.groups import Groups
+from .flarum.core.groups import Group, Groups
 
 from .flarum.core.discussions import Discussion, Discussions
 from .flarum.core.posts import Post, Posts
@@ -170,25 +170,43 @@ class FlarumUser(FlarumSession, dict):
         return Forum(user=self, _fetched_data=json)
 
 
-    def get_discussion_by_id(self, id: int):
+    def get_user_by_id(self, id: int) -> User:
+        """
+            Obtains a user by specific ID.
+        """
+
+        raw = self.session.get(f"{self.api_urls['users']}/{id}")
+        json = parse_request(raw)
+
+        return User(user=self, _fetched_data=json)
+
+
+    def get_discussion_by_id(self, id: int) -> Discussion:
+        """
+            Obtains a discussion by specific ID.
+        """
+
         raw = self.session.get(f"{self.api_urls['discussions']}/{id}")
         json = parse_request(raw)
 
         return Discussion(user=self, _fetched_data=json)
 
 
-    def get_post_by_id(self, id: int):
+    def get_post_by_id(self, id: int) -> Post:
+        """
+            Obtains a post by specific ID.
+        """
+
         raw = self.session.get(f"{self.api_urls['posts']}/{id}")
         json = parse_request(raw)
 
         return Post(user=self, _fetched_data=json)
 
 
-    def all_discussions(self, filter: Filter=None):
+    def get_discussions(self, filter: Filter=None):
         """
-            Obtains all discussions from specific page by using `filter`.
+            Obtains all discussions from `/api/discussions`, optionally filtering results by using `filter`.
         """
-
 
         if filter:
             raw = self.session.get(f"{self.api_urls['discussions']}", params=filter.to_dict)
@@ -201,9 +219,9 @@ class FlarumUser(FlarumSession, dict):
         return Discussions(user=self, _fetched_data=json)
 
 
-    def all_posts(self, filter: Filter=None):
+    def get_posts(self, filter: Filter=None):
         """
-            Obtains all posts from specific page by using `filter`.
+            Obtains all posts from `/api/posts`, optionally filtering results by using `filter`.
         """
 
 
@@ -218,9 +236,9 @@ class FlarumUser(FlarumSession, dict):
         return Posts(user=self, _fetched_data=json)
 
 
-    def all_users(self, filter: Filter=None):
+    def get_users(self, filter: Filter=None) -> Users:
         """
-            Obtains all users from specific page by using `filter`.
+            Obtains all users from `/api/users`, optionally filtering results by using `filter`.
         """
 
 
@@ -237,7 +255,7 @@ class FlarumUser(FlarumSession, dict):
 
     def get_notifications(self, filter: Optional[Filter]=None) -> Notifications:
         """
-            Obtains all notifications of your user.
+            Obtains all of your notifications from `/api/notifications`, optionally filtering results by using `filter`.
         """
 
         if filter:
@@ -252,7 +270,14 @@ class FlarumUser(FlarumSession, dict):
         return Notifications(user=self, _fetched_data=json)
 
 
-    def mark_all_discussions_as_read(self, at: datetime=datetime.now()):
+    def mark_all_discussions_as_read(self, at: datetime=datetime.now()) -> Literal[True]:
+        """
+            Marks all discussions as read.
+
+            Specify `at` to mark discussions as read at a specific date (strange how this is allowed, might be
+            because of timezones).
+        """
+
         post_data = {
             "data": {
                 "type": "users",
@@ -269,28 +294,42 @@ class FlarumUser(FlarumSession, dict):
         return True
 
 
-    def mark_all_notifications_as_read(self):
+    def mark_all_notifications_as_read(self) -> Literal[True]:
+        """
+            Marks all notifications as read. Returns `True` when successful.
+        """
+
         raw = self.session.post(f"{self.api_urls['notifications']}/read")
         parse_request(raw)
 
         return True
 
 
-    def get_groups(self):
+    def get_groups(self) -> Groups:
+        """
+            Obtains all groups of a forum from `/api/groups`.
+        """
+
         raw = self.session.get(f"{self.api_urls['groups']}")
         json = parse_request(raw)
 
         return Groups(user=self, _fetched_data=json)
 
 
-    def get_user_by_id(self, id: int):
-        raw = self.session.get(f"{self.api_urls['users']}/{id}")
-        json = parse_request(raw)
+    def update_user_info(self, user: Optional[AnyUser]=None, new_username: Optional[str]=None, groups: Optional[Union[List[Union[str, int]], List[Group], Groups]]=None) -> Union['FlarumUser', User]:
+        """
+            Updates the info of a user (this can be your user or someone else).
 
-        return User(user=self, _fetched_data=json)
+            If you are updating yourself, then `FlarumUser` is returned (with the new data).
+            If you are updating someone else, then the updated `User` is returned.
 
+            ### Parameters:
+            - `user` - the user to update.
+            - `new_username` - the user's new username.
+            - `groups` - new groups of the user. This can either be a list of `pyflarum.flarum.core.groups.Group` objects,
+            or just one `pyflarum.flarum.core.groups.Groups`, or a list of `str` or `int` representing the group IDs.
+        """
 
-    def update_user_info(self, user: Optional[AnyUser]=None, new_username: Optional[str]=None, groups: Optional[list]=None):
         id = user.id if user else self.data.id
 
         patch_data = {
@@ -307,13 +346,18 @@ class FlarumUser(FlarumSession, dict):
             patch_data['attributes']['username'] = new_username
 
         if groups:
-            patch_data['data']['relationships'].update({"groups": {"data": groups}})
+            patch_data['data']['relationships'].update({"groups": {"data": [group.id if isinstance(group, Group) else group for group in groups]}})
 
 
         raw = self.session.patch(f"{self.api_urls['users']}/{id}", json=patch_data)
         json = parse_request(raw)
 
-        return self._update_user_data(new_data=dict(data=json))
+
+        if user:
+            return User(user=self, _fetched_data=json)
+
+        else:
+            return self._update_user_data(new_data=dict(data=json))
 
 
     def send_password_reset_email(self):

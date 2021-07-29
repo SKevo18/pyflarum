@@ -1,58 +1,19 @@
-from typing import List, Optional, TYPE_CHECKING
-
-# Avoid my greatest enemy in Python: circular import:
-if TYPE_CHECKING:
-    from ...session import FlarumUser
+from typing import List, Optional
 
 from datetime import datetime
 
-from ...error_handler import parse_request
+from ...flarum.core import BaseFlarumBulkObject, BaseFlarumIndividualObject
 from ...datetime_conversions import flarum_to_datetime
 
 
-class Users(dict):
+class Users(BaseFlarumBulkObject):
     """
         A data of multiple users fetched from the API.
     """
 
-    def __init__(self, user: 'FlarumUser', _fetched_data: dict):
-        self.user = user
-
-        super().__init__(_fetched_data)
-
 
     def __iter__(self):
         return iter(self.get_users())
-
-
-    @property
-    def links(self) -> dict:
-        return self.get("links", {})
-
-
-    @property
-    def first_link(self) -> Optional[str]:
-        return self.links.get("first", None)
-
-
-    @property
-    def previous_link(self) -> Optional[str]:
-        return self.links.get("prev", None)
-
-
-    @property
-    def next_link(self) -> Optional[str]:
-        return self.links.get("next", None)
-
-
-    @property
-    def data(self) -> List[dict]:
-        return self.get("data", [{}])
-
-
-    @property
-    def included(self) -> List[dict]:
-        return self.get("included", [{}])
 
 
     def get_users(self):
@@ -70,63 +31,68 @@ class Users(dict):
         return all_users
 
 
-class UserFromNotification(dict):
+class UserFromNotification(BaseFlarumIndividualObject):
     """
         An user from `BaseNotification`
     """
 
-    def __init__(self, user: 'FlarumUser', _fetched_data: dict):
-        self.user = user
-        super().__init__(_fetched_data)
-
-
-    @property
-    def data(self) -> dict:
-        return self.get("data", {})
-
-    @property
-    def type(self) -> Optional[str]:
-        return self.data.get("type", None)
-
-
-    @property
-    def id(self) -> Optional[int]:
-        return self.data.get("id", None)
-
-
-    @property
-    def attributes(self) -> dict:
-        return self.data.get("attributes", {})
-
 
     @property
     def username(self) -> Optional[str]:
+        """
+            The user's username.
+        """
+
         return self.attributes.get("username", None)
 
 
     @property
     def email(self) -> Optional[str]:
+        """
+            The user's E-mail, if you have permission to view it.
+        """
+
         return self.attributes.get("email", None)
 
 
     @property
     def isEmailConfirmed(self) -> bool:
+        """
+            Whether or not this user confirmed their E-mail address.
+
+            You must have the permission to view the user's E-mail address
+            in order to know this too in the first place.
+        """
+
         return self.attributes.get("isEmailConfirmed", False)
 
 
     @property
     def displayName(self) -> Optional[str]:
+        """
+            The display name/nickname of the user.
+        """
+
         return self.attributes.get("displayName", None)
 
 
     @property
     def avatarUrl(self) -> Optional[str]:
+        """
+            The user's avatar URL.
+        """
+
         return self.attributes.get("avatarUrl", None)
 
 
     @property
     def slug(self) -> Optional[str]:
+        """
+            The user's slug.
+        """
+
         return self.attributes.get("slug", None)
+
 
 
 class UserFromBulk(UserFromNotification):
@@ -134,13 +100,13 @@ class UserFromBulk(UserFromNotification):
         An user from `Users`.
     """
 
-    def __init__(self, user: 'FlarumUser', _fetched_data: dict):
-        self.user = user
-        super().__init__(user=self.user, _fetched_data=_fetched_data)
-
 
     @property
     def joinTime(self) -> Optional[datetime]:
+        """
+            The `datetime` of when the user had joined this forum.
+        """
+
         raw = self.attributes.get("joinTime", None)
 
         return flarum_to_datetime(raw)
@@ -148,37 +114,56 @@ class UserFromBulk(UserFromNotification):
 
     @property
     def discussionCount(self) -> Optional[int]:
+        """
+            The user's discussion count.
+        """
+
         return self.attributes.get("discussionCount", None)
 
 
     @property
     def commentCount(self) -> Optional[int]:
+        """
+            The user's comment count.
+        """
+
         return self.attributes.get("commentCount", None)
 
 
     @property
     def canEdit(self) -> bool:
+        """
+            Whether or not you are able to edit this user.
+        """
+
         return self.attributes.get("canEdit", False)
 
 
     @property
     def canEditCredentials(self) -> bool:
+        """
+            Whether or not you are able to edit this user's credentials.
+        """
+
         return self.attributes.get("canEditCredentials", False)
 
 
     @property
     def canEditGroups(self) -> bool:
+        """
+            Whether or not you are able to edit this user's groups.
+        """
+
         return self.attributes.get("canEditGroups", False)
 
 
     @property
     def canDelete(self) -> bool:
+        """
+            Whether or not you are able to scronch this user forever.
+        """
+
         return self.attributes.get("canDelete", False)
-
-
-    @property
-    def relationships(self) -> dict:
-        return self.data.get("relationships", {})
 
 
 
@@ -187,23 +172,13 @@ class User(UserFromBulk):
         An user that was fetched from the API.
     """
 
-    def __init__(self, user: 'FlarumUser', _fetched_data: dict):
-        self.user = user
-        super().__init__(user=self.user, _fetched_data=_fetched_data)
-
-
-    @property
-    def foo(self):
-        return 'bar'
+    pass
 
 
 
 class MyUser(User):
     """
-        Your user, contains full user data.
+        Your user, contains fullest user data.
     """
 
-    def __init__(self, user: 'FlarumUser', _fetched_data: dict):
-        self.user = user
-
-        super().__init__(user=self.user, _fetched_data=_fetched_data)
+    pass

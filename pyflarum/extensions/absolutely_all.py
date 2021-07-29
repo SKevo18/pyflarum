@@ -36,13 +36,13 @@ class AbsolutelyAllFlarumUserMixin:
 
 
         _filter.page = 0
-        users = self.all_users(_filter)
+        users = self.get_users(_filter)
 
 
         while True:
             yield users
 
-            users = self.all_users(_filter)
+            users = self.get_users(_filter)
             _filter.page += 1
 
             if not users.next_link:
@@ -62,13 +62,13 @@ class AbsolutelyAllFlarumUserMixin:
 
 
         _filter.page = 0
-        posts = self.all_posts(_filter)
+        posts = self.get_posts(_filter)
 
 
         while True:
             yield posts
 
-            posts = self.all_posts(_filter)
+            posts = self.get_posts(_filter)
             _filter.page += 1
 
             if not posts.next_link:
@@ -88,13 +88,13 @@ class AbsolutelyAllFlarumUserMixin:
 
 
         _filter.page = 0
-        discussions = self.all_discussions(_filter)
+        discussions = self.get_discussions(_filter)
 
 
         while True:
             yield discussions
 
-            discussions = self.all_discussions(_filter)
+            discussions = self.get_discussions(_filter)
             _filter.page += 1
 
             if not discussions.next_link:

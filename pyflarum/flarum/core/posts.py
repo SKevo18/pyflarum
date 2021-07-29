@@ -1,28 +1,51 @@
-from typing import Literal, NoReturn, TYPE_CHECKING, Optional, Union, List
+from typing import Literal, TYPE_CHECKING, Optional, Union, List
 
 # Avoid my greatest enemy in Python: circular import:
 if TYPE_CHECKING:
     from ...session import FlarumUser
     from ...flarum.core.discussions import DiscussionFromBulk, Discussion
 
-from ...flarum.core.discussions import DiscussionFromNotification
-
 from datetime import datetime
 
+from ...flarum.core import BaseFlarumBulkObject, BaseFlarumIndividualObject
+from ...flarum.core.discussions import DiscussionFromNotification
 from ...flarum.core.users import UserFromBulk
-from ...error_handler import FlarumError, parse_request
+from ...error_handler import parse_request
 from ...datetime_conversions import flarum_to_datetime
 
 
-class PreparedPost(dict):
+class PreparedPost(BaseFlarumIndividualObject):
+    """
+        A prepared post that can be sent to the API.
+    """
+
     def __init__(self, user: 'FlarumUser', discussion: Optional[Union['Discussion', 'DiscussionFromBulk', 'DiscussionFromNotification']]=None, content: Optional[str]=None):
+        """
+            ### Parameters:
+            - `user` - the `pyflarum.session.FlarumUser` object that will create the post
+            (see `PreparedPost.post()`).
+            - `discussion` - any discussion that the post belongs to.
+            - `content` - the post's content. You can use the traditional Flarum's markdown syntax.
+        """
+
         self.user = user
         self.discussion = discussion
         self.content = content
-    
+
+        self.as_json = self.to_dict
+        super().__init__(user=self.user, _fetched_data=self.as_json)
+
 
     @property
     def to_dict(self):
+        """
+            Converts the post to a `dict`, so that
+            it can be sent to the API.
+
+            An extension might add additional data during runtime. This is the
+            most basic template that Flarum requires when creating a post.
+        """
+
         data = {
             "data": {
                 "type": "posts",
@@ -45,64 +68,29 @@ class PreparedPost(dict):
 
     def post(self):
         """
-            Posts/creates the post. Returns the created `Post`.
+            Posts/creates the post. Raises `FlarumError` on error, otherwise it returns the created `Post`.
         """
 
-        raw = self.user.session.post(self.user.api_urls['posts'], json=self.to_dict)
+        raw = self.user.session.post(self.user.api_urls['posts'], json=self.as_json)
         json = parse_request(raw)
 
         return Post(user=self.user, _fetched_data=json)
     create = post
 
 
-class Posts(dict):
+
+class Posts(BaseFlarumBulkObject):
     """
-        A data of multiple posts fetched from the API.
+        A data of multiple posts fetched from `/api/posts`.
     """
-
-    def __init__(self, user: 'FlarumUser', _fetched_data: dict):
-        self.user = user
-
-        super().__init__(_fetched_data)
-
 
     def __iter__(self):
         return iter(self.get_posts())
 
 
-    @property
-    def links(self) -> dict:
-        return self.get("links", {})
-
-
-    @property
-    def first_link(self) -> Optional[str]:
-        return self.links.get("first", None)
-
-
-    @property
-    def previous_link(self) -> Optional[str]:
-        return self.links.get("prev", None)
-
-
-    @property
-    def next_link(self) -> Optional[str]:
-        return self.links.get("next", None)
-
-
-    @property
-    def data(self) -> List[dict]:
-        return self.get("data", [{}])
-
-
-    @property
-    def included(self) -> List[dict]:
-        return self.get("included", [{}])
-
-
-    def get_posts(self):
+    def get_posts(self) -> List['PostFromBulk']:
         """
-            All posts from the `Posts` object.
+            All posts from the `Posts` object, as `list`.
         """
 
         all_posts = [] # type: List[PostFromBulk]
@@ -115,47 +103,27 @@ class Posts(dict):
         return all_posts
 
 
-class PostFromDiscussion(dict):
+
+class PostFromDiscussion(BaseFlarumIndividualObject):
     """
-        A post from `Discussion`
+        A post from `Discussion`.
     """
-
-    def __init__(self, user: 'FlarumUser', _fetched_data: dict):
-        self.user = user
-        super().__init__(_fetched_data)
-
-
-
-    @property
-    def data(self) -> dict:
-        return self.get("data", {})
-
-
-    @property
-    def type(self) -> Optional[str]:
-        return self.data.get("type", None)
-
-
-    @property
-    def id(self) -> Optional[int]:
-        raw = self.data.get("id", None)
-
-        if raw:
-            return int(raw)
-
-
-    @property
-    def attributes(self) -> dict:
-        return self.data.get("attributes", {})
-
 
     @property
     def number(self) -> Optional[int]:
+        """
+            The post's number/order in the discussion.
+        """
+
         return self.attributes.get("number", None)
 
 
     @property
     def createdAt(self) -> Optional[datetime]:
+        """
+            The `datetime` of when was this post created.
+        """
+
         raw = self.attributes.get("createdAt", None)
 
         return flarum_to_datetime(raw)
@@ -163,15 +131,40 @@ class PostFromDiscussion(dict):
 
     @property
     def contentType(self) -> Optional[str]:
+        """
+            Post's content type. This is usually a `comment` for user-made posts,
+            but this can differ if it's actually a message that a post's tags changed, or
+            the discussion got moved elsewhere (these messages are treated as posts too by Flarum)
+        """
+
         return self.attributes.get("contentType", None)
+
+
+    def is_comment(self) -> bool:
+        """
+            Whether or not the post is comment.
+        """
+
+        return self.contentType == 'comment'
 
 
     @property
     def contentHtml(self) -> Optional[str]:
+        """
+            The HTML content of the post.
+        """
+
         return self.attributes.get("contentHtml", None)
 
 
-    def __restore_or_hide(self, hide: bool) -> Union[Literal[False], NoReturn]:
+    def __restore_or_hide(self, hide: bool) -> 'Post':
+        """
+            Either restores or hides the post.
+
+            This function was made to prevent code repetition - please
+            use `Post.hide()` and `Post.restore()` instead.
+        """
+
         patch_data = {
             "data": {
                 "type": "posts",
@@ -188,26 +181,28 @@ class PostFromDiscussion(dict):
         return Post(user=self.user, _fetched_data=json)
 
 
-    def hide(self):
+    def hide(self) -> 'Post':
         """
-            Hides the post. Raises `FlarumError` or returns `False` if it failed, otherwise `True` is returned.
+            Hides the post. Raises `FlarumError` if it failed, otherwise the hidden `Post` is returned.
         """
 
         return self.__restore_or_hide(hide=True)
 
 
-    def restore(self):
+    def restore(self) -> 'Post':
         """
-            Restores the post (unhides). Raises `FlarumError` or returns `False` if it failed, otherwise `True` is returned.
+            Restores the post (unhides). Raises `FlarumError` if it failed, otherwise the restored `Post` is returned.
         """
 
         return self.__restore_or_hide(hide=False)
     unhide = restore
 
 
-    def delete(self):
+    def delete(self) -> Literal[True]:
         """
             Removes the post forever.
+
+            Returns `True` if the deletion was successful.
         """
 
         raw = self.user.session.delete(f"{self.user.api_urls['posts']}/{self.id}")
@@ -216,9 +211,11 @@ class PostFromDiscussion(dict):
         return True
 
 
-    def edit(self, new_post: PreparedPost):
+    def edit(self, new_post: PreparedPost) -> 'Post':
         """
             Edits the post.
+
+            `new_post` has to be a `PreparedPost` object. Returns the `Post` after edit.
         """
 
         raw = self.user.session.patch(f"{self.user.api_urls['posts']}/{self.id}", json=new_post.to_dict)
@@ -230,27 +227,36 @@ class PostFromDiscussion(dict):
 
 class PostFromNotification(PostFromDiscussion):
     """
-        A post from `Notification`
+        A post from `Notification`.
     """
-
-    def __init__(self, user: 'FlarumUser', _fetched_data: dict):
-        self.user = user
-        super().__init__(user=self.user, _fetched_data=_fetched_data)
-
-
 
     @property
     def content(self) -> Optional[str]:
+        """
+            The post's content. Doesn't contain markdown, and is just plain-text.
+        """
+
         return self.attributes.get("content", None)
 
 
     @property
     def ipAddress(self) -> Optional[str]:
+        """
+            The post's IP address.
+
+            Returns `None` if you don't have the permissions to view IP address
+            of the post.
+        """
+
         return self.attributes.get("ipAddress", None)
 
 
     @property
     def editedAt(self) -> Optional[datetime]:
+        """
+            The `datetime` when was this post edited at.
+        """
+
         raw = self.attributes.get("editedAt", None)
 
         return flarum_to_datetime(raw)
@@ -258,31 +264,37 @@ class PostFromNotification(PostFromDiscussion):
 
     @property
     def canEdit(self) -> bool:
+        """
+            Whether or not you are able to edit this post.
+        """
+
         return self.attributes.get("canEdit", False)
 
 
     @property
     def canDelete(self) -> bool:
+        """
+            Whether or not you are able to delete this post.
+        """
+
         return self.attributes.get("canDelete", False)
 
 
     @property
     def canHide(self) -> bool:
+        """
+            Whether or not you are able to hide this post.
+        """
+
         return self.attributes.get("canHide", False)
 
 
     @property
-    def _parent_included(self) -> List[dict]:
-        return self.get("_parent_included", [{}])
-
-
-    @property
-    def relationships(self) -> dict:
-        return self.data.get("relationships", {})
-
-
-    @property
     def url(self):
+        """
+            The post's URL.
+        """
+
         discussion_id = self.relationships.get("discussion", {}).get("data", {}).get("id", None)
 
         if discussion_id:
@@ -290,6 +302,13 @@ class PostFromNotification(PostFromDiscussion):
 
 
     def get_discussion(self):
+        """
+            Obtains the discussion of the post.
+
+            Returns `pyflarum.flarum.core.discussions.DiscussionFromNotification`, because its
+            JSON data matches.
+        """
+
         id_to_find = self.relationships.get("discussion", {}).get("data", {}).get("id", None)
 
         for possible_discussion in self._parent_included:
@@ -313,6 +332,13 @@ class PostFromNotification(PostFromDiscussion):
 
 
     def get_author(self):
+        """
+            Obtains the post's author.
+
+            Returns `pyflarum.flarum.core.users.UserFromBulk`, because its
+            JSON data matches.
+        """
+
         id = self.relationships.get("user", {}).get("data", {}).get("id", None)
         
         for raw_user in self._parent_included:
@@ -325,6 +351,10 @@ class PostFromNotification(PostFromDiscussion):
 
 
     def edit(self, new_data: PreparedPost):
+        """
+            Edits the post. The new post should be a `PreparedPost` object.
+        """
+
         raw = self.user.session.patch(f"{self.user.api_urls['posts']}/{self.id}", json=new_data.to_dict)
         json = parse_request(raw)
 
@@ -337,22 +367,13 @@ class PostFromBulk(PostFromNotification):
         A post from `Posts`.
     """
 
-    def __init__(self, user: 'FlarumUser', _fetched_data: dict):
-        self.user = user
-        super().__init__(user=self.user, _fetched_data=_fetched_data)
+    pass
 
-
-    @property
-    def _parent_included(self) -> List[dict]:
-        return self.get("_parent_included", [{}])
 
 
 class Post(PostFromBulk):
     """
-        A Flarum group.
+        A Flarum post.
     """
 
-    def __init__(self, user: 'FlarumUser', _fetched_data: dict):
-        self.user = user
-
-        super().__init__(user=self.user, _fetched_data=_fetched_data)
+    pass

@@ -1,8 +1,9 @@
-from typing import Optional, List, Dict, TYPE_CHECKING
+from typing import Literal, NoReturn, Optional, List, Dict, TYPE_CHECKING, Union
 if TYPE_CHECKING:
     from requests.models import Response
 
 from json.decoder import JSONDecodeError
+
 
 
 class FlarumError(Exception):
@@ -28,11 +29,20 @@ class MissingExtensionWarning(Warning):
     pass
 
 
-def parse_request(request: 'Response'):
+
+def parse_request(response: 'Response') -> dict:
+    """
+        Parses the request as JSON, raises `FlarumError` if
+        something went wrong.
+    """
+
+    if not 200 <= response.status_code <= 204:
+        return handle_errors(status_code=response.status_code)
+
     try:
         # Includes opening and closing brackets:
-        if len(request.text) >= 2:
-            json = request.json() # type: dict
+        if len(response.text) >= 2:
+            json = response.json() # type: dict
 
         else:
             json = {}
@@ -42,18 +52,16 @@ def parse_request(request: 'Response'):
 
 
     if 'errors' in json:
-        return handle_errors(json['errors'])
-
-    elif not 200 <= request.status_code <= 204:
-        return handle_errors(status_code=request.status_code)
+        return handle_errors(errors=json['errors'])
 
 
     return json
 
 
-def handle_errors(errors: Optional[List[Dict[str, str]]]=None, status_code: Optional[str]=None):
+def handle_errors(errors: Optional[List[Dict[str, str]]]=None, status_code: Optional[str]=None) -> Union[Literal[True], NoReturn]:
     """
-        Handles Flarum & request related errors. Should be called on error only.
+        Handles Flarum & request related errors.
+        Returns `FlarumError` if an error was found, `True` otherwise.
     """
 
     if errors:
@@ -93,4 +101,6 @@ def handle_errors(errors: Optional[List[Dict[str, str]]]=None, status_code: Opti
                 raise FlarumError(f'Error {status}: {code} - {details}', status=status, code=code, details=details)
 
     else:
-        raise FlarumError(f'Request related error: {status_code}')
+        raise FlarumError(f'Request related error: {status_code} (https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/{status_code})')
+
+    return True
