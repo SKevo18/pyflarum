@@ -25,11 +25,14 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/flarum/Flarum_Sticky.py#L0-L34" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/flarum/Flarum_Sticky.py#L0-L89" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">from .. import ExtensionMixin
+<pre><code class="python">from typing import Type
 
-from ...flarum.core.discussions import DiscussionFromBulk
+from .. import ExtensionMixin
+
+from ...error_handler import parse_request
+from ...flarum.core.discussions import Discussion, DiscussionFromNotification, DiscussionFromBulk
 
 
 AUTHOR = &#39;flarum&#39;
@@ -40,15 +43,66 @@ SOFT_DEPENDENCIES = []
 HARD_DEPENCENDIES = []
 
 
-class StickyDiscussionMixin(DiscussionFromBulk):
+class StickyDiscussionFromNotificationMixin:
+    def __stick_or_unstick(self: DiscussionFromNotification, sticky: bool=True) -&gt; Discussion:
+        &#34;&#34;&#34;
+            A function to either stick or unstick the discussion, to prevent repetition.
+
+            Use `stick()` or `unstick()` instead, please.
+        &#34;&#34;&#34;
+
+        patch_data = {
+            &#34;data&#34;: {
+                &#34;type&#34;: &#34;discussions&#34;,
+                &#34;id&#34;: self.id,
+                &#34;attributes&#34;: {
+                    &#34;isSticky&#34;: sticky
+                }
+            }
+        }
+
+        raw = self.user.session.patch(f&#34;{self.user.api_urls[&#39;discussions&#39;]}/{self.id}&#34;, json=patch_data)
+        json = parse_request(raw)
+
+        return Discussion(user=self.user, _fetched_data=json)
+
+
+    def stick(self) -&gt; Discussion:
+        &#34;&#34;&#34;
+            Stickies a discussion.
+        &#34;&#34;&#34;
+
+        return self.__stick_or_unstick(sticky=True)
+
+
+    def unstick(self) -&gt; Discussion:
+        &#34;&#34;&#34;
+            Unstickies a discussion.
+        &#34;&#34;&#34;
+
+        return self.__stick_or_unstick(sticky=False)
+StickyDiscussionFromNotificationMixin: Type[DiscussionFromNotification]
+
+
+
+class StickyDiscussionFromBulkMixin:
     @property
-    def isSticky(self) -&gt; bool:
+    def isSticky(self: DiscussionFromBulk) -&gt; bool:
+        &#34;&#34;&#34;
+            Whether or not the discussion is stickied.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;isSticky&#34;, False)
 
 
     @property
-    def canSticky(self) -&gt; bool:
+    def canSticky(self: DiscussionFromBulk) -&gt; bool:
+        &#34;&#34;&#34;
+            Whether or not you are able to stick this discussion.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;canSticky&#34;, False)
+StickyDiscussionFromBulkMixin: Type[DiscussionFromBulk]
 
 
 
@@ -61,7 +115,8 @@ class StickyExtension(ExtensionMixin):
 
 
     def mixin(self):
-        super().mixin(self, DiscussionFromBulk, StickyDiscussionMixin)</code></pre>
+        super().mixin(self, DiscussionFromNotification, StickyDiscussionFromNotificationMixin)
+        super().mixin(self, DiscussionFromBulk, StickyDiscussionFromBulkMixin)</code></pre>
 </details>
 </section>
 <section>
@@ -73,103 +128,158 @@ class StickyExtension(ExtensionMixin):
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="pyflarum.extensions.flarum.Flarum_Sticky.StickyDiscussionMixin"><code class="flex name class">
-<span>class <span class="ident">StickyDiscussionMixin</span></span>
-<span>(</span><span>user: FlarumUser, _fetched_data: dict)</span>
+<dt id="pyflarum.extensions.flarum.Flarum_Sticky.StickyDiscussionFromBulkMixin"><code class="flex name class">
+<span>class <span class="ident">StickyDiscussionFromBulkMixin</span></span>
 </code></dt>
 <dd>
-<div class="desc"><p>A discussion from <code>Discussions</code>.</p></div>
+<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/flarum/Flarum_Sticky.py#L14-L22" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/flarum/Flarum_Sticky.py#L59-L75" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">class StickyDiscussionMixin(DiscussionFromBulk):
+<pre><code class="python">class StickyDiscussionFromBulkMixin:
     @property
-    def isSticky(self) -&gt; bool:
+    def isSticky(self: DiscussionFromBulk) -&gt; bool:
+        &#34;&#34;&#34;
+            Whether or not the discussion is stickied.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;isSticky&#34;, False)
 
 
     @property
-    def canSticky(self) -&gt; bool:
+    def canSticky(self: DiscussionFromBulk) -&gt; bool:
+        &#34;&#34;&#34;
+            Whether or not you are able to stick this discussion.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;canSticky&#34;, False)</code></pre>
 </details>
-<h3>Ancestors</h3>
-<ul class="hlist">
-<li><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></li>
-<li><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromNotification">DiscussionFromNotification</a></li>
-<li>builtins.dict</li>
-</ul>
 <h3>Instance variables</h3>
 <dl>
-<dt id="pyflarum.extensions.flarum.Flarum_Sticky.StickyDiscussionMixin.canSticky"><code class="name">var <span class="ident">canSticky</span> : bool</code></dt>
+<dt id="pyflarum.extensions.flarum.Flarum_Sticky.StickyDiscussionFromBulkMixin.canSticky"><code class="name">var <span class="ident">canSticky</span> : bool</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Whether or not you are able to stick this discussion.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/flarum/Flarum_Sticky.py#L20-L22" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/flarum/Flarum_Sticky.py#L69-L75" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
-def canSticky(self) -&gt; bool:
+def canSticky(self: DiscussionFromBulk) -&gt; bool:
+    &#34;&#34;&#34;
+        Whether or not you are able to stick this discussion.
+    &#34;&#34;&#34;
+
     return self.attributes.get(&#34;canSticky&#34;, False)</code></pre>
 </details>
 </dd>
-<dt id="pyflarum.extensions.flarum.Flarum_Sticky.StickyDiscussionMixin.isSticky"><code class="name">var <span class="ident">isSticky</span> : bool</code></dt>
+<dt id="pyflarum.extensions.flarum.Flarum_Sticky.StickyDiscussionFromBulkMixin.isSticky"><code class="name">var <span class="ident">isSticky</span> : bool</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Whether or not the discussion is stickied.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/flarum/Flarum_Sticky.py#L15-L17" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/flarum/Flarum_Sticky.py#L60-L66" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
-def isSticky(self) -&gt; bool:
+def isSticky(self: DiscussionFromBulk) -&gt; bool:
+    &#34;&#34;&#34;
+        Whether or not the discussion is stickied.
+    &#34;&#34;&#34;
+
     return self.attributes.get(&#34;isSticky&#34;, False)</code></pre>
 </details>
 </dd>
 </dl>
+</dd>
+<dt id="pyflarum.extensions.flarum.Flarum_Sticky.StickyDiscussionFromNotificationMixin"><code class="flex name class">
+<span>class <span class="ident">StickyDiscussionFromNotificationMixin</span></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/flarum/Flarum_Sticky.py#L17-L54" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">class StickyDiscussionFromNotificationMixin:
+    def __stick_or_unstick(self: DiscussionFromNotification, sticky: bool=True) -&gt; Discussion:
+        &#34;&#34;&#34;
+            A function to either stick or unstick the discussion, to prevent repetition.
+
+            Use `stick()` or `unstick()` instead, please.
+        &#34;&#34;&#34;
+
+        patch_data = {
+            &#34;data&#34;: {
+                &#34;type&#34;: &#34;discussions&#34;,
+                &#34;id&#34;: self.id,
+                &#34;attributes&#34;: {
+                    &#34;isSticky&#34;: sticky
+                }
+            }
+        }
+
+        raw = self.user.session.patch(f&#34;{self.user.api_urls[&#39;discussions&#39;]}/{self.id}&#34;, json=patch_data)
+        json = parse_request(raw)
+
+        return Discussion(user=self.user, _fetched_data=json)
+
+
+    def stick(self) -&gt; Discussion:
+        &#34;&#34;&#34;
+            Stickies a discussion.
+        &#34;&#34;&#34;
+
+        return self.__stick_or_unstick(sticky=True)
+
+
+    def unstick(self) -&gt; Discussion:
+        &#34;&#34;&#34;
+            Unstickies a discussion.
+        &#34;&#34;&#34;
+
+        return self.__stick_or_unstick(sticky=False)</code></pre>
+</details>
 <h3>Methods</h3>
 <dl>
-<dt id="pyflarum.extensions.flarum.Flarum_Sticky.StickyDiscussionMixin.delete"><code class="name flex">
-<span>def <span class="ident">delete</span></span>(<span>self, force: bool = False)</span>
+<dt id="pyflarum.extensions.flarum.Flarum_Sticky.StickyDiscussionFromNotificationMixin.stick"><code class="name flex">
+<span>def <span class="ident">stick</span></span>(<span>self) ‑> <a title="pyflarum.flarum.core.discussions.Discussion" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.Discussion">Discussion</a></span>
 </code></dt>
 <dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.delete" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.delete">delete</a></code>
-</p>
-<div class="desc inherited"><p>Deletes a discussion forever - this action is irreversible!</p></div>
+<div class="desc"><p>Stickies a discussion.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/flarum/Flarum_Sticky.py#L41-L46" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def stick(self) -&gt; Discussion:
+    &#34;&#34;&#34;
+        Stickies a discussion.
+    &#34;&#34;&#34;
+
+    return self.__stick_or_unstick(sticky=True)</code></pre>
+</details>
 </dd>
-<dt id="pyflarum.extensions.flarum.Flarum_Sticky.StickyDiscussionMixin.hide"><code class="name flex">
-<span>def <span class="ident">hide</span></span>(<span>self, force: bool = False)</span>
+<dt id="pyflarum.extensions.flarum.Flarum_Sticky.StickyDiscussionFromNotificationMixin.unstick"><code class="name flex">
+<span>def <span class="ident">unstick</span></span>(<span>self) ‑> <a title="pyflarum.flarum.core.discussions.Discussion" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.Discussion">Discussion</a></span>
 </code></dt>
 <dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.hide" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.hide">hide</a></code>
-</p>
-<div class="desc inherited"><p>Hides the discussion. Raises <code>FlarumError</code> or returns <code>False</code> if it failed, otherwise <code>True</code> is returned.</p></div>
-</dd>
-<dt id="pyflarum.extensions.flarum.Flarum_Sticky.StickyDiscussionMixin.restore"><code class="name flex">
-<span>def <span class="ident">restore</span></span>(<span>self, force: bool = False)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.restore" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.restore">restore</a></code>
-</p>
-<div class="desc inherited"><p>Restores the discussion (unhides). Raises <code>FlarumError</code> or returns <code>False</code> if it failed, otherwise <code>True</code> is returned.</p></div>
-</dd>
-<dt id="pyflarum.extensions.flarum.Flarum_Sticky.StickyDiscussionMixin.unhide"><code class="name flex">
-<span>def <span class="ident">unhide</span></span>(<span>self, force: bool = False)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.unhide" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.unhide">unhide</a></code>
-</p>
-<div class="desc inherited"><p>Restores the discussion (unhides). Raises <code>FlarumError</code> or returns <code>False</code> if it failed, otherwise <code>True</code> is returned.</p></div>
+<div class="desc"><p>Unstickies a discussion.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/flarum/Flarum_Sticky.py#L49-L54" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def unstick(self) -&gt; Discussion:
+    &#34;&#34;&#34;
+        Unstickies a discussion.
+    &#34;&#34;&#34;
+
+    return self.__stick_or_unstick(sticky=False)</code></pre>
+</details>
 </dd>
 </dl>
 </dd>
@@ -179,7 +289,9 @@ def isSticky(self) -&gt; bool:
 <dd>
 <div class="desc"><p>A base class for mixing in custom classes (extensions) into another classes.</p>
 <h3 id="example-extension-code">Example extension code:</h3>
-<pre><code class="language-python">from pyflarum.extensions import ExtensionMixin
+<pre><code class="language-python">from typing import Type
+
+from pyflarum.extensions import ExtensionMixin
 from pyflarum.extensions.admin import AdminExtension
 from pyflarum.session import FlarumUser
 
@@ -197,39 +309,19 @@ HARD_DEPENCENDIES = []
 
 # I recommend to use the following naming pattern: `&lt;YourExtensionName&gt;&lt;ClassToMixin&gt;Mixin`
 # Example:
-class ExampleFlarumUserMixin(FlarumUser):
+class ExampleFlarumUserMixin:
     @property
-    def __example(self):
+    def example(self):
         '''
-            Calling `FlarumUser(&lt;...&gt;).__example` would return this.
+            Calling `FlarumUser(&lt;...&gt;).example` would return this.
         '''
 
         return &quot;Example&quot;
-
+ExampleFlarumUserMixin: Type[FlarumUser] # mimick class inheritance, without inheriting at runtime, acts just as a type hint
 
 
 class ExampleExtension(ExtensionMixin):
     def get_dependencies(self):
-        '''
-            Overwrite this method to make your own dependencies.
-
-            This should return the following `dict`:
-            ```python
-            {
-                &quot;hard&quot;: [&lt;class&gt;, &lt;class&gt;, ...],
-                &quot;soft&quot;: [&lt;class&gt;, &lt;class&gt;, ...]
-            }
-            ```
-
-            #### Hard-dependencies:
-            - Will raise an error when they're not found in the initialized `FlarumUser` object. It is impossible for the extension
-            to function without these.
-
-            #### Soft-dependencies:
-            - Will raise just a warning. It is possible for the extension to function without these, although with limitations
-            (such that some functions might be unavailable).
-        '''
-
         return {
             &quot;soft&quot;: SOFT_DEPENDENCIES,
             &quot;hard&quot;: HARD_DEPENCENDIES
@@ -237,18 +329,13 @@ class ExampleExtension(ExtensionMixin):
 
 
     def mixin(self):
-        '''
-            This extends the `FlarumUser` class with features from `ExampleMixin`
-        '''
+        super().mixin(self, FlarumUser, ExampleFlarumUserMixin)
 
-        super().mixin(self, FlarumUser, ExampleMixin)
-
-</code></pre>
-<p>Initializes the <code>ExtensionMixin</code> object.</p></div>
+</code></pre></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/flarum/Flarum_Sticky.py#L26-L35" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/flarum/Flarum_Sticky.py#L80-L90" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class StickyExtension(ExtensionMixin):
     def get_dependencies(self):
@@ -259,7 +346,8 @@ class ExampleExtension(ExtensionMixin):
 
 
     def mixin(self):
-        super().mixin(self, DiscussionFromBulk, StickyDiscussionMixin)</code></pre>
+        super().mixin(self, DiscussionFromNotification, StickyDiscussionFromNotificationMixin)
+        super().mixin(self, DiscussionFromBulk, StickyDiscussionFromBulkMixin)</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -275,11 +363,16 @@ class ExampleExtension(ExtensionMixin):
 <em>Inherited from:</em>
 <code><a title="pyflarum.extensions.ExtensionMixin" href="../index.html#pyflarum.extensions.ExtensionMixin">ExtensionMixin</a></code>.<code><a title="pyflarum.extensions.ExtensionMixin.get_dependencies" href="../index.html#pyflarum.extensions.ExtensionMixin.get_dependencies">get_dependencies</a></code>
 </p>
-<div class="desc inherited"><p>Overwrite this method to make your own dependencies …</p></div>
+<div class="desc inherited"><p>This should return the following <code>dict</code>:
+<code>python
+{
+"hard": [&lt;class&gt;, &lt;class&gt;, ...],
+"soft": [&lt;class&gt;, &lt;class&gt;, ...]
+}</code> …</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/flarum/Flarum_Sticky.py#L27-L31" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/flarum/Flarum_Sticky.py#L81-L85" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_dependencies(self):
     return {
@@ -296,14 +389,15 @@ class ExampleExtension(ExtensionMixin):
 <em>Inherited from:</em>
 <code><a title="pyflarum.extensions.ExtensionMixin" href="../index.html#pyflarum.extensions.ExtensionMixin">ExtensionMixin</a></code>.<code><a title="pyflarum.extensions.ExtensionMixin.mixin" href="../index.html#pyflarum.extensions.ExtensionMixin.mixin">mixin</a></code>
 </p>
-<div class="desc inherited"><p>A boilerplate function for mixing …</p></div>
+<div class="desc inherited"><p>A function to mix-in/merge properties, methods, functions, etc&hellip; of one class into another …</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/flarum/Flarum_Sticky.py#L34-L35" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/flarum/Flarum_Sticky.py#L88-L90" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def mixin(self):
-    super().mixin(self, DiscussionFromBulk, StickyDiscussionMixin)</code></pre>
+    super().mixin(self, DiscussionFromNotification, StickyDiscussionFromNotificationMixin)
+    super().mixin(self, DiscussionFromBulk, StickyDiscussionFromBulkMixin)</code></pre>
 </details>
 </dd>
 </dl>
@@ -371,14 +465,17 @@ setTimeout(() => input.focus(), 100);
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="pyflarum.extensions.flarum.Flarum_Sticky.StickyDiscussionMixin" href="#pyflarum.extensions.flarum.Flarum_Sticky.StickyDiscussionMixin">StickyDiscussionMixin</a></code></h4>
-<ul class="two-column">
-<li><code><a title="pyflarum.extensions.flarum.Flarum_Sticky.StickyDiscussionMixin.canSticky" href="#pyflarum.extensions.flarum.Flarum_Sticky.StickyDiscussionMixin.canSticky">canSticky</a></code></li>
-<li><code><a title="pyflarum.extensions.flarum.Flarum_Sticky.StickyDiscussionMixin.delete" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Flarum_Sticky.StickyDiscussionMixin.delete">delete</a></code></li>
-<li><code><a title="pyflarum.extensions.flarum.Flarum_Sticky.StickyDiscussionMixin.hide" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Flarum_Sticky.StickyDiscussionMixin.hide">hide</a></code></li>
-<li><code><a title="pyflarum.extensions.flarum.Flarum_Sticky.StickyDiscussionMixin.isSticky" href="#pyflarum.extensions.flarum.Flarum_Sticky.StickyDiscussionMixin.isSticky">isSticky</a></code></li>
-<li><code><a title="pyflarum.extensions.flarum.Flarum_Sticky.StickyDiscussionMixin.restore" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Flarum_Sticky.StickyDiscussionMixin.restore">restore</a></code></li>
-<li><code><a title="pyflarum.extensions.flarum.Flarum_Sticky.StickyDiscussionMixin.unhide" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Flarum_Sticky.StickyDiscussionMixin.unhide">unhide</a></code></li>
+<h4><code><a title="pyflarum.extensions.flarum.Flarum_Sticky.StickyDiscussionFromBulkMixin" href="#pyflarum.extensions.flarum.Flarum_Sticky.StickyDiscussionFromBulkMixin">StickyDiscussionFromBulkMixin</a></code></h4>
+<ul class="">
+<li><code><a title="pyflarum.extensions.flarum.Flarum_Sticky.StickyDiscussionFromBulkMixin.canSticky" href="#pyflarum.extensions.flarum.Flarum_Sticky.StickyDiscussionFromBulkMixin.canSticky">canSticky</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Flarum_Sticky.StickyDiscussionFromBulkMixin.isSticky" href="#pyflarum.extensions.flarum.Flarum_Sticky.StickyDiscussionFromBulkMixin.isSticky">isSticky</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyflarum.extensions.flarum.Flarum_Sticky.StickyDiscussionFromNotificationMixin" href="#pyflarum.extensions.flarum.Flarum_Sticky.StickyDiscussionFromNotificationMixin">StickyDiscussionFromNotificationMixin</a></code></h4>
+<ul class="">
+<li><code><a title="pyflarum.extensions.flarum.Flarum_Sticky.StickyDiscussionFromNotificationMixin.stick" href="#pyflarum.extensions.flarum.Flarum_Sticky.StickyDiscussionFromNotificationMixin.stick">stick</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Flarum_Sticky.StickyDiscussionFromNotificationMixin.unstick" href="#pyflarum.extensions.flarum.Flarum_Sticky.StickyDiscussionFromNotificationMixin.unstick">unstick</a></code></li>
 </ul>
 </li>
 <li>

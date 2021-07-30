@@ -241,15 +241,30 @@ for discussion in USER.all_discussions():
   ]
 }
 </code></pre>
-<p>This is a simplified syntax of how might a JSON for <code>/api/discussions</code> look like. We can see a discussion with ID <code>1</code>, that has a special <code>relationships</code> array (or dictionary, if you're a Pythonista). This array contains a reference for the <code>firstPost</code> (unsurprisingly, that's the first post of the discussion). The full data is in the <code>included</code> section of the JSON, where we indeed can see a post object with the corresponding ID of <code>1</code>.</p>
-<p>Again, I put together what I could to make this work for you instead of you working for it. Whenever pyFlarum makes an API call to a top-level route such as <code>/api/discussions</code>, obtaining a discussion from that will include the parent <code>included</code> in that discussion as well. So now, whenever you would like to obtain a post from that discussion, the reference for that post is found in the <code>relationships</code> array and then it gets recursively matched to the resulting <code>PostFromDiscussion</code> in the <code>included</code> section.</p>
-<p>From Flarum's side, this was done to eliminate frequent API calls and to save on the JSON's size. Including the full data would possibly make the JSON contain duplicates, if for example, all posts were made by the same user. This way, the user is included only once in the <code>included</code> section, and we saved some bytes to transfer. People using paid mobile networks will be grateful to save some cents.</p>
+<p>This is a simplified syntax of how might a JSON for <code>/api/discussions</code> look like. We can see a discussion with ID <code>1</code>, that has a special <code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.relationships" href="flarum/core/index.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.relationships">DiscussionFromBulk.relationships</a></code> array (or dictionary, if you're a Pythonista). This array contains a reference for <code>firstPost</code> (unsurprisingly, that's the first post of the discussion). The full data is in the <code><a title="pyflarum.flarum.core.discussions.Discussions.included" href="flarum/core/index.html#pyflarum.flarum.core.discussions.Discussions.included">Discussions.included</a></code> section of the JSON, where we indeed can see a post object with the corresponding ID of <code>1</code>.</p>
+<p>Again, I put together what I could to make this work for you instead of you working for it. Whenever pyFlarum makes an API call to a top-level route such as <code>/api/discussions</code>, obtaining a discussion from that will include the parent <code><a title="pyflarum.flarum.core.discussions.Discussions.included" href="flarum/core/index.html#pyflarum.flarum.core.discussions.Discussions.included">Discussions.included</a></code> in that discussion as well. So now, whenever you would like to obtain a post from that discussion, the reference for that post is found in the <code>relationships</code> array and then it gets recursively matched to the resulting <code><a title="pyflarum.flarum.core.posts.PostFromDiscussion" href="flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromDiscussion">PostFromDiscussion</a></code> in the <code><a title="pyflarum.flarum.core.discussions.Discussions.included" href="flarum/core/index.html#pyflarum.flarum.core.discussions.Discussions.included">Discussions.included</a></code> section. See <a href="https://cwkevo.github.io/pyflarum/docs/#parent-included">parent included</a> below.</p>
+<p>From Flarum's side, this was done to eliminate frequent API calls and to save on the JSON's size. Including the full data would possibly make the JSON contain duplicates, if for example, all posts were made by the same user. This way, the user is included only once in the <code><a title="pyflarum.flarum.core.discussions.Discussions.included" href="flarum/core/index.html#pyflarum.flarum.core.discussions.Discussions.included">Discussions.included</a></code> section, and we saved some bytes to transfer. People using paid mobile networks will be grateful to save some cents.</p>
 <p>You might be asking, why keep tossing the parent <code>included</code> into every object? Well, from pyFlarum's side this was done to save on the amount of requests and to speed the package up. Of course, instead of looking things in <code>included</code>, you could make a direct API call to retrieve the full data of the object you want. But this would slow things down drastically, when you're operating with large amounts of data at the same time (e. g. fetching all discussions and posts - you'd need to make separate API call for every post in order to obtain the data - this way, everything's already in <code>included</code>).</p>
 <p>This is very complicated, and I can't explain things, so it might be worthy checking the source code, if you care to learn more about how pyFlarum handles this.</p>
+<h3 id="parent-included">📚 Parent included</h3>
+<p>It is a JSON data of the parent's included JSON data.</p>
+<blockquote>
+<p>I put together what I could to make this work for you instead of you working for it. Whenever pyFlarum makes an API call to a top-level route such as <code>/api/discussions</code>, obtaining a discussion from that will include the parent <code><a title="pyflarum.flarum.core.discussions.Discussions.included" href="flarum/core/index.html#pyflarum.flarum.core.discussions.Discussions.included">Discussions.included</a></code> in that discussion as well. So now, whenever you would like to obtain a post from that discussion, the reference for that post is found in the <code>relationships</code> array and then it gets recursively matched to the resulting <code><a title="pyflarum.flarum.core.posts.PostFromDiscussion" href="flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromDiscussion">PostFromDiscussion</a></code> in the <code><a title="pyflarum.flarum.core.discussions.Discussions.included" href="flarum/core/index.html#pyflarum.flarum.core.discussions.Discussions.included">Discussions.included</a></code> section.</p>
+</blockquote>
+<h4 id="long-explanation-for-nerds-i-am-not-good-at-explaining">Long explanation for nerds (I am not good at explaining):</h4>
+<p>This is because of the way <a href="https://cwkevo.github.io/pyflarum/docs/#included-data">Flarum's includes</a> work.
+When you run a function such as <code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.get_author" href="flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.get_author">DiscussionFromBulk.get_author()</a></code>, the data for the author is not directly in the <code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>'s JSON.
+This means that pyFlarum would have to make a new API call everytime you run <code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.get_author" href="flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.get_author">DiscussionFromBulk.get_author()</a></code>, and you'd see 429 sooner than usual.
+Instead, the data is already in the parent's (<code><a title="pyflarum.flarum.core.discussions.Discussions.included" href="flarum/core/index.html#pyflarum.flarum.core.discussions.Discussions.included">Discussions.included</a></code>) data. And since that gets passed to this object too, pyFlarum doesn't need to
+make any more API calls - instead, it just picks the right author from that data.</p>
+<p>You can think of this as a cache in a nutshell, if it's unclear for you. And if things are still confusing you, you just don't need to worry about this
+because pyFlarum handles everything for you in the background. Unless you are forging this object's JSON data by yourself,
+and you don't pass the parent's included - this would mean that all functions that rely on that will break. I have never spotted any weird stuff by normal
+usage of pyFlarum during testing, but there's perhaps a very tiny chance that this system can possibly bug out.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/__init__.py#L0-L43" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/__init__.py#L0-L43" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">from pathlib import Path
 
@@ -266,7 +281,7 @@ __author__      = &#34;SKevo&#34;
 __copyright__   = &#34;Copyright 2021, SKevo&#34;
 __credits__     = [&#34;SKevo&#34;]
 __license__     = &#34;GPLv3&#34;
-__version__     = &#34;v1.0.6-beta&#34;
+__version__     = &#34;v1.0.7-beta&#34;
 __maintainer__  = &#34;SKevo&#34;
 __email__       = &#34;me@kevo.link&#34;
 __status__      = &#34;4 - Beta&#34;
@@ -407,6 +422,10 @@ setTimeout(() => input.focus(), 100);
 <li><a href="#class-inheritance">⬆ Class Inheritance</a><ul>
 <li><a href="#example">📜 Example:</a></li>
 <li><a href="#included-data">👀 Included data</a></li>
+<li><a href="#parent-included">📚 Parent included</a><ul>
+<li><a href="#long-explanation-for-nerds-i-am-not-good-at-explaining">Long explanation for nerds (I am not good at explaining):</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

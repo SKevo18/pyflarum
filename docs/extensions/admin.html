@@ -25,9 +25,9 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/admin.py#L0-L279" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/admin.py#L0-L279" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">from typing import Any, Literal, Optional, BinaryIO
+<pre><code class="python">from typing import Literal, Optional, BinaryIO, Union
 
 from ..extensions import ExtensionMixin
 
@@ -137,18 +137,18 @@ class MailSettings(dict):
 
 
 class AdminFlarumUserMixin(FlarumUser):
-    def __enable_or_disable_extension(self, id: str, enabled: bool=True):
+    def __enable_or_disable_extension(self, id: Union[str, int], enabled: bool=True):
         raw = self.session.patch(f&#34;{self.api_urls[&#39;extensions&#39;]}/{id}&#34;, json={&#34;enabled&#34;: enabled})
         parse_request(raw)
 
         return True
 
 
-    def enable_extension(self, id: str):
+    def enable_extension(self, id: Union[str, int]):
         return self.__enable_or_disable_extension(id=id, enabled=True)
 
 
-    def disable_extension(self, id: str):
+    def disable_extension(self, extension: str):
         return self.__enable_or_disable_extension(id=id, enabled=False)
 
 
@@ -178,7 +178,7 @@ class AdminFlarumUserMixin(FlarumUser):
         if welcome_message:
             post_data[&#34;welcome_message&#34;] = welcome_message
 
-        if user_slug_driver:
+        if user_slug_driver is not None:
             post_data[&#34;slug_driver_Flarum\\User\\User&#34;] = user_slug_driver
 
 
@@ -324,7 +324,9 @@ class AdminExtension(ExtensionMixin, AdminFlarumUserMixin):
 <dd>
 <div class="desc"><p>A base class for mixing in custom classes (extensions) into another classes.</p>
 <h3 id="example-extension-code">Example extension code:</h3>
-<pre><code class="language-python">from pyflarum.extensions import ExtensionMixin
+<pre><code class="language-python">from typing import Type
+
+from pyflarum.extensions import ExtensionMixin
 from pyflarum.extensions.admin import AdminExtension
 from pyflarum.session import FlarumUser
 
@@ -342,39 +344,19 @@ HARD_DEPENCENDIES = []
 
 # I recommend to use the following naming pattern: `&lt;YourExtensionName&gt;&lt;ClassToMixin&gt;Mixin`
 # Example:
-class ExampleFlarumUserMixin(FlarumUser):
+class ExampleFlarumUserMixin:
     @property
-    def __example(self):
+    def example(self):
         '''
-            Calling `FlarumUser(&lt;...&gt;).__example` would return this.
+            Calling `FlarumUser(&lt;...&gt;).example` would return this.
         '''
 
         return &quot;Example&quot;
-
+ExampleFlarumUserMixin: Type[FlarumUser] # mimick class inheritance, without inheriting at runtime, acts just as a type hint
 
 
 class ExampleExtension(ExtensionMixin):
     def get_dependencies(self):
-        '''
-            Overwrite this method to make your own dependencies.
-
-            This should return the following `dict`:
-            ```python
-            {
-                &quot;hard&quot;: [&lt;class&gt;, &lt;class&gt;, ...],
-                &quot;soft&quot;: [&lt;class&gt;, &lt;class&gt;, ...]
-            }
-            ```
-
-            #### Hard-dependencies:
-            - Will raise an error when they're not found in the initialized `FlarumUser` object. It is impossible for the extension
-            to function without these.
-
-            #### Soft-dependencies:
-            - Will raise just a warning. It is possible for the extension to function without these, although with limitations
-            (such that some functions might be unavailable).
-        '''
-
         return {
             &quot;soft&quot;: SOFT_DEPENDENCIES,
             &quot;hard&quot;: HARD_DEPENCENDIES
@@ -382,18 +364,24 @@ class ExampleExtension(ExtensionMixin):
 
 
     def mixin(self):
-        '''
-            This extends the `FlarumUser` class with features from `ExampleMixin`
-        '''
-
-        super().mixin(self, FlarumUser, ExampleMixin)
+        super().mixin(self, FlarumUser, ExampleFlarumUserMixin)
 
 </code></pre>
-<p>Initializes the <code>ExtensionMixin</code> object.</p></div>
+<h3 id="parameters">Parameters:</h3>
+<ul>
+<li><code>forum_url</code> - the forum URL that you want the bot to fetch/update data from. This mustn't end with trailing slash (e. g.: <a href="https://domain.tld/">https://domain.tld/</a> - wrong; <a href="https://domain.tld">https://domain.tld</a> - correct).</li>
+<li><code>username_or_email</code> - optional. The username or E-mail address to log into. If <code>None</code>, then the bot doesn't login.</li>
+<li><code>password</code> - optional. The user's password. If <code>None</code>, then the bot doesn't login.</li>
+<li><code>api_endpoint</code> - the API endpoint of the forum, without slashes. This can be specified in Flarum's <code>config.php</code> and normally forums don't need to change the default <code>'api'</code></li>
+<li><code>user_agent</code> - the user agent that will be used to make all requests. Defaults to <code>pyflarum &lt;version&gt;</code>.</li>
+<li><code>session_object</code> - the <code>Session</code> object to make requests with. You can pass any object that supports all operations from the <a href="https://pypi.org/project/requests/">requests</a> library, check <a href="https://pypi.org/project/requests-cache/">requests_cache</a> as an example.</li>
+<li><code>extensions</code> - a list of <code>ExtensionMixin</code> classes. These are monkey-patched on initialization. Learn more about <a href="https://cwkevo.github.io/pyflarum/docs/#extensions">extensions</a>.
+```</li>
+</ul></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/admin.py#L266-L280" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/admin.py#L266-L280" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class AdminExtension(ExtensionMixin, AdminFlarumUserMixin):
     def __init__(self):
@@ -421,7 +409,7 @@ class ExampleExtension(ExtensionMixin):
 </ul>
 <h3>Instance variables</h3>
 <dl>
-<dt id="pyflarum.extensions.admin.AdminExtension.api_urls"><code class="name">var <span class="ident">api_urls</span></code></dt>
+<dt id="pyflarum.extensions.admin.AdminExtension.api_urls"><code class="name">var <span class="ident">api_urls</span> : Dict[str, str]</code></dt>
 <dd>
 <p class="inheritance">
 <em>Inherited from:</em>
@@ -432,35 +420,26 @@ class ExampleExtension(ExtensionMixin):
 </dl>
 <h3>Methods</h3>
 <dl>
-<dt id="pyflarum.extensions.admin.AdminExtension.all_discussions"><code class="name flex">
-<span>def <span class="ident">all_discussions</span></span>(<span>self, filter: <a title="pyflarum.flarum.core.filters.Filter" href="../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a> = None)</span>
+<dt id="pyflarum.extensions.admin.AdminExtension.authenticate"><code class="name flex">
+<span>def <span class="ident">authenticate</span></span>(<span>self, username_or_email: Optional[str] = None, password: Optional[str] = None) ‑> NoneType</span>
 </code></dt>
 <dd>
 <p class="inheritance">
 <em>Inherited from:</em>
-<code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin" href="#pyflarum.extensions.admin.AdminFlarumUserMixin">AdminFlarumUserMixin</a></code>.<code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin.all_discussions" href="../session.html#pyflarum.extensions.admin.AdminFlarumUserMixin.all_discussions">all_discussions</a></code>
+<code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin" href="#pyflarum.extensions.admin.AdminFlarumUserMixin">AdminFlarumUserMixin</a></code>.<code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin.authenticate" href="../session.html#pyflarum.extensions.admin.AdminFlarumUserMixin.authenticate">authenticate</a></code>
 </p>
-<div class="desc inherited"><p>Obtains all discussions from specific page by using <code>filter</code>.</p></div>
+<div class="desc inherited"><p>Authenticates your user. This can be run after <code>FlarumUser</code> was initialized, to switch to a different user. You can even change
+<code>FlarumUser.forum_url</code> …</p></div>
 </dd>
-<dt id="pyflarum.extensions.admin.AdminExtension.all_posts"><code class="name flex">
-<span>def <span class="ident">all_posts</span></span>(<span>self, filter: <a title="pyflarum.flarum.core.filters.Filter" href="../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a> = None)</span>
+<dt id="pyflarum.extensions.admin.AdminExtension.change_email"><code class="name flex">
+<span>def <span class="ident">change_email</span></span>(<span>self, new_email: str, password_confirmation: str, user: Optional[ForwardRef('AnyUser')] = None) ‑> Union[<a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a>, <a title="pyflarum.flarum.core.users.User" href="../flarum/core/users.html#pyflarum.flarum.core.users.User">User</a>]</span>
 </code></dt>
 <dd>
 <p class="inheritance">
 <em>Inherited from:</em>
-<code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin" href="#pyflarum.extensions.admin.AdminFlarumUserMixin">AdminFlarumUserMixin</a></code>.<code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin.all_posts" href="../session.html#pyflarum.extensions.admin.AdminFlarumUserMixin.all_posts">all_posts</a></code>
+<code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin" href="#pyflarum.extensions.admin.AdminFlarumUserMixin">AdminFlarumUserMixin</a></code>.<code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin.change_email" href="../session.html#pyflarum.extensions.admin.AdminFlarumUserMixin.change_email">change_email</a></code>
 </p>
-<div class="desc inherited"><p>Obtains all posts from specific page by using <code>filter</code>.</p></div>
-</dd>
-<dt id="pyflarum.extensions.admin.AdminExtension.all_users"><code class="name flex">
-<span>def <span class="ident">all_users</span></span>(<span>self, filter: <a title="pyflarum.flarum.core.filters.Filter" href="../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a> = None)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin" href="#pyflarum.extensions.admin.AdminFlarumUserMixin">AdminFlarumUserMixin</a></code>.<code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin.all_users" href="../session.html#pyflarum.extensions.admin.AdminFlarumUserMixin.all_users">all_users</a></code>
-</p>
-<div class="desc inherited"><p>Obtains all users from specific page by using <code>filter</code>.</p></div>
+<div class="desc inherited"><p>Changes your E-mail. If <code>user</code> is specified, then that user's E-mail is changed …</p></div>
 </dd>
 <dt id="pyflarum.extensions.admin.AdminExtension.get_dependencies"><code class="name flex">
 <span>def <span class="ident">get_dependencies</span></span>(<span>self)</span>
@@ -470,11 +449,16 @@ class ExampleExtension(ExtensionMixin):
 <em>Inherited from:</em>
 <code><a title="pyflarum.extensions.ExtensionMixin" href="index.html#pyflarum.extensions.ExtensionMixin">ExtensionMixin</a></code>.<code><a title="pyflarum.extensions.ExtensionMixin.get_dependencies" href="index.html#pyflarum.extensions.ExtensionMixin.get_dependencies">get_dependencies</a></code>
 </p>
-<div class="desc inherited"><p>Overwrite this method to make your own dependencies …</p></div>
+<div class="desc inherited"><p>This should return the following <code>dict</code>:
+<code>python
+{
+"hard": [&lt;class&gt;, &lt;class&gt;, ...],
+"soft": [&lt;class&gt;, &lt;class&gt;, ...]
+}</code> …</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/admin.py#L272-L276" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/admin.py#L272-L276" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_dependencies(self):
     return {
@@ -482,6 +466,46 @@ class ExampleExtension(ExtensionMixin):
         &#34;hard&#34;: HARD_DEPENCENDIES
     }</code></pre>
 </details>
+</dd>
+<dt id="pyflarum.extensions.admin.AdminExtension.get_discussion_by_id"><code class="name flex">
+<span>def <span class="ident">get_discussion_by_id</span></span>(<span>self, id: int) ‑> <a title="pyflarum.flarum.core.discussions.Discussion" href="../flarum/core/discussions.html#pyflarum.flarum.core.discussions.Discussion">Discussion</a></span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin" href="#pyflarum.extensions.admin.AdminFlarumUserMixin">AdminFlarumUserMixin</a></code>.<code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin.get_discussion_by_id" href="../session.html#pyflarum.extensions.admin.AdminFlarumUserMixin.get_discussion_by_id">get_discussion_by_id</a></code>
+</p>
+<div class="desc inherited"><p>Obtains a discussion by specific ID.</p></div>
+</dd>
+<dt id="pyflarum.extensions.admin.AdminExtension.get_discussions"><code class="name flex">
+<span>def <span class="ident">get_discussions</span></span>(<span>self, filter: <a title="pyflarum.flarum.core.filters.Filter" href="../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a> = None)</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin" href="#pyflarum.extensions.admin.AdminFlarumUserMixin">AdminFlarumUserMixin</a></code>.<code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin.get_discussions" href="../session.html#pyflarum.extensions.admin.AdminFlarumUserMixin.get_discussions">get_discussions</a></code>
+</p>
+<div class="desc inherited"><p>Obtains all discussions from <code>/api/discussions</code>, optionally filtering results by using <code>filter</code>.</p></div>
+</dd>
+<dt id="pyflarum.extensions.admin.AdminExtension.get_forum_data"><code class="name flex">
+<span>def <span class="ident">get_forum_data</span></span>(<span>self) ‑> <a title="pyflarum.flarum.core.forum.Forum" href="../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum">Forum</a></span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin" href="#pyflarum.extensions.admin.AdminFlarumUserMixin">AdminFlarumUserMixin</a></code>.<code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin.get_forum_data" href="../session.html#pyflarum.extensions.admin.AdminFlarumUserMixin.get_forum_data">get_forum_data</a></code>
+</p>
+<div class="desc inherited"><p>Obtains the forum data, returns <code>Forum</code> object.</p></div>
+</dd>
+<dt id="pyflarum.extensions.admin.AdminExtension.get_groups"><code class="name flex">
+<span>def <span class="ident">get_groups</span></span>(<span>self) ‑> <a title="pyflarum.flarum.core.groups.Groups" href="../flarum/core/groups.html#pyflarum.flarum.core.groups.Groups">Groups</a></span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin" href="#pyflarum.extensions.admin.AdminFlarumUserMixin">AdminFlarumUserMixin</a></code>.<code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin.get_groups" href="../session.html#pyflarum.extensions.admin.AdminFlarumUserMixin.get_groups">get_groups</a></code>
+</p>
+<div class="desc inherited"><p>Obtains all groups of a forum from <code>/api/groups</code>.</p></div>
 </dd>
 <dt id="pyflarum.extensions.admin.AdminExtension.get_notifications"><code class="name flex">
 <span>def <span class="ident">get_notifications</span></span>(<span>self, filter: Optional[<a title="pyflarum.flarum.core.filters.Filter" href="../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a>] = None) ‑> <a title="pyflarum.flarum.core.notifications.Notifications" href="../flarum/core/notifications.html#pyflarum.flarum.core.notifications.Notifications">Notifications</a></span>
@@ -491,7 +515,67 @@ class ExampleExtension(ExtensionMixin):
 <em>Inherited from:</em>
 <code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin" href="#pyflarum.extensions.admin.AdminFlarumUserMixin">AdminFlarumUserMixin</a></code>.<code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin.get_notifications" href="../session.html#pyflarum.extensions.admin.AdminFlarumUserMixin.get_notifications">get_notifications</a></code>
 </p>
-<div class="desc inherited"><p>Obtains all notifications of your user.</p></div>
+<div class="desc inherited"><p>Obtains all of your notifications from <code>/api/notifications</code>, optionally filtering results by using <code>filter</code>.</p></div>
+</dd>
+<dt id="pyflarum.extensions.admin.AdminExtension.get_post_by_id"><code class="name flex">
+<span>def <span class="ident">get_post_by_id</span></span>(<span>self, id: int) ‑> <a title="pyflarum.flarum.core.posts.Post" href="../flarum/core/posts.html#pyflarum.flarum.core.posts.Post">Post</a></span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin" href="#pyflarum.extensions.admin.AdminFlarumUserMixin">AdminFlarumUserMixin</a></code>.<code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin.get_post_by_id" href="../session.html#pyflarum.extensions.admin.AdminFlarumUserMixin.get_post_by_id">get_post_by_id</a></code>
+</p>
+<div class="desc inherited"><p>Obtains a post by specific ID.</p></div>
+</dd>
+<dt id="pyflarum.extensions.admin.AdminExtension.get_posts"><code class="name flex">
+<span>def <span class="ident">get_posts</span></span>(<span>self, filter: <a title="pyflarum.flarum.core.filters.Filter" href="../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a> = None)</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin" href="#pyflarum.extensions.admin.AdminFlarumUserMixin">AdminFlarumUserMixin</a></code>.<code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin.get_posts" href="../session.html#pyflarum.extensions.admin.AdminFlarumUserMixin.get_posts">get_posts</a></code>
+</p>
+<div class="desc inherited"><p>Obtains all posts from <code>/api/posts</code>, optionally filtering results by using <code>filter</code>.</p></div>
+</dd>
+<dt id="pyflarum.extensions.admin.AdminExtension.get_user_by_id"><code class="name flex">
+<span>def <span class="ident">get_user_by_id</span></span>(<span>self, id: int) ‑> <a title="pyflarum.flarum.core.users.User" href="../flarum/core/users.html#pyflarum.flarum.core.users.User">User</a></span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin" href="#pyflarum.extensions.admin.AdminFlarumUserMixin">AdminFlarumUserMixin</a></code>.<code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin.get_user_by_id" href="../session.html#pyflarum.extensions.admin.AdminFlarumUserMixin.get_user_by_id">get_user_by_id</a></code>
+</p>
+<div class="desc inherited"><p>Obtains a user by specific ID.</p></div>
+</dd>
+<dt id="pyflarum.extensions.admin.AdminExtension.get_users"><code class="name flex">
+<span>def <span class="ident">get_users</span></span>(<span>self, filter: <a title="pyflarum.flarum.core.filters.Filter" href="../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a> = None) ‑> <a title="pyflarum.flarum.core.users.Users" href="../flarum/core/users.html#pyflarum.flarum.core.users.Users">Users</a></span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin" href="#pyflarum.extensions.admin.AdminFlarumUserMixin">AdminFlarumUserMixin</a></code>.<code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin.get_users" href="../session.html#pyflarum.extensions.admin.AdminFlarumUserMixin.get_users">get_users</a></code>
+</p>
+<div class="desc inherited"><p>Obtains all users from <code>/api/users</code>, optionally filtering results by using <code>filter</code>.</p></div>
+</dd>
+<dt id="pyflarum.extensions.admin.AdminExtension.mark_all_discussions_as_read"><code class="name flex">
+<span>def <span class="ident">mark_all_discussions_as_read</span></span>(<span>self, at: datetime.datetime = datetime.datetime(2021, 7, 30, 10, 0, 37, 16357)) ‑> Literal[True]</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin" href="#pyflarum.extensions.admin.AdminFlarumUserMixin">AdminFlarumUserMixin</a></code>.<code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin.mark_all_discussions_as_read" href="../session.html#pyflarum.extensions.admin.AdminFlarumUserMixin.mark_all_discussions_as_read">mark_all_discussions_as_read</a></code>
+</p>
+<div class="desc inherited"><p>Marks all discussions as read …</p></div>
+</dd>
+<dt id="pyflarum.extensions.admin.AdminExtension.mark_all_notifications_as_read"><code class="name flex">
+<span>def <span class="ident">mark_all_notifications_as_read</span></span>(<span>self) ‑> Literal[True]</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin" href="#pyflarum.extensions.admin.AdminFlarumUserMixin">AdminFlarumUserMixin</a></code>.<code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin.mark_all_notifications_as_read" href="../session.html#pyflarum.extensions.admin.AdminFlarumUserMixin.mark_all_notifications_as_read">mark_all_notifications_as_read</a></code>
+</p>
+<div class="desc inherited"><p>Marks all notifications as read. Returns <code>True</code> when successful.</p></div>
 </dd>
 <dt id="pyflarum.extensions.admin.AdminExtension.mixin"><code class="name flex">
 <span>def <span class="ident">mixin</span></span>(<span>self)</span>
@@ -501,15 +585,65 @@ class ExampleExtension(ExtensionMixin):
 <em>Inherited from:</em>
 <code><a title="pyflarum.extensions.ExtensionMixin" href="index.html#pyflarum.extensions.ExtensionMixin">ExtensionMixin</a></code>.<code><a title="pyflarum.extensions.ExtensionMixin.mixin" href="index.html#pyflarum.extensions.ExtensionMixin.mixin">mixin</a></code>
 </p>
-<div class="desc inherited"><p>A boilerplate function for mixing …</p></div>
+<div class="desc inherited"><p>A function to mix-in/merge properties, methods, functions, etc&hellip; of one class into another …</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/admin.py#L279-L280" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/admin.py#L279-L280" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def mixin(self):
     super().mixin(self, FlarumUser, AdminFlarumUserMixin)</code></pre>
 </details>
+</dd>
+<dt id="pyflarum.extensions.admin.AdminExtension.remove_user_avatar"><code class="name flex">
+<span>def <span class="ident">remove_user_avatar</span></span>(<span>self, user: Optional[ForwardRef('AnyUser')] = None) ‑> Union[<a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a>, <a title="pyflarum.flarum.core.users.User" href="../flarum/core/users.html#pyflarum.flarum.core.users.User">User</a>]</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin" href="#pyflarum.extensions.admin.AdminFlarumUserMixin">AdminFlarumUserMixin</a></code>.<code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin.remove_user_avatar" href="../session.html#pyflarum.extensions.admin.AdminFlarumUserMixin.remove_user_avatar">remove_user_avatar</a></code>
+</p>
+<div class="desc inherited"><p>Removes your user's avatar. If <code>user</code> is specified, then avatar of that user is removed.</p></div>
+</dd>
+<dt id="pyflarum.extensions.admin.AdminExtension.send_password_reset_email"><code class="name flex">
+<span>def <span class="ident">send_password_reset_email</span></span>(<span>self) ‑> Union[<a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a>, <a title="pyflarum.flarum.core.users.User" href="../flarum/core/users.html#pyflarum.flarum.core.users.User">User</a>]</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin" href="#pyflarum.extensions.admin.AdminFlarumUserMixin">AdminFlarumUserMixin</a></code>.<code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin.send_password_reset_email" href="../session.html#pyflarum.extensions.admin.AdminFlarumUserMixin.send_password_reset_email">send_password_reset_email</a></code>
+</p>
+<div class="desc inherited"><p>Allows you to send yourself a password reset E-mail.</p></div>
+</dd>
+<dt id="pyflarum.extensions.admin.AdminExtension.update_preferences"><code class="name flex">
+<span>def <span class="ident">update_preferences</span></span>(<span>self, preferences: Iterable[Tuple[str, Any]], user: Optional[ForwardRef('AnyUser')] = None) ‑> Union[<a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a>, <a title="pyflarum.flarum.core.users.User" href="../flarum/core/users.html#pyflarum.flarum.core.users.User">User</a>]</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin" href="#pyflarum.extensions.admin.AdminFlarumUserMixin">AdminFlarumUserMixin</a></code>.<code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin.update_preferences" href="../session.html#pyflarum.extensions.admin.AdminFlarumUserMixin.update_preferences">update_preferences</a></code>
+</p>
+<div class="desc inherited"><p>Updates an user's preferences …</p></div>
+</dd>
+<dt id="pyflarum.extensions.admin.AdminExtension.update_user_info"><code class="name flex">
+<span>def <span class="ident">update_user_info</span></span>(<span>self, user: Optional[ForwardRef('AnyUser')] = None, new_username: Optional[str] = None, groups: Union[List[Union[str, int]], List[<a title="pyflarum.flarum.core.groups.Group" href="../flarum/core/groups.html#pyflarum.flarum.core.groups.Group">Group</a>], <a title="pyflarum.flarum.core.groups.Groups" href="../flarum/core/groups.html#pyflarum.flarum.core.groups.Groups">Groups</a>, NoneType] = None) ‑> Union[<a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a>, <a title="pyflarum.flarum.core.users.User" href="../flarum/core/users.html#pyflarum.flarum.core.users.User">User</a>]</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin" href="#pyflarum.extensions.admin.AdminFlarumUserMixin">AdminFlarumUserMixin</a></code>.<code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin.update_user_info" href="../session.html#pyflarum.extensions.admin.AdminFlarumUserMixin.update_user_info">update_user_info</a></code>
+</p>
+<div class="desc inherited"><p>Updates the info of a user (this can be your user or someone else) …</p></div>
+</dd>
+<dt id="pyflarum.extensions.admin.AdminExtension.upload_user_avatar"><code class="name flex">
+<span>def <span class="ident">upload_user_avatar</span></span>(<span>self, file: <class 'BinaryIO'>, user: Optional[ForwardRef('AnyUser')] = None, file_name: str = 'avatar', file_type: Literal['image/png', 'image/jpeg', 'image/gif'] = 'image/png') ‑> Union[<a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a>, <a title="pyflarum.flarum.core.users.User" href="../flarum/core/users.html#pyflarum.flarum.core.users.User">User</a>]</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin" href="#pyflarum.extensions.admin.AdminFlarumUserMixin">AdminFlarumUserMixin</a></code>.<code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin.upload_user_avatar" href="../session.html#pyflarum.extensions.admin.AdminFlarumUserMixin.upload_user_avatar">upload_user_avatar</a></code>
+</p>
+<div class="desc inherited"><p>Uploads an avatar for yourself. If <code>user</code> is specified, then avatar of that user is changed.</p></div>
 </dd>
 </dl>
 </dd>
@@ -518,35 +652,36 @@ class ExampleExtension(ExtensionMixin):
 <span>(</span><span>extensions: Optional[List[<a title="pyflarum.extensions.ExtensionMixin" href="index.html#pyflarum.extensions.ExtensionMixin">ExtensionMixin</a>]] = None, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>dict() -&gt; new empty dictionary
-dict(mapping) -&gt; new dictionary initialized from a mapping object's
-(key, value) pairs
-dict(iterable) -&gt; new dictionary initialized as if via:
-d = {}
-for k, v in iterable:
-d[k] = v
-dict(**kwargs) -&gt; new dictionary initialized with the name=value pairs
-in the keyword argument list.
-For example:
-dict(one=1, two=2)</p></div>
+<div class="desc"><p>The main object that carries the Flarum session.</p>
+<h3 id="parameters">Parameters:</h3>
+<ul>
+<li><code>forum_url</code> - the forum URL that you want the bot to fetch/update data from. This mustn't end with trailing slash (e. g.: <a href="https://domain.tld/">https://domain.tld/</a> - wrong; <a href="https://domain.tld">https://domain.tld</a> - correct).</li>
+<li><code>username_or_email</code> - optional. The username or E-mail address to log into. If <code>None</code>, then the bot doesn't login.</li>
+<li><code>password</code> - optional. The user's password. If <code>None</code>, then the bot doesn't login.</li>
+<li><code>api_endpoint</code> - the API endpoint of the forum, without slashes. This can be specified in Flarum's <code>config.php</code> and normally forums don't need to change the default <code>'api'</code></li>
+<li><code>user_agent</code> - the user agent that will be used to make all requests. Defaults to <code>pyflarum &lt;version&gt;</code>.</li>
+<li><code>session_object</code> - the <code>Session</code> object to make requests with. You can pass any object that supports all operations from the <a href="https://pypi.org/project/requests/">requests</a> library, check <a href="https://pypi.org/project/requests-cache/">requests_cache</a> as an example.</li>
+<li><code>extensions</code> - a list of <code>ExtensionMixin</code> classes. These are monkey-patched on initialization. Learn more about <a href="https://cwkevo.github.io/pyflarum/docs/#extensions">extensions</a>.
+```</li>
+</ul></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/admin.py#L110-L262" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/admin.py#L110-L262" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class AdminFlarumUserMixin(FlarumUser):
-    def __enable_or_disable_extension(self, id: str, enabled: bool=True):
+    def __enable_or_disable_extension(self, id: Union[str, int], enabled: bool=True):
         raw = self.session.patch(f&#34;{self.api_urls[&#39;extensions&#39;]}/{id}&#34;, json={&#34;enabled&#34;: enabled})
         parse_request(raw)
 
         return True
 
 
-    def enable_extension(self, id: str):
+    def enable_extension(self, id: Union[str, int]):
         return self.__enable_or_disable_extension(id=id, enabled=True)
 
 
-    def disable_extension(self, id: str):
+    def disable_extension(self, extension: str):
         return self.__enable_or_disable_extension(id=id, enabled=False)
 
 
@@ -576,7 +711,7 @@ dict(one=1, two=2)</p></div>
         if welcome_message:
             post_data[&#34;welcome_message&#34;] = welcome_message
 
-        if user_slug_driver:
+        if user_slug_driver is not None:
             post_data[&#34;slug_driver_Flarum\\User\\User&#34;] = user_slug_driver
 
 
@@ -701,7 +836,7 @@ dict(one=1, two=2)</p></div>
 </ul>
 <h3>Instance variables</h3>
 <dl>
-<dt id="pyflarum.extensions.admin.AdminFlarumUserMixin.api_urls"><code class="name">var <span class="ident">api_urls</span></code></dt>
+<dt id="pyflarum.extensions.admin.AdminFlarumUserMixin.api_urls"><code class="name">var <span class="ident">api_urls</span> : Dict[str, str]</code></dt>
 <dd>
 <p class="inheritance">
 <em>Inherited from:</em>
@@ -712,35 +847,26 @@ dict(one=1, two=2)</p></div>
 </dl>
 <h3>Methods</h3>
 <dl>
-<dt id="pyflarum.extensions.admin.AdminFlarumUserMixin.all_discussions"><code class="name flex">
-<span>def <span class="ident">all_discussions</span></span>(<span>self, filter: <a title="pyflarum.flarum.core.filters.Filter" href="../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a> = None)</span>
+<dt id="pyflarum.extensions.admin.AdminFlarumUserMixin.authenticate"><code class="name flex">
+<span>def <span class="ident">authenticate</span></span>(<span>self, username_or_email: Optional[str] = None, password: Optional[str] = None) ‑> NoneType</span>
 </code></dt>
 <dd>
 <p class="inheritance">
 <em>Inherited from:</em>
-<code><a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.all_discussions" href="../session.html#pyflarum.session.FlarumUser.all_discussions">all_discussions</a></code>
+<code><a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.authenticate" href="../session.html#pyflarum.session.FlarumUser.authenticate">authenticate</a></code>
 </p>
-<div class="desc inherited"><p>Obtains all discussions from specific page by using <code>filter</code>.</p></div>
+<div class="desc inherited"><p>Authenticates your user. This can be run after <code>FlarumUser</code> was initialized, to switch to a different user. You can even change
+<code>FlarumUser.forum_url</code> …</p></div>
 </dd>
-<dt id="pyflarum.extensions.admin.AdminFlarumUserMixin.all_posts"><code class="name flex">
-<span>def <span class="ident">all_posts</span></span>(<span>self, filter: <a title="pyflarum.flarum.core.filters.Filter" href="../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a> = None)</span>
+<dt id="pyflarum.extensions.admin.AdminFlarumUserMixin.change_email"><code class="name flex">
+<span>def <span class="ident">change_email</span></span>(<span>self, new_email: str, password_confirmation: str, user: Optional[ForwardRef('AnyUser')] = None) ‑> Union[<a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a>, <a title="pyflarum.flarum.core.users.User" href="../flarum/core/users.html#pyflarum.flarum.core.users.User">User</a>]</span>
 </code></dt>
 <dd>
 <p class="inheritance">
 <em>Inherited from:</em>
-<code><a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.all_posts" href="../session.html#pyflarum.session.FlarumUser.all_posts">all_posts</a></code>
+<code><a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.change_email" href="../session.html#pyflarum.session.FlarumUser.change_email">change_email</a></code>
 </p>
-<div class="desc inherited"><p>Obtains all posts from specific page by using <code>filter</code>.</p></div>
-</dd>
-<dt id="pyflarum.extensions.admin.AdminFlarumUserMixin.all_users"><code class="name flex">
-<span>def <span class="ident">all_users</span></span>(<span>self, filter: <a title="pyflarum.flarum.core.filters.Filter" href="../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a> = None)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.all_users" href="../session.html#pyflarum.session.FlarumUser.all_users">all_users</a></code>
-</p>
-<div class="desc inherited"><p>Obtains all users from specific page by using <code>filter</code>.</p></div>
+<div class="desc inherited"><p>Changes your E-mail. If <code>user</code> is specified, then that user's E-mail is changed …</p></div>
 </dd>
 <dt id="pyflarum.extensions.admin.AdminFlarumUserMixin.clear_cache"><code class="name flex">
 <span>def <span class="ident">clear_cache</span></span>(<span>self)</span>
@@ -750,7 +876,7 @@ dict(one=1, two=2)</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/admin.py#L126-L130" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/admin.py#L126-L130" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def clear_cache(self):
     raw = self.session.delete(f&#34;{self.api_urls[&#39;base&#39;]}/cache&#34;)
@@ -760,32 +886,72 @@ dict(one=1, two=2)</p></div>
 </details>
 </dd>
 <dt id="pyflarum.extensions.admin.AdminFlarumUserMixin.disable_extension"><code class="name flex">
-<span>def <span class="ident">disable_extension</span></span>(<span>self, id: str)</span>
+<span>def <span class="ident">disable_extension</span></span>(<span>self, extension: str)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/admin.py#L122-L123" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/admin.py#L122-L123" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">def disable_extension(self, id: str):
+<pre><code class="python">def disable_extension(self, extension: str):
     return self.__enable_or_disable_extension(id=id, enabled=False)</code></pre>
 </details>
 </dd>
 <dt id="pyflarum.extensions.admin.AdminFlarumUserMixin.enable_extension"><code class="name flex">
-<span>def <span class="ident">enable_extension</span></span>(<span>self, id: str)</span>
+<span>def <span class="ident">enable_extension</span></span>(<span>self, id: Union[str, int])</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/admin.py#L118-L119" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/admin.py#L118-L119" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">def enable_extension(self, id: str):
+<pre><code class="python">def enable_extension(self, id: Union[str, int]):
     return self.__enable_or_disable_extension(id=id, enabled=True)</code></pre>
 </details>
+</dd>
+<dt id="pyflarum.extensions.admin.AdminFlarumUserMixin.get_discussion_by_id"><code class="name flex">
+<span>def <span class="ident">get_discussion_by_id</span></span>(<span>self, id: int) ‑> <a title="pyflarum.flarum.core.discussions.Discussion" href="../flarum/core/discussions.html#pyflarum.flarum.core.discussions.Discussion">Discussion</a></span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.get_discussion_by_id" href="../session.html#pyflarum.session.FlarumUser.get_discussion_by_id">get_discussion_by_id</a></code>
+</p>
+<div class="desc inherited"><p>Obtains a discussion by specific ID.</p></div>
+</dd>
+<dt id="pyflarum.extensions.admin.AdminFlarumUserMixin.get_discussions"><code class="name flex">
+<span>def <span class="ident">get_discussions</span></span>(<span>self, filter: <a title="pyflarum.flarum.core.filters.Filter" href="../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a> = None)</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.get_discussions" href="../session.html#pyflarum.session.FlarumUser.get_discussions">get_discussions</a></code>
+</p>
+<div class="desc inherited"><p>Obtains all discussions from <code>/api/discussions</code>, optionally filtering results by using <code>filter</code>.</p></div>
+</dd>
+<dt id="pyflarum.extensions.admin.AdminFlarumUserMixin.get_forum_data"><code class="name flex">
+<span>def <span class="ident">get_forum_data</span></span>(<span>self) ‑> <a title="pyflarum.flarum.core.forum.Forum" href="../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum">Forum</a></span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.get_forum_data" href="../session.html#pyflarum.session.FlarumUser.get_forum_data">get_forum_data</a></code>
+</p>
+<div class="desc inherited"><p>Obtains the forum data, returns <code>Forum</code> object.</p></div>
+</dd>
+<dt id="pyflarum.extensions.admin.AdminFlarumUserMixin.get_groups"><code class="name flex">
+<span>def <span class="ident">get_groups</span></span>(<span>self) ‑> <a title="pyflarum.flarum.core.groups.Groups" href="../flarum/core/groups.html#pyflarum.flarum.core.groups.Groups">Groups</a></span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.get_groups" href="../session.html#pyflarum.session.FlarumUser.get_groups">get_groups</a></code>
+</p>
+<div class="desc inherited"><p>Obtains all groups of a forum from <code>/api/groups</code>.</p></div>
 </dd>
 <dt id="pyflarum.extensions.admin.AdminFlarumUserMixin.get_mail_settings"><code class="name flex">
 <span>def <span class="ident">get_mail_settings</span></span>(<span>self)</span>
@@ -795,7 +961,7 @@ dict(one=1, two=2)</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/admin.py#L159-L163" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/admin.py#L159-L163" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_mail_settings(self):
     raw = self.session.get(f&#34;{self.api_urls[&#39;base&#39;]}/mail/settings&#34;)
@@ -812,7 +978,67 @@ dict(one=1, two=2)</p></div>
 <em>Inherited from:</em>
 <code><a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.get_notifications" href="../session.html#pyflarum.session.FlarumUser.get_notifications">get_notifications</a></code>
 </p>
-<div class="desc inherited"><p>Obtains all notifications of your user.</p></div>
+<div class="desc inherited"><p>Obtains all of your notifications from <code>/api/notifications</code>, optionally filtering results by using <code>filter</code>.</p></div>
+</dd>
+<dt id="pyflarum.extensions.admin.AdminFlarumUserMixin.get_post_by_id"><code class="name flex">
+<span>def <span class="ident">get_post_by_id</span></span>(<span>self, id: int) ‑> <a title="pyflarum.flarum.core.posts.Post" href="../flarum/core/posts.html#pyflarum.flarum.core.posts.Post">Post</a></span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.get_post_by_id" href="../session.html#pyflarum.session.FlarumUser.get_post_by_id">get_post_by_id</a></code>
+</p>
+<div class="desc inherited"><p>Obtains a post by specific ID.</p></div>
+</dd>
+<dt id="pyflarum.extensions.admin.AdminFlarumUserMixin.get_posts"><code class="name flex">
+<span>def <span class="ident">get_posts</span></span>(<span>self, filter: <a title="pyflarum.flarum.core.filters.Filter" href="../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a> = None)</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.get_posts" href="../session.html#pyflarum.session.FlarumUser.get_posts">get_posts</a></code>
+</p>
+<div class="desc inherited"><p>Obtains all posts from <code>/api/posts</code>, optionally filtering results by using <code>filter</code>.</p></div>
+</dd>
+<dt id="pyflarum.extensions.admin.AdminFlarumUserMixin.get_user_by_id"><code class="name flex">
+<span>def <span class="ident">get_user_by_id</span></span>(<span>self, id: int) ‑> <a title="pyflarum.flarum.core.users.User" href="../flarum/core/users.html#pyflarum.flarum.core.users.User">User</a></span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.get_user_by_id" href="../session.html#pyflarum.session.FlarumUser.get_user_by_id">get_user_by_id</a></code>
+</p>
+<div class="desc inherited"><p>Obtains a user by specific ID.</p></div>
+</dd>
+<dt id="pyflarum.extensions.admin.AdminFlarumUserMixin.get_users"><code class="name flex">
+<span>def <span class="ident">get_users</span></span>(<span>self, filter: <a title="pyflarum.flarum.core.filters.Filter" href="../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a> = None) ‑> <a title="pyflarum.flarum.core.users.Users" href="../flarum/core/users.html#pyflarum.flarum.core.users.Users">Users</a></span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.get_users" href="../session.html#pyflarum.session.FlarumUser.get_users">get_users</a></code>
+</p>
+<div class="desc inherited"><p>Obtains all users from <code>/api/users</code>, optionally filtering results by using <code>filter</code>.</p></div>
+</dd>
+<dt id="pyflarum.extensions.admin.AdminFlarumUserMixin.mark_all_discussions_as_read"><code class="name flex">
+<span>def <span class="ident">mark_all_discussions_as_read</span></span>(<span>self, at: datetime.datetime = datetime.datetime(2021, 7, 30, 10, 0, 37, 16357)) ‑> Literal[True]</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.mark_all_discussions_as_read" href="../session.html#pyflarum.session.FlarumUser.mark_all_discussions_as_read">mark_all_discussions_as_read</a></code>
+</p>
+<div class="desc inherited"><p>Marks all discussions as read …</p></div>
+</dd>
+<dt id="pyflarum.extensions.admin.AdminFlarumUserMixin.mark_all_notifications_as_read"><code class="name flex">
+<span>def <span class="ident">mark_all_notifications_as_read</span></span>(<span>self) ‑> Literal[True]</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.mark_all_notifications_as_read" href="../session.html#pyflarum.session.FlarumUser.mark_all_notifications_as_read">mark_all_notifications_as_read</a></code>
+</p>
+<div class="desc inherited"><p>Marks all notifications as read. Returns <code>True</code> when successful.</p></div>
 </dd>
 <dt id="pyflarum.extensions.admin.AdminFlarumUserMixin.remove_favicon"><code class="name flex">
 <span>def <span class="ident">remove_favicon</span></span>(<span>self)</span>
@@ -822,7 +1048,7 @@ dict(one=1, two=2)</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/admin.py#L239-L243" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/admin.py#L239-L243" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def remove_favicon(self):
     raw = self.session.delete(f&#34;{self.api_urls[&#39;base&#39;]}/favicon&#34;)
@@ -839,7 +1065,7 @@ dict(one=1, two=2)</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/admin.py#L224-L228" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/admin.py#L224-L228" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def remove_logo(self):
     raw = self.session.delete(f&#34;{self.api_urls[&#39;base&#39;]}/logo&#34;)
@@ -847,6 +1073,26 @@ dict(one=1, two=2)</p></div>
 
     return True</code></pre>
 </details>
+</dd>
+<dt id="pyflarum.extensions.admin.AdminFlarumUserMixin.remove_user_avatar"><code class="name flex">
+<span>def <span class="ident">remove_user_avatar</span></span>(<span>self, user: Optional[ForwardRef('AnyUser')] = None) ‑> Union[<a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a>, <a title="pyflarum.flarum.core.users.User" href="../flarum/core/users.html#pyflarum.flarum.core.users.User">User</a>]</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.remove_user_avatar" href="../session.html#pyflarum.session.FlarumUser.remove_user_avatar">remove_user_avatar</a></code>
+</p>
+<div class="desc inherited"><p>Removes your user's avatar. If <code>user</code> is specified, then avatar of that user is removed.</p></div>
+</dd>
+<dt id="pyflarum.extensions.admin.AdminFlarumUserMixin.send_password_reset_email"><code class="name flex">
+<span>def <span class="ident">send_password_reset_email</span></span>(<span>self) ‑> Union[<a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a>, <a title="pyflarum.flarum.core.users.User" href="../flarum/core/users.html#pyflarum.flarum.core.users.User">User</a>]</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.send_password_reset_email" href="../session.html#pyflarum.session.FlarumUser.send_password_reset_email">send_password_reset_email</a></code>
+</p>
+<div class="desc inherited"><p>Allows you to send yourself a password reset E-mail.</p></div>
 </dd>
 <dt id="pyflarum.extensions.admin.AdminFlarumUserMixin.send_test_mail"><code class="name flex">
 <span>def <span class="ident">send_test_mail</span></span>(<span>self)</span>
@@ -856,7 +1102,7 @@ dict(one=1, two=2)</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/admin.py#L186-L190" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/admin.py#L186-L190" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def send_test_mail(self):
     raw = self.session.post(f&#34;{self.api_urls[&#39;base&#39;]}/mail/test&#34;)
@@ -873,7 +1119,7 @@ dict(one=1, two=2)</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/admin.py#L193-L213" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/admin.py#L193-L213" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def update_appearance(self, theme_primary_color: Optional[str]=None, theme_secondary_color: Optional[str]=None, theme_dark_mode: Optional[bool]=None, theme_colored_header: bool=None):
     post_data = {}
@@ -906,7 +1152,7 @@ dict(one=1, two=2)</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/admin.py#L254-L255" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/admin.py#L254-L255" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def update_custom_css(self, css: Optional[str]=None):
     return self.__update_settings({ &#34;custom_header&#34;: (css if css else &#34;&#34;) })</code></pre>
@@ -920,7 +1166,7 @@ dict(one=1, two=2)</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/admin.py#L250-L251" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/admin.py#L250-L251" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def update_custom_footer(self, footer: Optional[str]=None):
     return self.__update_settings({ &#34;custom_footer&#34;: (footer if footer else &#34;&#34;) })</code></pre>
@@ -934,7 +1180,7 @@ dict(one=1, two=2)</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/admin.py#L246-L247" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/admin.py#L246-L247" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def update_custom_header(self, header: Optional[str]=None):
     return self.__update_settings({ &#34;custom_header&#34;: (header if header else &#34;&#34;) })</code></pre>
@@ -948,7 +1194,7 @@ dict(one=1, two=2)</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/admin.py#L133-L156" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/admin.py#L133-L156" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def update_forum_info(self, forum_title: Optional[str]=None, forum_description: Optional[str]=None, default_route: Optional[str]=None, welcome_title: Optional[str]=None, welcome_message: Optional[str]=None, user_slug_driver: Optional[Literal[&#34;&#34;, &#34;default&#34;, &#34;id&#34;]]=None):
     post_data = {}
@@ -969,7 +1215,7 @@ dict(one=1, two=2)</p></div>
     if welcome_message:
         post_data[&#34;welcome_message&#34;] = welcome_message
 
-    if user_slug_driver:
+    if user_slug_driver is not None:
         post_data[&#34;slug_driver_Flarum\\User\\User&#34;] = user_slug_driver
 
 
@@ -984,7 +1230,7 @@ dict(one=1, two=2)</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/admin.py#L166-L183" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/admin.py#L166-L183" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def update_mail_settings(self, mail_from: Optional[str]=None, mail_encryption: Optional[str]=None, mail_username: Optional[str]=None, mail_password: Optional[str]=None):
     post_data = {}
@@ -1006,6 +1252,26 @@ dict(one=1, two=2)</p></div>
     return self.__update_settings(post_data)</code></pre>
 </details>
 </dd>
+<dt id="pyflarum.extensions.admin.AdminFlarumUserMixin.update_preferences"><code class="name flex">
+<span>def <span class="ident">update_preferences</span></span>(<span>self, preferences: Iterable[Tuple[str, Any]], user: Optional[ForwardRef('AnyUser')] = None) ‑> Union[<a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a>, <a title="pyflarum.flarum.core.users.User" href="../flarum/core/users.html#pyflarum.flarum.core.users.User">User</a>]</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.update_preferences" href="../session.html#pyflarum.session.FlarumUser.update_preferences">update_preferences</a></code>
+</p>
+<div class="desc inherited"><p>Updates an user's preferences …</p></div>
+</dd>
+<dt id="pyflarum.extensions.admin.AdminFlarumUserMixin.update_user_info"><code class="name flex">
+<span>def <span class="ident">update_user_info</span></span>(<span>self, user: Optional[ForwardRef('AnyUser')] = None, new_username: Optional[str] = None, groups: Union[List[Union[str, int]], List[<a title="pyflarum.flarum.core.groups.Group" href="../flarum/core/groups.html#pyflarum.flarum.core.groups.Group">Group</a>], <a title="pyflarum.flarum.core.groups.Groups" href="../flarum/core/groups.html#pyflarum.flarum.core.groups.Groups">Groups</a>, NoneType] = None) ‑> Union[<a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a>, <a title="pyflarum.flarum.core.users.User" href="../flarum/core/users.html#pyflarum.flarum.core.users.User">User</a>]</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.update_user_info" href="../session.html#pyflarum.session.FlarumUser.update_user_info">update_user_info</a></code>
+</p>
+<div class="desc inherited"><p>Updates the info of a user (this can be your user or someone else) …</p></div>
+</dd>
 <dt id="pyflarum.extensions.admin.AdminFlarumUserMixin.upload_favicon"><code class="name flex">
 <span>def <span class="ident">upload_favicon</span></span>(<span>self, file: <class 'BinaryIO'>, file_name: str = 'favicon', file_type: Literal['image/png', 'image/jpeg', 'image/gif'] = 'image/png')</span>
 </code></dt>
@@ -1014,7 +1280,7 @@ dict(one=1, two=2)</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/admin.py#L231-L236" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/admin.py#L231-L236" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def upload_favicon(self, file: BinaryIO, file_name: str=&#34;favicon&#34;, file_type: Literal[&#39;image/png&#39;, &#39;image/jpeg&#39;, &#39;image/gif&#39;]=&#34;image/png&#34;):
     raw = self.session.post(url=f&#34;{self.api_urls[&#39;base&#39;]}/favicon&#34;, files={ &#34;favicon&#34;: (file_name, file, file_type) })
@@ -1032,7 +1298,7 @@ dict(one=1, two=2)</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/admin.py#L216-L221" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/admin.py#L216-L221" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def upload_logo(self, file: BinaryIO, file_name: str=&#34;logo&#34;, file_type: Literal[&#39;image/png&#39;, &#39;image/jpeg&#39;, &#39;image/gif&#39;]=&#34;image/png&#34;):
     raw = self.session.post(url=f&#34;{self.api_urls[&#39;base&#39;]}/logo&#34;, files={ &#34;logo&#34;: (file_name, file, file_type) })
@@ -1041,6 +1307,16 @@ dict(one=1, two=2)</p></div>
 
     return True</code></pre>
 </details>
+</dd>
+<dt id="pyflarum.extensions.admin.AdminFlarumUserMixin.upload_user_avatar"><code class="name flex">
+<span>def <span class="ident">upload_user_avatar</span></span>(<span>self, file: <class 'BinaryIO'>, user: Optional[ForwardRef('AnyUser')] = None, file_name: str = 'avatar', file_type: Literal['image/png', 'image/jpeg', 'image/gif'] = 'image/png') ‑> Union[<a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a>, <a title="pyflarum.flarum.core.users.User" href="../flarum/core/users.html#pyflarum.flarum.core.users.User">User</a>]</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.upload_user_avatar" href="../session.html#pyflarum.session.FlarumUser.upload_user_avatar">upload_user_avatar</a></code>
+</p>
+<div class="desc inherited"><p>Uploads an avatar for yourself. If <code>user</code> is specified, then avatar of that user is changed.</p></div>
 </dd>
 </dl>
 </dd>
@@ -1063,7 +1339,7 @@ dict(one=1, two=2)</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/admin.py#L18-L106" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/admin.py#L18-L106" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class MailSettings(dict):
     @property
@@ -1167,7 +1443,7 @@ dict(one=1, two=2)</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/admin.py#L34-L36" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/admin.py#L34-L36" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def attributes(self) -&gt; dict:
@@ -1180,7 +1456,7 @@ def attributes(self) -&gt; dict:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/admin.py#L19-L21" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/admin.py#L19-L21" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def data(self) -&gt; dict:
@@ -1193,7 +1469,7 @@ def data(self) -&gt; dict:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/admin.py#L104-L106" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/admin.py#L104-L106" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def errors(self) -&gt; list:
@@ -1206,7 +1482,7 @@ def errors(self) -&gt; list:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/admin.py#L39-L41" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/admin.py#L39-L41" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def fields(self) -&gt; dict:
@@ -1219,7 +1495,7 @@ def fields(self) -&gt; dict:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/admin.py#L29-L31" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/admin.py#L29-L31" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def id(self) -&gt; Optional[str]:
@@ -1232,7 +1508,7 @@ def id(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/admin.py#L64-L66" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/admin.py#L64-L66" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def log(self) -&gt; list:
@@ -1245,7 +1521,7 @@ def log(self) -&gt; list:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/admin.py#L44-L46" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/admin.py#L44-L46" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def mail(self) -&gt; list:
@@ -1258,7 +1534,7 @@ def mail(self) -&gt; list:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/admin.py#L84-L86" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/admin.py#L84-L86" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def mail_encryption(self) -&gt; Optional[str]:
@@ -1271,7 +1547,7 @@ def mail_encryption(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/admin.py#L74-L76" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/admin.py#L74-L76" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def mail_host(self) -&gt; Optional[str]:
@@ -1284,7 +1560,7 @@ def mail_host(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/admin.py#L94-L96" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/admin.py#L94-L96" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def mail_password(self) -&gt; Optional[str]:
@@ -1297,7 +1573,7 @@ def mail_password(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/admin.py#L79-L81" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/admin.py#L79-L81" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def mail_port(self) -&gt; Optional[str]:
@@ -1310,7 +1586,7 @@ def mail_port(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/admin.py#L89-L91" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/admin.py#L89-L91" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def mail_username(self) -&gt; Optional[str]:
@@ -1323,7 +1599,7 @@ def mail_username(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/admin.py#L49-L51" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/admin.py#L49-L51" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def mailgun(self) -&gt; dict:
@@ -1336,7 +1612,7 @@ def mailgun(self) -&gt; dict:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/admin.py#L59-L61" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/admin.py#L59-L61" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def mailgun_domain(self) -&gt; Optional[str]:
@@ -1349,7 +1625,7 @@ def mailgun_domain(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/admin.py#L54-L56" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/admin.py#L54-L56" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def mailgun_secret(self) -&gt; Optional[str]:
@@ -1362,7 +1638,7 @@ def mailgun_secret(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/admin.py#L99-L101" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/admin.py#L99-L101" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def sending(self) -&gt; bool:
@@ -1375,7 +1651,7 @@ def sending(self) -&gt; bool:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/admin.py#L69-L71" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/admin.py#L69-L71" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def smtp(self) -&gt; dict:
@@ -1388,7 +1664,7 @@ def smtp(self) -&gt; dict:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/admin.py#L24-L26" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/admin.py#L24-L26" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def type(self) -&gt; Optional[str]:
@@ -1461,30 +1737,55 @@ setTimeout(() => input.focus(), 100);
 <ul>
 <li>
 <h4><code><a title="pyflarum.extensions.admin.AdminExtension" href="#pyflarum.extensions.admin.AdminExtension">AdminExtension</a></code></h4>
-<ul class="two-column">
-<li><code><a title="pyflarum.extensions.admin.AdminExtension.all_discussions" href="../session.html#pyflarum.extensions.admin.AdminExtension.all_discussions">all_discussions</a></code></li>
-<li><code><a title="pyflarum.extensions.admin.AdminExtension.all_posts" href="../session.html#pyflarum.extensions.admin.AdminExtension.all_posts">all_posts</a></code></li>
-<li><code><a title="pyflarum.extensions.admin.AdminExtension.all_users" href="../session.html#pyflarum.extensions.admin.AdminExtension.all_users">all_users</a></code></li>
+<ul class="">
 <li><code><a title="pyflarum.extensions.admin.AdminExtension.api_urls" href="../session.html#pyflarum.extensions.admin.AdminExtension.api_urls">api_urls</a></code></li>
+<li><code><a title="pyflarum.extensions.admin.AdminExtension.authenticate" href="../session.html#pyflarum.extensions.admin.AdminExtension.authenticate">authenticate</a></code></li>
+<li><code><a title="pyflarum.extensions.admin.AdminExtension.change_email" href="../session.html#pyflarum.extensions.admin.AdminExtension.change_email">change_email</a></code></li>
 <li><code><a title="pyflarum.extensions.admin.AdminExtension.get_dependencies" href="#pyflarum.extensions.admin.AdminExtension.get_dependencies">get_dependencies</a></code></li>
+<li><code><a title="pyflarum.extensions.admin.AdminExtension.get_discussion_by_id" href="../session.html#pyflarum.extensions.admin.AdminExtension.get_discussion_by_id">get_discussion_by_id</a></code></li>
+<li><code><a title="pyflarum.extensions.admin.AdminExtension.get_discussions" href="../session.html#pyflarum.extensions.admin.AdminExtension.get_discussions">get_discussions</a></code></li>
+<li><code><a title="pyflarum.extensions.admin.AdminExtension.get_forum_data" href="../session.html#pyflarum.extensions.admin.AdminExtension.get_forum_data">get_forum_data</a></code></li>
+<li><code><a title="pyflarum.extensions.admin.AdminExtension.get_groups" href="../session.html#pyflarum.extensions.admin.AdminExtension.get_groups">get_groups</a></code></li>
 <li><code><a title="pyflarum.extensions.admin.AdminExtension.get_notifications" href="../session.html#pyflarum.extensions.admin.AdminExtension.get_notifications">get_notifications</a></code></li>
+<li><code><a title="pyflarum.extensions.admin.AdminExtension.get_post_by_id" href="../session.html#pyflarum.extensions.admin.AdminExtension.get_post_by_id">get_post_by_id</a></code></li>
+<li><code><a title="pyflarum.extensions.admin.AdminExtension.get_posts" href="../session.html#pyflarum.extensions.admin.AdminExtension.get_posts">get_posts</a></code></li>
+<li><code><a title="pyflarum.extensions.admin.AdminExtension.get_user_by_id" href="../session.html#pyflarum.extensions.admin.AdminExtension.get_user_by_id">get_user_by_id</a></code></li>
+<li><code><a title="pyflarum.extensions.admin.AdminExtension.get_users" href="../session.html#pyflarum.extensions.admin.AdminExtension.get_users">get_users</a></code></li>
+<li><code><a title="pyflarum.extensions.admin.AdminExtension.mark_all_discussions_as_read" href="../session.html#pyflarum.extensions.admin.AdminExtension.mark_all_discussions_as_read">mark_all_discussions_as_read</a></code></li>
+<li><code><a title="pyflarum.extensions.admin.AdminExtension.mark_all_notifications_as_read" href="../session.html#pyflarum.extensions.admin.AdminExtension.mark_all_notifications_as_read">mark_all_notifications_as_read</a></code></li>
 <li><code><a title="pyflarum.extensions.admin.AdminExtension.mixin" href="#pyflarum.extensions.admin.AdminExtension.mixin">mixin</a></code></li>
+<li><code><a title="pyflarum.extensions.admin.AdminExtension.remove_user_avatar" href="../session.html#pyflarum.extensions.admin.AdminExtension.remove_user_avatar">remove_user_avatar</a></code></li>
+<li><code><a title="pyflarum.extensions.admin.AdminExtension.send_password_reset_email" href="../session.html#pyflarum.extensions.admin.AdminExtension.send_password_reset_email">send_password_reset_email</a></code></li>
+<li><code><a title="pyflarum.extensions.admin.AdminExtension.update_preferences" href="../session.html#pyflarum.extensions.admin.AdminExtension.update_preferences">update_preferences</a></code></li>
+<li><code><a title="pyflarum.extensions.admin.AdminExtension.update_user_info" href="../session.html#pyflarum.extensions.admin.AdminExtension.update_user_info">update_user_info</a></code></li>
+<li><code><a title="pyflarum.extensions.admin.AdminExtension.upload_user_avatar" href="../session.html#pyflarum.extensions.admin.AdminExtension.upload_user_avatar">upload_user_avatar</a></code></li>
 </ul>
 </li>
 <li>
 <h4><code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin" href="#pyflarum.extensions.admin.AdminFlarumUserMixin">AdminFlarumUserMixin</a></code></h4>
 <ul class="">
-<li><code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin.all_discussions" href="../session.html#pyflarum.extensions.admin.AdminFlarumUserMixin.all_discussions">all_discussions</a></code></li>
-<li><code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin.all_posts" href="../session.html#pyflarum.extensions.admin.AdminFlarumUserMixin.all_posts">all_posts</a></code></li>
-<li><code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin.all_users" href="../session.html#pyflarum.extensions.admin.AdminFlarumUserMixin.all_users">all_users</a></code></li>
 <li><code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin.api_urls" href="../session.html#pyflarum.extensions.admin.AdminFlarumUserMixin.api_urls">api_urls</a></code></li>
+<li><code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin.authenticate" href="../session.html#pyflarum.extensions.admin.AdminFlarumUserMixin.authenticate">authenticate</a></code></li>
+<li><code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin.change_email" href="../session.html#pyflarum.extensions.admin.AdminFlarumUserMixin.change_email">change_email</a></code></li>
 <li><code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin.clear_cache" href="#pyflarum.extensions.admin.AdminFlarumUserMixin.clear_cache">clear_cache</a></code></li>
 <li><code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin.disable_extension" href="#pyflarum.extensions.admin.AdminFlarumUserMixin.disable_extension">disable_extension</a></code></li>
 <li><code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin.enable_extension" href="#pyflarum.extensions.admin.AdminFlarumUserMixin.enable_extension">enable_extension</a></code></li>
+<li><code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin.get_discussion_by_id" href="../session.html#pyflarum.extensions.admin.AdminFlarumUserMixin.get_discussion_by_id">get_discussion_by_id</a></code></li>
+<li><code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin.get_discussions" href="../session.html#pyflarum.extensions.admin.AdminFlarumUserMixin.get_discussions">get_discussions</a></code></li>
+<li><code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin.get_forum_data" href="../session.html#pyflarum.extensions.admin.AdminFlarumUserMixin.get_forum_data">get_forum_data</a></code></li>
+<li><code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin.get_groups" href="../session.html#pyflarum.extensions.admin.AdminFlarumUserMixin.get_groups">get_groups</a></code></li>
 <li><code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin.get_mail_settings" href="#pyflarum.extensions.admin.AdminFlarumUserMixin.get_mail_settings">get_mail_settings</a></code></li>
 <li><code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin.get_notifications" href="../session.html#pyflarum.extensions.admin.AdminFlarumUserMixin.get_notifications">get_notifications</a></code></li>
+<li><code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin.get_post_by_id" href="../session.html#pyflarum.extensions.admin.AdminFlarumUserMixin.get_post_by_id">get_post_by_id</a></code></li>
+<li><code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin.get_posts" href="../session.html#pyflarum.extensions.admin.AdminFlarumUserMixin.get_posts">get_posts</a></code></li>
+<li><code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin.get_user_by_id" href="../session.html#pyflarum.extensions.admin.AdminFlarumUserMixin.get_user_by_id">get_user_by_id</a></code></li>
+<li><code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin.get_users" href="../session.html#pyflarum.extensions.admin.AdminFlarumUserMixin.get_users">get_users</a></code></li>
+<li><code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin.mark_all_discussions_as_read" href="../session.html#pyflarum.extensions.admin.AdminFlarumUserMixin.mark_all_discussions_as_read">mark_all_discussions_as_read</a></code></li>
+<li><code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin.mark_all_notifications_as_read" href="../session.html#pyflarum.extensions.admin.AdminFlarumUserMixin.mark_all_notifications_as_read">mark_all_notifications_as_read</a></code></li>
 <li><code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin.remove_favicon" href="#pyflarum.extensions.admin.AdminFlarumUserMixin.remove_favicon">remove_favicon</a></code></li>
 <li><code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin.remove_logo" href="#pyflarum.extensions.admin.AdminFlarumUserMixin.remove_logo">remove_logo</a></code></li>
+<li><code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin.remove_user_avatar" href="../session.html#pyflarum.extensions.admin.AdminFlarumUserMixin.remove_user_avatar">remove_user_avatar</a></code></li>
+<li><code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin.send_password_reset_email" href="../session.html#pyflarum.extensions.admin.AdminFlarumUserMixin.send_password_reset_email">send_password_reset_email</a></code></li>
 <li><code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin.send_test_mail" href="#pyflarum.extensions.admin.AdminFlarumUserMixin.send_test_mail">send_test_mail</a></code></li>
 <li><code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin.update_appearance" href="#pyflarum.extensions.admin.AdminFlarumUserMixin.update_appearance">update_appearance</a></code></li>
 <li><code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin.update_custom_css" href="#pyflarum.extensions.admin.AdminFlarumUserMixin.update_custom_css">update_custom_css</a></code></li>
@@ -1492,8 +1793,11 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin.update_custom_header" href="#pyflarum.extensions.admin.AdminFlarumUserMixin.update_custom_header">update_custom_header</a></code></li>
 <li><code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin.update_forum_info" href="#pyflarum.extensions.admin.AdminFlarumUserMixin.update_forum_info">update_forum_info</a></code></li>
 <li><code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin.update_mail_settings" href="#pyflarum.extensions.admin.AdminFlarumUserMixin.update_mail_settings">update_mail_settings</a></code></li>
+<li><code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin.update_preferences" href="../session.html#pyflarum.extensions.admin.AdminFlarumUserMixin.update_preferences">update_preferences</a></code></li>
+<li><code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin.update_user_info" href="../session.html#pyflarum.extensions.admin.AdminFlarumUserMixin.update_user_info">update_user_info</a></code></li>
 <li><code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin.upload_favicon" href="#pyflarum.extensions.admin.AdminFlarumUserMixin.upload_favicon">upload_favicon</a></code></li>
 <li><code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin.upload_logo" href="#pyflarum.extensions.admin.AdminFlarumUserMixin.upload_logo">upload_logo</a></code></li>
+<li><code><a title="pyflarum.extensions.admin.AdminFlarumUserMixin.upload_user_avatar" href="../session.html#pyflarum.extensions.admin.AdminFlarumUserMixin.upload_user_avatar">upload_user_avatar</a></code></li>
 </ul>
 </li>
 <li>

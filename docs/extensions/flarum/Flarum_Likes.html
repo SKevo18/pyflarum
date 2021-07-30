@@ -25,15 +25,18 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/flarum/Flarum_Likes.py#L0-L90" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/flarum/Flarum_Likes.py#L0-L108" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">from typing import List
+<pre><code class="python">from typing import List, Optional, Type, Union
 
 from .. import ExtensionMixin
 
-from ...flarum.core.users import UserFromBulk
-from ...flarum.core.posts import Post, PostFromBulk, PostFromNotification
+from ...session import FlarumUser
 from ...error_handler import parse_request
+
+from ...flarum.core.users import UserFromBulk
+from ...flarum.core.posts import Post, PostFromBulk, PostFromNotification, PostFromDiscussion
+
 
 
 AUTHOR = &#39;flarum&#39;
@@ -44,15 +47,13 @@ SOFT_DEPENDENCIES = []
 HARD_DEPENCENDIES = []
 
 
-class LikesPostFromNotificationMixin(PostFromNotification):
-    @property
-    def canLike(self) -&gt; bool:
-        return self.attributes.get(&#34;canLike&#34;, False)
-    
 
-    def __like_or_unlike(self, liked: bool=True):
+class LikesPostFromDiscussionMixin:
+    def __like_or_unlike(self: PostFromDiscussion, liked: bool=True) -&gt; Post:
         &#34;&#34;&#34;
             A function to either like or unlike post, to prevent repetition.
+
+            Use `like()` or `unlike()` instead, please.
         &#34;&#34;&#34;
 
         patch_data = {
@@ -71,7 +72,7 @@ class LikesPostFromNotificationMixin(PostFromNotification):
         return Post(user=self.user, _fetched_data=json)
 
 
-    def like(self):
+    def like(self) -&gt; Post:
         &#34;&#34;&#34;
             Likes a post.
         &#34;&#34;&#34;
@@ -79,17 +80,28 @@ class LikesPostFromNotificationMixin(PostFromNotification):
         return self.__like_or_unlike(liked=True)
 
 
-    def unlike(self):
+    def unlike(self) -&gt; Post:
         &#34;&#34;&#34;
             Unlikes liked post.
         &#34;&#34;&#34;
 
         return self.__like_or_unlike(liked=False)
+LikesPostFromDiscussionMixin: Union[Type[LikesPostFromDiscussionMixin], Type[PostFromDiscussion]]
 
 
+class LikesPostFromNotificationMixin:
+    @property
+    def canLike(self: PostFromNotification) -&gt; bool:
+        return self.attributes.get(&#34;canLike&#34;, False)
+LikesPostFromNotificationMixin: Union[Type[LikesPostFromNotificationMixin], Type[LikesPostFromDiscussionMixin]]
 
-class LikesPostFromBulkMixin(PostFromBulk, LikesPostFromNotificationMixin):
-    def get_liked_by(self):
+
+class LikesPostFromBulkMixin:
+    def get_liked_by(self: PostFromBulk) -&gt; List[UserFromBulk]:
+        &#34;&#34;&#34;
+            Obtain the list of users that liked the post.
+        &#34;&#34;&#34;
+
         all_users = list() # type: List[UserFromBulk]
 
         for raw_user in self.relationships.get(&#34;likes&#34;, {}).get(&#34;data&#34;, [{}]):
@@ -104,10 +116,15 @@ class LikesPostFromBulkMixin(PostFromBulk, LikesPostFromNotificationMixin):
                             all_users.append(user)
 
         return all_users
+LikesPostFromBulkMixin: Union[Type[LikesPostFromBulkMixin], Type[LikesPostFromNotificationMixin]]
 
 
 
 class LikesExtension(ExtensionMixin):
+    &#34;&#34;&#34;
+        https://packagist.org/packages/flarum/likes
+    &#34;&#34;&#34;
+
     def get_dependencies(self):
         return {
             &#34;soft&#34;: SOFT_DEPENDENCIES,
@@ -116,6 +133,7 @@ class LikesExtension(ExtensionMixin):
 
 
     def mixin(self):
+        super().mixin(self, PostFromDiscussion, LikesPostFromDiscussionMixin)
         super().mixin(self, PostFromNotification, LikesPostFromNotificationMixin)
         super().mixin(self, PostFromBulk, LikesPostFromBulkMixin)</code></pre>
 </details>
@@ -133,80 +151,17 @@ class LikesExtension(ExtensionMixin):
 <span>class <span class="ident">LikesExtension</span></span>
 </code></dt>
 <dd>
-<div class="desc"><p>A base class for mixing in custom classes (extensions) into another classes.</p>
-<h3 id="example-extension-code">Example extension code:</h3>
-<pre><code class="language-python">from pyflarum.extensions import ExtensionMixin
-from pyflarum.extensions.admin import AdminExtension
-from pyflarum.session import FlarumUser
-
-
-# Lowecase:
-AUTHOR = &quot;yourname&quot;
-NAME = &quot;extensionname&quot;
-ID = f&quot;{AUTHOR}-{NAME}&quot;
-
-# List of dependencies:
-SOFT_DEPENDENCIES = [AdminExtension] # uses methods from this extension, but can run without it
-HARD_DEPENCENDIES = []
-
-
-
-# I recommend to use the following naming pattern: `&lt;YourExtensionName&gt;&lt;ClassToMixin&gt;Mixin`
-# Example:
-class ExampleFlarumUserMixin(FlarumUser):
-    @property
-    def __example(self):
-        '''
-            Calling `FlarumUser(&lt;...&gt;).__example` would return this.
-        '''
-
-        return &quot;Example&quot;
-
-
-
-class ExampleExtension(ExtensionMixin):
-    def get_dependencies(self):
-        '''
-            Overwrite this method to make your own dependencies.
-
-            This should return the following `dict`:
-            ```python
-            {
-                &quot;hard&quot;: [&lt;class&gt;, &lt;class&gt;, ...],
-                &quot;soft&quot;: [&lt;class&gt;, &lt;class&gt;, ...]
-            }
-            ```
-
-            #### Hard-dependencies:
-            - Will raise an error when they're not found in the initialized `FlarumUser` object. It is impossible for the extension
-            to function without these.
-
-            #### Soft-dependencies:
-            - Will raise just a warning. It is possible for the extension to function without these, although with limitations
-            (such that some functions might be unavailable).
-        '''
-
-        return {
-            &quot;soft&quot;: SOFT_DEPENDENCIES,
-            &quot;hard&quot;: HARD_DEPENCENDIES
-        }
-
-
-    def mixin(self):
-        '''
-            This extends the `FlarumUser` class with features from `ExampleMixin`
-        '''
-
-        super().mixin(self, FlarumUser, ExampleMixin)
-
-</code></pre>
-<p>Initializes the <code>ExtensionMixin</code> object.</p></div>
+<div class="desc"><p><a href="https://packagist.org/packages/flarum/likes">https://packagist.org/packages/flarum/likes</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/flarum/Flarum_Likes.py#L81-L91" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/flarum/Flarum_Likes.py#L94-L109" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class LikesExtension(ExtensionMixin):
+    &#34;&#34;&#34;
+        https://packagist.org/packages/flarum/likes
+    &#34;&#34;&#34;
+
     def get_dependencies(self):
         return {
             &#34;soft&#34;: SOFT_DEPENDENCIES,
@@ -215,6 +170,7 @@ class ExampleExtension(ExtensionMixin):
 
 
     def mixin(self):
+        super().mixin(self, PostFromDiscussion, LikesPostFromDiscussionMixin)
         super().mixin(self, PostFromNotification, LikesPostFromNotificationMixin)
         super().mixin(self, PostFromBulk, LikesPostFromBulkMixin)</code></pre>
 </details>
@@ -232,11 +188,16 @@ class ExampleExtension(ExtensionMixin):
 <em>Inherited from:</em>
 <code><a title="pyflarum.extensions.ExtensionMixin" href="../index.html#pyflarum.extensions.ExtensionMixin">ExtensionMixin</a></code>.<code><a title="pyflarum.extensions.ExtensionMixin.get_dependencies" href="../index.html#pyflarum.extensions.ExtensionMixin.get_dependencies">get_dependencies</a></code>
 </p>
-<div class="desc inherited"><p>Overwrite this method to make your own dependencies …</p></div>
+<div class="desc inherited"><p>This should return the following <code>dict</code>:
+<code>python
+{
+"hard": [&lt;class&gt;, &lt;class&gt;, ...],
+"soft": [&lt;class&gt;, &lt;class&gt;, ...]
+}</code> …</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/flarum/Flarum_Likes.py#L82-L86" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/flarum/Flarum_Likes.py#L99-L103" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_dependencies(self):
     return {
@@ -253,13 +214,14 @@ class ExampleExtension(ExtensionMixin):
 <em>Inherited from:</em>
 <code><a title="pyflarum.extensions.ExtensionMixin" href="../index.html#pyflarum.extensions.ExtensionMixin">ExtensionMixin</a></code>.<code><a title="pyflarum.extensions.ExtensionMixin.mixin" href="../index.html#pyflarum.extensions.ExtensionMixin.mixin">mixin</a></code>
 </p>
-<div class="desc inherited"><p>A boilerplate function for mixing …</p></div>
+<div class="desc inherited"><p>A function to mix-in/merge properties, methods, functions, etc&hellip; of one class into another …</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/flarum/Flarum_Likes.py#L89-L91" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/flarum/Flarum_Likes.py#L106-L109" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def mixin(self):
+    super().mixin(self, PostFromDiscussion, LikesPostFromDiscussionMixin)
     super().mixin(self, PostFromNotification, LikesPostFromNotificationMixin)
     super().mixin(self, PostFromBulk, LikesPostFromBulkMixin)</code></pre>
 </details>
@@ -268,17 +230,20 @@ class ExampleExtension(ExtensionMixin):
 </dd>
 <dt id="pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromBulkMixin"><code class="flex name class">
 <span>class <span class="ident">LikesPostFromBulkMixin</span></span>
-<span>(</span><span>user: FlarumUser, _fetched_data: dict)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>A post from <code>Posts</code>.</p></div>
+<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/flarum/Flarum_Likes.py#L62-L77" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/flarum/Flarum_Likes.py#L70-L89" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">class LikesPostFromBulkMixin(PostFromBulk, LikesPostFromNotificationMixin):
-    def get_liked_by(self):
+<pre><code class="python">class LikesPostFromBulkMixin:
+    def get_liked_by(self: PostFromBulk) -&gt; List[UserFromBulk]:
+        &#34;&#34;&#34;
+            Obtain the list of users that liked the post.
+        &#34;&#34;&#34;
+
         all_users = list() # type: List[UserFromBulk]
 
         for raw_user in self.relationships.get(&#34;likes&#34;, {}).get(&#34;data&#34;, [{}]):
@@ -294,47 +259,23 @@ class ExampleExtension(ExtensionMixin):
 
         return all_users</code></pre>
 </details>
-<h3>Ancestors</h3>
-<ul class="hlist">
-<li><a title="pyflarum.flarum.core.posts.PostFromBulk" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromBulk">PostFromBulk</a></li>
-<li><a title="pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromNotificationMixin" href="#pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromNotificationMixin">LikesPostFromNotificationMixin</a></li>
-<li><a title="pyflarum.flarum.core.posts.PostFromNotification" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromNotification">PostFromNotification</a></li>
-<li><a title="pyflarum.flarum.core.posts.PostFromDiscussion" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromDiscussion">PostFromDiscussion</a></li>
-<li>builtins.dict</li>
-</ul>
 <h3>Methods</h3>
 <dl>
-<dt id="pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromBulkMixin.delete"><code class="name flex">
-<span>def <span class="ident">delete</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.posts.PostFromBulk" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromBulk">PostFromBulk</a></code>.<code><a title="pyflarum.flarum.core.posts.PostFromBulk.delete" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromBulk.delete">delete</a></code>
-</p>
-<div class="desc inherited"><p>Removes the post forever.</p></div>
-</dd>
-<dt id="pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromBulkMixin.edit"><code class="name flex">
-<span>def <span class="ident">edit</span></span>(<span>self, new_data: <a title="pyflarum.flarum.core.posts.PreparedPost" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PreparedPost">PreparedPost</a>)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.posts.PostFromBulk" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromBulk">PostFromBulk</a></code>.<code><a title="pyflarum.flarum.core.posts.PostFromBulk.edit" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromBulk.edit">edit</a></code>
-</p>
-<div class="desc inherited"><p>Edits the post.</p></div>
-</dd>
 <dt id="pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromBulkMixin.get_liked_by"><code class="name flex">
-<span>def <span class="ident">get_liked_by</span></span>(<span>self)</span>
+<span>def <span class="ident">get_liked_by</span></span>(<span>self: <a title="pyflarum.flarum.core.posts.PostFromBulk" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromBulk">PostFromBulk</a>) ‑> List[<a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a>]</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Obtain the list of users that liked the post.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/flarum/Flarum_Likes.py#L63-L77" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/flarum/Flarum_Likes.py#L71-L89" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">def get_liked_by(self):
+<pre><code class="python">def get_liked_by(self: PostFromBulk) -&gt; List[UserFromBulk]:
+    &#34;&#34;&#34;
+        Obtain the list of users that liked the post.
+    &#34;&#34;&#34;
+
     all_users = list() # type: List[UserFromBulk]
 
     for raw_user in self.relationships.get(&#34;likes&#34;, {}).get(&#34;data&#34;, [{}]):
@@ -351,88 +292,24 @@ class ExampleExtension(ExtensionMixin):
     return all_users</code></pre>
 </details>
 </dd>
-<dt id="pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromBulkMixin.hide"><code class="name flex">
-<span>def <span class="ident">hide</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.posts.PostFromBulk" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromBulk">PostFromBulk</a></code>.<code><a title="pyflarum.flarum.core.posts.PostFromBulk.hide" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromBulk.hide">hide</a></code>
-</p>
-<div class="desc inherited"><p>Hides the post. Raises <code>FlarumError</code> or returns <code>False</code> if it failed, otherwise <code>True</code> is returned.</p></div>
-</dd>
-<dt id="pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromBulkMixin.like"><code class="name flex">
-<span>def <span class="ident">like</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromNotificationMixin" href="#pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromNotificationMixin">LikesPostFromNotificationMixin</a></code>.<code><a title="pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromNotificationMixin.like" href="#pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromNotificationMixin.like">like</a></code>
-</p>
-<div class="desc inherited"><p>Likes a post.</p></div>
-</dd>
-<dt id="pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromBulkMixin.reply_to"><code class="name flex">
-<span>def <span class="ident">reply_to</span></span>(<span>self, post: <a title="pyflarum.flarum.core.posts.PreparedPost" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PreparedPost">PreparedPost</a>)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.posts.PostFromBulk" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromBulk">PostFromBulk</a></code>.<code><a title="pyflarum.flarum.core.posts.PostFromBulk.reply_to" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromBulk.reply_to">reply_to</a></code>
-</p>
-<div class="desc inherited"><p>Replies to this <code>Post</code> with another <code>PreparedPost</code>.</p></div>
-</dd>
-<dt id="pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromBulkMixin.restore"><code class="name flex">
-<span>def <span class="ident">restore</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.posts.PostFromBulk" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromBulk">PostFromBulk</a></code>.<code><a title="pyflarum.flarum.core.posts.PostFromBulk.restore" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromBulk.restore">restore</a></code>
-</p>
-<div class="desc inherited"><p>Restores the post (unhides). Raises <code>FlarumError</code> or returns <code>False</code> if it failed, otherwise <code>True</code> is returned.</p></div>
-</dd>
-<dt id="pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromBulkMixin.unhide"><code class="name flex">
-<span>def <span class="ident">unhide</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.posts.PostFromBulk" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromBulk">PostFromBulk</a></code>.<code><a title="pyflarum.flarum.core.posts.PostFromBulk.unhide" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromBulk.unhide">unhide</a></code>
-</p>
-<div class="desc inherited"><p>Restores the post (unhides). Raises <code>FlarumError</code> or returns <code>False</code> if it failed, otherwise <code>True</code> is returned.</p></div>
-</dd>
-<dt id="pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromBulkMixin.unlike"><code class="name flex">
-<span>def <span class="ident">unlike</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromNotificationMixin" href="#pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromNotificationMixin">LikesPostFromNotificationMixin</a></code>.<code><a title="pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromNotificationMixin.unlike" href="#pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromNotificationMixin.unlike">unlike</a></code>
-</p>
-<div class="desc inherited"><p>Unlikes liked post.</p></div>
-</dd>
 </dl>
 </dd>
-<dt id="pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromNotificationMixin"><code class="flex name class">
-<span>class <span class="ident">LikesPostFromNotificationMixin</span></span>
-<span>(</span><span>user: FlarumUser, _fetched_data: dict)</span>
+<dt id="pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromDiscussionMixin"><code class="flex name class">
+<span>class <span class="ident">LikesPostFromDiscussionMixin</span></span>
 </code></dt>
 <dd>
-<div class="desc"><p>A post from <code>Notification</code></p></div>
+<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/flarum/Flarum_Likes.py#L18-L58" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/flarum/Flarum_Likes.py#L22-L59" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">class LikesPostFromNotificationMixin(PostFromNotification):
-    @property
-    def canLike(self) -&gt; bool:
-        return self.attributes.get(&#34;canLike&#34;, False)
-    
-
-    def __like_or_unlike(self, liked: bool=True):
+<pre><code class="python">class LikesPostFromDiscussionMixin:
+    def __like_or_unlike(self: PostFromDiscussion, liked: bool=True) -&gt; Post:
         &#34;&#34;&#34;
             A function to either like or unlike post, to prevent repetition.
+
+            Use `like()` or `unlike()` instead, please.
         &#34;&#34;&#34;
 
         patch_data = {
@@ -451,7 +328,7 @@ class ExampleExtension(ExtensionMixin):
         return Post(user=self.user, _fetched_data=json)
 
 
-    def like(self):
+    def like(self) -&gt; Post:
         &#34;&#34;&#34;
             Likes a post.
         &#34;&#34;&#34;
@@ -459,23 +336,68 @@ class ExampleExtension(ExtensionMixin):
         return self.__like_or_unlike(liked=True)
 
 
-    def unlike(self):
+    def unlike(self) -&gt; Post:
         &#34;&#34;&#34;
             Unlikes liked post.
         &#34;&#34;&#34;
 
         return self.__like_or_unlike(liked=False)</code></pre>
 </details>
-<h3>Ancestors</h3>
-<ul class="hlist">
-<li><a title="pyflarum.flarum.core.posts.PostFromNotification" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromNotification">PostFromNotification</a></li>
-<li><a title="pyflarum.flarum.core.posts.PostFromDiscussion" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromDiscussion">PostFromDiscussion</a></li>
-<li>builtins.dict</li>
-</ul>
-<h3>Subclasses</h3>
-<ul class="hlist">
-<li><a title="pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromBulkMixin" href="#pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromBulkMixin">LikesPostFromBulkMixin</a></li>
-</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromDiscussionMixin.like"><code class="name flex">
+<span>def <span class="ident">like</span></span>(<span>self) ‑> <a title="pyflarum.flarum.core.posts.Post" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.Post">Post</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Likes a post.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/flarum/Flarum_Likes.py#L46-L51" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def like(self) -&gt; Post:
+    &#34;&#34;&#34;
+        Likes a post.
+    &#34;&#34;&#34;
+
+    return self.__like_or_unlike(liked=True)</code></pre>
+</details>
+</dd>
+<dt id="pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromDiscussionMixin.unlike"><code class="name flex">
+<span>def <span class="ident">unlike</span></span>(<span>self) ‑> <a title="pyflarum.flarum.core.posts.Post" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.Post">Post</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Unlikes liked post.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/flarum/Flarum_Likes.py#L54-L59" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def unlike(self) -&gt; Post:
+    &#34;&#34;&#34;
+        Unlikes liked post.
+    &#34;&#34;&#34;
+
+    return self.__like_or_unlike(liked=False)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromNotificationMixin"><code class="flex name class">
+<span>class <span class="ident">LikesPostFromNotificationMixin</span></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/flarum/Flarum_Likes.py#L63-L66" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">class LikesPostFromNotificationMixin:
+    @property
+    def canLike(self: PostFromNotification) -&gt; bool:
+        return self.attributes.get(&#34;canLike&#34;, False)</code></pre>
+</details>
 <h3>Instance variables</h3>
 <dl>
 <dt id="pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromNotificationMixin.canLike"><code class="name">var <span class="ident">canLike</span> : bool</code></dt>
@@ -484,110 +406,11 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/flarum/Flarum_Likes.py#L19-L21" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/flarum/Flarum_Likes.py#L64-L66" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
-def canLike(self) -&gt; bool:
+def canLike(self: PostFromNotification) -&gt; bool:
     return self.attributes.get(&#34;canLike&#34;, False)</code></pre>
-</details>
-</dd>
-</dl>
-<h3>Methods</h3>
-<dl>
-<dt id="pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromNotificationMixin.delete"><code class="name flex">
-<span>def <span class="ident">delete</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.posts.PostFromNotification" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromNotification">PostFromNotification</a></code>.<code><a title="pyflarum.flarum.core.posts.PostFromNotification.delete" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromNotification.delete">delete</a></code>
-</p>
-<div class="desc inherited"><p>Removes the post forever.</p></div>
-</dd>
-<dt id="pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromNotificationMixin.edit"><code class="name flex">
-<span>def <span class="ident">edit</span></span>(<span>self, new_data: <a title="pyflarum.flarum.core.posts.PreparedPost" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PreparedPost">PreparedPost</a>)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.posts.PostFromNotification" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromNotification">PostFromNotification</a></code>.<code><a title="pyflarum.flarum.core.posts.PostFromNotification.edit" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromNotification.edit">edit</a></code>
-</p>
-<div class="desc inherited"><p>Edits the post.</p></div>
-</dd>
-<dt id="pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromNotificationMixin.hide"><code class="name flex">
-<span>def <span class="ident">hide</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.posts.PostFromNotification" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromNotification">PostFromNotification</a></code>.<code><a title="pyflarum.flarum.core.posts.PostFromNotification.hide" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromNotification.hide">hide</a></code>
-</p>
-<div class="desc inherited"><p>Hides the post. Raises <code>FlarumError</code> or returns <code>False</code> if it failed, otherwise <code>True</code> is returned.</p></div>
-</dd>
-<dt id="pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromNotificationMixin.like"><code class="name flex">
-<span>def <span class="ident">like</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Likes a post.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/flarum/Flarum_Likes.py#L45-L50" class="git-link">Browse git</a>
-</summary>
-<pre><code class="python">def like(self):
-    &#34;&#34;&#34;
-        Likes a post.
-    &#34;&#34;&#34;
-
-    return self.__like_or_unlike(liked=True)</code></pre>
-</details>
-</dd>
-<dt id="pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromNotificationMixin.reply_to"><code class="name flex">
-<span>def <span class="ident">reply_to</span></span>(<span>self, post: <a title="pyflarum.flarum.core.posts.PreparedPost" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PreparedPost">PreparedPost</a>)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.posts.PostFromNotification" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromNotification">PostFromNotification</a></code>.<code><a title="pyflarum.flarum.core.posts.PostFromNotification.reply_to" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromNotification.reply_to">reply_to</a></code>
-</p>
-<div class="desc inherited"><p>Replies to this <code>Post</code> with another <code>PreparedPost</code>.</p></div>
-</dd>
-<dt id="pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromNotificationMixin.restore"><code class="name flex">
-<span>def <span class="ident">restore</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.posts.PostFromNotification" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromNotification">PostFromNotification</a></code>.<code><a title="pyflarum.flarum.core.posts.PostFromNotification.restore" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromNotification.restore">restore</a></code>
-</p>
-<div class="desc inherited"><p>Restores the post (unhides). Raises <code>FlarumError</code> or returns <code>False</code> if it failed, otherwise <code>True</code> is returned.</p></div>
-</dd>
-<dt id="pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromNotificationMixin.unhide"><code class="name flex">
-<span>def <span class="ident">unhide</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.posts.PostFromNotification" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromNotification">PostFromNotification</a></code>.<code><a title="pyflarum.flarum.core.posts.PostFromNotification.unhide" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromNotification.unhide">unhide</a></code>
-</p>
-<div class="desc inherited"><p>Restores the post (unhides). Raises <code>FlarumError</code> or returns <code>False</code> if it failed, otherwise <code>True</code> is returned.</p></div>
-</dd>
-<dt id="pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromNotificationMixin.unlike"><code class="name flex">
-<span>def <span class="ident">unlike</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Unlikes liked post.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/flarum/Flarum_Likes.py#L53-L58" class="git-link">Browse git</a>
-</summary>
-<pre><code class="python">def unlike(self):
-    &#34;&#34;&#34;
-        Unlikes liked post.
-    &#34;&#34;&#34;
-
-    return self.__like_or_unlike(liked=False)</code></pre>
 </details>
 </dd>
 </dl>
@@ -663,30 +486,21 @@ setTimeout(() => input.focus(), 100);
 </li>
 <li>
 <h4><code><a title="pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromBulkMixin" href="#pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromBulkMixin">LikesPostFromBulkMixin</a></code></h4>
-<ul class="two-column">
-<li><code><a title="pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromBulkMixin.delete" href="../../flarum/core/posts.html#pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromBulkMixin.delete">delete</a></code></li>
-<li><code><a title="pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromBulkMixin.edit" href="../../flarum/core/posts.html#pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromBulkMixin.edit">edit</a></code></li>
+<ul class="">
 <li><code><a title="pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromBulkMixin.get_liked_by" href="#pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromBulkMixin.get_liked_by">get_liked_by</a></code></li>
-<li><code><a title="pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromBulkMixin.hide" href="../../flarum/core/posts.html#pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromBulkMixin.hide">hide</a></code></li>
-<li><code><a title="pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromBulkMixin.like" href="#pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromBulkMixin.like">like</a></code></li>
-<li><code><a title="pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromBulkMixin.reply_to" href="../../flarum/core/posts.html#pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromBulkMixin.reply_to">reply_to</a></code></li>
-<li><code><a title="pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromBulkMixin.restore" href="../../flarum/core/posts.html#pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromBulkMixin.restore">restore</a></code></li>
-<li><code><a title="pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromBulkMixin.unhide" href="../../flarum/core/posts.html#pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromBulkMixin.unhide">unhide</a></code></li>
-<li><code><a title="pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromBulkMixin.unlike" href="#pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromBulkMixin.unlike">unlike</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromDiscussionMixin" href="#pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromDiscussionMixin">LikesPostFromDiscussionMixin</a></code></h4>
+<ul class="">
+<li><code><a title="pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromDiscussionMixin.like" href="#pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromDiscussionMixin.like">like</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromDiscussionMixin.unlike" href="#pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromDiscussionMixin.unlike">unlike</a></code></li>
 </ul>
 </li>
 <li>
 <h4><code><a title="pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromNotificationMixin" href="#pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromNotificationMixin">LikesPostFromNotificationMixin</a></code></h4>
-<ul class="two-column">
+<ul class="">
 <li><code><a title="pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromNotificationMixin.canLike" href="#pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromNotificationMixin.canLike">canLike</a></code></li>
-<li><code><a title="pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromNotificationMixin.delete" href="../../flarum/core/posts.html#pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromNotificationMixin.delete">delete</a></code></li>
-<li><code><a title="pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromNotificationMixin.edit" href="../../flarum/core/posts.html#pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromNotificationMixin.edit">edit</a></code></li>
-<li><code><a title="pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromNotificationMixin.hide" href="../../flarum/core/posts.html#pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromNotificationMixin.hide">hide</a></code></li>
-<li><code><a title="pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromNotificationMixin.like" href="#pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromNotificationMixin.like">like</a></code></li>
-<li><code><a title="pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromNotificationMixin.reply_to" href="../../flarum/core/posts.html#pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromNotificationMixin.reply_to">reply_to</a></code></li>
-<li><code><a title="pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromNotificationMixin.restore" href="../../flarum/core/posts.html#pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromNotificationMixin.restore">restore</a></code></li>
-<li><code><a title="pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromNotificationMixin.unhide" href="../../flarum/core/posts.html#pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromNotificationMixin.unhide">unhide</a></code></li>
-<li><code><a title="pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromNotificationMixin.unlike" href="#pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromNotificationMixin.unlike">unlike</a></code></li>
 </ul>
 </li>
 </ul>

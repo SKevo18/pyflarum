@@ -25,7 +25,7 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/flarum/Askvortsov_ModeratorWarnings.py#L0-L47" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/flarum/Askvortsov_ModeratorWarnings.py#L0-L65" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">from .. import ExtensionMixin
 
@@ -40,32 +40,50 @@ SOFT_DEPENDENCIES = []
 HARD_DEPENCENDIES = []
 
 
-class ModeratorWarningsUserMixin(UserFromBulk):
+
+class ModeratorWarningsUserFromBulkMixin:
     @property
-    def canViewWarnings(self) -&gt; bool:
+    def canViewWarnings(self: UserFromBulk) -&gt; bool:
         &#34;&#34;&#34;
-            Whether or not you can view the warnings of this user.
+            Whether or not you can view the warnings of the user.
         &#34;&#34;&#34;
 
         return self.attributes.get(&#34;canViewWarnings&#34;, False)
 
 
     @property
-    def canManageWarnings(self) -&gt; bool:
+    def canManageWarnings(self: UserFromBulk) -&gt; bool:
+        &#34;&#34;&#34;
+            Whether or not you are able to manage the user&#39;s warnings.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;canManageWarnings&#34;, False)
 
 
     @property
-    def canDeleteWarnings(self) -&gt; bool:
+    def canDeleteWarnings(self: UserFromBulk) -&gt; bool:
+        &#34;&#34;&#34;
+            Whether or not you can delete the user&#39;s warnings.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;canDeleteWarnings&#34;, False)
 
 
     @property
-    def visibleWarningCount(self) -&gt; int:
+    def visibleWarningCount(self: UserFromBulk) -&gt; int:
+        &#34;&#34;&#34;
+            The amount of warnings that you can see that belong to the user.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;visibleWarningCount&#34;, 0)
 
 
+
 class ModeratorWarningsExtension(ExtensionMixin):
+    &#34;&#34;&#34;
+        https://extiverse.com/extension/askvortsov/flarum-moderator-warnings
+    &#34;&#34;&#34;
+
     def get_dependencies(self):
         return {
             &#34;soft&#34;: SOFT_DEPENDENCIES,
@@ -74,7 +92,7 @@ class ModeratorWarningsExtension(ExtensionMixin):
 
 
     def mixin(self):
-        super().mixin(self, UserFromBulk, ModeratorWarningsUserMixin)</code></pre>
+        super().mixin(self, UserFromBulk, ModeratorWarningsUserFromBulkMixin)</code></pre>
 </details>
 </section>
 <section>
@@ -90,80 +108,17 @@ class ModeratorWarningsExtension(ExtensionMixin):
 <span>class <span class="ident">ModeratorWarningsExtension</span></span>
 </code></dt>
 <dd>
-<div class="desc"><p>A base class for mixing in custom classes (extensions) into another classes.</p>
-<h3 id="example-extension-code">Example extension code:</h3>
-<pre><code class="language-python">from pyflarum.extensions import ExtensionMixin
-from pyflarum.extensions.admin import AdminExtension
-from pyflarum.session import FlarumUser
-
-
-# Lowecase:
-AUTHOR = &quot;yourname&quot;
-NAME = &quot;extensionname&quot;
-ID = f&quot;{AUTHOR}-{NAME}&quot;
-
-# List of dependencies:
-SOFT_DEPENDENCIES = [AdminExtension] # uses methods from this extension, but can run without it
-HARD_DEPENCENDIES = []
-
-
-
-# I recommend to use the following naming pattern: `&lt;YourExtensionName&gt;&lt;ClassToMixin&gt;Mixin`
-# Example:
-class ExampleFlarumUserMixin(FlarumUser):
-    @property
-    def __example(self):
-        '''
-            Calling `FlarumUser(&lt;...&gt;).__example` would return this.
-        '''
-
-        return &quot;Example&quot;
-
-
-
-class ExampleExtension(ExtensionMixin):
-    def get_dependencies(self):
-        '''
-            Overwrite this method to make your own dependencies.
-
-            This should return the following `dict`:
-            ```python
-            {
-                &quot;hard&quot;: [&lt;class&gt;, &lt;class&gt;, ...],
-                &quot;soft&quot;: [&lt;class&gt;, &lt;class&gt;, ...]
-            }
-            ```
-
-            #### Hard-dependencies:
-            - Will raise an error when they're not found in the initialized `FlarumUser` object. It is impossible for the extension
-            to function without these.
-
-            #### Soft-dependencies:
-            - Will raise just a warning. It is possible for the extension to function without these, although with limitations
-            (such that some functions might be unavailable).
-        '''
-
-        return {
-            &quot;soft&quot;: SOFT_DEPENDENCIES,
-            &quot;hard&quot;: HARD_DEPENCENDIES
-        }
-
-
-    def mixin(self):
-        '''
-            This extends the `FlarumUser` class with features from `ExampleMixin`
-        '''
-
-        super().mixin(self, FlarumUser, ExampleMixin)
-
-</code></pre>
-<p>Initializes the <code>ExtensionMixin</code> object.</p></div>
+<div class="desc"><p><a href="https://extiverse.com/extension/askvortsov/flarum-moderator-warnings">https://extiverse.com/extension/askvortsov/flarum-moderator-warnings</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/flarum/Askvortsov_ModeratorWarnings.py#L39-L48" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/flarum/Askvortsov_ModeratorWarnings.py#L53-L66" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class ModeratorWarningsExtension(ExtensionMixin):
+    &#34;&#34;&#34;
+        https://extiverse.com/extension/askvortsov/flarum-moderator-warnings
+    &#34;&#34;&#34;
+
     def get_dependencies(self):
         return {
             &#34;soft&#34;: SOFT_DEPENDENCIES,
@@ -172,7 +127,7 @@ class ExampleExtension(ExtensionMixin):
 
 
     def mixin(self):
-        super().mixin(self, UserFromBulk, ModeratorWarningsUserMixin)</code></pre>
+        super().mixin(self, UserFromBulk, ModeratorWarningsUserFromBulkMixin)</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -188,11 +143,16 @@ class ExampleExtension(ExtensionMixin):
 <em>Inherited from:</em>
 <code><a title="pyflarum.extensions.ExtensionMixin" href="../index.html#pyflarum.extensions.ExtensionMixin">ExtensionMixin</a></code>.<code><a title="pyflarum.extensions.ExtensionMixin.get_dependencies" href="../index.html#pyflarum.extensions.ExtensionMixin.get_dependencies">get_dependencies</a></code>
 </p>
-<div class="desc inherited"><p>Overwrite this method to make your own dependencies …</p></div>
+<div class="desc inherited"><p>This should return the following <code>dict</code>:
+<code>python
+{
+"hard": [&lt;class&gt;, &lt;class&gt;, ...],
+"soft": [&lt;class&gt;, &lt;class&gt;, ...]
+}</code> …</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/flarum/Askvortsov_ModeratorWarnings.py#L40-L44" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/flarum/Askvortsov_ModeratorWarnings.py#L58-L62" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_dependencies(self):
     return {
@@ -209,114 +169,131 @@ class ExampleExtension(ExtensionMixin):
 <em>Inherited from:</em>
 <code><a title="pyflarum.extensions.ExtensionMixin" href="../index.html#pyflarum.extensions.ExtensionMixin">ExtensionMixin</a></code>.<code><a title="pyflarum.extensions.ExtensionMixin.mixin" href="../index.html#pyflarum.extensions.ExtensionMixin.mixin">mixin</a></code>
 </p>
-<div class="desc inherited"><p>A boilerplate function for mixing …</p></div>
+<div class="desc inherited"><p>A function to mix-in/merge properties, methods, functions, etc&hellip; of one class into another …</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/flarum/Askvortsov_ModeratorWarnings.py#L47-L48" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/flarum/Askvortsov_ModeratorWarnings.py#L65-L66" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def mixin(self):
-    super().mixin(self, UserFromBulk, ModeratorWarningsUserMixin)</code></pre>
+    super().mixin(self, UserFromBulk, ModeratorWarningsUserFromBulkMixin)</code></pre>
 </details>
 </dd>
 </dl>
 </dd>
-<dt id="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserMixin"><code class="flex name class">
-<span>class <span class="ident">ModeratorWarningsUserMixin</span></span>
-<span>(</span><span>user: FlarumUser, _fetched_data: dict)</span>
+<dt id="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin"><code class="flex name class">
+<span>class <span class="ident">ModeratorWarningsUserFromBulkMixin</span></span>
 </code></dt>
 <dd>
-<div class="desc"><p>An user from <code>Users</code>.</p></div>
+<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/flarum/Askvortsov_ModeratorWarnings.py#L14-L36" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/flarum/Askvortsov_ModeratorWarnings.py#L15-L49" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">class ModeratorWarningsUserMixin(UserFromBulk):
+<pre><code class="python">class ModeratorWarningsUserFromBulkMixin:
     @property
-    def canViewWarnings(self) -&gt; bool:
+    def canViewWarnings(self: UserFromBulk) -&gt; bool:
         &#34;&#34;&#34;
-            Whether or not you can view the warnings of this user.
+            Whether or not you can view the warnings of the user.
         &#34;&#34;&#34;
 
         return self.attributes.get(&#34;canViewWarnings&#34;, False)
 
 
     @property
-    def canManageWarnings(self) -&gt; bool:
+    def canManageWarnings(self: UserFromBulk) -&gt; bool:
+        &#34;&#34;&#34;
+            Whether or not you are able to manage the user&#39;s warnings.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;canManageWarnings&#34;, False)
 
 
     @property
-    def canDeleteWarnings(self) -&gt; bool:
+    def canDeleteWarnings(self: UserFromBulk) -&gt; bool:
+        &#34;&#34;&#34;
+            Whether or not you can delete the user&#39;s warnings.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;canDeleteWarnings&#34;, False)
 
 
     @property
-    def visibleWarningCount(self) -&gt; int:
+    def visibleWarningCount(self: UserFromBulk) -&gt; int:
+        &#34;&#34;&#34;
+            The amount of warnings that you can see that belong to the user.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;visibleWarningCount&#34;, 0)</code></pre>
 </details>
-<h3>Ancestors</h3>
-<ul class="hlist">
-<li><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></li>
-<li><a title="pyflarum.flarum.core.users.UserFromNotification" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromNotification">UserFromNotification</a></li>
-<li>builtins.dict</li>
-</ul>
 <h3>Instance variables</h3>
 <dl>
-<dt id="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserMixin.canDeleteWarnings"><code class="name">var <span class="ident">canDeleteWarnings</span> : bool</code></dt>
+<dt id="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.canDeleteWarnings"><code class="name">var <span class="ident">canDeleteWarnings</span> : bool</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Whether or not you can delete the user's warnings.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/flarum/Askvortsov_ModeratorWarnings.py#L29-L31" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/flarum/Askvortsov_ModeratorWarnings.py#L34-L40" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
-def canDeleteWarnings(self) -&gt; bool:
+def canDeleteWarnings(self: UserFromBulk) -&gt; bool:
+    &#34;&#34;&#34;
+        Whether or not you can delete the user&#39;s warnings.
+    &#34;&#34;&#34;
+
     return self.attributes.get(&#34;canDeleteWarnings&#34;, False)</code></pre>
 </details>
 </dd>
-<dt id="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserMixin.canManageWarnings"><code class="name">var <span class="ident">canManageWarnings</span> : bool</code></dt>
+<dt id="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.canManageWarnings"><code class="name">var <span class="ident">canManageWarnings</span> : bool</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Whether or not you are able to manage the user's warnings.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/flarum/Askvortsov_ModeratorWarnings.py#L24-L26" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/flarum/Askvortsov_ModeratorWarnings.py#L25-L31" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
-def canManageWarnings(self) -&gt; bool:
+def canManageWarnings(self: UserFromBulk) -&gt; bool:
+    &#34;&#34;&#34;
+        Whether or not you are able to manage the user&#39;s warnings.
+    &#34;&#34;&#34;
+
     return self.attributes.get(&#34;canManageWarnings&#34;, False)</code></pre>
 </details>
 </dd>
-<dt id="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserMixin.canViewWarnings"><code class="name">var <span class="ident">canViewWarnings</span> : bool</code></dt>
+<dt id="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.canViewWarnings"><code class="name">var <span class="ident">canViewWarnings</span> : bool</code></dt>
 <dd>
-<div class="desc"><p>Whether or not you can view the warnings of this user.</p></div>
+<div class="desc"><p>Whether or not you can view the warnings of the user.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/flarum/Askvortsov_ModeratorWarnings.py#L15-L21" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/flarum/Askvortsov_ModeratorWarnings.py#L16-L22" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
-def canViewWarnings(self) -&gt; bool:
+def canViewWarnings(self: UserFromBulk) -&gt; bool:
     &#34;&#34;&#34;
-        Whether or not you can view the warnings of this user.
+        Whether or not you can view the warnings of the user.
     &#34;&#34;&#34;
 
     return self.attributes.get(&#34;canViewWarnings&#34;, False)</code></pre>
 </details>
 </dd>
-<dt id="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserMixin.visibleWarningCount"><code class="name">var <span class="ident">visibleWarningCount</span> : int</code></dt>
+<dt id="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.visibleWarningCount"><code class="name">var <span class="ident">visibleWarningCount</span> : int</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The amount of warnings that you can see that belong to the user.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/flarum/Askvortsov_ModeratorWarnings.py#L34-L36" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/flarum/Askvortsov_ModeratorWarnings.py#L43-L49" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
-def visibleWarningCount(self) -&gt; int:
+def visibleWarningCount(self: UserFromBulk) -&gt; int:
+    &#34;&#34;&#34;
+        The amount of warnings that you can see that belong to the user.
+    &#34;&#34;&#34;
+
     return self.attributes.get(&#34;visibleWarningCount&#34;, 0)</code></pre>
 </details>
 </dd>
@@ -392,12 +369,12 @@ setTimeout(() => input.focus(), 100);
 </ul>
 </li>
 <li>
-<h4><code><a title="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserMixin" href="#pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserMixin">ModeratorWarningsUserMixin</a></code></h4>
+<h4><code><a title="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin" href="#pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin">ModeratorWarningsUserFromBulkMixin</a></code></h4>
 <ul class="">
-<li><code><a title="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserMixin.canDeleteWarnings" href="#pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserMixin.canDeleteWarnings">canDeleteWarnings</a></code></li>
-<li><code><a title="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserMixin.canManageWarnings" href="#pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserMixin.canManageWarnings">canManageWarnings</a></code></li>
-<li><code><a title="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserMixin.canViewWarnings" href="#pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserMixin.canViewWarnings">canViewWarnings</a></code></li>
-<li><code><a title="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserMixin.visibleWarningCount" href="#pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserMixin.visibleWarningCount">visibleWarningCount</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.canDeleteWarnings" href="#pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.canDeleteWarnings">canDeleteWarnings</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.canManageWarnings" href="#pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.canManageWarnings">canManageWarnings</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.canViewWarnings" href="#pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.canViewWarnings">canViewWarnings</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.visibleWarningCount" href="#pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.visibleWarningCount">visibleWarningCount</a></code></li>
 </ul>
 </li>
 </ul>

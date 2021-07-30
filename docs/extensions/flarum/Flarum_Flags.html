@@ -25,7 +25,7 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/flarum/Flarum_Flags.py#L0-L51" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/flarum/Flarum_Flags.py#L0-L67" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">from typing import Optional
 
@@ -44,31 +44,47 @@ HARD_DEPENCENDIES = []
 
 
 
-class FlagsForumMixin(Forum):
+class FlagsForumMixin:
     @property
-    def canViewFlags(self) -&gt; bool:
+    def canViewFlags(self: Forum) -&gt; bool:
+        &#34;&#34;&#34;
+            Whether or not you can view all the flags on the forum.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;canViewFlags&#34;, False)
 
 
     @property
-    def flagCount(self) -&gt; Optional[int]:
+    def flagCount(self: Forum) -&gt; Optional[int]:
+        &#34;&#34;&#34;
+            The total flagged post/discussion count (forum-wide).
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;flagCount&#34;, None)
 
 
     @property
-    def guidelinesUrl(self) -&gt; Optional[str]:
+    def guidelinesUrl(self: Forum) -&gt; Optional[str]:
+        &#34;&#34;&#34;
+            The URL of the forum&#39;s guidelines, if specified by the admin.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;guidelinesUrl&#34;, None)
 
 
 
-class FlagsPostFromNotificationMixin(PostFromNotification):
+class FlagsPostFromNotificationMixin:
     @property
-    def canFlag(self) -&gt; bool:
+    def canFlag(self: PostFromNotification) -&gt; bool:
         return self.attributes.get(&#34;canFlag&#34;, False)
 
 
 
 class FlagsExtension(ExtensionMixin):
+    &#34;&#34;&#34;
+        https://packagist.org/packages/flarum/flags
+    &#34;&#34;&#34;
+
     def get_dependencies(self):
         return {
             &#34;soft&#34;: SOFT_DEPENDENCIES,
@@ -94,80 +110,17 @@ class FlagsExtension(ExtensionMixin):
 <span>class <span class="ident">FlagsExtension</span></span>
 </code></dt>
 <dd>
-<div class="desc"><p>A base class for mixing in custom classes (extensions) into another classes.</p>
-<h3 id="example-extension-code">Example extension code:</h3>
-<pre><code class="language-python">from pyflarum.extensions import ExtensionMixin
-from pyflarum.extensions.admin import AdminExtension
-from pyflarum.session import FlarumUser
-
-
-# Lowecase:
-AUTHOR = &quot;yourname&quot;
-NAME = &quot;extensionname&quot;
-ID = f&quot;{AUTHOR}-{NAME}&quot;
-
-# List of dependencies:
-SOFT_DEPENDENCIES = [AdminExtension] # uses methods from this extension, but can run without it
-HARD_DEPENCENDIES = []
-
-
-
-# I recommend to use the following naming pattern: `&lt;YourExtensionName&gt;&lt;ClassToMixin&gt;Mixin`
-# Example:
-class ExampleFlarumUserMixin(FlarumUser):
-    @property
-    def __example(self):
-        '''
-            Calling `FlarumUser(&lt;...&gt;).__example` would return this.
-        '''
-
-        return &quot;Example&quot;
-
-
-
-class ExampleExtension(ExtensionMixin):
-    def get_dependencies(self):
-        '''
-            Overwrite this method to make your own dependencies.
-
-            This should return the following `dict`:
-            ```python
-            {
-                &quot;hard&quot;: [&lt;class&gt;, &lt;class&gt;, ...],
-                &quot;soft&quot;: [&lt;class&gt;, &lt;class&gt;, ...]
-            }
-            ```
-
-            #### Hard-dependencies:
-            - Will raise an error when they're not found in the initialized `FlarumUser` object. It is impossible for the extension
-            to function without these.
-
-            #### Soft-dependencies:
-            - Will raise just a warning. It is possible for the extension to function without these, although with limitations
-            (such that some functions might be unavailable).
-        '''
-
-        return {
-            &quot;soft&quot;: SOFT_DEPENDENCIES,
-            &quot;hard&quot;: HARD_DEPENCENDIES
-        }
-
-
-    def mixin(self):
-        '''
-            This extends the `FlarumUser` class with features from `ExampleMixin`
-        '''
-
-        super().mixin(self, FlarumUser, ExampleMixin)
-
-</code></pre>
-<p>Initializes the <code>ExtensionMixin</code> object.</p></div>
+<div class="desc"><p><a href="https://packagist.org/packages/flarum/flags">https://packagist.org/packages/flarum/flags</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/flarum/Flarum_Flags.py#L42-L52" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/flarum/Flarum_Flags.py#L54-L68" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class FlagsExtension(ExtensionMixin):
+    &#34;&#34;&#34;
+        https://packagist.org/packages/flarum/flags
+    &#34;&#34;&#34;
+
     def get_dependencies(self):
         return {
             &#34;soft&#34;: SOFT_DEPENDENCIES,
@@ -193,11 +146,16 @@ class ExampleExtension(ExtensionMixin):
 <em>Inherited from:</em>
 <code><a title="pyflarum.extensions.ExtensionMixin" href="../index.html#pyflarum.extensions.ExtensionMixin">ExtensionMixin</a></code>.<code><a title="pyflarum.extensions.ExtensionMixin.get_dependencies" href="../index.html#pyflarum.extensions.ExtensionMixin.get_dependencies">get_dependencies</a></code>
 </p>
-<div class="desc inherited"><p>Overwrite this method to make your own dependencies …</p></div>
+<div class="desc inherited"><p>This should return the following <code>dict</code>:
+<code>python
+{
+"hard": [&lt;class&gt;, &lt;class&gt;, ...],
+"soft": [&lt;class&gt;, &lt;class&gt;, ...]
+}</code> …</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/flarum/Flarum_Flags.py#L43-L47" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/flarum/Flarum_Flags.py#L59-L63" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_dependencies(self):
     return {
@@ -214,11 +172,11 @@ class ExampleExtension(ExtensionMixin):
 <em>Inherited from:</em>
 <code><a title="pyflarum.extensions.ExtensionMixin" href="../index.html#pyflarum.extensions.ExtensionMixin">ExtensionMixin</a></code>.<code><a title="pyflarum.extensions.ExtensionMixin.mixin" href="../index.html#pyflarum.extensions.ExtensionMixin.mixin">mixin</a></code>
 </p>
-<div class="desc inherited"><p>A boilerplate function for mixing …</p></div>
+<div class="desc inherited"><p>A function to mix-in/merge properties, methods, functions, etc&hellip; of one class into another …</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/flarum/Flarum_Flags.py#L50-L52" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/flarum/Flarum_Flags.py#L66-L68" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def mixin(self):
     super().mixin(self, PostFromNotification, FlagsPostFromNotificationMixin)
@@ -229,73 +187,91 @@ class ExampleExtension(ExtensionMixin):
 </dd>
 <dt id="pyflarum.extensions.flarum.Flarum_Flags.FlagsForumMixin"><code class="flex name class">
 <span>class <span class="ident">FlagsForumMixin</span></span>
-<span>(</span><span>user: FlarumUser, _fetched_data: dict)</span>
 </code></dt>
-<dd>
-<div class="desc"><p>Forum JSON data</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/flarum/Flarum_Flags.py#L18-L31" class="git-link">Browse git</a>
-</summary>
-<pre><code class="python">class FlagsForumMixin(Forum):
-    @property
-    def canViewFlags(self) -&gt; bool:
-        return self.attributes.get(&#34;canViewFlags&#34;, False)
-
-
-    @property
-    def flagCount(self) -&gt; Optional[int]:
-        return self.attributes.get(&#34;flagCount&#34;, None)
-
-
-    @property
-    def guidelinesUrl(self) -&gt; Optional[str]:
-        return self.attributes.get(&#34;guidelinesUrl&#34;, None)</code></pre>
-</details>
-<h3>Ancestors</h3>
-<ul class="hlist">
-<li><a title="pyflarum.flarum.core.forum.Forum" href="../../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum">Forum</a></li>
-<li>builtins.dict</li>
-</ul>
-<h3>Instance variables</h3>
-<dl>
-<dt id="pyflarum.extensions.flarum.Flarum_Flags.FlagsForumMixin.canViewFlags"><code class="name">var <span class="ident">canViewFlags</span> : bool</code></dt>
 <dd>
 <div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/flarum/Flarum_Flags.py#L19-L21" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/flarum/Flarum_Flags.py#L18-L43" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">class FlagsForumMixin:
+    @property
+    def canViewFlags(self: Forum) -&gt; bool:
+        &#34;&#34;&#34;
+            Whether or not you can view all the flags on the forum.
+        &#34;&#34;&#34;
+
+        return self.attributes.get(&#34;canViewFlags&#34;, False)
+
+
+    @property
+    def flagCount(self: Forum) -&gt; Optional[int]:
+        &#34;&#34;&#34;
+            The total flagged post/discussion count (forum-wide).
+        &#34;&#34;&#34;
+
+        return self.attributes.get(&#34;flagCount&#34;, None)
+
+
+    @property
+    def guidelinesUrl(self: Forum) -&gt; Optional[str]:
+        &#34;&#34;&#34;
+            The URL of the forum&#39;s guidelines, if specified by the admin.
+        &#34;&#34;&#34;
+
+        return self.attributes.get(&#34;guidelinesUrl&#34;, None)</code></pre>
+</details>
+<h3>Instance variables</h3>
+<dl>
+<dt id="pyflarum.extensions.flarum.Flarum_Flags.FlagsForumMixin.canViewFlags"><code class="name">var <span class="ident">canViewFlags</span> : bool</code></dt>
+<dd>
+<div class="desc"><p>Whether or not you can view all the flags on the forum.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/flarum/Flarum_Flags.py#L19-L25" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
-def canViewFlags(self) -&gt; bool:
+def canViewFlags(self: Forum) -&gt; bool:
+    &#34;&#34;&#34;
+        Whether or not you can view all the flags on the forum.
+    &#34;&#34;&#34;
+
     return self.attributes.get(&#34;canViewFlags&#34;, False)</code></pre>
 </details>
 </dd>
 <dt id="pyflarum.extensions.flarum.Flarum_Flags.FlagsForumMixin.flagCount"><code class="name">var <span class="ident">flagCount</span> : Optional[int]</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The total flagged post/discussion count (forum-wide).</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/flarum/Flarum_Flags.py#L24-L26" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/flarum/Flarum_Flags.py#L28-L34" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
-def flagCount(self) -&gt; Optional[int]:
+def flagCount(self: Forum) -&gt; Optional[int]:
+    &#34;&#34;&#34;
+        The total flagged post/discussion count (forum-wide).
+    &#34;&#34;&#34;
+
     return self.attributes.get(&#34;flagCount&#34;, None)</code></pre>
 </details>
 </dd>
 <dt id="pyflarum.extensions.flarum.Flarum_Flags.FlagsForumMixin.guidelinesUrl"><code class="name">var <span class="ident">guidelinesUrl</span> : Optional[str]</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The URL of the forum's guidelines, if specified by the admin.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/flarum/Flarum_Flags.py#L29-L31" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/flarum/Flarum_Flags.py#L37-L43" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
-def guidelinesUrl(self) -&gt; Optional[str]:
+def guidelinesUrl(self: Forum) -&gt; Optional[str]:
+    &#34;&#34;&#34;
+        The URL of the forum&#39;s guidelines, if specified by the admin.
+    &#34;&#34;&#34;
+
     return self.attributes.get(&#34;guidelinesUrl&#34;, None)</code></pre>
 </details>
 </dd>
@@ -303,26 +279,19 @@ def guidelinesUrl(self) -&gt; Optional[str]:
 </dd>
 <dt id="pyflarum.extensions.flarum.Flarum_Flags.FlagsPostFromNotificationMixin"><code class="flex name class">
 <span>class <span class="ident">FlagsPostFromNotificationMixin</span></span>
-<span>(</span><span>user: FlarumUser, _fetched_data: dict)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>A post from <code>Notification</code></p></div>
+<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/flarum/Flarum_Flags.py#L35-L38" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/flarum/Flarum_Flags.py#L47-L50" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">class FlagsPostFromNotificationMixin(PostFromNotification):
+<pre><code class="python">class FlagsPostFromNotificationMixin:
     @property
-    def canFlag(self) -&gt; bool:
+    def canFlag(self: PostFromNotification) -&gt; bool:
         return self.attributes.get(&#34;canFlag&#34;, False)</code></pre>
 </details>
-<h3>Ancestors</h3>
-<ul class="hlist">
-<li><a title="pyflarum.flarum.core.posts.PostFromNotification" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromNotification">PostFromNotification</a></li>
-<li><a title="pyflarum.flarum.core.posts.PostFromDiscussion" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromDiscussion">PostFromDiscussion</a></li>
-<li>builtins.dict</li>
-</ul>
 <h3>Instance variables</h3>
 <dl>
 <dt id="pyflarum.extensions.flarum.Flarum_Flags.FlagsPostFromNotificationMixin.canFlag"><code class="name">var <span class="ident">canFlag</span> : bool</code></dt>
@@ -331,75 +300,12 @@ def guidelinesUrl(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/flarum/Flarum_Flags.py#L36-L38" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/flarum/Flarum_Flags.py#L48-L50" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
-def canFlag(self) -&gt; bool:
+def canFlag(self: PostFromNotification) -&gt; bool:
     return self.attributes.get(&#34;canFlag&#34;, False)</code></pre>
 </details>
-</dd>
-</dl>
-<h3>Methods</h3>
-<dl>
-<dt id="pyflarum.extensions.flarum.Flarum_Flags.FlagsPostFromNotificationMixin.delete"><code class="name flex">
-<span>def <span class="ident">delete</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.posts.PostFromNotification" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromNotification">PostFromNotification</a></code>.<code><a title="pyflarum.flarum.core.posts.PostFromNotification.delete" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromNotification.delete">delete</a></code>
-</p>
-<div class="desc inherited"><p>Removes the post forever.</p></div>
-</dd>
-<dt id="pyflarum.extensions.flarum.Flarum_Flags.FlagsPostFromNotificationMixin.edit"><code class="name flex">
-<span>def <span class="ident">edit</span></span>(<span>self, new_data: <a title="pyflarum.flarum.core.posts.PreparedPost" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PreparedPost">PreparedPost</a>)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.posts.PostFromNotification" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromNotification">PostFromNotification</a></code>.<code><a title="pyflarum.flarum.core.posts.PostFromNotification.edit" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromNotification.edit">edit</a></code>
-</p>
-<div class="desc inherited"><p>Edits the post.</p></div>
-</dd>
-<dt id="pyflarum.extensions.flarum.Flarum_Flags.FlagsPostFromNotificationMixin.hide"><code class="name flex">
-<span>def <span class="ident">hide</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.posts.PostFromNotification" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromNotification">PostFromNotification</a></code>.<code><a title="pyflarum.flarum.core.posts.PostFromNotification.hide" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromNotification.hide">hide</a></code>
-</p>
-<div class="desc inherited"><p>Hides the post. Raises <code>FlarumError</code> or returns <code>False</code> if it failed, otherwise <code>True</code> is returned.</p></div>
-</dd>
-<dt id="pyflarum.extensions.flarum.Flarum_Flags.FlagsPostFromNotificationMixin.reply_to"><code class="name flex">
-<span>def <span class="ident">reply_to</span></span>(<span>self, post: <a title="pyflarum.flarum.core.posts.PreparedPost" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PreparedPost">PreparedPost</a>)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.posts.PostFromNotification" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromNotification">PostFromNotification</a></code>.<code><a title="pyflarum.flarum.core.posts.PostFromNotification.reply_to" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromNotification.reply_to">reply_to</a></code>
-</p>
-<div class="desc inherited"><p>Replies to this <code>Post</code> with another <code>PreparedPost</code>.</p></div>
-</dd>
-<dt id="pyflarum.extensions.flarum.Flarum_Flags.FlagsPostFromNotificationMixin.restore"><code class="name flex">
-<span>def <span class="ident">restore</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.posts.PostFromNotification" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromNotification">PostFromNotification</a></code>.<code><a title="pyflarum.flarum.core.posts.PostFromNotification.restore" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromNotification.restore">restore</a></code>
-</p>
-<div class="desc inherited"><p>Restores the post (unhides). Raises <code>FlarumError</code> or returns <code>False</code> if it failed, otherwise <code>True</code> is returned.</p></div>
-</dd>
-<dt id="pyflarum.extensions.flarum.Flarum_Flags.FlagsPostFromNotificationMixin.unhide"><code class="name flex">
-<span>def <span class="ident">unhide</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.posts.PostFromNotification" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromNotification">PostFromNotification</a></code>.<code><a title="pyflarum.flarum.core.posts.PostFromNotification.unhide" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromNotification.unhide">unhide</a></code>
-</p>
-<div class="desc inherited"><p>Restores the post (unhides). Raises <code>FlarumError</code> or returns <code>False</code> if it failed, otherwise <code>True</code> is returned.</p></div>
 </dd>
 </dl>
 </dd>
@@ -482,14 +388,8 @@ setTimeout(() => input.focus(), 100);
 </li>
 <li>
 <h4><code><a title="pyflarum.extensions.flarum.Flarum_Flags.FlagsPostFromNotificationMixin" href="#pyflarum.extensions.flarum.Flarum_Flags.FlagsPostFromNotificationMixin">FlagsPostFromNotificationMixin</a></code></h4>
-<ul class="two-column">
+<ul class="">
 <li><code><a title="pyflarum.extensions.flarum.Flarum_Flags.FlagsPostFromNotificationMixin.canFlag" href="#pyflarum.extensions.flarum.Flarum_Flags.FlagsPostFromNotificationMixin.canFlag">canFlag</a></code></li>
-<li><code><a title="pyflarum.extensions.flarum.Flarum_Flags.FlagsPostFromNotificationMixin.delete" href="../../flarum/core/posts.html#pyflarum.extensions.flarum.Flarum_Flags.FlagsPostFromNotificationMixin.delete">delete</a></code></li>
-<li><code><a title="pyflarum.extensions.flarum.Flarum_Flags.FlagsPostFromNotificationMixin.edit" href="../../flarum/core/posts.html#pyflarum.extensions.flarum.Flarum_Flags.FlagsPostFromNotificationMixin.edit">edit</a></code></li>
-<li><code><a title="pyflarum.extensions.flarum.Flarum_Flags.FlagsPostFromNotificationMixin.hide" href="../../flarum/core/posts.html#pyflarum.extensions.flarum.Flarum_Flags.FlagsPostFromNotificationMixin.hide">hide</a></code></li>
-<li><code><a title="pyflarum.extensions.flarum.Flarum_Flags.FlagsPostFromNotificationMixin.reply_to" href="../../flarum/core/posts.html#pyflarum.extensions.flarum.Flarum_Flags.FlagsPostFromNotificationMixin.reply_to">reply_to</a></code></li>
-<li><code><a title="pyflarum.extensions.flarum.Flarum_Flags.FlagsPostFromNotificationMixin.restore" href="../../flarum/core/posts.html#pyflarum.extensions.flarum.Flarum_Flags.FlagsPostFromNotificationMixin.restore">restore</a></code></li>
-<li><code><a title="pyflarum.extensions.flarum.Flarum_Flags.FlagsPostFromNotificationMixin.unhide" href="../../flarum/core/posts.html#pyflarum.extensions.flarum.Flarum_Flags.FlagsPostFromNotificationMixin.unhide">unhide</a></code></li>
 </ul>
 </li>
 </ul>

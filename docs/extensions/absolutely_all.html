@@ -25,9 +25,15 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/absolutely_all.py#L0-L128" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/absolutely_all.py#L0-L153" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">from typing import Optional
+<pre><code class="python">from typing import Generator, Optional, TYPE_CHECKING
+if TYPE_CHECKING:
+    from ..flarum.core.notifications import Notifications
+    from ..flarum.core.discussions import Discussions
+    from ..flarum.core.posts import Posts
+    from ..flarum.core.users import Users
+
 
 from . import ExtensionMixin
 from ..session import FlarumUser
@@ -44,8 +50,9 @@ SOFT_DEPENDENCIES = []
 HARD_DEPENCENDIES = []
 
 
-class AbsolutelyAllFlarumUserMixin(FlarumUser):
-    def absolutely_all_users(self, filter: Optional[Filter]=None):
+
+class AbsolutelyAllFlarumUserMixin:
+    def absolutely_all_users(self: FlarumUser, filter: Optional[Filter]=None)  -&gt; Generator[&#39;Users&#39;, None, None]:
         &#34;&#34;&#34;
             A generator that yields `Users` from entire forum, until there are `None` left. `Filter` compatible.
         &#34;&#34;&#34;
@@ -55,21 +62,23 @@ class AbsolutelyAllFlarumUserMixin(FlarumUser):
 
         else:
             _filter = Filter()
-    
+
+
         _filter.page = 0
-        users = self.all_users(_filter)
+        users = self.get_users(_filter)
+
 
         while True:
             yield users
 
-            users = self.all_users(_filter)
+            users = self.get_users(_filter)
             _filter.page += 1
 
             if not users.next_link:
                 break
 
 
-    def absolutely_all_posts(self, filter: Optional[Filter]=None):
+    def absolutely_all_posts(self: FlarumUser, filter: Optional[Filter]=None) -&gt; Generator[&#39;Posts&#39;, None, None]:
         &#34;&#34;&#34;
             A generator that yields `Posts` from entire forum, until there are `None` left. `Filter` compatible.
         &#34;&#34;&#34;
@@ -79,21 +88,23 @@ class AbsolutelyAllFlarumUserMixin(FlarumUser):
 
         else:
             _filter = Filter()
-    
+
+
         _filter.page = 0
-        posts = self.all_posts(_filter)
+        posts = self.get_posts(_filter)
+
 
         while True:
             yield posts
 
-            posts = self.all_posts(_filter)
+            posts = self.get_posts(_filter)
             _filter.page += 1
 
             if not posts.next_link:
                 break
 
 
-    def absolutely_all_discussions(self, filter: Optional[Filter]=None):
+    def absolutely_all_discussions(self: FlarumUser, filter: Optional[Filter]=None) -&gt; Generator[&#39;Discussions&#39;, None, None]:
         &#34;&#34;&#34;
             A generator that yields `Discussions` from entire forum, until there are `None` left. `Filter` compatible.
         &#34;&#34;&#34;
@@ -103,21 +114,23 @@ class AbsolutelyAllFlarumUserMixin(FlarumUser):
 
         else:
             _filter = Filter()
-    
+
+
         _filter.page = 0
-        discussions = self.all_discussions(_filter)
+        discussions = self.get_discussions(_filter)
+
 
         while True:
             yield discussions
 
-            discussions = self.all_discussions(_filter)
+            discussions = self.get_discussions(_filter)
             _filter.page += 1
 
             if not discussions.next_link:
                 break
 
 
-    def absolutely_all_notifications(self, filter: Optional[Filter]=None):
+    def absolutely_all_notifications(self: FlarumUser, filter: Optional[Filter]=None) -&gt; Generator[&#39;Notifications&#39;, None, None]:
         &#34;&#34;&#34;
             A generator that yields all of your `Notifications`, until there are `None` left. `Filter` compatible.
         &#34;&#34;&#34;
@@ -127,9 +140,11 @@ class AbsolutelyAllFlarumUserMixin(FlarumUser):
 
         else:
             _filter = Filter()
-    
+
+
         _filter.page = 0
         discussions = self.get_notifications(_filter)
+
 
         while True:
             yield discussions
@@ -139,13 +154,23 @@ class AbsolutelyAllFlarumUserMixin(FlarumUser):
 
             if not discussions.next_link:
                 break
+# TODO: How to type hint inheritance? 
+# AbsolutelyAllFlarumUserMixin: Type[FlarumUser]
+
 
 
 class AbsolutelyAllExtension(ExtensionMixin):
+    &#34;&#34;&#34;
+        A pyFlarum extension. Allows you to fetch all specific data from a forum (e. g.: all discussions, all posts, etc.), until there are none left.
+
+        Based on `Generator`, that yields in a while loop, until no `next_link` is present in the API.
+    &#34;&#34;&#34;
+
     def __init__(self):
         self.name = NAME
         self.author = AUTHOR
         self.id = ID
+
 
     def get_dependencies(self):
         return {
@@ -171,84 +196,25 @@ class AbsolutelyAllExtension(ExtensionMixin):
 <span>class <span class="ident">AbsolutelyAllExtension</span></span>
 </code></dt>
 <dd>
-<div class="desc"><p>A base class for mixing in custom classes (extensions) into another classes.</p>
-<h3 id="example-extension-code">Example extension code:</h3>
-<pre><code class="language-python">from pyflarum.extensions import ExtensionMixin
-from pyflarum.extensions.admin import AdminExtension
-from pyflarum.session import FlarumUser
-
-
-# Lowecase:
-AUTHOR = &quot;yourname&quot;
-NAME = &quot;extensionname&quot;
-ID = f&quot;{AUTHOR}-{NAME}&quot;
-
-# List of dependencies:
-SOFT_DEPENDENCIES = [AdminExtension] # uses methods from this extension, but can run without it
-HARD_DEPENCENDIES = []
-
-
-
-# I recommend to use the following naming pattern: `&lt;YourExtensionName&gt;&lt;ClassToMixin&gt;Mixin`
-# Example:
-class ExampleFlarumUserMixin(FlarumUser):
-    @property
-    def __example(self):
-        '''
-            Calling `FlarumUser(&lt;...&gt;).__example` would return this.
-        '''
-
-        return &quot;Example&quot;
-
-
-
-class ExampleExtension(ExtensionMixin):
-    def get_dependencies(self):
-        '''
-            Overwrite this method to make your own dependencies.
-
-            This should return the following `dict`:
-            ```python
-            {
-                &quot;hard&quot;: [&lt;class&gt;, &lt;class&gt;, ...],
-                &quot;soft&quot;: [&lt;class&gt;, &lt;class&gt;, ...]
-            }
-            ```
-
-            #### Hard-dependencies:
-            - Will raise an error when they're not found in the initialized `FlarumUser` object. It is impossible for the extension
-            to function without these.
-
-            #### Soft-dependencies:
-            - Will raise just a warning. It is possible for the extension to function without these, although with limitations
-            (such that some functions might be unavailable).
-        '''
-
-        return {
-            &quot;soft&quot;: SOFT_DEPENDENCIES,
-            &quot;hard&quot;: HARD_DEPENCENDIES
-        }
-
-
-    def mixin(self):
-        '''
-            This extends the `FlarumUser` class with features from `ExampleMixin`
-        '''
-
-        super().mixin(self, FlarumUser, ExampleMixin)
-
-</code></pre>
-<p>Initializes the <code>ExtensionMixin</code> object.</p></div>
+<div class="desc"><p>A pyFlarum extension. Allows you to fetch all specific data from a forum (e. g.: all discussions, all posts, etc.), until there are none left.</p>
+<p>Based on <code>Generator</code>, that yields in a while loop, until no <code>next_link</code> is present in the API.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/absolutely_all.py#L115-L129" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/absolutely_all.py#L133-L154" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class AbsolutelyAllExtension(ExtensionMixin):
+    &#34;&#34;&#34;
+        A pyFlarum extension. Allows you to fetch all specific data from a forum (e. g.: all discussions, all posts, etc.), until there are none left.
+
+        Based on `Generator`, that yields in a while loop, until no `next_link` is present in the API.
+    &#34;&#34;&#34;
+
     def __init__(self):
         self.name = NAME
         self.author = AUTHOR
         self.id = ID
+
 
     def get_dependencies(self):
         return {
@@ -274,11 +240,16 @@ class ExampleExtension(ExtensionMixin):
 <em>Inherited from:</em>
 <code><a title="pyflarum.extensions.ExtensionMixin" href="index.html#pyflarum.extensions.ExtensionMixin">ExtensionMixin</a></code>.<code><a title="pyflarum.extensions.ExtensionMixin.get_dependencies" href="index.html#pyflarum.extensions.ExtensionMixin.get_dependencies">get_dependencies</a></code>
 </p>
-<div class="desc inherited"><p>Overwrite this method to make your own dependencies …</p></div>
+<div class="desc inherited"><p>This should return the following <code>dict</code>:
+<code>python
+{
+"hard": [&lt;class&gt;, &lt;class&gt;, ...],
+"soft": [&lt;class&gt;, &lt;class&gt;, ...]
+}</code> …</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/absolutely_all.py#L121-L125" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/absolutely_all.py#L146-L150" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_dependencies(self):
     return {
@@ -295,11 +266,11 @@ class ExampleExtension(ExtensionMixin):
 <em>Inherited from:</em>
 <code><a title="pyflarum.extensions.ExtensionMixin" href="index.html#pyflarum.extensions.ExtensionMixin">ExtensionMixin</a></code>.<code><a title="pyflarum.extensions.ExtensionMixin.mixin" href="index.html#pyflarum.extensions.ExtensionMixin.mixin">mixin</a></code>
 </p>
-<div class="desc inherited"><p>A boilerplate function for mixing …</p></div>
+<div class="desc inherited"><p>A function to mix-in/merge properties, methods, functions, etc&hellip; of one class into another …</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/absolutely_all.py#L128-L129" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/absolutely_all.py#L153-L154" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def mixin(self):
     super().mixin(self, FlarumUser, AbsolutelyAllFlarumUserMixin)</code></pre>
@@ -309,27 +280,16 @@ class ExampleExtension(ExtensionMixin):
 </dd>
 <dt id="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin"><code class="flex name class">
 <span>class <span class="ident">AbsolutelyAllFlarumUserMixin</span></span>
-<span>(</span><span>extensions: Optional[List[<a title="pyflarum.extensions.ExtensionMixin" href="index.html#pyflarum.extensions.ExtensionMixin">ExtensionMixin</a>]] = None, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>dict() -&gt; new empty dictionary
-dict(mapping) -&gt; new dictionary initialized from a mapping object's
-(key, value) pairs
-dict(iterable) -&gt; new dictionary initialized as if via:
-d = {}
-for k, v in iterable:
-d[k] = v
-dict(**kwargs) -&gt; new dictionary initialized with the name=value pairs
-in the keyword argument list.
-For example:
-dict(one=1, two=2)</p></div>
+<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/absolutely_all.py#L18-L112" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/absolutely_all.py#L25-L127" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">class AbsolutelyAllFlarumUserMixin(FlarumUser):
-    def absolutely_all_users(self, filter: Optional[Filter]=None):
+<pre><code class="python">class AbsolutelyAllFlarumUserMixin:
+    def absolutely_all_users(self: FlarumUser, filter: Optional[Filter]=None)  -&gt; Generator[&#39;Users&#39;, None, None]:
         &#34;&#34;&#34;
             A generator that yields `Users` from entire forum, until there are `None` left. `Filter` compatible.
         &#34;&#34;&#34;
@@ -339,21 +299,23 @@ dict(one=1, two=2)</p></div>
 
         else:
             _filter = Filter()
-    
+
+
         _filter.page = 0
-        users = self.all_users(_filter)
+        users = self.get_users(_filter)
+
 
         while True:
             yield users
 
-            users = self.all_users(_filter)
+            users = self.get_users(_filter)
             _filter.page += 1
 
             if not users.next_link:
                 break
 
 
-    def absolutely_all_posts(self, filter: Optional[Filter]=None):
+    def absolutely_all_posts(self: FlarumUser, filter: Optional[Filter]=None) -&gt; Generator[&#39;Posts&#39;, None, None]:
         &#34;&#34;&#34;
             A generator that yields `Posts` from entire forum, until there are `None` left. `Filter` compatible.
         &#34;&#34;&#34;
@@ -363,21 +325,23 @@ dict(one=1, two=2)</p></div>
 
         else:
             _filter = Filter()
-    
+
+
         _filter.page = 0
-        posts = self.all_posts(_filter)
+        posts = self.get_posts(_filter)
+
 
         while True:
             yield posts
 
-            posts = self.all_posts(_filter)
+            posts = self.get_posts(_filter)
             _filter.page += 1
 
             if not posts.next_link:
                 break
 
 
-    def absolutely_all_discussions(self, filter: Optional[Filter]=None):
+    def absolutely_all_discussions(self: FlarumUser, filter: Optional[Filter]=None) -&gt; Generator[&#39;Discussions&#39;, None, None]:
         &#34;&#34;&#34;
             A generator that yields `Discussions` from entire forum, until there are `None` left. `Filter` compatible.
         &#34;&#34;&#34;
@@ -387,21 +351,23 @@ dict(one=1, two=2)</p></div>
 
         else:
             _filter = Filter()
-    
+
+
         _filter.page = 0
-        discussions = self.all_discussions(_filter)
+        discussions = self.get_discussions(_filter)
+
 
         while True:
             yield discussions
 
-            discussions = self.all_discussions(_filter)
+            discussions = self.get_discussions(_filter)
             _filter.page += 1
 
             if not discussions.next_link:
                 break
 
 
-    def absolutely_all_notifications(self, filter: Optional[Filter]=None):
+    def absolutely_all_notifications(self: FlarumUser, filter: Optional[Filter]=None) -&gt; Generator[&#39;Notifications&#39;, None, None]:
         &#34;&#34;&#34;
             A generator that yields all of your `Notifications`, until there are `None` left. `Filter` compatible.
         &#34;&#34;&#34;
@@ -411,9 +377,11 @@ dict(one=1, two=2)</p></div>
 
         else:
             _filter = Filter()
-    
+
+
         _filter.page = 0
         discussions = self.get_notifications(_filter)
+
 
         while True:
             yield discussions
@@ -424,36 +392,19 @@ dict(one=1, two=2)</p></div>
             if not discussions.next_link:
                 break</code></pre>
 </details>
-<h3>Ancestors</h3>
-<ul class="hlist">
-<li><a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a></li>
-<li><a title="pyflarum.session.FlarumSession" href="../session.html#pyflarum.session.FlarumSession">FlarumSession</a></li>
-<li>builtins.dict</li>
-</ul>
-<h3>Instance variables</h3>
-<dl>
-<dt id="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.api_urls"><code class="name">var <span class="ident">api_urls</span></code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.api_urls" href="../session.html#pyflarum.session.FlarumUser.api_urls">api_urls</a></code>
-</p>
-<div class="desc inherited"><p>Simple, hardcoded <code>'key: value'</code> <code>dict</code> of Flarum's API routes for quick access …</p></div>
-</dd>
-</dl>
 <h3>Methods</h3>
 <dl>
 <dt id="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.absolutely_all_discussions"><code class="name flex">
-<span>def <span class="ident">absolutely_all_discussions</span></span>(<span>self, filter: Optional[<a title="pyflarum.flarum.core.filters.Filter" href="../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a>] = None)</span>
+<span>def <span class="ident">absolutely_all_discussions</span></span>(<span>self: <a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a>, filter: Optional[<a title="pyflarum.flarum.core.filters.Filter" href="../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a>] = None) ‑> Generator[Discussions, NoneType, NoneType]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>A generator that yields <code>Discussions</code> from entire forum, until there are <code>None</code> left. <code>Filter</code> compatible.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/absolutely_all.py#L67-L88" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/absolutely_all.py#L78-L101" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">def absolutely_all_discussions(self, filter: Optional[Filter]=None):
+<pre><code class="python">def absolutely_all_discussions(self: FlarumUser, filter: Optional[Filter]=None) -&gt; Generator[&#39;Discussions&#39;, None, None]:
     &#34;&#34;&#34;
         A generator that yields `Discussions` from entire forum, until there are `None` left. `Filter` compatible.
     &#34;&#34;&#34;
@@ -464,13 +415,15 @@ dict(one=1, two=2)</p></div>
     else:
         _filter = Filter()
 
+
     _filter.page = 0
-    discussions = self.all_discussions(_filter)
+    discussions = self.get_discussions(_filter)
+
 
     while True:
         yield discussions
 
-        discussions = self.all_discussions(_filter)
+        discussions = self.get_discussions(_filter)
         _filter.page += 1
 
         if not discussions.next_link:
@@ -478,16 +431,16 @@ dict(one=1, two=2)</p></div>
 </details>
 </dd>
 <dt id="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.absolutely_all_notifications"><code class="name flex">
-<span>def <span class="ident">absolutely_all_notifications</span></span>(<span>self, filter: Optional[<a title="pyflarum.flarum.core.filters.Filter" href="../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a>] = None)</span>
+<span>def <span class="ident">absolutely_all_notifications</span></span>(<span>self: <a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a>, filter: Optional[<a title="pyflarum.flarum.core.filters.Filter" href="../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a>] = None) ‑> Generator[Notifications, NoneType, NoneType]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>A generator that yields all of your <code>Notifications</code>, until there are <code>None</code> left. <code>Filter</code> compatible.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/absolutely_all.py#L91-L112" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/absolutely_all.py#L104-L127" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">def absolutely_all_notifications(self, filter: Optional[Filter]=None):
+<pre><code class="python">def absolutely_all_notifications(self: FlarumUser, filter: Optional[Filter]=None) -&gt; Generator[&#39;Notifications&#39;, None, None]:
     &#34;&#34;&#34;
         A generator that yields all of your `Notifications`, until there are `None` left. `Filter` compatible.
     &#34;&#34;&#34;
@@ -498,8 +451,10 @@ dict(one=1, two=2)</p></div>
     else:
         _filter = Filter()
 
+
     _filter.page = 0
     discussions = self.get_notifications(_filter)
+
 
     while True:
         yield discussions
@@ -512,16 +467,16 @@ dict(one=1, two=2)</p></div>
 </details>
 </dd>
 <dt id="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.absolutely_all_posts"><code class="name flex">
-<span>def <span class="ident">absolutely_all_posts</span></span>(<span>self, filter: Optional[<a title="pyflarum.flarum.core.filters.Filter" href="../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a>] = None)</span>
+<span>def <span class="ident">absolutely_all_posts</span></span>(<span>self: <a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a>, filter: Optional[<a title="pyflarum.flarum.core.filters.Filter" href="../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a>] = None) ‑> Generator[Posts, NoneType, NoneType]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>A generator that yields <code>Posts</code> from entire forum, until there are <code>None</code> left. <code>Filter</code> compatible.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/absolutely_all.py#L43-L64" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/absolutely_all.py#L52-L75" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">def absolutely_all_posts(self, filter: Optional[Filter]=None):
+<pre><code class="python">def absolutely_all_posts(self: FlarumUser, filter: Optional[Filter]=None) -&gt; Generator[&#39;Posts&#39;, None, None]:
     &#34;&#34;&#34;
         A generator that yields `Posts` from entire forum, until there are `None` left. `Filter` compatible.
     &#34;&#34;&#34;
@@ -532,13 +487,15 @@ dict(one=1, two=2)</p></div>
     else:
         _filter = Filter()
 
+
     _filter.page = 0
-    posts = self.all_posts(_filter)
+    posts = self.get_posts(_filter)
+
 
     while True:
         yield posts
 
-        posts = self.all_posts(_filter)
+        posts = self.get_posts(_filter)
         _filter.page += 1
 
         if not posts.next_link:
@@ -546,16 +503,16 @@ dict(one=1, two=2)</p></div>
 </details>
 </dd>
 <dt id="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.absolutely_all_users"><code class="name flex">
-<span>def <span class="ident">absolutely_all_users</span></span>(<span>self, filter: Optional[<a title="pyflarum.flarum.core.filters.Filter" href="../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a>] = None)</span>
+<span>def <span class="ident">absolutely_all_users</span></span>(<span>self: <a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a>, filter: Optional[<a title="pyflarum.flarum.core.filters.Filter" href="../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a>] = None) ‑> Generator[Users, NoneType, NoneType]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>A generator that yields <code>Users</code> from entire forum, until there are <code>None</code> left. <code>Filter</code> compatible.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/4b2ac23fcad92266e8d0d6cf51a00e48b7f93adb/pyflarum/extensions/absolutely_all.py#L19-L40" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/absolutely_all.py#L26-L49" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">def absolutely_all_users(self, filter: Optional[Filter]=None):
+<pre><code class="python">def absolutely_all_users(self: FlarumUser, filter: Optional[Filter]=None)  -&gt; Generator[&#39;Users&#39;, None, None]:
     &#34;&#34;&#34;
         A generator that yields `Users` from entire forum, until there are `None` left. `Filter` compatible.
     &#34;&#34;&#34;
@@ -566,58 +523,20 @@ dict(one=1, two=2)</p></div>
     else:
         _filter = Filter()
 
+
     _filter.page = 0
-    users = self.all_users(_filter)
+    users = self.get_users(_filter)
+
 
     while True:
         yield users
 
-        users = self.all_users(_filter)
+        users = self.get_users(_filter)
         _filter.page += 1
 
         if not users.next_link:
             break</code></pre>
 </details>
-</dd>
-<dt id="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.all_discussions"><code class="name flex">
-<span>def <span class="ident">all_discussions</span></span>(<span>self, filter: <a title="pyflarum.flarum.core.filters.Filter" href="../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a> = None)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.all_discussions" href="../session.html#pyflarum.session.FlarumUser.all_discussions">all_discussions</a></code>
-</p>
-<div class="desc inherited"><p>Obtains all discussions from specific page by using <code>filter</code>.</p></div>
-</dd>
-<dt id="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.all_posts"><code class="name flex">
-<span>def <span class="ident">all_posts</span></span>(<span>self, filter: <a title="pyflarum.flarum.core.filters.Filter" href="../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a> = None)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.all_posts" href="../session.html#pyflarum.session.FlarumUser.all_posts">all_posts</a></code>
-</p>
-<div class="desc inherited"><p>Obtains all posts from specific page by using <code>filter</code>.</p></div>
-</dd>
-<dt id="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.all_users"><code class="name flex">
-<span>def <span class="ident">all_users</span></span>(<span>self, filter: <a title="pyflarum.flarum.core.filters.Filter" href="../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a> = None)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.all_users" href="../session.html#pyflarum.session.FlarumUser.all_users">all_users</a></code>
-</p>
-<div class="desc inherited"><p>Obtains all users from specific page by using <code>filter</code>.</p></div>
-</dd>
-<dt id="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.get_notifications"><code class="name flex">
-<span>def <span class="ident">get_notifications</span></span>(<span>self, filter: Optional[<a title="pyflarum.flarum.core.filters.Filter" href="../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a>] = None) ‑> <a title="pyflarum.flarum.core.notifications.Notifications" href="../flarum/core/notifications.html#pyflarum.flarum.core.notifications.Notifications">Notifications</a></span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.get_notifications" href="../session.html#pyflarum.session.FlarumUser.get_notifications">get_notifications</a></code>
-</p>
-<div class="desc inherited"><p>Obtains all notifications of your user.</p></div>
 </dd>
 </dl>
 </dd>
@@ -697,11 +616,6 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.absolutely_all_notifications" href="#pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.absolutely_all_notifications">absolutely_all_notifications</a></code></li>
 <li><code><a title="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.absolutely_all_posts" href="#pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.absolutely_all_posts">absolutely_all_posts</a></code></li>
 <li><code><a title="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.absolutely_all_users" href="#pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.absolutely_all_users">absolutely_all_users</a></code></li>
-<li><code><a title="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.all_discussions" href="../session.html#pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.all_discussions">all_discussions</a></code></li>
-<li><code><a title="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.all_posts" href="../session.html#pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.all_posts">all_posts</a></code></li>
-<li><code><a title="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.all_users" href="../session.html#pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.all_users">all_users</a></code></li>
-<li><code><a title="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.api_urls" href="../session.html#pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.api_urls">api_urls</a></code></li>
-<li><code><a title="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.get_notifications" href="../session.html#pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.get_notifications">get_notifications</a></code></li>
 </ul>
 </li>
 </ul>
