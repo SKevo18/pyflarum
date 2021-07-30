@@ -11,6 +11,7 @@ Thus, I present to you my first (real) Python package - [pyFlarum](https://pypi.
 
 
 ## 🔗 Useful links:
+  - [❗ Changelog](https://github.com/CWKevo/pyflarum/releases)
   - [🗣 Discuss](https://discuss.flarum.org/d/28221)
   - [📚 Documentation](https://cwkevo.github.io/pyflarum/docs/)
   - [👨‍💻 GitHub repository](https://github.com/CWKevo/pyflarum)
