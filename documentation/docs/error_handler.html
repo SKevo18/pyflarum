@@ -25,13 +25,14 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\error_handler.py#L0-L95" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\error_handler.py#L0-L105" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">from typing import Optional, List, Dict, TYPE_CHECKING
+<pre><code class="python">from typing import Literal, NoReturn, Optional, List, Dict, TYPE_CHECKING, Union
 if TYPE_CHECKING:
     from requests.models import Response
 
 from json.decoder import JSONDecodeError
+
 
 
 class FlarumError(Exception):
@@ -57,11 +58,20 @@ class MissingExtensionWarning(Warning):
     pass
 
 
-def parse_request(request: &#39;Response&#39;):
+
+def parse_request(response: &#39;Response&#39;) -&gt; dict:
+    &#34;&#34;&#34;
+        Parses the request as JSON, raises `FlarumError` if
+        something went wrong.
+    &#34;&#34;&#34;
+
+    if not 200 &lt;= response.status_code &lt;= 204:
+        return handle_errors(status_code=response.status_code)
+
     try:
         # Includes opening and closing brackets:
-        if len(request.text) &gt;= 2:
-            json = request.json() # type: dict
+        if len(response.text) &gt;= 2:
+            json = response.json() # type: dict
 
         else:
             json = {}
@@ -71,18 +81,16 @@ def parse_request(request: &#39;Response&#39;):
 
 
     if &#39;errors&#39; in json:
-        return handle_errors(json[&#39;errors&#39;])
-
-    elif not 200 &lt;= request.status_code &lt;= 204:
-        return handle_errors(status_code=request.status_code)
+        return handle_errors(errors=json[&#39;errors&#39;])
 
 
     return json
 
 
-def handle_errors(errors: Optional[List[Dict[str, str]]]=None, status_code: Optional[str]=None):
+def handle_errors(errors: Optional[List[Dict[str, str]]]=None, status_code: Optional[str]=None) -&gt; Union[Literal[True], NoReturn]:
     &#34;&#34;&#34;
-        Handles Flarum &amp; request related errors. Should be called on error only.
+        Handles Flarum &amp; request related errors.
+        Returns `FlarumError` if an error was found, `True` otherwise.
     &#34;&#34;&#34;
 
     if errors:
@@ -122,7 +130,9 @@ def handle_errors(errors: Optional[List[Dict[str, str]]]=None, status_code: Opti
                 raise FlarumError(f&#39;Error {status}: {code} - {details}&#39;, status=status, code=code, details=details)
 
     else:
-        raise FlarumError(f&#39;Request related error: {status_code}&#39;)</code></pre>
+        raise FlarumError(f&#39;Request related error: {status_code} (https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/{status_code})&#39;)
+
+    return True</code></pre>
 </details>
 </section>
 <section>
@@ -133,18 +143,20 @@ def handle_errors(errors: Optional[List[Dict[str, str]]]=None, status_code: Opti
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="pyflarum.error_handler.handle_errors"><code class="name flex">
-<span>def <span class="ident">handle_errors</span></span>(<span>errors: Optional[List[Dict[str, str]]] = None, status_code: Optional[str] = None)</span>
+<span>def <span class="ident">handle_errors</span></span>(<span>errors: Optional[List[Dict[str, str]]] = None, status_code: Optional[str] = None) ‑> Union[Literal[True], NoReturn]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Handles Flarum &amp; request related errors. Should be called on error only.</p></div>
+<div class="desc"><p>Handles Flarum &amp; request related errors.
+Returns <code><a title="pyflarum.error_handler.FlarumError" href="#pyflarum.error_handler.FlarumError">FlarumError</a></code> if an error was found, <code>True</code> otherwise.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\error_handler.py#L54-L96" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\error_handler.py#L61-L106" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">def handle_errors(errors: Optional[List[Dict[str, str]]]=None, status_code: Optional[str]=None):
+<pre><code class="python">def handle_errors(errors: Optional[List[Dict[str, str]]]=None, status_code: Optional[str]=None) -&gt; Union[Literal[True], NoReturn]:
     &#34;&#34;&#34;
-        Handles Flarum &amp; request related errors. Should be called on error only.
+        Handles Flarum &amp; request related errors.
+        Returns `FlarumError` if an error was found, `True` otherwise.
     &#34;&#34;&#34;
 
     if errors:
@@ -184,24 +196,35 @@ def handle_errors(errors: Optional[List[Dict[str, str]]]=None, status_code: Opti
                 raise FlarumError(f&#39;Error {status}: {code} - {details}&#39;, status=status, code=code, details=details)
 
     else:
-        raise FlarumError(f&#39;Request related error: {status_code}&#39;)</code></pre>
+        raise FlarumError(f&#39;Request related error: {status_code} (https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/{status_code})&#39;)
+
+    return True</code></pre>
 </details>
 </dd>
 <dt id="pyflarum.error_handler.parse_request"><code class="name flex">
-<span>def <span class="ident">parse_request</span></span>(<span>request: Response)</span>
+<span>def <span class="ident">parse_request</span></span>(<span>response: Response) ‑> dict</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Parses the request as JSON, raises <code><a title="pyflarum.error_handler.FlarumError" href="#pyflarum.error_handler.FlarumError">FlarumError</a></code> if
+something went wrong.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\error_handler.py#L31-L51" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\error_handler.py#L33-L58" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">def parse_request(request: &#39;Response&#39;):
+<pre><code class="python">def parse_request(response: &#39;Response&#39;) -&gt; dict:
+    &#34;&#34;&#34;
+        Parses the request as JSON, raises `FlarumError` if
+        something went wrong.
+    &#34;&#34;&#34;
+
+    if not 200 &lt;= response.status_code &lt;= 204:
+        return handle_errors(status_code=response.status_code)
+
     try:
         # Includes opening and closing brackets:
-        if len(request.text) &gt;= 2:
-            json = request.json() # type: dict
+        if len(response.text) &gt;= 2:
+            json = response.json() # type: dict
 
         else:
             json = {}
@@ -211,10 +234,7 @@ def handle_errors(errors: Optional[List[Dict[str, str]]]=None, status_code: Opti
 
 
     if &#39;errors&#39; in json:
-        return handle_errors(json[&#39;errors&#39;])
-
-    elif not 200 &lt;= request.status_code &lt;= 204:
-        return handle_errors(status_code=request.status_code)
+        return handle_errors(errors=json[&#39;errors&#39;])
 
 
     return json</code></pre>
@@ -234,7 +254,7 @@ def handle_errors(errors: Optional[List[Dict[str, str]]]=None, status_code: Opti
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\error_handler.py#L8-L18" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\error_handler.py#L9-L19" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class FlarumError(Exception):
     &#34;&#34;&#34;
@@ -263,7 +283,7 @@ def handle_errors(errors: Optional[List[Dict[str, str]]]=None, status_code: Opti
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\error_handler.py#L21-L23" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\error_handler.py#L22-L24" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class MissingExtensionError(Exception):
     &#34;&#34;&#34;Missing pyFlarum extension error.&#34;&#34;&#34;
@@ -284,7 +304,7 @@ def handle_errors(errors: Optional[List[Dict[str, str]]]=None, status_code: Opti
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\error_handler.py#L26-L28" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\error_handler.py#L27-L29" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class MissingExtensionWarning(Warning):
     &#34;&#34;&#34;Missing pyFlarum extension warning.&#34;&#34;&#34;

@@ -25,10 +25,12 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\flarum\FoF_UserBio.py#L0-L72" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\FoF_UserBio.py#L0-L78" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">from typing import Optional
-from ...custom_types import AnyUser
+<pre><code class="python">from typing import Optional, TYPE_CHECKING, Union
+if TYPE_CHECKING:
+    from ...custom_types import AnyUser
+    from ...flarum.core.users import User
 
 from .. import ExtensionMixin
 from ...session import FlarumUser
@@ -55,7 +57,9 @@ class UserBioForumMixin(Forum):
 
 
 class UserBioFlarumUserMixin(FlarumUser):
-    def update_user_bio(self, bio: Optional[str]=None, user: Optional[AnyUser]=None):
+    def update_user_bio(self, bio: Optional[str]=None, user: Optional[&#39;AnyUser&#39;]=None) -&gt; Union[&#39;FlarumUser&#39;, &#39;User&#39;]:
+        id = user.id if user else self.data.id
+
         post_data = {
             &#34;data&#34;: {
                 &#34;type&#34;: &#34;users&#34;,
@@ -66,10 +70,12 @@ class UserBioFlarumUserMixin(FlarumUser):
             }
         }
 
-        raw = self.session.patch(f&#34;{self.api_urls[&#39;users&#39;]}/{user.id if user else self.data.id}&#34;, json=post_data)
+        raw = self.session.patch(f&#34;{self.api_urls[&#39;users&#39;]}/{id}&#34;, json=post_data)
         json = parse_request(raw)
 
+
         return self._update_user_data(new_data=json)
+
 
 
 class UserBioUserFromBulkMixin(UserFromBulk):
@@ -163,7 +169,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\flarum\FoF_UserBio.py#L62-L73" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\FoF_UserBio.py#L68-L79" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class UserBioExtension(ExtensionMixin):
     def get_dependencies(self):
@@ -201,7 +207,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\flarum\FoF_UserBio.py#L63-L67" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\FoF_UserBio.py#L69-L73" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_dependencies(self):
     return {
@@ -222,7 +228,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\flarum\FoF_UserBio.py#L70-L73" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\FoF_UserBio.py#L76-L79" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def mixin(self):
     super().mixin(self, FlarumUser, UserBioFlarumUserMixin)
@@ -237,24 +243,27 @@ class ExampleExtension(ExtensionMixin):
 <span>(</span><span>extensions: Optional[List[<a title="pyflarum.extensions.ExtensionMixin" href="../index.html#pyflarum.extensions.ExtensionMixin">ExtensionMixin</a>]] = None, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>dict() -&gt; new empty dictionary
-dict(mapping) -&gt; new dictionary initialized from a mapping object's
-(key, value) pairs
-dict(iterable) -&gt; new dictionary initialized as if via:
-d = {}
-for k, v in iterable:
-d[k] = v
-dict(**kwargs) -&gt; new dictionary initialized with the name=value pairs
-in the keyword argument list.
-For example:
-dict(one=1, two=2)</p></div>
+<div class="desc"><p>The main object that carries the Flarum session.</p>
+<h3 id="parameters">Parameters:</h3>
+<ul>
+<li><code>forum_url</code> - the forum URL that you want the bot to fetch/update data from. This mustn't end with trailing slash (e. g.: <a href="https://domain.tld/">https://domain.tld/</a> - wrong; <a href="https://domain.tld">https://domain.tld</a> - correct).</li>
+<li><code>username_or_email</code> - optional. The username or E-mail address to log into. If <code>None</code>, then the bot doesn't login.</li>
+<li><code>password</code> - optional. The user's password. If <code>None</code>, then the bot doesn't login.</li>
+<li><code>api_endpoint</code> - the API endpoint of the forum, without slashes. This can be specified in Flarum's <code>config.php</code> and normally forums don't need to change the default <code>'api'</code></li>
+<li><code>user_agent</code> - the user agent that will be used to make all requests. Defaults to <code>pyflarum &lt;version&gt;</code>.</li>
+<li><code>session_object</code> - the <code>Session</code> object to make requests with. You can pass any object that supports all operations from the <a href="https://pypi.org/project/requests/">requests</a> library, check <a href="https://pypi.org/project/requests-cache/">requests_cache</a> as an example.</li>
+<li><code>extensions</code> - a list of <code>ExtensionMixin</code> classes. These are monkey-patched on initialization. Learn more about <a href="https://cwkevo.github.io/pyflarum/docs/#extensions">extensions</a>.
+```</li>
+</ul></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\flarum\FoF_UserBio.py#L28-L43" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\FoF_UserBio.py#L30-L48" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class UserBioFlarumUserMixin(FlarumUser):
-    def update_user_bio(self, bio: Optional[str]=None, user: Optional[AnyUser]=None):
+    def update_user_bio(self, bio: Optional[str]=None, user: Optional[&#39;AnyUser&#39;]=None) -&gt; Union[&#39;FlarumUser&#39;, &#39;User&#39;]:
+        id = user.id if user else self.data.id
+
         post_data = {
             &#34;data&#34;: {
                 &#34;type&#34;: &#34;users&#34;,
@@ -265,8 +274,9 @@ dict(one=1, two=2)</p></div>
             }
         }
 
-        raw = self.session.patch(f&#34;{self.api_urls[&#39;users&#39;]}/{user.id if user else self.data.id}&#34;, json=post_data)
+        raw = self.session.patch(f&#34;{self.api_urls[&#39;users&#39;]}/{id}&#34;, json=post_data)
         json = parse_request(raw)
+
 
         return self._update_user_data(new_data=json)</code></pre>
 </details>
@@ -278,7 +288,7 @@ dict(one=1, two=2)</p></div>
 </ul>
 <h3>Instance variables</h3>
 <dl>
-<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.api_urls"><code class="name">var <span class="ident">api_urls</span></code></dt>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.api_urls"><code class="name">var <span class="ident">api_urls</span> : Dict[str, str]</code></dt>
 <dd>
 <p class="inheritance">
 <em>Inherited from:</em>
@@ -289,35 +299,66 @@ dict(one=1, two=2)</p></div>
 </dl>
 <h3>Methods</h3>
 <dl>
-<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.all_discussions"><code class="name flex">
-<span>def <span class="ident">all_discussions</span></span>(<span>self, filter: <a title="pyflarum.flarum.core.filters.Filter" href="../../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a> = None)</span>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.authenticate"><code class="name flex">
+<span>def <span class="ident">authenticate</span></span>(<span>self, username_or_email: Optional[str] = None, password: Optional[str] = None) ‑> NoneType</span>
 </code></dt>
 <dd>
 <p class="inheritance">
 <em>Inherited from:</em>
-<code><a title="pyflarum.session.FlarumUser" href="../../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.all_discussions" href="../../session.html#pyflarum.session.FlarumUser.all_discussions">all_discussions</a></code>
+<code><a title="pyflarum.session.FlarumUser" href="../../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.authenticate" href="../../session.html#pyflarum.session.FlarumUser.authenticate">authenticate</a></code>
 </p>
-<div class="desc inherited"><p>Obtains all discussions from specific page by using <code>filter</code>.</p></div>
+<div class="desc inherited"><p>Authenticates your user. This can be run after <code>FlarumUser</code> was initialized, to switch to a different user. You can even change
+<code>FlarumUser.forum_url</code> …</p></div>
 </dd>
-<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.all_posts"><code class="name flex">
-<span>def <span class="ident">all_posts</span></span>(<span>self, filter: <a title="pyflarum.flarum.core.filters.Filter" href="../../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a> = None)</span>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.change_email"><code class="name flex">
+<span>def <span class="ident">change_email</span></span>(<span>self, new_email: str, password_confirmation: str, user: Optional[ForwardRef('AnyUser')] = None) ‑> Union[<a title="pyflarum.session.FlarumUser" href="../../session.html#pyflarum.session.FlarumUser">FlarumUser</a>, <a title="pyflarum.flarum.core.users.User" href="../../flarum/core/users.html#pyflarum.flarum.core.users.User">User</a>]</span>
 </code></dt>
 <dd>
 <p class="inheritance">
 <em>Inherited from:</em>
-<code><a title="pyflarum.session.FlarumUser" href="../../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.all_posts" href="../../session.html#pyflarum.session.FlarumUser.all_posts">all_posts</a></code>
+<code><a title="pyflarum.session.FlarumUser" href="../../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.change_email" href="../../session.html#pyflarum.session.FlarumUser.change_email">change_email</a></code>
 </p>
-<div class="desc inherited"><p>Obtains all posts from specific page by using <code>filter</code>.</p></div>
+<div class="desc inherited"><p>Changes your E-mail. If <code>user</code> is specified, then that user's E-mail is changed …</p></div>
 </dd>
-<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.all_users"><code class="name flex">
-<span>def <span class="ident">all_users</span></span>(<span>self, filter: <a title="pyflarum.flarum.core.filters.Filter" href="../../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a> = None)</span>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.get_discussion_by_id"><code class="name flex">
+<span>def <span class="ident">get_discussion_by_id</span></span>(<span>self, id: int) ‑> <a title="pyflarum.flarum.core.discussions.Discussion" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.Discussion">Discussion</a></span>
 </code></dt>
 <dd>
 <p class="inheritance">
 <em>Inherited from:</em>
-<code><a title="pyflarum.session.FlarumUser" href="../../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.all_users" href="../../session.html#pyflarum.session.FlarumUser.all_users">all_users</a></code>
+<code><a title="pyflarum.session.FlarumUser" href="../../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.get_discussion_by_id" href="../../session.html#pyflarum.session.FlarumUser.get_discussion_by_id">get_discussion_by_id</a></code>
 </p>
-<div class="desc inherited"><p>Obtains all users from specific page by using <code>filter</code>.</p></div>
+<div class="desc inherited"><p>Obtains a discussion by specific ID.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.get_discussions"><code class="name flex">
+<span>def <span class="ident">get_discussions</span></span>(<span>self, filter: <a title="pyflarum.flarum.core.filters.Filter" href="../../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a> = None)</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.session.FlarumUser" href="../../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.get_discussions" href="../../session.html#pyflarum.session.FlarumUser.get_discussions">get_discussions</a></code>
+</p>
+<div class="desc inherited"><p>Obtains all discussions from <code>/api/discussions</code>, optionally filtering results by using <code>filter</code>.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.get_forum_data"><code class="name flex">
+<span>def <span class="ident">get_forum_data</span></span>(<span>self) ‑> <a title="pyflarum.flarum.core.forum.Forum" href="../../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum">Forum</a></span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.session.FlarumUser" href="../../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.get_forum_data" href="../../session.html#pyflarum.session.FlarumUser.get_forum_data">get_forum_data</a></code>
+</p>
+<div class="desc inherited"><p>Obtains the forum data, returns <code>Forum</code> object.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.get_groups"><code class="name flex">
+<span>def <span class="ident">get_groups</span></span>(<span>self) ‑> <a title="pyflarum.flarum.core.groups.Groups" href="../../flarum/core/groups.html#pyflarum.flarum.core.groups.Groups">Groups</a></span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.session.FlarumUser" href="../../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.get_groups" href="../../session.html#pyflarum.session.FlarumUser.get_groups">get_groups</a></code>
+</p>
+<div class="desc inherited"><p>Obtains all groups of a forum from <code>/api/groups</code>.</p></div>
 </dd>
 <dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.get_notifications"><code class="name flex">
 <span>def <span class="ident">get_notifications</span></span>(<span>self, filter: Optional[<a title="pyflarum.flarum.core.filters.Filter" href="../../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a>] = None) ‑> <a title="pyflarum.flarum.core.notifications.Notifications" href="../../flarum/core/notifications.html#pyflarum.flarum.core.notifications.Notifications">Notifications</a></span>
@@ -327,19 +368,111 @@ dict(one=1, two=2)</p></div>
 <em>Inherited from:</em>
 <code><a title="pyflarum.session.FlarumUser" href="../../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.get_notifications" href="../../session.html#pyflarum.session.FlarumUser.get_notifications">get_notifications</a></code>
 </p>
-<div class="desc inherited"><p>Obtains all notifications of your user.</p></div>
+<div class="desc inherited"><p>Obtains all of your notifications from <code>/api/notifications</code>, optionally filtering results by using <code>filter</code>.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.get_post_by_id"><code class="name flex">
+<span>def <span class="ident">get_post_by_id</span></span>(<span>self, id: int) ‑> <a title="pyflarum.flarum.core.posts.Post" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.Post">Post</a></span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.session.FlarumUser" href="../../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.get_post_by_id" href="../../session.html#pyflarum.session.FlarumUser.get_post_by_id">get_post_by_id</a></code>
+</p>
+<div class="desc inherited"><p>Obtains a post by specific ID.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.get_posts"><code class="name flex">
+<span>def <span class="ident">get_posts</span></span>(<span>self, filter: <a title="pyflarum.flarum.core.filters.Filter" href="../../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a> = None)</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.session.FlarumUser" href="../../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.get_posts" href="../../session.html#pyflarum.session.FlarumUser.get_posts">get_posts</a></code>
+</p>
+<div class="desc inherited"><p>Obtains all posts from <code>/api/posts</code>, optionally filtering results by using <code>filter</code>.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.get_user_by_id"><code class="name flex">
+<span>def <span class="ident">get_user_by_id</span></span>(<span>self, id: int) ‑> <a title="pyflarum.flarum.core.users.User" href="../../flarum/core/users.html#pyflarum.flarum.core.users.User">User</a></span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.session.FlarumUser" href="../../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.get_user_by_id" href="../../session.html#pyflarum.session.FlarumUser.get_user_by_id">get_user_by_id</a></code>
+</p>
+<div class="desc inherited"><p>Obtains a user by specific ID.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.get_users"><code class="name flex">
+<span>def <span class="ident">get_users</span></span>(<span>self, filter: <a title="pyflarum.flarum.core.filters.Filter" href="../../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a> = None) ‑> <a title="pyflarum.flarum.core.users.Users" href="../../flarum/core/users.html#pyflarum.flarum.core.users.Users">Users</a></span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.session.FlarumUser" href="../../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.get_users" href="../../session.html#pyflarum.session.FlarumUser.get_users">get_users</a></code>
+</p>
+<div class="desc inherited"><p>Obtains all users from <code>/api/users</code>, optionally filtering results by using <code>filter</code>.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.mark_all_discussions_as_read"><code class="name flex">
+<span>def <span class="ident">mark_all_discussions_as_read</span></span>(<span>self, at: datetime.datetime = datetime.datetime(2021, 7, 30, 11, 54, 28, 908292)) ‑> Literal[True]</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.session.FlarumUser" href="../../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.mark_all_discussions_as_read" href="../../session.html#pyflarum.session.FlarumUser.mark_all_discussions_as_read">mark_all_discussions_as_read</a></code>
+</p>
+<div class="desc inherited"><p>Marks all discussions as read …</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.mark_all_notifications_as_read"><code class="name flex">
+<span>def <span class="ident">mark_all_notifications_as_read</span></span>(<span>self) ‑> Literal[True]</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.session.FlarumUser" href="../../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.mark_all_notifications_as_read" href="../../session.html#pyflarum.session.FlarumUser.mark_all_notifications_as_read">mark_all_notifications_as_read</a></code>
+</p>
+<div class="desc inherited"><p>Marks all notifications as read. Returns <code>True</code> when successful.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.remove_user_avatar"><code class="name flex">
+<span>def <span class="ident">remove_user_avatar</span></span>(<span>self, user: Optional[ForwardRef('AnyUser')] = None) ‑> Union[<a title="pyflarum.session.FlarumUser" href="../../session.html#pyflarum.session.FlarumUser">FlarumUser</a>, <a title="pyflarum.flarum.core.users.User" href="../../flarum/core/users.html#pyflarum.flarum.core.users.User">User</a>]</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.session.FlarumUser" href="../../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.remove_user_avatar" href="../../session.html#pyflarum.session.FlarumUser.remove_user_avatar">remove_user_avatar</a></code>
+</p>
+<div class="desc inherited"><p>Removes your user's avatar. If <code>user</code> is specified, then avatar of that user is removed.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.send_password_reset_email"><code class="name flex">
+<span>def <span class="ident">send_password_reset_email</span></span>(<span>self) ‑> Union[<a title="pyflarum.session.FlarumUser" href="../../session.html#pyflarum.session.FlarumUser">FlarumUser</a>, <a title="pyflarum.flarum.core.users.User" href="../../flarum/core/users.html#pyflarum.flarum.core.users.User">User</a>]</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.session.FlarumUser" href="../../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.send_password_reset_email" href="../../session.html#pyflarum.session.FlarumUser.send_password_reset_email">send_password_reset_email</a></code>
+</p>
+<div class="desc inherited"><p>Allows you to send yourself a password reset E-mail.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.update_preferences"><code class="name flex">
+<span>def <span class="ident">update_preferences</span></span>(<span>self, preferences: Iterable[Tuple[str, Any]], user: Optional[ForwardRef('AnyUser')] = None) ‑> Union[<a title="pyflarum.session.FlarumUser" href="../../session.html#pyflarum.session.FlarumUser">FlarumUser</a>, <a title="pyflarum.flarum.core.users.User" href="../../flarum/core/users.html#pyflarum.flarum.core.users.User">User</a>]</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.session.FlarumUser" href="../../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.update_preferences" href="../../session.html#pyflarum.session.FlarumUser.update_preferences">update_preferences</a></code>
+</p>
+<div class="desc inherited"><p>Updates an user's preferences …</p></div>
 </dd>
 <dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.update_user_bio"><code class="name flex">
-<span>def <span class="ident">update_user_bio</span></span>(<span>self, bio: Optional[str] = None, user: Union[<a title="pyflarum.flarum.core.users.User" href="../../flarum/core/users.html#pyflarum.flarum.core.users.User">User</a>, <a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a>, <a title="pyflarum.flarum.core.users.UserFromNotification" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromNotification">UserFromNotification</a>, NoneType] = None)</span>
+<span>def <span class="ident">update_user_bio</span></span>(<span>self, bio: Optional[str] = None, user: Optional[ForwardRef('AnyUser')] = None) ‑> Union[FlarumUser, User]</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\flarum\FoF_UserBio.py#L29-L43" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\FoF_UserBio.py#L31-L48" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">def update_user_bio(self, bio: Optional[str]=None, user: Optional[AnyUser]=None):
+<pre><code class="python">def update_user_bio(self, bio: Optional[str]=None, user: Optional[&#39;AnyUser&#39;]=None) -&gt; Union[&#39;FlarumUser&#39;, &#39;User&#39;]:
+    id = user.id if user else self.data.id
+
     post_data = {
         &#34;data&#34;: {
             &#34;type&#34;: &#34;users&#34;,
@@ -350,11 +483,32 @@ dict(one=1, two=2)</p></div>
         }
     }
 
-    raw = self.session.patch(f&#34;{self.api_urls[&#39;users&#39;]}/{user.id if user else self.data.id}&#34;, json=post_data)
+    raw = self.session.patch(f&#34;{self.api_urls[&#39;users&#39;]}/{id}&#34;, json=post_data)
     json = parse_request(raw)
+
 
     return self._update_user_data(new_data=json)</code></pre>
 </details>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.update_user_info"><code class="name flex">
+<span>def <span class="ident">update_user_info</span></span>(<span>self, user: Optional[ForwardRef('AnyUser')] = None, new_username: Optional[str] = None, groups: Union[List[Union[str, int]], List[<a title="pyflarum.flarum.core.groups.Group" href="../../flarum/core/groups.html#pyflarum.flarum.core.groups.Group">Group</a>], <a title="pyflarum.flarum.core.groups.Groups" href="../../flarum/core/groups.html#pyflarum.flarum.core.groups.Groups">Groups</a>, NoneType] = None) ‑> Union[<a title="pyflarum.session.FlarumUser" href="../../session.html#pyflarum.session.FlarumUser">FlarumUser</a>, <a title="pyflarum.flarum.core.users.User" href="../../flarum/core/users.html#pyflarum.flarum.core.users.User">User</a>]</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.session.FlarumUser" href="../../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.update_user_info" href="../../session.html#pyflarum.session.FlarumUser.update_user_info">update_user_info</a></code>
+</p>
+<div class="desc inherited"><p>Updates the info of a user (this can be your user or someone else) …</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.upload_user_avatar"><code class="name flex">
+<span>def <span class="ident">upload_user_avatar</span></span>(<span>self, file: <class 'BinaryIO'>, user: Optional[ForwardRef('AnyUser')] = None, file_name: str = 'avatar', file_type: Literal['image/png', 'image/jpeg', 'image/gif'] = 'image/png') ‑> Union[<a title="pyflarum.session.FlarumUser" href="../../session.html#pyflarum.session.FlarumUser">FlarumUser</a>, <a title="pyflarum.flarum.core.users.User" href="../../flarum/core/users.html#pyflarum.flarum.core.users.User">User</a>]</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.session.FlarumUser" href="../../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.upload_user_avatar" href="../../session.html#pyflarum.session.FlarumUser.upload_user_avatar">upload_user_avatar</a></code>
+</p>
+<div class="desc inherited"><p>Uploads an avatar for yourself. If <code>user</code> is specified, then avatar of that user is changed.</p></div>
 </dd>
 </dl>
 </dd>
@@ -363,11 +517,17 @@ dict(one=1, two=2)</p></div>
 <span>(</span><span>user: FlarumUser, _fetched_data: dict)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Forum JSON data</p></div>
+<div class="desc"><p>Entire forum, lives under the main <code>/api</code> route.</p>
+<h3 id="parameters">Parameters:</h3>
+<ul>
+<li><code>user</code> - the <code><a title="pyflarum.session.FlarumUser" href="../../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code> object, required to make additional API calls.</li>
+<li><code>_fetched_data</code> - the JSON data that was fetched from the API.</li>
+</ul>
+<p>I strongly discourage from forging objects this way, unless you are creating an extension.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\flarum\FoF_UserBio.py#L21-L24" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\FoF_UserBio.py#L23-L26" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class UserBioForumMixin(Forum):
     @property
@@ -377,22 +537,262 @@ dict(one=1, two=2)</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="pyflarum.flarum.core.forum.Forum" href="../../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum">Forum</a></li>
+<li><a title="pyflarum.flarum.core.BaseFlarumIndividualObject" href="../../flarum/core/index.html#pyflarum.flarum.core.BaseFlarumIndividualObject">BaseFlarumIndividualObject</a></li>
+<li><a title="pyflarum.flarum.core.BaseFlarumObject" href="../../flarum/core/index.html#pyflarum.flarum.core.BaseFlarumObject">BaseFlarumObject</a></li>
 <li>builtins.dict</li>
 </ul>
 <h3>Instance variables</h3>
 <dl>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.adminUrl"><code class="name">var <span class="ident">adminUrl</span> : Optional[str]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.forum.Forum" href="../../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum">Forum</a></code>.<code><a title="pyflarum.flarum.core.forum.Forum.adminUrl" href="../../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum.adminUrl">adminUrl</a></code>
+</p>
+<div class="desc inherited"><p>The administration panel URL of the forum.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.allowSignUp"><code class="name">var <span class="ident">allowSignUp</span> : bool</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.forum.Forum" href="../../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum">Forum</a></code>.<code><a title="pyflarum.flarum.core.forum.Forum.allowSignUp" href="../../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum.allowSignUp">allowSignUp</a></code>
+</p>
+<div class="desc inherited"><p>Whether or not signup is allowed.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.apiUrl"><code class="name">var <span class="ident">apiUrl</span> : Optional[str]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.forum.Forum" href="../../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum">Forum</a></code>.<code><a title="pyflarum.flarum.core.forum.Forum.apiUrl" href="../../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum.apiUrl">apiUrl</a></code>
+</p>
+<div class="desc inherited"><p>The API URL of the forum.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.attributes"><code class="name">var <span class="ident">attributes</span> : dict</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.forum.Forum" href="../../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum">Forum</a></code>.<code><a title="pyflarum.flarum.core.forum.Forum.attributes" href="../../flarum/core/index.html#pyflarum.flarum.core.forum.Forum.attributes">attributes</a></code>
+</p>
+<div class="desc inherited"><p>Raw <code>dict</code> of the object's attributes.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.basePath"><code class="name">var <span class="ident">basePath</span> : Optional[str]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.forum.Forum" href="../../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum">Forum</a></code>.<code><a title="pyflarum.flarum.core.forum.Forum.basePath" href="../../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum.basePath">basePath</a></code>
+</p>
+<div class="desc inherited"><p>Base path to the forum.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.baseUrl"><code class="name">var <span class="ident">baseUrl</span> : Optional[str]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.forum.Forum" href="../../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum">Forum</a></code>.<code><a title="pyflarum.flarum.core.forum.Forum.baseUrl" href="../../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum.baseUrl">baseUrl</a></code>
+</p>
+<div class="desc inherited"><p>Base URL of the forum/where the forum is located at.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.canSearchUsers"><code class="name">var <span class="ident">canSearchUsers</span> : bool</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.forum.Forum" href="../../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum">Forum</a></code>.<code><a title="pyflarum.flarum.core.forum.Forum.canSearchUsers" href="../../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum.canSearchUsers">canSearchUsers</a></code>
+</p>
+<div class="desc inherited"><p>Whether or not you are able to search for users.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.canStartDiscussion"><code class="name">var <span class="ident">canStartDiscussion</span> : bool</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.forum.Forum" href="../../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum">Forum</a></code>.<code><a title="pyflarum.flarum.core.forum.Forum.canStartDiscussion" href="../../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum.canStartDiscussion">canStartDiscussion</a></code>
+</p>
+<div class="desc inherited"><p>Whether or not you are allowed to start a discussion.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.canViewForum"><code class="name">var <span class="ident">canViewForum</span> : bool</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.forum.Forum" href="../../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum">Forum</a></code>.<code><a title="pyflarum.flarum.core.forum.Forum.canViewForum" href="../../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum.canViewForum">canViewForum</a></code>
+</p>
+<div class="desc inherited"><p>Whether or not you are allowed to view the forum.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.data"><code class="name">var <span class="ident">data</span> : Union[List[dict], dict]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.forum.Forum" href="../../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum">Forum</a></code>.<code><a title="pyflarum.flarum.core.forum.Forum.data" href="../../flarum/core/index.html#pyflarum.flarum.core.forum.Forum.data">data</a></code>
+</p>
+<div class="desc inherited"><p>A raw <code>dict</code> of the object's data.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.debug"><code class="name">var <span class="ident">debug</span> : bool</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.forum.Forum" href="../../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum">Forum</a></code>.<code><a title="pyflarum.flarum.core.forum.Forum.debug" href="../../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum.debug">debug</a></code>
+</p>
+<div class="desc inherited"><p>Whether or not debug mode is enabled.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.defaultRoute"><code class="name">var <span class="ident">defaultRoute</span> : Optional[str]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.forum.Forum" href="../../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum">Forum</a></code>.<code><a title="pyflarum.flarum.core.forum.Forum.defaultRoute" href="../../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum.defaultRoute">defaultRoute</a></code>
+</p>
+<div class="desc inherited"><p>The homepage of the forum (default route)</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.description"><code class="name">var <span class="ident">description</span> : Optional[str]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.forum.Forum" href="../../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum">Forum</a></code>.<code><a title="pyflarum.flarum.core.forum.Forum.description" href="../../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum.description">description</a></code>
+</p>
+<div class="desc inherited"><p>The description of the forum.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.faviconUrl"><code class="name">var <span class="ident">faviconUrl</span> : Optional[str]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.forum.Forum" href="../../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum">Forum</a></code>.<code><a title="pyflarum.flarum.core.forum.Forum.faviconUrl" href="../../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum.faviconUrl">faviconUrl</a></code>
+</p>
+<div class="desc inherited"><p>URL to forum's favicon.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.footerHtml"><code class="name">var <span class="ident">footerHtml</span> : Optional[str]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.forum.Forum" href="../../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum">Forum</a></code>.<code><a title="pyflarum.flarum.core.forum.Forum.footerHtml" href="../../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum.footerHtml">footerHtml</a></code>
+</p>
+<div class="desc inherited"><p>The footer HTML of the forum.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.headerHtml"><code class="name">var <span class="ident">headerHtml</span> : Optional[str]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.forum.Forum" href="../../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum">Forum</a></code>.<code><a title="pyflarum.flarum.core.forum.Forum.headerHtml" href="../../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum.headerHtml">headerHtml</a></code>
+</p>
+<div class="desc inherited"><p>The header HTML of the forum.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.id"><code class="name">var <span class="ident">id</span> : Optional[int]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.forum.Forum" href="../../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum">Forum</a></code>.<code><a title="pyflarum.flarum.core.forum.Forum.id" href="../../flarum/core/index.html#pyflarum.flarum.core.forum.Forum.id">id</a></code>
+</p>
+<div class="desc inherited"><p>The <code>int</code> ID of the object. This should always be unique for the object's type.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.included"><code class="name">var <span class="ident">included</span> : List[dict]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.forum.Forum" href="../../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum">Forum</a></code>.<code><a title="pyflarum.flarum.core.forum.Forum.included" href="../../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum.included">included</a></code>
+</p>
+<div class="desc inherited"><p>Raw <code>list[dict]</code> of the forum's included objects.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.logoUrl"><code class="name">var <span class="ident">logoUrl</span> : Optional[str]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.forum.Forum" href="../../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum">Forum</a></code>.<code><a title="pyflarum.flarum.core.forum.Forum.logoUrl" href="../../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum.logoUrl">logoUrl</a></code>
+</p>
+<div class="desc inherited"><p>URL to forum's logo.</p></div>
+</dd>
 <dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.max_bio_length"><code class="name">var <span class="ident">max_bio_length</span> : bool</code></dt>
 <dd>
 <div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\flarum\FoF_UserBio.py#L22-L24" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\FoF_UserBio.py#L24-L26" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def max_bio_length(self) -&gt; bool:
     return self.attributes.get(&#34;fof-user-bio.maxLength&#34;, False)</code></pre>
 </details>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.relationships"><code class="name">var <span class="ident">relationships</span> : dict</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.forum.Forum" href="../../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum">Forum</a></code>.<code><a title="pyflarum.flarum.core.forum.Forum.relationships" href="../../flarum/core/index.html#pyflarum.flarum.core.forum.Forum.relationships">relationships</a></code>
+</p>
+<div class="desc inherited"><p>Raw <code>dict</code> of the object's relationships with
+other objects …</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.showLanguageSelector"><code class="name">var <span class="ident">showLanguageSelector</span> : bool</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.forum.Forum" href="../../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum">Forum</a></code>.<code><a title="pyflarum.flarum.core.forum.Forum.showLanguageSelector" href="../../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum.showLanguageSelector">showLanguageSelector</a></code>
+</p>
+<div class="desc inherited"><p>Whether or not the language selector is available.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.themePrimaryColor"><code class="name">var <span class="ident">themePrimaryColor</span> : Optional[str]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.forum.Forum" href="../../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum">Forum</a></code>.<code><a title="pyflarum.flarum.core.forum.Forum.themePrimaryColor" href="../../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum.themePrimaryColor">themePrimaryColor</a></code>
+</p>
+<div class="desc inherited"><p>Forum's primary color in HEX format.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.themeSecondaryColor"><code class="name">var <span class="ident">themeSecondaryColor</span> : Optional[str]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.forum.Forum" href="../../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum">Forum</a></code>.<code><a title="pyflarum.flarum.core.forum.Forum.themeSecondaryColor" href="../../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum.themeSecondaryColor">themeSecondaryColor</a></code>
+</p>
+<div class="desc inherited"><p>Forum's secondary color in HEX format.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.title"><code class="name">var <span class="ident">title</span> : Optional[str]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.forum.Forum" href="../../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum">Forum</a></code>.<code><a title="pyflarum.flarum.core.forum.Forum.title" href="../../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum.title">title</a></code>
+</p>
+<div class="desc inherited"><p>The forum's title.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.type"><code class="name">var <span class="ident">type</span> : Optional[str]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.forum.Forum" href="../../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum">Forum</a></code>.<code><a title="pyflarum.flarum.core.forum.Forum.type" href="../../flarum/core/index.html#pyflarum.flarum.core.forum.Forum.type">type</a></code>
+</p>
+<div class="desc inherited"><p>The type of the object …</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.version"><code class="name">var <span class="ident">version</span> : Optional[str]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.forum.Forum" href="../../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum">Forum</a></code>.<code><a title="pyflarum.flarum.core.forum.Forum.version" href="../../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum.version">version</a></code>
+</p>
+<div class="desc inherited"><p>The Flarum version this forum is running on.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.welcomeMessage"><code class="name">var <span class="ident">welcomeMessage</span> : Optional[str]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.forum.Forum" href="../../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum">Forum</a></code>.<code><a title="pyflarum.flarum.core.forum.Forum.welcomeMessage" href="../../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum.welcomeMessage">welcomeMessage</a></code>
+</p>
+<div class="desc inherited"><p>The welcome message of the forum (shown in the welcome box).</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.welcomeTitle"><code class="name">var <span class="ident">welcomeTitle</span> : Optional[str]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.forum.Forum" href="../../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum">Forum</a></code>.<code><a title="pyflarum.flarum.core.forum.Forum.welcomeTitle" href="../../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum.welcomeTitle">welcomeTitle</a></code>
+</p>
+<div class="desc inherited"><p>The title of the welcome message box of the forum.</p></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.get_groups"><code class="name flex">
+<span>def <span class="ident">get_groups</span></span>(<span>self) ‑> List[<a title="pyflarum.flarum.core.groups.Group" href="../../flarum/core/groups.html#pyflarum.flarum.core.groups.Group">Group</a>]</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.forum.Forum" href="../../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum">Forum</a></code>.<code><a title="pyflarum.flarum.core.forum.Forum.get_groups" href="../../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum.get_groups">get_groups</a></code>
+</p>
+<div class="desc inherited"><p>Obtains the forum groups …</p></div>
 </dd>
 </dl>
 </dd>
@@ -401,11 +801,17 @@ def max_bio_length(self) -&gt; bool:
 <span>(</span><span>user: FlarumUser, _fetched_data: dict)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>An user from <code>Users</code>.</p></div>
+<div class="desc"><p>An user from <code>Users</code>.</p>
+<h3 id="parameters">Parameters:</h3>
+<ul>
+<li><code>user</code> - the <code><a title="pyflarum.session.FlarumUser" href="../../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code> object, required to make additional API calls.</li>
+<li><code>_fetched_data</code> - the JSON data that was fetched from the API.</li>
+</ul>
+<p>I strongly discourage from forging objects this way, unless you are creating an extension.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\flarum\FoF_UserBio.py#L46-L59" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\FoF_UserBio.py#L52-L65" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class UserBioUserFromBulkMixin(UserFromBulk):
     @property
@@ -426,22 +832,56 @@ def max_bio_length(self) -&gt; bool:
 <ul class="hlist">
 <li><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></li>
 <li><a title="pyflarum.flarum.core.users.UserFromNotification" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromNotification">UserFromNotification</a></li>
+<li><a title="pyflarum.flarum.core.BaseFlarumIndividualObject" href="../../flarum/core/index.html#pyflarum.flarum.core.BaseFlarumIndividualObject">BaseFlarumIndividualObject</a></li>
+<li><a title="pyflarum.flarum.core.BaseFlarumObject" href="../../flarum/core/index.html#pyflarum.flarum.core.BaseFlarumObject">BaseFlarumObject</a></li>
 <li>builtins.dict</li>
 </ul>
 <h3>Instance variables</h3>
 <dl>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.attributes"><code class="name">var <span class="ident">attributes</span> : dict</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.attributes" href="../../flarum/core/index.html#pyflarum.flarum.core.users.UserFromBulk.attributes">attributes</a></code>
+</p>
+<div class="desc inherited"><p>Raw <code>dict</code> of the object's attributes.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.avatarUrl"><code class="name">var <span class="ident">avatarUrl</span> : Optional[str]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.avatarUrl" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk.avatarUrl">avatarUrl</a></code>
+</p>
+<div class="desc inherited"><p>The user's avatar URL.</p></div>
+</dd>
 <dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.bio"><code class="name">var <span class="ident">bio</span> : Optional[str]</code></dt>
 <dd>
 <div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\flarum\FoF_UserBio.py#L47-L49" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\FoF_UserBio.py#L53-L55" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def bio(self) -&gt; Optional[str]:
     return self.attributes.get(&#34;bio&#34;, None)</code></pre>
 </details>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.canDelete"><code class="name">var <span class="ident">canDelete</span> : bool</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.canDelete" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk.canDelete">canDelete</a></code>
+</p>
+<div class="desc inherited"><p>Whether or not you are able to scronch this user forever.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.canEdit"><code class="name">var <span class="ident">canEdit</span> : bool</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.canEdit" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk.canEdit">canEdit</a></code>
+</p>
+<div class="desc inherited"><p>Whether or not you are able to edit this user.</p></div>
 </dd>
 <dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.canEditBio"><code class="name">var <span class="ident">canEditBio</span> : bool</code></dt>
 <dd>
@@ -449,12 +889,28 @@ def bio(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\flarum\FoF_UserBio.py#L57-L59" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\FoF_UserBio.py#L63-L65" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def canEditBio(self) -&gt; bool:
     return self.attributes.get(&#34;canEditBio&#34;, False)</code></pre>
 </details>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.canEditCredentials"><code class="name">var <span class="ident">canEditCredentials</span> : bool</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.canEditCredentials" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk.canEditCredentials">canEditCredentials</a></code>
+</p>
+<div class="desc inherited"><p>Whether or not you are able to edit this user's credentials.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.canEditGroups"><code class="name">var <span class="ident">canEditGroups</span> : bool</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.canEditGroups" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk.canEditGroups">canEditGroups</a></code>
+</p>
+<div class="desc inherited"><p>Whether or not you are able to edit this user's groups.</p></div>
 </dd>
 <dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.canViewBio"><code class="name">var <span class="ident">canViewBio</span> : bool</code></dt>
 <dd>
@@ -462,12 +918,109 @@ def canEditBio(self) -&gt; bool:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\flarum\FoF_UserBio.py#L52-L54" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\FoF_UserBio.py#L58-L60" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def canViewBio(self) -&gt; bool:
     return self.attributes.get(&#34;canViewBio&#34;, False)</code></pre>
 </details>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.commentCount"><code class="name">var <span class="ident">commentCount</span> : Optional[int]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.commentCount" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk.commentCount">commentCount</a></code>
+</p>
+<div class="desc inherited"><p>The user's comment count.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.data"><code class="name">var <span class="ident">data</span> : Union[List[dict], dict]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.data" href="../../flarum/core/index.html#pyflarum.flarum.core.users.UserFromBulk.data">data</a></code>
+</p>
+<div class="desc inherited"><p>A raw <code>dict</code> of the object's data.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.discussionCount"><code class="name">var <span class="ident">discussionCount</span> : Optional[int]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.discussionCount" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk.discussionCount">discussionCount</a></code>
+</p>
+<div class="desc inherited"><p>The user's discussion count.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.displayName"><code class="name">var <span class="ident">displayName</span> : Optional[str]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.displayName" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk.displayName">displayName</a></code>
+</p>
+<div class="desc inherited"><p>The display name/nickname of the user.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.email"><code class="name">var <span class="ident">email</span> : Optional[str]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.email" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk.email">email</a></code>
+</p>
+<div class="desc inherited"><p>The user's E-mail, if you have permission to view it.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.id"><code class="name">var <span class="ident">id</span> : Optional[int]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.id" href="../../flarum/core/index.html#pyflarum.flarum.core.users.UserFromBulk.id">id</a></code>
+</p>
+<div class="desc inherited"><p>The <code>int</code> ID of the object. This should always be unique for the object's type.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.isEmailConfirmed"><code class="name">var <span class="ident">isEmailConfirmed</span> : bool</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.isEmailConfirmed" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk.isEmailConfirmed">isEmailConfirmed</a></code>
+</p>
+<div class="desc inherited"><p>Whether or not this user confirmed their E-mail address …</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.joinTime"><code class="name">var <span class="ident">joinTime</span> : Optional[datetime.datetime]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.joinTime" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk.joinTime">joinTime</a></code>
+</p>
+<div class="desc inherited"><p>The <code>datetime</code> of when the user had joined this forum.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.relationships"><code class="name">var <span class="ident">relationships</span> : dict</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.relationships" href="../../flarum/core/index.html#pyflarum.flarum.core.users.UserFromBulk.relationships">relationships</a></code>
+</p>
+<div class="desc inherited"><p>Raw <code>dict</code> of the object's relationships with
+other objects …</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.slug"><code class="name">var <span class="ident">slug</span> : Optional[str]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.slug" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk.slug">slug</a></code>
+</p>
+<div class="desc inherited"><p>The user's slug.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.type"><code class="name">var <span class="ident">type</span> : Optional[str]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.type" href="../../flarum/core/index.html#pyflarum.flarum.core.users.UserFromBulk.type">type</a></code>
+</p>
+<div class="desc inherited"><p>The type of the object …</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.username"><code class="name">var <span class="ident">username</span> : Optional[str]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.username" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk.username">username</a></code>
+</p>
+<div class="desc inherited"><p>The user's username.</p></div>
 </dd>
 </dl>
 </dd>
@@ -542,27 +1095,88 @@ setTimeout(() => input.focus(), 100);
 </li>
 <li>
 <h4><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin" href="#pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin">UserBioFlarumUserMixin</a></code></h4>
-<ul class="two-column">
-<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.all_discussions" href="../../session.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.all_discussions">all_discussions</a></code></li>
-<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.all_posts" href="../../session.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.all_posts">all_posts</a></code></li>
-<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.all_users" href="../../session.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.all_users">all_users</a></code></li>
+<ul class="">
 <li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.api_urls" href="../../session.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.api_urls">api_urls</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.authenticate" href="../../session.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.authenticate">authenticate</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.change_email" href="../../session.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.change_email">change_email</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.get_discussion_by_id" href="../../session.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.get_discussion_by_id">get_discussion_by_id</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.get_discussions" href="../../session.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.get_discussions">get_discussions</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.get_forum_data" href="../../session.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.get_forum_data">get_forum_data</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.get_groups" href="../../session.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.get_groups">get_groups</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.get_notifications" href="../../session.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.get_notifications">get_notifications</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.get_post_by_id" href="../../session.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.get_post_by_id">get_post_by_id</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.get_posts" href="../../session.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.get_posts">get_posts</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.get_user_by_id" href="../../session.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.get_user_by_id">get_user_by_id</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.get_users" href="../../session.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.get_users">get_users</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.mark_all_discussions_as_read" href="../../session.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.mark_all_discussions_as_read">mark_all_discussions_as_read</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.mark_all_notifications_as_read" href="../../session.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.mark_all_notifications_as_read">mark_all_notifications_as_read</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.remove_user_avatar" href="../../session.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.remove_user_avatar">remove_user_avatar</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.send_password_reset_email" href="../../session.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.send_password_reset_email">send_password_reset_email</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.update_preferences" href="../../session.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.update_preferences">update_preferences</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.update_user_bio" href="#pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.update_user_bio">update_user_bio</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.update_user_info" href="../../session.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.update_user_info">update_user_info</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.upload_user_avatar" href="../../session.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.upload_user_avatar">upload_user_avatar</a></code></li>
 </ul>
 </li>
 <li>
 <h4><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin" href="#pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin">UserBioForumMixin</a></code></h4>
 <ul class="">
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.adminUrl" href="../../flarum/core/forum.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.adminUrl">adminUrl</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.allowSignUp" href="../../flarum/core/forum.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.allowSignUp">allowSignUp</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.apiUrl" href="../../flarum/core/forum.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.apiUrl">apiUrl</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.attributes" href="../../flarum/core/index.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.attributes">attributes</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.basePath" href="../../flarum/core/forum.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.basePath">basePath</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.baseUrl" href="../../flarum/core/forum.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.baseUrl">baseUrl</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.canSearchUsers" href="../../flarum/core/forum.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.canSearchUsers">canSearchUsers</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.canStartDiscussion" href="../../flarum/core/forum.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.canStartDiscussion">canStartDiscussion</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.canViewForum" href="../../flarum/core/forum.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.canViewForum">canViewForum</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.data" href="../../flarum/core/index.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.data">data</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.debug" href="../../flarum/core/forum.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.debug">debug</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.defaultRoute" href="../../flarum/core/forum.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.defaultRoute">defaultRoute</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.description" href="../../flarum/core/forum.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.description">description</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.faviconUrl" href="../../flarum/core/forum.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.faviconUrl">faviconUrl</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.footerHtml" href="../../flarum/core/forum.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.footerHtml">footerHtml</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.get_groups" href="../../flarum/core/forum.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.get_groups">get_groups</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.headerHtml" href="../../flarum/core/forum.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.headerHtml">headerHtml</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.id" href="../../flarum/core/index.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.id">id</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.included" href="../../flarum/core/forum.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.included">included</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.logoUrl" href="../../flarum/core/forum.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.logoUrl">logoUrl</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.max_bio_length" href="#pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.max_bio_length">max_bio_length</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.relationships" href="../../flarum/core/index.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.relationships">relationships</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.showLanguageSelector" href="../../flarum/core/forum.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.showLanguageSelector">showLanguageSelector</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.themePrimaryColor" href="../../flarum/core/forum.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.themePrimaryColor">themePrimaryColor</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.themeSecondaryColor" href="../../flarum/core/forum.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.themeSecondaryColor">themeSecondaryColor</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.title" href="../../flarum/core/forum.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.title">title</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.type" href="../../flarum/core/index.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.type">type</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.version" href="../../flarum/core/forum.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.version">version</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.welcomeMessage" href="../../flarum/core/forum.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.welcomeMessage">welcomeMessage</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.welcomeTitle" href="../../flarum/core/forum.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.welcomeTitle">welcomeTitle</a></code></li>
 </ul>
 </li>
 <li>
 <h4><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin" href="#pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin">UserBioUserFromBulkMixin</a></code></h4>
-<ul class="">
+<ul class="two-column">
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.attributes" href="../../flarum/core/index.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.attributes">attributes</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.avatarUrl" href="../../flarum/core/users.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.avatarUrl">avatarUrl</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.bio" href="#pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.bio">bio</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.canDelete" href="../../flarum/core/users.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.canDelete">canDelete</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.canEdit" href="../../flarum/core/users.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.canEdit">canEdit</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.canEditBio" href="#pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.canEditBio">canEditBio</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.canEditCredentials" href="../../flarum/core/users.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.canEditCredentials">canEditCredentials</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.canEditGroups" href="../../flarum/core/users.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.canEditGroups">canEditGroups</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.canViewBio" href="#pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.canViewBio">canViewBio</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.commentCount" href="../../flarum/core/users.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.commentCount">commentCount</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.data" href="../../flarum/core/index.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.data">data</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.discussionCount" href="../../flarum/core/users.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.discussionCount">discussionCount</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.displayName" href="../../flarum/core/users.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.displayName">displayName</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.email" href="../../flarum/core/users.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.email">email</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.id" href="../../flarum/core/index.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.id">id</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.isEmailConfirmed" href="../../flarum/core/users.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.isEmailConfirmed">isEmailConfirmed</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.joinTime" href="../../flarum/core/users.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.joinTime">joinTime</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.relationships" href="../../flarum/core/index.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.relationships">relationships</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.slug" href="../../flarum/core/users.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.slug">slug</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.type" href="../../flarum/core/index.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.type">type</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.username" href="../../flarum/core/users.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.username">username</a></code></li>
 </ul>
 </li>
 </ul>

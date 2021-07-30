@@ -25,9 +25,10 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\groups.py#L0-L183" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\groups.py#L0-L165" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">from typing import TYPE_CHECKING, Optional, List
+<pre><code class="python">from pyflarum.flarum.core import BaseFlarumBulkObject, BaseFlarumIndividualObject
+from typing import Literal, TYPE_CHECKING, Optional, List
 
 # Avoid my greatest enemy in Python: circular import:
 if TYPE_CHECKING:
@@ -37,7 +38,7 @@ from ...error_handler import parse_request
 
 
 
-class PreparedGroup(dict):
+class PreparedGroup(BaseFlarumIndividualObject):
     def __init__(self, user: &#39;FlarumUser&#39;, nameSingular: str, namePlural: Optional[str]=None, color: Optional[str]=None, icon: Optional[str]=None, isHidden: bool=False):
         self.user = user
 
@@ -46,10 +47,21 @@ class PreparedGroup(dict):
         self.color = color
         self.icon = icon
         self.isHidden = isHidden
-    
+
+        self.as_json = self.to_dict
+        super().__init__(user=self.user, _fetched_data=self.as_json)
+
 
     @property
     def to_dict(self):
+        &#34;&#34;&#34;
+            Converts the group to a `dict`, so that
+            it can be sent to the API.
+
+            An extension might add additional data during runtime. This is the
+            most basic template that Flarum requires when creating a group.
+        &#34;&#34;&#34;
+
         data = {
             &#34;data&#34;: {
                 &#34;type&#34;: &#34;groups&#34;,
@@ -66,66 +78,31 @@ class PreparedGroup(dict):
         return data
 
 
-    def create(self):
+    def create(self) -&gt; &#39;Group&#39;:
         &#34;&#34;&#34;
             Creates the group. Returns the created `Group`.
         &#34;&#34;&#34;
 
-        raw = self.user.session.post(self.user.api_urls[&#39;groups&#39;], json=self.to_dict)
+        raw = self.user.session.post(self.user.api_urls[&#39;groups&#39;], json=self.as_json)
         json = parse_request(raw)
 
         return Group(user=self.user, _fetched_data=json)
 
 
 
-class Groups(dict):
+class Groups(BaseFlarumBulkObject):
     &#34;&#34;&#34;
         A data of multiple groups fetched from the API.
     &#34;&#34;&#34;
-
-    def __init__(self, user: &#39;FlarumUser&#39;, _fetched_data: dict):
-        self.user = user
-
-        super().__init__(_fetched_data)
 
 
     def __iter__(self):
         return iter(self.get_groups())
 
 
-    @property
-    def links(self) -&gt; dict:
-        return self.get(&#34;links&#34;, {})
-
-
-    @property
-    def first_link(self) -&gt; Optional[str]:
-        return self.links.get(&#34;first&#34;, None)
-
-
-    @property
-    def previous_link(self) -&gt; Optional[str]:
-        return self.links.get(&#34;prev&#34;, None)
-
-
-    @property
-    def next_link(self) -&gt; Optional[str]:
-        return self.links.get(&#34;next&#34;, None)
-
-
-    @property
-    def data(self) -&gt; List[dict]:
-        return self.get(&#34;data&#34;, [{}])
-
-
-    @property
-    def included(self) -&gt; List[dict]:
-        return self.get(&#34;included&#34;, [{}])
-
-
-    def get_groups(self):
+    def get_groups(self) -&gt; List[&#39;Group&#39;]:
         &#34;&#34;&#34;
-            All groups from the `Groups` object.
+            All groups from the `Groups` object, as a `list` of `Group` objects.
         &#34;&#34;&#34;
 
         all_groups = [] # type: List[Group]
@@ -140,72 +117,77 @@ class Groups(dict):
 
 
 
-class Group(Groups):
+class Group(BaseFlarumIndividualObject):
     &#34;&#34;&#34;
         A Flarum group.
     &#34;&#34;&#34;
 
-    def __init__(self, user: &#39;FlarumUser&#39;, _fetched_data: dict):
-        self.user = user
-
-        super().__init__(user=self.user, _fetched_data=_fetched_data)
-
-
-    @property
-    def data(self) -&gt; dict:
-        return self.get(&#34;data&#34;, {})
-
-
-    @property
-    def type(self) -&gt; Optional[str]:
-        return self.data.get(&#34;type&#34;, None)
-
-
-    @property
-    def id(self) -&gt; Optional[int]:
-        raw = self.data.get(&#34;id&#34;, None)
-
-        if raw:
-            return int(raw)
-
-    @property
-    def attributes(self) -&gt; dict:
-        return self.data.get(&#34;attributes&#34;, {})
-
 
     @property
     def nameSingular(self) -&gt; Optional[str]:
+        &#34;&#34;&#34;
+            Singular form of the group&#39;s name.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;nameSingular&#34;, None)
 
 
     @property
     def namePlural(self) -&gt; Optional[str]:
+        &#34;&#34;&#34;
+            Plural form of the group&#39;s name.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;namePlural&#34;, None)
 
 
     @property
     def color(self) -&gt; Optional[str]:
+        &#34;&#34;&#34;
+            The color of the group.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;color&#34;, None)
 
 
     @property
     def icon(self) -&gt; Optional[str]:
+        &#34;&#34;&#34;
+            [FontAwesome](https://fontawesome.com/v5.15/icons?d=gallery) icon of the group.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;icon&#34;, None)
 
 
     @property
     def isHidden(self) -&gt; bool:
+        &#34;&#34;&#34;
+            Whether or not the group is hidden on the forum.
+        &#34;&#34;&#34;
+
         return bool(self.attributes.get(&#34;isHidden&#34;, 0))
 
 
-    def edit(self, new_data: PreparedGroup):
+    def edit(self, new_data: PreparedGroup) -&gt; &#39;Group&#39;:
+        &#34;&#34;&#34;
+            Edits the group with new `PreparedGroup`.
+
+            Returns the edited `Group`
+        &#34;&#34;&#34;
+
         raw = self.user.session.patch(f&#34;{self.user.api_urls[&#39;groups&#39;]}/{self.id}&#34;, json=new_data.to_dict)
         json = parse_request(raw)
 
         return Group(user=self.user, _fetched_data=json)
 
 
-    def delete(self):
+    def delete(self) -&gt; Literal[True]:
+        &#34;&#34;&#34;
+            Removes the group forever. This is irreversible!
+
+            Returns `True` when the deletion was successful.
+        &#34;&#34;&#34;
+
         raw = self.user.session.delete(f&#34;{self.user.api_urls[&#39;groups&#39;]}/{self.id}&#34;)
         parse_request(raw)
 
@@ -226,78 +208,89 @@ class Group(Groups):
 <span>(</span><span>user: FlarumUser, _fetched_data: dict)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>A Flarum group.</p></div>
+<div class="desc"><p>A Flarum group.</p>
+<h3 id="parameters">Parameters:</h3>
+<ul>
+<li><code>user</code> - the <code><a title="pyflarum.session.FlarumUser" href="../../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code> object, required to make additional API calls.</li>
+<li><code>_fetched_data</code> - the JSON data that was fetched from the API.</li>
+</ul>
+<p>I strongly discourage from forging objects this way, unless you are creating an extension.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\groups.py#L114-L183" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\groups.py#L91-L165" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">class Group(Groups):
+<pre><code class="python">class Group(BaseFlarumIndividualObject):
     &#34;&#34;&#34;
         A Flarum group.
     &#34;&#34;&#34;
 
-    def __init__(self, user: &#39;FlarumUser&#39;, _fetched_data: dict):
-        self.user = user
-
-        super().__init__(user=self.user, _fetched_data=_fetched_data)
-
-
-    @property
-    def data(self) -&gt; dict:
-        return self.get(&#34;data&#34;, {})
-
-
-    @property
-    def type(self) -&gt; Optional[str]:
-        return self.data.get(&#34;type&#34;, None)
-
-
-    @property
-    def id(self) -&gt; Optional[int]:
-        raw = self.data.get(&#34;id&#34;, None)
-
-        if raw:
-            return int(raw)
-
-    @property
-    def attributes(self) -&gt; dict:
-        return self.data.get(&#34;attributes&#34;, {})
-
 
     @property
     def nameSingular(self) -&gt; Optional[str]:
+        &#34;&#34;&#34;
+            Singular form of the group&#39;s name.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;nameSingular&#34;, None)
 
 
     @property
     def namePlural(self) -&gt; Optional[str]:
+        &#34;&#34;&#34;
+            Plural form of the group&#39;s name.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;namePlural&#34;, None)
 
 
     @property
     def color(self) -&gt; Optional[str]:
+        &#34;&#34;&#34;
+            The color of the group.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;color&#34;, None)
 
 
     @property
     def icon(self) -&gt; Optional[str]:
+        &#34;&#34;&#34;
+            [FontAwesome](https://fontawesome.com/v5.15/icons?d=gallery) icon of the group.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;icon&#34;, None)
 
 
     @property
     def isHidden(self) -&gt; bool:
+        &#34;&#34;&#34;
+            Whether or not the group is hidden on the forum.
+        &#34;&#34;&#34;
+
         return bool(self.attributes.get(&#34;isHidden&#34;, 0))
 
 
-    def edit(self, new_data: PreparedGroup):
+    def edit(self, new_data: PreparedGroup) -&gt; &#39;Group&#39;:
+        &#34;&#34;&#34;
+            Edits the group with new `PreparedGroup`.
+
+            Returns the edited `Group`
+        &#34;&#34;&#34;
+
         raw = self.user.session.patch(f&#34;{self.user.api_urls[&#39;groups&#39;]}/{self.id}&#34;, json=new_data.to_dict)
         json = parse_request(raw)
 
         return Group(user=self.user, _fetched_data=json)
 
 
-    def delete(self):
+    def delete(self) -&gt; Literal[True]:
+        &#34;&#34;&#34;
+            Removes the group forever. This is irreversible!
+
+            Returns `True` when the deletion was successful.
+        &#34;&#34;&#34;
+
         raw = self.user.session.delete(f&#34;{self.user.api_urls[&#39;groups&#39;]}/{self.id}&#34;)
         parse_request(raw)
 
@@ -305,145 +298,159 @@ class Group(Groups):
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li><a title="pyflarum.flarum.core.groups.Groups" href="#pyflarum.flarum.core.groups.Groups">Groups</a></li>
+<li><a title="pyflarum.flarum.core.BaseFlarumIndividualObject" href="index.html#pyflarum.flarum.core.BaseFlarumIndividualObject">BaseFlarumIndividualObject</a></li>
+<li><a title="pyflarum.flarum.core.BaseFlarumObject" href="index.html#pyflarum.flarum.core.BaseFlarumObject">BaseFlarumObject</a></li>
 <li>builtins.dict</li>
 </ul>
 <h3>Instance variables</h3>
 <dl>
 <dt id="pyflarum.flarum.core.groups.Group.attributes"><code class="name">var <span class="ident">attributes</span> : dict</code></dt>
 <dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\groups.py#L142-L144" class="git-link">Browse git</a>
-</summary>
-<pre><code class="python">@property
-def attributes(self) -&gt; dict:
-    return self.data.get(&#34;attributes&#34;, {})</code></pre>
-</details>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject" href="index.html#pyflarum.flarum.core.BaseFlarumIndividualObject">BaseFlarumIndividualObject</a></code>.<code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject.attributes" href="index.html#pyflarum.flarum.core.BaseFlarumIndividualObject.attributes">attributes</a></code>
+</p>
+<div class="desc inherited"><p>Raw <code>dict</code> of the object's attributes.</p></div>
 </dd>
 <dt id="pyflarum.flarum.core.groups.Group.color"><code class="name">var <span class="ident">color</span> : Optional[str]</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The color of the group.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\groups.py#L157-L159" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\groups.py#L115-L121" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def color(self) -&gt; Optional[str]:
+    &#34;&#34;&#34;
+        The color of the group.
+    &#34;&#34;&#34;
+
     return self.attributes.get(&#34;color&#34;, None)</code></pre>
 </details>
 </dd>
-<dt id="pyflarum.flarum.core.groups.Group.data"><code class="name">var <span class="ident">data</span> : dict</code></dt>
+<dt id="pyflarum.flarum.core.groups.Group.data"><code class="name">var <span class="ident">data</span> : Union[List[dict], dict]</code></dt>
 <dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\groups.py#L125-L127" class="git-link">Browse git</a>
-</summary>
-<pre><code class="python">@property
-def data(self) -&gt; dict:
-    return self.get(&#34;data&#34;, {})</code></pre>
-</details>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject" href="index.html#pyflarum.flarum.core.BaseFlarumIndividualObject">BaseFlarumIndividualObject</a></code>.<code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject.data" href="index.html#pyflarum.flarum.core.BaseFlarumIndividualObject.data">data</a></code>
+</p>
+<div class="desc inherited"><p>A raw <code>dict</code> of the object's data.</p></div>
 </dd>
 <dt id="pyflarum.flarum.core.groups.Group.icon"><code class="name">var <span class="ident">icon</span> : Optional[str]</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p><a href="https://fontawesome.com/v5.15/icons?d=gallery">FontAwesome</a> icon of the group.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\groups.py#L162-L164" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\groups.py#L124-L130" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def icon(self) -&gt; Optional[str]:
+    &#34;&#34;&#34;
+        [FontAwesome](https://fontawesome.com/v5.15/icons?d=gallery) icon of the group.
+    &#34;&#34;&#34;
+
     return self.attributes.get(&#34;icon&#34;, None)</code></pre>
 </details>
 </dd>
 <dt id="pyflarum.flarum.core.groups.Group.id"><code class="name">var <span class="ident">id</span> : Optional[int]</code></dt>
 <dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\groups.py#L135-L140" class="git-link">Browse git</a>
-</summary>
-<pre><code class="python">@property
-def id(self) -&gt; Optional[int]:
-    raw = self.data.get(&#34;id&#34;, None)
-
-    if raw:
-        return int(raw)</code></pre>
-</details>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject" href="index.html#pyflarum.flarum.core.BaseFlarumIndividualObject">BaseFlarumIndividualObject</a></code>.<code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject.id" href="index.html#pyflarum.flarum.core.BaseFlarumIndividualObject.id">id</a></code>
+</p>
+<div class="desc inherited"><p>The <code>int</code> ID of the object. This should always be unique for the object's type.</p></div>
 </dd>
 <dt id="pyflarum.flarum.core.groups.Group.isHidden"><code class="name">var <span class="ident">isHidden</span> : bool</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Whether or not the group is hidden on the forum.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\groups.py#L167-L169" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\groups.py#L133-L139" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def isHidden(self) -&gt; bool:
+    &#34;&#34;&#34;
+        Whether or not the group is hidden on the forum.
+    &#34;&#34;&#34;
+
     return bool(self.attributes.get(&#34;isHidden&#34;, 0))</code></pre>
 </details>
 </dd>
 <dt id="pyflarum.flarum.core.groups.Group.namePlural"><code class="name">var <span class="ident">namePlural</span> : Optional[str]</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Plural form of the group's name.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\groups.py#L152-L154" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\groups.py#L106-L112" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def namePlural(self) -&gt; Optional[str]:
+    &#34;&#34;&#34;
+        Plural form of the group&#39;s name.
+    &#34;&#34;&#34;
+
     return self.attributes.get(&#34;namePlural&#34;, None)</code></pre>
 </details>
 </dd>
 <dt id="pyflarum.flarum.core.groups.Group.nameSingular"><code class="name">var <span class="ident">nameSingular</span> : Optional[str]</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Singular form of the group's name.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\groups.py#L147-L149" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\groups.py#L97-L103" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def nameSingular(self) -&gt; Optional[str]:
+    &#34;&#34;&#34;
+        Singular form of the group&#39;s name.
+    &#34;&#34;&#34;
+
     return self.attributes.get(&#34;nameSingular&#34;, None)</code></pre>
 </details>
 </dd>
+<dt id="pyflarum.flarum.core.groups.Group.relationships"><code class="name">var <span class="ident">relationships</span> : dict</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject" href="index.html#pyflarum.flarum.core.BaseFlarumIndividualObject">BaseFlarumIndividualObject</a></code>.<code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject.relationships" href="index.html#pyflarum.flarum.core.BaseFlarumIndividualObject.relationships">relationships</a></code>
+</p>
+<div class="desc inherited"><p>Raw <code>dict</code> of the object's relationships with
+other objects …</p></div>
+</dd>
 <dt id="pyflarum.flarum.core.groups.Group.type"><code class="name">var <span class="ident">type</span> : Optional[str]</code></dt>
 <dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\groups.py#L130-L132" class="git-link">Browse git</a>
-</summary>
-<pre><code class="python">@property
-def type(self) -&gt; Optional[str]:
-    return self.data.get(&#34;type&#34;, None)</code></pre>
-</details>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject" href="index.html#pyflarum.flarum.core.BaseFlarumIndividualObject">BaseFlarumIndividualObject</a></code>.<code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject.type" href="index.html#pyflarum.flarum.core.BaseFlarumIndividualObject.type">type</a></code>
+</p>
+<div class="desc inherited"><p>The type of the object …</p></div>
 </dd>
 </dl>
 <h3>Methods</h3>
 <dl>
 <dt id="pyflarum.flarum.core.groups.Group.delete"><code class="name flex">
-<span>def <span class="ident">delete</span></span>(<span>self)</span>
+<span>def <span class="ident">delete</span></span>(<span>self) ‑> Literal[True]</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Removes the group forever. This is irreversible!</p>
+<p>Returns <code>True</code> when the deletion was successful.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\groups.py#L179-L183" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\groups.py#L155-L165" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">def delete(self):
+<pre><code class="python">def delete(self) -&gt; Literal[True]:
+    &#34;&#34;&#34;
+        Removes the group forever. This is irreversible!
+
+        Returns `True` when the deletion was successful.
+    &#34;&#34;&#34;
+
     raw = self.user.session.delete(f&#34;{self.user.api_urls[&#39;groups&#39;]}/{self.id}&#34;)
     parse_request(raw)
 
@@ -451,31 +458,28 @@ def type(self) -&gt; Optional[str]:
 </details>
 </dd>
 <dt id="pyflarum.flarum.core.groups.Group.edit"><code class="name flex">
-<span>def <span class="ident">edit</span></span>(<span>self, new_data: <a title="pyflarum.flarum.core.groups.PreparedGroup" href="#pyflarum.flarum.core.groups.PreparedGroup">PreparedGroup</a>)</span>
+<span>def <span class="ident">edit</span></span>(<span>self, new_data: <a title="pyflarum.flarum.core.groups.PreparedGroup" href="#pyflarum.flarum.core.groups.PreparedGroup">PreparedGroup</a>) ‑> <a title="pyflarum.flarum.core.groups.Group" href="#pyflarum.flarum.core.groups.Group">Group</a></span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Edits the group with new <code><a title="pyflarum.flarum.core.groups.PreparedGroup" href="#pyflarum.flarum.core.groups.PreparedGroup">PreparedGroup</a></code>.</p>
+<p>Returns the edited <code><a title="pyflarum.flarum.core.groups.Group" href="#pyflarum.flarum.core.groups.Group">Group</a></code></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\groups.py#L172-L176" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\groups.py#L142-L152" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">def edit(self, new_data: PreparedGroup):
+<pre><code class="python">def edit(self, new_data: PreparedGroup) -&gt; &#39;Group&#39;:
+    &#34;&#34;&#34;
+        Edits the group with new `PreparedGroup`.
+
+        Returns the edited `Group`
+    &#34;&#34;&#34;
+
     raw = self.user.session.patch(f&#34;{self.user.api_urls[&#39;groups&#39;]}/{self.id}&#34;, json=new_data.to_dict)
     json = parse_request(raw)
 
     return Group(user=self.user, _fetched_data=json)</code></pre>
 </details>
-</dd>
-<dt id="pyflarum.flarum.core.groups.Group.get_groups"><code class="name flex">
-<span>def <span class="ident">get_groups</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.groups.Groups" href="#pyflarum.flarum.core.groups.Groups">Groups</a></code>.<code><a title="pyflarum.flarum.core.groups.Groups.get_groups" href="#pyflarum.flarum.core.groups.Groups.get_groups">get_groups</a></code>
-</p>
-<div class="desc inherited"><p>All groups from the <code><a title="pyflarum.flarum.core.groups.Groups" href="#pyflarum.flarum.core.groups.Groups">Groups</a></code> object.</p></div>
 </dd>
 </dl>
 </dd>
@@ -484,60 +488,31 @@ def type(self) -&gt; Optional[str]:
 <span>(</span><span>user: FlarumUser, _fetched_data: dict)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>A data of multiple groups fetched from the API.</p></div>
+<div class="desc"><p>A data of multiple groups fetched from the API.</p>
+<h3 id="parameters">Parameters:</h3>
+<ul>
+<li><code>user</code> - the <code><a title="pyflarum.session.FlarumUser" href="../../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code> object, required to make additional API calls.</li>
+<li><code>_fetched_data</code> - the JSON data that was fetched from the API.</li>
+</ul>
+<p>I strongly discourage from forging objects this way, unless you are creating an extension.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\groups.py#L52-L110" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\groups.py#L64-L87" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">class Groups(dict):
+<pre><code class="python">class Groups(BaseFlarumBulkObject):
     &#34;&#34;&#34;
         A data of multiple groups fetched from the API.
     &#34;&#34;&#34;
-
-    def __init__(self, user: &#39;FlarumUser&#39;, _fetched_data: dict):
-        self.user = user
-
-        super().__init__(_fetched_data)
 
 
     def __iter__(self):
         return iter(self.get_groups())
 
 
-    @property
-    def links(self) -&gt; dict:
-        return self.get(&#34;links&#34;, {})
-
-
-    @property
-    def first_link(self) -&gt; Optional[str]:
-        return self.links.get(&#34;first&#34;, None)
-
-
-    @property
-    def previous_link(self) -&gt; Optional[str]:
-        return self.links.get(&#34;prev&#34;, None)
-
-
-    @property
-    def next_link(self) -&gt; Optional[str]:
-        return self.links.get(&#34;next&#34;, None)
-
-
-    @property
-    def data(self) -&gt; List[dict]:
-        return self.get(&#34;data&#34;, [{}])
-
-
-    @property
-    def included(self) -&gt; List[dict]:
-        return self.get(&#34;included&#34;, [{}])
-
-
-    def get_groups(self):
+    def get_groups(self) -&gt; List[&#39;Group&#39;]:
         &#34;&#34;&#34;
-            All groups from the `Groups` object.
+            All groups from the `Groups` object, as a `list` of `Group` objects.
         &#34;&#34;&#34;
 
         all_groups = [] # type: List[Group]
@@ -552,108 +527,76 @@ def type(self) -&gt; Optional[str]:
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
+<li><a title="pyflarum.flarum.core.BaseFlarumBulkObject" href="index.html#pyflarum.flarum.core.BaseFlarumBulkObject">BaseFlarumBulkObject</a></li>
+<li><a title="pyflarum.flarum.core.BaseFlarumObject" href="index.html#pyflarum.flarum.core.BaseFlarumObject">BaseFlarumObject</a></li>
 <li>builtins.dict</li>
-</ul>
-<h3>Subclasses</h3>
-<ul class="hlist">
-<li><a title="pyflarum.flarum.core.groups.Group" href="#pyflarum.flarum.core.groups.Group">Group</a></li>
 </ul>
 <h3>Instance variables</h3>
 <dl>
-<dt id="pyflarum.flarum.core.groups.Groups.data"><code class="name">var <span class="ident">data</span> : List[dict]</code></dt>
+<dt id="pyflarum.flarum.core.groups.Groups.data"><code class="name">var <span class="ident">data</span> : Union[List[dict], dict]</code></dt>
 <dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\groups.py#L87-L89" class="git-link">Browse git</a>
-</summary>
-<pre><code class="python">@property
-def data(self) -&gt; List[dict]:
-    return self.get(&#34;data&#34;, [{}])</code></pre>
-</details>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.BaseFlarumBulkObject" href="index.html#pyflarum.flarum.core.BaseFlarumBulkObject">BaseFlarumBulkObject</a></code>.<code><a title="pyflarum.flarum.core.BaseFlarumBulkObject.data" href="index.html#pyflarum.flarum.core.BaseFlarumBulkObject.data">data</a></code>
+</p>
+<div class="desc inherited"><p>A raw <code>dict</code> of the object's data.</p></div>
 </dd>
 <dt id="pyflarum.flarum.core.groups.Groups.first_link"><code class="name">var <span class="ident">first_link</span> : Optional[str]</code></dt>
 <dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\groups.py#L72-L74" class="git-link">Browse git</a>
-</summary>
-<pre><code class="python">@property
-def first_link(self) -&gt; Optional[str]:
-    return self.links.get(&#34;first&#34;, None)</code></pre>
-</details>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.BaseFlarumBulkObject" href="index.html#pyflarum.flarum.core.BaseFlarumBulkObject">BaseFlarumBulkObject</a></code>.<code><a title="pyflarum.flarum.core.BaseFlarumBulkObject.first_link" href="index.html#pyflarum.flarum.core.BaseFlarumBulkObject.first_link">first_link</a></code>
+</p>
+<div class="desc inherited"><p>First link in the API.</p></div>
 </dd>
 <dt id="pyflarum.flarum.core.groups.Groups.included"><code class="name">var <span class="ident">included</span> : List[dict]</code></dt>
 <dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\groups.py#L92-L94" class="git-link">Browse git</a>
-</summary>
-<pre><code class="python">@property
-def included(self) -&gt; List[dict]:
-    return self.get(&#34;included&#34;, [{}])</code></pre>
-</details>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.BaseFlarumBulkObject" href="index.html#pyflarum.flarum.core.BaseFlarumBulkObject">BaseFlarumBulkObject</a></code>.<code><a title="pyflarum.flarum.core.BaseFlarumBulkObject.included" href="index.html#pyflarum.flarum.core.BaseFlarumBulkObject.included">included</a></code>
+</p>
+<div class="desc inherited"><p>Raw <code>dict</code> of the object's included data.</p></div>
 </dd>
 <dt id="pyflarum.flarum.core.groups.Groups.links"><code class="name">var <span class="ident">links</span> : dict</code></dt>
 <dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\groups.py#L67-L69" class="git-link">Browse git</a>
-</summary>
-<pre><code class="python">@property
-def links(self) -&gt; dict:
-    return self.get(&#34;links&#34;, {})</code></pre>
-</details>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.BaseFlarumBulkObject" href="index.html#pyflarum.flarum.core.BaseFlarumBulkObject">BaseFlarumBulkObject</a></code>.<code><a title="pyflarum.flarum.core.BaseFlarumBulkObject.links" href="index.html#pyflarum.flarum.core.BaseFlarumBulkObject.links">links</a></code>
+</p>
+<div class="desc inherited"><p>A raw <code>dict</code> of the object's API links.</p></div>
 </dd>
 <dt id="pyflarum.flarum.core.groups.Groups.next_link"><code class="name">var <span class="ident">next_link</span> : Optional[str]</code></dt>
 <dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\groups.py#L82-L84" class="git-link">Browse git</a>
-</summary>
-<pre><code class="python">@property
-def next_link(self) -&gt; Optional[str]:
-    return self.links.get(&#34;next&#34;, None)</code></pre>
-</details>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.BaseFlarumBulkObject" href="index.html#pyflarum.flarum.core.BaseFlarumBulkObject">BaseFlarumBulkObject</a></code>.<code><a title="pyflarum.flarum.core.BaseFlarumBulkObject.next_link" href="index.html#pyflarum.flarum.core.BaseFlarumBulkObject.next_link">next_link</a></code>
+</p>
+<div class="desc inherited"><p>Next link in the API.</p></div>
 </dd>
 <dt id="pyflarum.flarum.core.groups.Groups.previous_link"><code class="name">var <span class="ident">previous_link</span> : Optional[str]</code></dt>
 <dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\groups.py#L77-L79" class="git-link">Browse git</a>
-</summary>
-<pre><code class="python">@property
-def previous_link(self) -&gt; Optional[str]:
-    return self.links.get(&#34;prev&#34;, None)</code></pre>
-</details>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.BaseFlarumBulkObject" href="index.html#pyflarum.flarum.core.BaseFlarumBulkObject">BaseFlarumBulkObject</a></code>.<code><a title="pyflarum.flarum.core.BaseFlarumBulkObject.previous_link" href="index.html#pyflarum.flarum.core.BaseFlarumBulkObject.previous_link">previous_link</a></code>
+</p>
+<div class="desc inherited"><p>Previous link in the API.</p></div>
 </dd>
 </dl>
 <h3>Methods</h3>
 <dl>
 <dt id="pyflarum.flarum.core.groups.Groups.get_groups"><code class="name flex">
-<span>def <span class="ident">get_groups</span></span>(<span>self)</span>
+<span>def <span class="ident">get_groups</span></span>(<span>self) ‑> List[<a title="pyflarum.flarum.core.groups.Group" href="#pyflarum.flarum.core.groups.Group">Group</a>]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>All groups from the <code><a title="pyflarum.flarum.core.groups.Groups" href="#pyflarum.flarum.core.groups.Groups">Groups</a></code> object.</p></div>
+<div class="desc"><p>All groups from the <code><a title="pyflarum.flarum.core.groups.Groups" href="#pyflarum.flarum.core.groups.Groups">Groups</a></code> object, as a <code>list</code> of <code><a title="pyflarum.flarum.core.groups.Group" href="#pyflarum.flarum.core.groups.Group">Group</a></code> objects.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\groups.py#L97-L110" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\groups.py#L74-L87" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">def get_groups(self):
+<pre><code class="python">def get_groups(self) -&gt; List[&#39;Group&#39;]:
     &#34;&#34;&#34;
-        All groups from the `Groups` object.
+        All groups from the `Groups` object, as a `list` of `Group` objects.
     &#34;&#34;&#34;
 
     all_groups = [] # type: List[Group]
@@ -674,23 +617,24 @@ def previous_link(self) -&gt; Optional[str]:
 <span>(</span><span>user: FlarumUser, nameSingular: str, namePlural: Optional[str] = None, color: Optional[str] = None, icon: Optional[str] = None, isHidden: bool = False)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>dict() -&gt; new empty dictionary
-dict(mapping) -&gt; new dictionary initialized from a mapping object's
-(key, value) pairs
-dict(iterable) -&gt; new dictionary initialized as if via:
-d = {}
-for k, v in iterable:
-d[k] = v
-dict(**kwargs) -&gt; new dictionary initialized with the name=value pairs
-in the keyword argument list.
-For example:
-dict(one=1, two=2)</p></div>
+<div class="desc"><p>Base object for Flarum "individual" objects - all
+objects have these properties.</p>
+<p>Examples of "individual" objects:
+- <code><a title="pyflarum.flarum.core.discussions.Discussion" href="discussions.html#pyflarum.flarum.core.discussions.Discussion">Discussion</a></code>
+- <code><a title="pyflarum.flarum.core.posts.Post" href="posts.html#pyflarum.flarum.core.posts.Post">Post</a></code>
+- <code>pyflarum.flarum.core.PostFromDiscussion</code></p>
+<h3 id="parameters">Parameters:</h3>
+<ul>
+<li><code>user</code> - the <code><a title="pyflarum.session.FlarumUser" href="../../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code> object, required to make additional API calls.</li>
+<li><code>_fetched_data</code> - the JSON data that was fetched from the API.</li>
+</ul>
+<p>I strongly discourage from forging objects this way, unless you are creating an extension.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\groups.py#L11-L48" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\groups.py#L12-L60" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">class PreparedGroup(dict):
+<pre><code class="python">class PreparedGroup(BaseFlarumIndividualObject):
     def __init__(self, user: &#39;FlarumUser&#39;, nameSingular: str, namePlural: Optional[str]=None, color: Optional[str]=None, icon: Optional[str]=None, isHidden: bool=False):
         self.user = user
 
@@ -699,10 +643,21 @@ dict(one=1, two=2)</p></div>
         self.color = color
         self.icon = icon
         self.isHidden = isHidden
-    
+
+        self.as_json = self.to_dict
+        super().__init__(user=self.user, _fetched_data=self.as_json)
+
 
     @property
     def to_dict(self):
+        &#34;&#34;&#34;
+            Converts the group to a `dict`, so that
+            it can be sent to the API.
+
+            An extension might add additional data during runtime. This is the
+            most basic template that Flarum requires when creating a group.
+        &#34;&#34;&#34;
+
         data = {
             &#34;data&#34;: {
                 &#34;type&#34;: &#34;groups&#34;,
@@ -719,32 +674,78 @@ dict(one=1, two=2)</p></div>
         return data
 
 
-    def create(self):
+    def create(self) -&gt; &#39;Group&#39;:
         &#34;&#34;&#34;
             Creates the group. Returns the created `Group`.
         &#34;&#34;&#34;
 
-        raw = self.user.session.post(self.user.api_urls[&#39;groups&#39;], json=self.to_dict)
+        raw = self.user.session.post(self.user.api_urls[&#39;groups&#39;], json=self.as_json)
         json = parse_request(raw)
 
         return Group(user=self.user, _fetched_data=json)</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
+<li><a title="pyflarum.flarum.core.BaseFlarumIndividualObject" href="index.html#pyflarum.flarum.core.BaseFlarumIndividualObject">BaseFlarumIndividualObject</a></li>
+<li><a title="pyflarum.flarum.core.BaseFlarumObject" href="index.html#pyflarum.flarum.core.BaseFlarumObject">BaseFlarumObject</a></li>
 <li>builtins.dict</li>
 </ul>
 <h3>Instance variables</h3>
 <dl>
+<dt id="pyflarum.flarum.core.groups.PreparedGroup.attributes"><code class="name">var <span class="ident">attributes</span> : dict</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject" href="index.html#pyflarum.flarum.core.BaseFlarumIndividualObject">BaseFlarumIndividualObject</a></code>.<code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject.attributes" href="index.html#pyflarum.flarum.core.BaseFlarumIndividualObject.attributes">attributes</a></code>
+</p>
+<div class="desc inherited"><p>Raw <code>dict</code> of the object's attributes.</p></div>
+</dd>
+<dt id="pyflarum.flarum.core.groups.PreparedGroup.data"><code class="name">var <span class="ident">data</span> : Union[List[dict], dict]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject" href="index.html#pyflarum.flarum.core.BaseFlarumIndividualObject">BaseFlarumIndividualObject</a></code>.<code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject.data" href="index.html#pyflarum.flarum.core.BaseFlarumIndividualObject.data">data</a></code>
+</p>
+<div class="desc inherited"><p>A raw <code>dict</code> of the object's data.</p></div>
+</dd>
+<dt id="pyflarum.flarum.core.groups.PreparedGroup.id"><code class="name">var <span class="ident">id</span> : Optional[int]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject" href="index.html#pyflarum.flarum.core.BaseFlarumIndividualObject">BaseFlarumIndividualObject</a></code>.<code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject.id" href="index.html#pyflarum.flarum.core.BaseFlarumIndividualObject.id">id</a></code>
+</p>
+<div class="desc inherited"><p>The <code>int</code> ID of the object. This should always be unique for the object's type.</p></div>
+</dd>
+<dt id="pyflarum.flarum.core.groups.PreparedGroup.relationships"><code class="name">var <span class="ident">relationships</span> : dict</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject" href="index.html#pyflarum.flarum.core.BaseFlarumIndividualObject">BaseFlarumIndividualObject</a></code>.<code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject.relationships" href="index.html#pyflarum.flarum.core.BaseFlarumIndividualObject.relationships">relationships</a></code>
+</p>
+<div class="desc inherited"><p>Raw <code>dict</code> of the object's relationships with
+other objects …</p></div>
+</dd>
 <dt id="pyflarum.flarum.core.groups.PreparedGroup.to_dict"><code class="name">var <span class="ident">to_dict</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Converts the group to a <code>dict</code>, so that
+it can be sent to the API.</p>
+<p>An extension might add additional data during runtime. This is the
+most basic template that Flarum requires when creating a group.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\groups.py#L22-L37" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\groups.py#L26-L49" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def to_dict(self):
+    &#34;&#34;&#34;
+        Converts the group to a `dict`, so that
+        it can be sent to the API.
+
+        An extension might add additional data during runtime. This is the
+        most basic template that Flarum requires when creating a group.
+    &#34;&#34;&#34;
+
     data = {
         &#34;data&#34;: {
             &#34;type&#34;: &#34;groups&#34;,
@@ -761,25 +762,33 @@ def to_dict(self):
     return data</code></pre>
 </details>
 </dd>
+<dt id="pyflarum.flarum.core.groups.PreparedGroup.type"><code class="name">var <span class="ident">type</span> : Optional[str]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject" href="index.html#pyflarum.flarum.core.BaseFlarumIndividualObject">BaseFlarumIndividualObject</a></code>.<code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject.type" href="index.html#pyflarum.flarum.core.BaseFlarumIndividualObject.type">type</a></code>
+</p>
+<div class="desc inherited"><p>The type of the object …</p></div>
+</dd>
 </dl>
 <h3>Methods</h3>
 <dl>
 <dt id="pyflarum.flarum.core.groups.PreparedGroup.create"><code class="name flex">
-<span>def <span class="ident">create</span></span>(<span>self)</span>
+<span>def <span class="ident">create</span></span>(<span>self) ‑> <a title="pyflarum.flarum.core.groups.Group" href="#pyflarum.flarum.core.groups.Group">Group</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Creates the group. Returns the created <code><a title="pyflarum.flarum.core.groups.Group" href="#pyflarum.flarum.core.groups.Group">Group</a></code>.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\groups.py#L40-L48" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\groups.py#L52-L60" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">def create(self):
+<pre><code class="python">def create(self) -&gt; &#39;Group&#39;:
     &#34;&#34;&#34;
         Creates the group. Returns the created `Group`.
     &#34;&#34;&#34;
 
-    raw = self.user.session.post(self.user.api_urls[&#39;groups&#39;], json=self.to_dict)
+    raw = self.user.session.post(self.user.api_urls[&#39;groups&#39;], json=self.as_json)
     json = parse_request(raw)
 
     return Group(user=self.user, _fetched_data=json)</code></pre>
@@ -852,37 +861,42 @@ setTimeout(() => input.focus(), 100);
 <li>
 <h4><code><a title="pyflarum.flarum.core.groups.Group" href="#pyflarum.flarum.core.groups.Group">Group</a></code></h4>
 <ul class="two-column">
-<li><code><a title="pyflarum.flarum.core.groups.Group.attributes" href="#pyflarum.flarum.core.groups.Group.attributes">attributes</a></code></li>
+<li><code><a title="pyflarum.flarum.core.groups.Group.attributes" href="index.html#pyflarum.flarum.core.groups.Group.attributes">attributes</a></code></li>
 <li><code><a title="pyflarum.flarum.core.groups.Group.color" href="#pyflarum.flarum.core.groups.Group.color">color</a></code></li>
-<li><code><a title="pyflarum.flarum.core.groups.Group.data" href="#pyflarum.flarum.core.groups.Group.data">data</a></code></li>
+<li><code><a title="pyflarum.flarum.core.groups.Group.data" href="index.html#pyflarum.flarum.core.groups.Group.data">data</a></code></li>
 <li><code><a title="pyflarum.flarum.core.groups.Group.delete" href="#pyflarum.flarum.core.groups.Group.delete">delete</a></code></li>
 <li><code><a title="pyflarum.flarum.core.groups.Group.edit" href="#pyflarum.flarum.core.groups.Group.edit">edit</a></code></li>
-<li><code><a title="pyflarum.flarum.core.groups.Group.get_groups" href="#pyflarum.flarum.core.groups.Group.get_groups">get_groups</a></code></li>
 <li><code><a title="pyflarum.flarum.core.groups.Group.icon" href="#pyflarum.flarum.core.groups.Group.icon">icon</a></code></li>
-<li><code><a title="pyflarum.flarum.core.groups.Group.id" href="#pyflarum.flarum.core.groups.Group.id">id</a></code></li>
+<li><code><a title="pyflarum.flarum.core.groups.Group.id" href="index.html#pyflarum.flarum.core.groups.Group.id">id</a></code></li>
 <li><code><a title="pyflarum.flarum.core.groups.Group.isHidden" href="#pyflarum.flarum.core.groups.Group.isHidden">isHidden</a></code></li>
 <li><code><a title="pyflarum.flarum.core.groups.Group.namePlural" href="#pyflarum.flarum.core.groups.Group.namePlural">namePlural</a></code></li>
 <li><code><a title="pyflarum.flarum.core.groups.Group.nameSingular" href="#pyflarum.flarum.core.groups.Group.nameSingular">nameSingular</a></code></li>
-<li><code><a title="pyflarum.flarum.core.groups.Group.type" href="#pyflarum.flarum.core.groups.Group.type">type</a></code></li>
+<li><code><a title="pyflarum.flarum.core.groups.Group.relationships" href="index.html#pyflarum.flarum.core.groups.Group.relationships">relationships</a></code></li>
+<li><code><a title="pyflarum.flarum.core.groups.Group.type" href="index.html#pyflarum.flarum.core.groups.Group.type">type</a></code></li>
 </ul>
 </li>
 <li>
 <h4><code><a title="pyflarum.flarum.core.groups.Groups" href="#pyflarum.flarum.core.groups.Groups">Groups</a></code></h4>
 <ul class="two-column">
-<li><code><a title="pyflarum.flarum.core.groups.Groups.data" href="#pyflarum.flarum.core.groups.Groups.data">data</a></code></li>
-<li><code><a title="pyflarum.flarum.core.groups.Groups.first_link" href="#pyflarum.flarum.core.groups.Groups.first_link">first_link</a></code></li>
+<li><code><a title="pyflarum.flarum.core.groups.Groups.data" href="index.html#pyflarum.flarum.core.groups.Groups.data">data</a></code></li>
+<li><code><a title="pyflarum.flarum.core.groups.Groups.first_link" href="index.html#pyflarum.flarum.core.groups.Groups.first_link">first_link</a></code></li>
 <li><code><a title="pyflarum.flarum.core.groups.Groups.get_groups" href="#pyflarum.flarum.core.groups.Groups.get_groups">get_groups</a></code></li>
-<li><code><a title="pyflarum.flarum.core.groups.Groups.included" href="#pyflarum.flarum.core.groups.Groups.included">included</a></code></li>
-<li><code><a title="pyflarum.flarum.core.groups.Groups.links" href="#pyflarum.flarum.core.groups.Groups.links">links</a></code></li>
-<li><code><a title="pyflarum.flarum.core.groups.Groups.next_link" href="#pyflarum.flarum.core.groups.Groups.next_link">next_link</a></code></li>
-<li><code><a title="pyflarum.flarum.core.groups.Groups.previous_link" href="#pyflarum.flarum.core.groups.Groups.previous_link">previous_link</a></code></li>
+<li><code><a title="pyflarum.flarum.core.groups.Groups.included" href="index.html#pyflarum.flarum.core.groups.Groups.included">included</a></code></li>
+<li><code><a title="pyflarum.flarum.core.groups.Groups.links" href="index.html#pyflarum.flarum.core.groups.Groups.links">links</a></code></li>
+<li><code><a title="pyflarum.flarum.core.groups.Groups.next_link" href="index.html#pyflarum.flarum.core.groups.Groups.next_link">next_link</a></code></li>
+<li><code><a title="pyflarum.flarum.core.groups.Groups.previous_link" href="index.html#pyflarum.flarum.core.groups.Groups.previous_link">previous_link</a></code></li>
 </ul>
 </li>
 <li>
 <h4><code><a title="pyflarum.flarum.core.groups.PreparedGroup" href="#pyflarum.flarum.core.groups.PreparedGroup">PreparedGroup</a></code></h4>
-<ul class="">
+<ul class="two-column">
+<li><code><a title="pyflarum.flarum.core.groups.PreparedGroup.attributes" href="index.html#pyflarum.flarum.core.groups.PreparedGroup.attributes">attributes</a></code></li>
 <li><code><a title="pyflarum.flarum.core.groups.PreparedGroup.create" href="#pyflarum.flarum.core.groups.PreparedGroup.create">create</a></code></li>
+<li><code><a title="pyflarum.flarum.core.groups.PreparedGroup.data" href="index.html#pyflarum.flarum.core.groups.PreparedGroup.data">data</a></code></li>
+<li><code><a title="pyflarum.flarum.core.groups.PreparedGroup.id" href="index.html#pyflarum.flarum.core.groups.PreparedGroup.id">id</a></code></li>
+<li><code><a title="pyflarum.flarum.core.groups.PreparedGroup.relationships" href="index.html#pyflarum.flarum.core.groups.PreparedGroup.relationships">relationships</a></code></li>
 <li><code><a title="pyflarum.flarum.core.groups.PreparedGroup.to_dict" href="#pyflarum.flarum.core.groups.PreparedGroup.to_dict">to_dict</a></code></li>
+<li><code><a title="pyflarum.flarum.core.groups.PreparedGroup.type" href="index.html#pyflarum.flarum.core.groups.PreparedGroup.type">type</a></code></li>
 </ul>
 </li>
 </ul>

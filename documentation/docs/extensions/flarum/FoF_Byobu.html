@@ -25,7 +25,7 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\flarum\FoF_Byobu.py#L0-L52" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\FoF_Byobu.py#L0-L52" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">from .. import ExtensionMixin
 
@@ -96,11 +96,17 @@ class ByobuExtension(ExtensionMixin):
 <span>(</span><span>user: FlarumUser, _fetched_data: dict)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>A discussion from <code>Discussions</code>.</p></div>
+<div class="desc"><p>A discussion from <code>Discussions</code>.</p>
+<h3 id="parameters">Parameters:</h3>
+<ul>
+<li><code>user</code> - the <code><a title="pyflarum.session.FlarumUser" href="../../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code> object, required to make additional API calls.</li>
+<li><code>_fetched_data</code> - the JSON data that was fetched from the API.</li>
+</ul>
+<p>I strongly discourage from forging objects this way, unless you are creating an extension.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\flarum\FoF_Byobu.py#L16-L29" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\FoF_Byobu.py#L16-L29" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class ByobuDiscussionMixin(DiscussionFromBulk):
     @property
@@ -121,17 +127,35 @@ class ByobuExtension(ExtensionMixin):
 <ul class="hlist">
 <li><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></li>
 <li><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromNotification">DiscussionFromNotification</a></li>
+<li><a title="pyflarum.flarum.core.BaseFlarumIndividualObject" href="../../flarum/core/index.html#pyflarum.flarum.core.BaseFlarumIndividualObject">BaseFlarumIndividualObject</a></li>
+<li><a title="pyflarum.flarum.core.BaseFlarumObject" href="../../flarum/core/index.html#pyflarum.flarum.core.BaseFlarumObject">BaseFlarumObject</a></li>
 <li>builtins.dict</li>
 </ul>
 <h3>Instance variables</h3>
 <dl>
+<dt id="pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.attributes"><code class="name">var <span class="ident">attributes</span> : dict</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.attributes" href="../../flarum/core/index.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.attributes">attributes</a></code>
+</p>
+<div class="desc inherited"><p>Raw <code>dict</code> of the object's attributes.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.canDelete"><code class="name">var <span class="ident">canDelete</span> : bool</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.canDelete" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.canDelete">canDelete</a></code>
+</p>
+<div class="desc inherited"><p>Whether or not you are able to delete the discussion.</p></div>
+</dd>
 <dt id="pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.canEditGroupRecipients"><code class="name">var <span class="ident">canEditGroupRecipients</span> : bool</code></dt>
 <dd>
 <div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\flarum\FoF_Byobu.py#L27-L29" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\FoF_Byobu.py#L27-L29" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def canEditGroupRecipients(self) -&gt; bool:
@@ -144,7 +168,7 @@ def canEditGroupRecipients(self) -&gt; bool:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\flarum\FoF_Byobu.py#L17-L19" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\FoF_Byobu.py#L17-L19" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def canEditRecipients(self) -&gt; bool:
@@ -157,18 +181,171 @@ def canEditRecipients(self) -&gt; bool:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\flarum\FoF_Byobu.py#L22-L24" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\FoF_Byobu.py#L22-L24" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def canEditUserRecipients(self) -&gt; bool:
     return self.attributes.get(&#34;canEditUserRecipients&#34;, False)</code></pre>
 </details>
 </dd>
+<dt id="pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.canHide"><code class="name">var <span class="ident">canHide</span> : bool</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.canHide" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.canHide">canHide</a></code>
+</p>
+<div class="desc inherited"><p>Whether or not you are able to hide the discussion.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.canRename"><code class="name">var <span class="ident">canRename</span> : bool</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.canRename" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.canRename">canRename</a></code>
+</p>
+<div class="desc inherited"><p>Whether or not you are able to rename the discussion.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.canReply"><code class="name">var <span class="ident">canReply</span> : bool</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.canReply" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.canReply">canReply</a></code>
+</p>
+<div class="desc inherited"><p>Whether or not you are able to create a post in the discussion.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.commentCount"><code class="name">var <span class="ident">commentCount</span> : Optional[str]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.commentCount" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.commentCount">commentCount</a></code>
+</p>
+<div class="desc inherited"><p>Obtains the comment count of the discussion …</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.createdAt"><code class="name">var <span class="ident">createdAt</span> : Optional[datetime.datetime]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.createdAt" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.createdAt">createdAt</a></code>
+</p>
+<div class="desc inherited"><p>The <code>datetime</code> of when this discussion was created at.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.data"><code class="name">var <span class="ident">data</span> : Union[List[dict], dict]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.data" href="../../flarum/core/index.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.data">data</a></code>
+</p>
+<div class="desc inherited"><p>A raw <code>dict</code> of the object's data.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.id"><code class="name">var <span class="ident">id</span> : Optional[int]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.id" href="../../flarum/core/index.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.id">id</a></code>
+</p>
+<div class="desc inherited"><p>The <code>int</code> ID of the object. This should always be unique for the object's type.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.isHidden"><code class="name">var <span class="ident">isHidden</span> : bool</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.isHidden" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.isHidden">isHidden</a></code>
+</p>
+<div class="desc inherited"><p>Whether or not the discussion is hidden. This happens when
+you delete the discussion for the first time.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.lastPostNumber"><code class="name">var <span class="ident">lastPostNumber</span> : Optional[int]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.lastPostNumber" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.lastPostNumber">lastPostNumber</a></code>
+</p>
+<div class="desc inherited"><p>Returns the number of the newest post in the
+discussion.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.lastPostedAt"><code class="name">var <span class="ident">lastPostedAt</span> : Optional[datetime.datetime]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.lastPostedAt" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.lastPostedAt">lastPostedAt</a></code>
+</p>
+<div class="desc inherited"><p>The <code>datetime</code> of when the last post in this
+discussion was made, e. g. when was this
+discussion last updated at.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.lastReadAt"><code class="name">var <span class="ident">lastReadAt</span> : Optional[datetime.datetime]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.lastReadAt" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.lastReadAt">lastReadAt</a></code>
+</p>
+<div class="desc inherited"><p>The <code>datetime</code> when you last read that discussion.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.lastReadPostNumber"><code class="name">var <span class="ident">lastReadPostNumber</span> : Optional[int]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.lastReadPostNumber" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.lastReadPostNumber">lastReadPostNumber</a></code>
+</p>
+<div class="desc inherited"><p>Number of a post that you've last read in the discussion.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.participantCount"><code class="name">var <span class="ident">participantCount</span> : Optional[str]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.participantCount" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.participantCount">participantCount</a></code>
+</p>
+<div class="desc inherited"><p>The participant count of the discussion. This is
+the number of all users that have participated in a
+discussion by posting.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.relationships"><code class="name">var <span class="ident">relationships</span> : dict</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.relationships" href="../../flarum/core/index.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.relationships">relationships</a></code>
+</p>
+<div class="desc inherited"><p>Raw <code>dict</code> of the object's relationships with
+other objects …</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.slug"><code class="name">var <span class="ident">slug</span> : Optional[str]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.slug" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.slug">slug</a></code>
+</p>
+<div class="desc inherited"><p>Returns the discussion's slug
+(consists of ID and dash separated words from discussion's title,
+e. g. <code>123-some-title</code>).</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.title"><code class="name">var <span class="ident">title</span> : Optional[str]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.title" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.title">title</a></code>
+</p>
+<div class="desc inherited"><p>Returns the discussion's title.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.type"><code class="name">var <span class="ident">type</span> : Optional[str]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.type" href="../../flarum/core/index.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.type">type</a></code>
+</p>
+<div class="desc inherited"><p>The type of the object …</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.url"><code class="name">var <span class="ident">url</span></code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.url" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.url">url</a></code>
+</p>
+<div class="desc inherited"><p>Returns the discussion's URL (including slug, if it's available).</p></div>
+</dd>
 </dl>
 <h3>Methods</h3>
 <dl>
 <dt id="pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.delete"><code class="name flex">
-<span>def <span class="ident">delete</span></span>(<span>self, force: bool = False)</span>
+<span>def <span class="ident">delete</span></span>(<span>self, force: bool = False) ‑> bool</span>
 </code></dt>
 <dd>
 <p class="inheritance">
@@ -178,7 +355,7 @@ def canEditUserRecipients(self) -&gt; bool:
 <div class="desc inherited"><p>Scronches the discussion forever. This cannot be reverted …</p></div>
 </dd>
 <dt id="pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.get_author"><code class="name flex">
-<span>def <span class="ident">get_author</span></span>(<span>self) ‑> <a title="pyflarum.flarum.core.users.UserFromNotification" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromNotification">UserFromNotification</a></span>
+<span>def <span class="ident">get_author</span></span>(<span>self) ‑> Optional[<a title="pyflarum.flarum.core.users.UserFromNotification" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromNotification">UserFromNotification</a>]</span>
 </code></dt>
 <dd>
 <p class="inheritance">
@@ -188,17 +365,29 @@ def canEditUserRecipients(self) -&gt; bool:
 <div class="desc inherited"><p>Obtains the author of the discussion …</p></div>
 </dd>
 <dt id="pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.get_first_post"><code class="name flex">
-<span>def <span class="ident">get_first_post</span></span>(<span>self) ‑> <a title="pyflarum.flarum.core.posts.PostFromDiscussion" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromDiscussion">PostFromDiscussion</a></span>
+<span>def <span class="ident">get_first_post</span></span>(<span>self) ‑> Optional[<a title="pyflarum.flarum.core.posts.PostFromDiscussion" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromDiscussion">PostFromDiscussion</a>]</span>
 </code></dt>
 <dd>
 <p class="inheritance">
 <em>Inherited from:</em>
 <code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.get_first_post" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.get_first_post">get_first_post</a></code>
 </p>
-<div class="desc inherited"><p>Obtains the first post of the discussion …</p></div>
+<div class="desc inherited"><p>Obtains the first post of the discussion. If no post is found,
+<code>None</code> is returned …</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.get_full_data"><code class="name flex">
+<span>def <span class="ident">get_full_data</span></span>(<span>self) ‑> <a title="pyflarum.flarum.core.discussions.Discussion" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.Discussion">Discussion</a></span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.get_full_data" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.get_full_data">get_full_data</a></code>
+</p>
+<div class="desc inherited"><p>Makes an additional API call to fetch the full data of the discussion, e. g.
+the top-level discussion class (<code>Discussion</code>) …</p></div>
 </dd>
 <dt id="pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.get_last_posted_user"><code class="name flex">
-<span>def <span class="ident">get_last_posted_user</span></span>(<span>self) ‑> <a title="pyflarum.flarum.core.users.UserFromNotification" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromNotification">UserFromNotification</a></span>
+<span>def <span class="ident">get_last_posted_user</span></span>(<span>self) ‑> Optional[<a title="pyflarum.flarum.core.users.UserFromNotification" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromNotification">UserFromNotification</a>]</span>
 </code></dt>
 <dd>
 <p class="inheritance">
@@ -292,7 +481,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\flarum\FoF_Byobu.py#L43-L53" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\FoF_Byobu.py#L43-L53" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class ByobuExtension(ExtensionMixin):
     def get_dependencies(self):
@@ -329,7 +518,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\flarum\FoF_Byobu.py#L44-L48" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\FoF_Byobu.py#L44-L48" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_dependencies(self):
     return {
@@ -350,7 +539,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\flarum\FoF_Byobu.py#L51-L53" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\FoF_Byobu.py#L51-L53" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def mixin(self):
     super().mixin(self, DiscussionFromBulk, ByobuDiscussionMixin)
@@ -364,11 +553,17 @@ class ExampleExtension(ExtensionMixin):
 <span>(</span><span>user: FlarumUser, _fetched_data: dict)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>An user from <code>Users</code>.</p></div>
+<div class="desc"><p>An user from <code>Users</code>.</p>
+<h3 id="parameters">Parameters:</h3>
+<ul>
+<li><code>user</code> - the <code><a title="pyflarum.session.FlarumUser" href="../../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code> object, required to make additional API calls.</li>
+<li><code>_fetched_data</code> - the JSON data that was fetched from the API.</li>
+</ul>
+<p>I strongly discourage from forging objects this way, unless you are creating an extension.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\flarum\FoF_Byobu.py#L32-L40" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\FoF_Byobu.py#L32-L40" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class ByobuUserMixin(UserFromBulk):
     @property
@@ -384,22 +579,72 @@ class ExampleExtension(ExtensionMixin):
 <ul class="hlist">
 <li><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></li>
 <li><a title="pyflarum.flarum.core.users.UserFromNotification" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromNotification">UserFromNotification</a></li>
+<li><a title="pyflarum.flarum.core.BaseFlarumIndividualObject" href="../../flarum/core/index.html#pyflarum.flarum.core.BaseFlarumIndividualObject">BaseFlarumIndividualObject</a></li>
+<li><a title="pyflarum.flarum.core.BaseFlarumObject" href="../../flarum/core/index.html#pyflarum.flarum.core.BaseFlarumObject">BaseFlarumObject</a></li>
 <li>builtins.dict</li>
 </ul>
 <h3>Instance variables</h3>
 <dl>
+<dt id="pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin.attributes"><code class="name">var <span class="ident">attributes</span> : dict</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.attributes" href="../../flarum/core/index.html#pyflarum.flarum.core.users.UserFromBulk.attributes">attributes</a></code>
+</p>
+<div class="desc inherited"><p>Raw <code>dict</code> of the object's attributes.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin.avatarUrl"><code class="name">var <span class="ident">avatarUrl</span> : Optional[str]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.avatarUrl" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk.avatarUrl">avatarUrl</a></code>
+</p>
+<div class="desc inherited"><p>The user's avatar URL.</p></div>
+</dd>
 <dt id="pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin.blocksPd"><code class="name">var <span class="ident">blocksPd</span> : bool</code></dt>
 <dd>
 <div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\flarum\FoF_Byobu.py#L33-L35" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\FoF_Byobu.py#L33-L35" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def blocksPd(self) -&gt; bool:
     return self.attributes.get(&#34;blocksPd&#34;, False)</code></pre>
 </details>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin.canDelete"><code class="name">var <span class="ident">canDelete</span> : bool</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.canDelete" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk.canDelete">canDelete</a></code>
+</p>
+<div class="desc inherited"><p>Whether or not you are able to scronch this user forever.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin.canEdit"><code class="name">var <span class="ident">canEdit</span> : bool</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.canEdit" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk.canEdit">canEdit</a></code>
+</p>
+<div class="desc inherited"><p>Whether or not you are able to edit this user.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin.canEditCredentials"><code class="name">var <span class="ident">canEditCredentials</span> : bool</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.canEditCredentials" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk.canEditCredentials">canEditCredentials</a></code>
+</p>
+<div class="desc inherited"><p>Whether or not you are able to edit this user's credentials.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin.canEditGroups"><code class="name">var <span class="ident">canEditGroups</span> : bool</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.canEditGroups" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk.canEditGroups">canEditGroups</a></code>
+</p>
+<div class="desc inherited"><p>Whether or not you are able to edit this user's groups.</p></div>
 </dd>
 <dt id="pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin.cannotBeDirectlyMessaged"><code class="name">var <span class="ident">cannotBeDirectlyMessaged</span> : bool</code></dt>
 <dd>
@@ -407,12 +652,109 @@ def blocksPd(self) -&gt; bool:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\flarum\FoF_Byobu.py#L38-L40" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\FoF_Byobu.py#L38-L40" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def cannotBeDirectlyMessaged(self) -&gt; bool:
     return self.attributes.get(&#34;cannotBeDirectlyMessaged&#34;, False)</code></pre>
 </details>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin.commentCount"><code class="name">var <span class="ident">commentCount</span> : Optional[int]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.commentCount" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk.commentCount">commentCount</a></code>
+</p>
+<div class="desc inherited"><p>The user's comment count.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin.data"><code class="name">var <span class="ident">data</span> : Union[List[dict], dict]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.data" href="../../flarum/core/index.html#pyflarum.flarum.core.users.UserFromBulk.data">data</a></code>
+</p>
+<div class="desc inherited"><p>A raw <code>dict</code> of the object's data.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin.discussionCount"><code class="name">var <span class="ident">discussionCount</span> : Optional[int]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.discussionCount" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk.discussionCount">discussionCount</a></code>
+</p>
+<div class="desc inherited"><p>The user's discussion count.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin.displayName"><code class="name">var <span class="ident">displayName</span> : Optional[str]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.displayName" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk.displayName">displayName</a></code>
+</p>
+<div class="desc inherited"><p>The display name/nickname of the user.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin.email"><code class="name">var <span class="ident">email</span> : Optional[str]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.email" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk.email">email</a></code>
+</p>
+<div class="desc inherited"><p>The user's E-mail, if you have permission to view it.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin.id"><code class="name">var <span class="ident">id</span> : Optional[int]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.id" href="../../flarum/core/index.html#pyflarum.flarum.core.users.UserFromBulk.id">id</a></code>
+</p>
+<div class="desc inherited"><p>The <code>int</code> ID of the object. This should always be unique for the object's type.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin.isEmailConfirmed"><code class="name">var <span class="ident">isEmailConfirmed</span> : bool</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.isEmailConfirmed" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk.isEmailConfirmed">isEmailConfirmed</a></code>
+</p>
+<div class="desc inherited"><p>Whether or not this user confirmed their E-mail address …</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin.joinTime"><code class="name">var <span class="ident">joinTime</span> : Optional[datetime.datetime]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.joinTime" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk.joinTime">joinTime</a></code>
+</p>
+<div class="desc inherited"><p>The <code>datetime</code> of when the user had joined this forum.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin.relationships"><code class="name">var <span class="ident">relationships</span> : dict</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.relationships" href="../../flarum/core/index.html#pyflarum.flarum.core.users.UserFromBulk.relationships">relationships</a></code>
+</p>
+<div class="desc inherited"><p>Raw <code>dict</code> of the object's relationships with
+other objects …</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin.slug"><code class="name">var <span class="ident">slug</span> : Optional[str]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.slug" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk.slug">slug</a></code>
+</p>
+<div class="desc inherited"><p>The user's slug.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin.type"><code class="name">var <span class="ident">type</span> : Optional[str]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.type" href="../../flarum/core/index.html#pyflarum.flarum.core.users.UserFromBulk.type">type</a></code>
+</p>
+<div class="desc inherited"><p>The type of the object …</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin.username"><code class="name">var <span class="ident">username</span> : Optional[str]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.username" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk.username">username</a></code>
+</p>
+<div class="desc inherited"><p>The user's username.</p></div>
 </dd>
 </dl>
 </dd>
@@ -481,16 +823,37 @@ setTimeout(() => input.focus(), 100);
 <li>
 <h4><code><a title="pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin" href="#pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin">ByobuDiscussionMixin</a></code></h4>
 <ul class="">
+<li><code><a title="pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.attributes" href="../../flarum/core/index.html#pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.attributes">attributes</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.canDelete" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.canDelete">canDelete</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.canEditGroupRecipients" href="#pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.canEditGroupRecipients">canEditGroupRecipients</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.canEditRecipients" href="#pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.canEditRecipients">canEditRecipients</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.canEditUserRecipients" href="#pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.canEditUserRecipients">canEditUserRecipients</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.canHide" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.canHide">canHide</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.canRename" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.canRename">canRename</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.canReply" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.canReply">canReply</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.commentCount" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.commentCount">commentCount</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.createdAt" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.createdAt">createdAt</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.data" href="../../flarum/core/index.html#pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.data">data</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.delete" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.delete">delete</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.get_author" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.get_author">get_author</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.get_first_post" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.get_first_post">get_first_post</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.get_full_data" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.get_full_data">get_full_data</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.get_last_posted_user" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.get_last_posted_user">get_last_posted_user</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.hide" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.hide">hide</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.id" href="../../flarum/core/index.html#pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.id">id</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.isHidden" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.isHidden">isHidden</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.lastPostNumber" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.lastPostNumber">lastPostNumber</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.lastPostedAt" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.lastPostedAt">lastPostedAt</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.lastReadAt" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.lastReadAt">lastReadAt</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.lastReadPostNumber" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.lastReadPostNumber">lastReadPostNumber</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.participantCount" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.participantCount">participantCount</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.relationships" href="../../flarum/core/index.html#pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.relationships">relationships</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.restore" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.restore">restore</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.slug" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.slug">slug</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.title" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.title">title</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.type" href="../../flarum/core/index.html#pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.type">type</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.unhide" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.unhide">unhide</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.url" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.FoF_Byobu.ByobuDiscussionMixin.url">url</a></code></li>
 </ul>
 </li>
 <li>
@@ -503,8 +866,26 @@ setTimeout(() => input.focus(), 100);
 <li>
 <h4><code><a title="pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin" href="#pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin">ByobuUserMixin</a></code></h4>
 <ul class="">
+<li><code><a title="pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin.attributes" href="../../flarum/core/index.html#pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin.attributes">attributes</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin.avatarUrl" href="../../flarum/core/users.html#pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin.avatarUrl">avatarUrl</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin.blocksPd" href="#pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin.blocksPd">blocksPd</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin.canDelete" href="../../flarum/core/users.html#pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin.canDelete">canDelete</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin.canEdit" href="../../flarum/core/users.html#pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin.canEdit">canEdit</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin.canEditCredentials" href="../../flarum/core/users.html#pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin.canEditCredentials">canEditCredentials</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin.canEditGroups" href="../../flarum/core/users.html#pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin.canEditGroups">canEditGroups</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin.cannotBeDirectlyMessaged" href="#pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin.cannotBeDirectlyMessaged">cannotBeDirectlyMessaged</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin.commentCount" href="../../flarum/core/users.html#pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin.commentCount">commentCount</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin.data" href="../../flarum/core/index.html#pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin.data">data</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin.discussionCount" href="../../flarum/core/users.html#pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin.discussionCount">discussionCount</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin.displayName" href="../../flarum/core/users.html#pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin.displayName">displayName</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin.email" href="../../flarum/core/users.html#pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin.email">email</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin.id" href="../../flarum/core/index.html#pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin.id">id</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin.isEmailConfirmed" href="../../flarum/core/users.html#pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin.isEmailConfirmed">isEmailConfirmed</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin.joinTime" href="../../flarum/core/users.html#pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin.joinTime">joinTime</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin.relationships" href="../../flarum/core/index.html#pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin.relationships">relationships</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin.slug" href="../../flarum/core/users.html#pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin.slug">slug</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin.type" href="../../flarum/core/index.html#pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin.type">type</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin.username" href="../../flarum/core/users.html#pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin.username">username</a></code></li>
 </ul>
 </li>
 </ul>

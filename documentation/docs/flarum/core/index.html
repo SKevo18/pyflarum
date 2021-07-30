@@ -22,6 +22,170 @@
 <h1 class="title">Module <code>pyflarum.flarum.core</code></h1>
 </header>
 <section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\__init__.py#L0-L157" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">from typing import List, Optional, Union, TYPE_CHECKING
+if TYPE_CHECKING:
+    from ...session import FlarumUser
+
+
+
+class BaseFlarumObject(dict):
+    &#34;&#34;&#34;
+        The base Flarum object - all API objects have properties of this object.
+    &#34;&#34;&#34;
+
+    def __init__(self, user: &#39;FlarumUser&#39;, _fetched_data: dict):
+        &#34;&#34;&#34;
+            ### Parameters:
+            - `user` - the `pyflarum.session.FlarumUser` object, required to make additional API calls.
+            - `_fetched_data` - the JSON data that was fetched from the API.
+
+            I strongly discourage from forging objects this way, unless you are creating an extension.
+        &#34;&#34;&#34;
+
+        self.user = user
+        super().__init__(_fetched_data)
+
+
+    @property
+    def data(self) -&gt; Union[List[dict], dict]:
+        &#34;&#34;&#34;
+            A raw `dict` of the object&#39;s data.
+        &#34;&#34;&#34;
+
+        return self.get(&#34;data&#34;, [{}])
+
+
+
+class BaseFlarumBulkObject(BaseFlarumObject):
+    &#34;&#34;&#34;
+        The base object for Flarum &#34;bulk&#34; objects - all API objects
+        that contain other objects have these properties.
+
+        Examples of bulk objects:
+        - `pyflarum.flarum.core.users.UserFromBulk`
+        - `pyflarum.flarum.core.discussions.DiscussionFromBulk`
+        - `pyflarum.flarum.core.posts.PostFromBulk`
+    &#34;&#34;&#34;
+
+    @property
+    def links(self) -&gt; dict:
+        &#34;&#34;&#34;
+            A raw `dict` of the object&#39;s API links.
+        &#34;&#34;&#34;
+
+        return self.get(&#34;links&#34;, {})
+
+
+    @property
+    def first_link(self) -&gt; Optional[str]:
+        &#34;&#34;&#34;
+            First link in the API.
+        &#34;&#34;&#34;
+
+        return self.links.get(&#34;first&#34;, None)
+
+
+    @property
+    def previous_link(self) -&gt; Optional[str]:
+        &#34;&#34;&#34;
+            Previous link in the API.
+        &#34;&#34;&#34;
+
+        return self.links.get(&#34;prev&#34;, None)
+
+
+    @property
+    def next_link(self) -&gt; Optional[str]:
+        &#34;&#34;&#34;
+            Next link in the API.
+        &#34;&#34;&#34;
+
+        return self.links.get(&#34;next&#34;, None)
+
+
+    @property
+    def included(self) -&gt; List[dict]:
+        &#34;&#34;&#34;
+            Raw `dict` of the object&#39;s included data.
+        &#34;&#34;&#34;
+
+        return self.get(&#34;included&#34;, [{}])
+
+
+
+class BaseFlarumIndividualObject(BaseFlarumObject):
+    &#34;&#34;&#34;
+        Base object for Flarum &#34;individual&#34; objects - all
+        objects have these properties.
+
+        Examples of &#34;individual&#34; objects:
+        - `pyflarum.flarum.core.discussions.Discussion`
+        - `pyflarum.flarum.core.posts.Post`
+        - `pyflarum.flarum.core.PostFromDiscussion`
+    &#34;&#34;&#34;
+
+    @property
+    def type(self) -&gt; Optional[str]:
+        &#34;&#34;&#34;
+            The type of the object.
+            
+            This should always be the plural form of Flarum&#39;s name of the object, e. g. `discussions`, `posts`, `users`, etc...
+        &#34;&#34;&#34;
+
+        return self.data.get(&#34;type&#34;, None)
+
+
+    @property
+    def id(self) -&gt; Optional[int]:
+        &#34;&#34;&#34;
+            The `int` ID of the object. This should always be unique for the object&#39;s type.
+        &#34;&#34;&#34;
+
+        raw = self.data.get(&#34;id&#34;, None)
+
+        if raw:
+            return int(raw)
+
+
+    @property
+    def attributes(self) -&gt; dict:
+        &#34;&#34;&#34;
+            Raw `dict` of the object&#39;s attributes.
+        &#34;&#34;&#34;
+
+        return self.data.get(&#34;attributes&#34;, {})
+
+
+    @property
+    def relationships(self) -&gt; dict:
+        &#34;&#34;&#34;
+            Raw `dict` of the object&#39;s relationships with
+            other objects.
+
+            This contains references to objects in the included data.
+            Read more about [included data](https://cwkevo.github.io/pyflarum/docs/#included-data).
+        &#34;&#34;&#34;
+
+        return self.data.get(&#34;relationships&#34;, {})
+
+
+    @property
+    def _parent_included(self) -&gt; List[dict]:
+        &#34;&#34;&#34;
+            Raw data of the parent&#39;s included JSON data.
+
+            Returns empty `list` of empty `dict` if there is no parent data.
+
+            Read more about [_parent_included](https://cwkevo.github.io/pyflarum/docs/#parent-included).
+        &#34;&#34;&#34;
+
+        return self.get(&#34;_parent_included&#34;, [{}])</code></pre>
+</details>
 </section>
 <section>
 <h2 class="section-title" id="header-submodules">Sub-modules</h2>
@@ -61,6 +225,469 @@
 <section>
 </section>
 <section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="pyflarum.flarum.core.BaseFlarumBulkObject"><code class="flex name class">
+<span>class <span class="ident">BaseFlarumBulkObject</span></span>
+<span>(</span><span>user: FlarumUser, _fetched_data: dict)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>The base object for Flarum "bulk" objects - all API objects
+that contain other objects have these properties.</p>
+<p>Examples of bulk objects:
+- <code><a title="pyflarum.flarum.core.users.UserFromBulk" href="users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>
+- <code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>
+- <code><a title="pyflarum.flarum.core.posts.PostFromBulk" href="posts.html#pyflarum.flarum.core.posts.PostFromBulk">PostFromBulk</a></code></p>
+<h3 id="parameters">Parameters:</h3>
+<ul>
+<li><code>user</code> - the <code><a title="pyflarum.session.FlarumUser" href="../../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code> object, required to make additional API calls.</li>
+<li><code>_fetched_data</code> - the JSON data that was fetched from the API.</li>
+</ul>
+<p>I strongly discourage from forging objects this way, unless you are creating an extension.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\__init__.py#L35-L88" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">class BaseFlarumBulkObject(BaseFlarumObject):
+    &#34;&#34;&#34;
+        The base object for Flarum &#34;bulk&#34; objects - all API objects
+        that contain other objects have these properties.
+
+        Examples of bulk objects:
+        - `pyflarum.flarum.core.users.UserFromBulk`
+        - `pyflarum.flarum.core.discussions.DiscussionFromBulk`
+        - `pyflarum.flarum.core.posts.PostFromBulk`
+    &#34;&#34;&#34;
+
+    @property
+    def links(self) -&gt; dict:
+        &#34;&#34;&#34;
+            A raw `dict` of the object&#39;s API links.
+        &#34;&#34;&#34;
+
+        return self.get(&#34;links&#34;, {})
+
+
+    @property
+    def first_link(self) -&gt; Optional[str]:
+        &#34;&#34;&#34;
+            First link in the API.
+        &#34;&#34;&#34;
+
+        return self.links.get(&#34;first&#34;, None)
+
+
+    @property
+    def previous_link(self) -&gt; Optional[str]:
+        &#34;&#34;&#34;
+            Previous link in the API.
+        &#34;&#34;&#34;
+
+        return self.links.get(&#34;prev&#34;, None)
+
+
+    @property
+    def next_link(self) -&gt; Optional[str]:
+        &#34;&#34;&#34;
+            Next link in the API.
+        &#34;&#34;&#34;
+
+        return self.links.get(&#34;next&#34;, None)
+
+
+    @property
+    def included(self) -&gt; List[dict]:
+        &#34;&#34;&#34;
+            Raw `dict` of the object&#39;s included data.
+        &#34;&#34;&#34;
+
+        return self.get(&#34;included&#34;, [{}])</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pyflarum.flarum.core.BaseFlarumObject" href="#pyflarum.flarum.core.BaseFlarumObject">BaseFlarumObject</a></li>
+<li>builtins.dict</li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="pyflarum.flarum.core.discussions.Discussions" href="discussions.html#pyflarum.flarum.core.discussions.Discussions">Discussions</a></li>
+<li><a title="pyflarum.flarum.core.groups.Groups" href="groups.html#pyflarum.flarum.core.groups.Groups">Groups</a></li>
+<li><a title="pyflarum.flarum.core.notifications.Notifications" href="notifications.html#pyflarum.flarum.core.notifications.Notifications">Notifications</a></li>
+<li><a title="pyflarum.flarum.core.posts.Posts" href="posts.html#pyflarum.flarum.core.posts.Posts">Posts</a></li>
+<li><a title="pyflarum.flarum.core.users.Users" href="users.html#pyflarum.flarum.core.users.Users">Users</a></li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="pyflarum.flarum.core.BaseFlarumBulkObject.data"><code class="name">var <span class="ident">data</span> : Union[List[dict], dict]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.BaseFlarumObject" href="#pyflarum.flarum.core.BaseFlarumObject">BaseFlarumObject</a></code>.<code><a title="pyflarum.flarum.core.BaseFlarumObject.data" href="#pyflarum.flarum.core.BaseFlarumObject.data">data</a></code>
+</p>
+<div class="desc inherited"><p>A raw <code>dict</code> of the object's data.</p></div>
+</dd>
+<dt id="pyflarum.flarum.core.BaseFlarumBulkObject.first_link"><code class="name">var <span class="ident">first_link</span> : Optional[str]</code></dt>
+<dd>
+<div class="desc"><p>First link in the API.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\__init__.py#L55-L61" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">@property
+def first_link(self) -&gt; Optional[str]:
+    &#34;&#34;&#34;
+        First link in the API.
+    &#34;&#34;&#34;
+
+    return self.links.get(&#34;first&#34;, None)</code></pre>
+</details>
+</dd>
+<dt id="pyflarum.flarum.core.BaseFlarumBulkObject.included"><code class="name">var <span class="ident">included</span> : List[dict]</code></dt>
+<dd>
+<div class="desc"><p>Raw <code>dict</code> of the object's included data.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\__init__.py#L82-L88" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">@property
+def included(self) -&gt; List[dict]:
+    &#34;&#34;&#34;
+        Raw `dict` of the object&#39;s included data.
+    &#34;&#34;&#34;
+
+    return self.get(&#34;included&#34;, [{}])</code></pre>
+</details>
+</dd>
+<dt id="pyflarum.flarum.core.BaseFlarumBulkObject.links"><code class="name">var <span class="ident">links</span> : dict</code></dt>
+<dd>
+<div class="desc"><p>A raw <code>dict</code> of the object's API links.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\__init__.py#L46-L52" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">@property
+def links(self) -&gt; dict:
+    &#34;&#34;&#34;
+        A raw `dict` of the object&#39;s API links.
+    &#34;&#34;&#34;
+
+    return self.get(&#34;links&#34;, {})</code></pre>
+</details>
+</dd>
+<dt id="pyflarum.flarum.core.BaseFlarumBulkObject.next_link"><code class="name">var <span class="ident">next_link</span> : Optional[str]</code></dt>
+<dd>
+<div class="desc"><p>Next link in the API.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\__init__.py#L73-L79" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">@property
+def next_link(self) -&gt; Optional[str]:
+    &#34;&#34;&#34;
+        Next link in the API.
+    &#34;&#34;&#34;
+
+    return self.links.get(&#34;next&#34;, None)</code></pre>
+</details>
+</dd>
+<dt id="pyflarum.flarum.core.BaseFlarumBulkObject.previous_link"><code class="name">var <span class="ident">previous_link</span> : Optional[str]</code></dt>
+<dd>
+<div class="desc"><p>Previous link in the API.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\__init__.py#L64-L70" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">@property
+def previous_link(self) -&gt; Optional[str]:
+    &#34;&#34;&#34;
+        Previous link in the API.
+    &#34;&#34;&#34;
+
+    return self.links.get(&#34;prev&#34;, None)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyflarum.flarum.core.BaseFlarumIndividualObject"><code class="flex name class">
+<span>class <span class="ident">BaseFlarumIndividualObject</span></span>
+<span>(</span><span>user: FlarumUser, _fetched_data: dict)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Base object for Flarum "individual" objects - all
+objects have these properties.</p>
+<p>Examples of "individual" objects:
+- <code><a title="pyflarum.flarum.core.discussions.Discussion" href="discussions.html#pyflarum.flarum.core.discussions.Discussion">Discussion</a></code>
+- <code><a title="pyflarum.flarum.core.posts.Post" href="posts.html#pyflarum.flarum.core.posts.Post">Post</a></code>
+- <code>pyflarum.flarum.core.PostFromDiscussion</code></p>
+<h3 id="parameters">Parameters:</h3>
+<ul>
+<li><code>user</code> - the <code><a title="pyflarum.session.FlarumUser" href="../../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code> object, required to make additional API calls.</li>
+<li><code>_fetched_data</code> - the JSON data that was fetched from the API.</li>
+</ul>
+<p>I strongly discourage from forging objects this way, unless you are creating an extension.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\__init__.py#L92-L158" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">class BaseFlarumIndividualObject(BaseFlarumObject):
+    &#34;&#34;&#34;
+        Base object for Flarum &#34;individual&#34; objects - all
+        objects have these properties.
+
+        Examples of &#34;individual&#34; objects:
+        - `pyflarum.flarum.core.discussions.Discussion`
+        - `pyflarum.flarum.core.posts.Post`
+        - `pyflarum.flarum.core.PostFromDiscussion`
+    &#34;&#34;&#34;
+
+    @property
+    def type(self) -&gt; Optional[str]:
+        &#34;&#34;&#34;
+            The type of the object.
+            
+            This should always be the plural form of Flarum&#39;s name of the object, e. g. `discussions`, `posts`, `users`, etc...
+        &#34;&#34;&#34;
+
+        return self.data.get(&#34;type&#34;, None)
+
+
+    @property
+    def id(self) -&gt; Optional[int]:
+        &#34;&#34;&#34;
+            The `int` ID of the object. This should always be unique for the object&#39;s type.
+        &#34;&#34;&#34;
+
+        raw = self.data.get(&#34;id&#34;, None)
+
+        if raw:
+            return int(raw)
+
+
+    @property
+    def attributes(self) -&gt; dict:
+        &#34;&#34;&#34;
+            Raw `dict` of the object&#39;s attributes.
+        &#34;&#34;&#34;
+
+        return self.data.get(&#34;attributes&#34;, {})
+
+
+    @property
+    def relationships(self) -&gt; dict:
+        &#34;&#34;&#34;
+            Raw `dict` of the object&#39;s relationships with
+            other objects.
+
+            This contains references to objects in the included data.
+            Read more about [included data](https://cwkevo.github.io/pyflarum/docs/#included-data).
+        &#34;&#34;&#34;
+
+        return self.data.get(&#34;relationships&#34;, {})
+
+
+    @property
+    def _parent_included(self) -&gt; List[dict]:
+        &#34;&#34;&#34;
+            Raw data of the parent&#39;s included JSON data.
+
+            Returns empty `list` of empty `dict` if there is no parent data.
+
+            Read more about [_parent_included](https://cwkevo.github.io/pyflarum/docs/#parent-included).
+        &#34;&#34;&#34;
+
+        return self.get(&#34;_parent_included&#34;, [{}])</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pyflarum.flarum.core.BaseFlarumObject" href="#pyflarum.flarum.core.BaseFlarumObject">BaseFlarumObject</a></li>
+<li>builtins.dict</li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification" href="discussions.html#pyflarum.flarum.core.discussions.DiscussionFromNotification">DiscussionFromNotification</a></li>
+<li><a title="pyflarum.flarum.core.discussions.PreparedDiscussion" href="discussions.html#pyflarum.flarum.core.discussions.PreparedDiscussion">PreparedDiscussion</a></li>
+<li><a title="pyflarum.flarum.core.forum.Forum" href="forum.html#pyflarum.flarum.core.forum.Forum">Forum</a></li>
+<li><a title="pyflarum.flarum.core.groups.Group" href="groups.html#pyflarum.flarum.core.groups.Group">Group</a></li>
+<li><a title="pyflarum.flarum.core.groups.PreparedGroup" href="groups.html#pyflarum.flarum.core.groups.PreparedGroup">PreparedGroup</a></li>
+<li><a title="pyflarum.flarum.core.notifications.Notification" href="notifications.html#pyflarum.flarum.core.notifications.Notification">Notification</a></li>
+<li><a title="pyflarum.flarum.core.posts.PostFromDiscussion" href="posts.html#pyflarum.flarum.core.posts.PostFromDiscussion">PostFromDiscussion</a></li>
+<li><a title="pyflarum.flarum.core.posts.PreparedPost" href="posts.html#pyflarum.flarum.core.posts.PreparedPost">PreparedPost</a></li>
+<li><a title="pyflarum.flarum.core.users.UserFromNotification" href="users.html#pyflarum.flarum.core.users.UserFromNotification">UserFromNotification</a></li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="pyflarum.flarum.core.BaseFlarumIndividualObject.attributes"><code class="name">var <span class="ident">attributes</span> : dict</code></dt>
+<dd>
+<div class="desc"><p>Raw <code>dict</code> of the object's attributes.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\__init__.py#L126-L132" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">@property
+def attributes(self) -&gt; dict:
+    &#34;&#34;&#34;
+        Raw `dict` of the object&#39;s attributes.
+    &#34;&#34;&#34;
+
+    return self.data.get(&#34;attributes&#34;, {})</code></pre>
+</details>
+</dd>
+<dt id="pyflarum.flarum.core.BaseFlarumIndividualObject.data"><code class="name">var <span class="ident">data</span> : Union[List[dict], dict]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.BaseFlarumObject" href="#pyflarum.flarum.core.BaseFlarumObject">BaseFlarumObject</a></code>.<code><a title="pyflarum.flarum.core.BaseFlarumObject.data" href="#pyflarum.flarum.core.BaseFlarumObject.data">data</a></code>
+</p>
+<div class="desc inherited"><p>A raw <code>dict</code> of the object's data.</p></div>
+</dd>
+<dt id="pyflarum.flarum.core.BaseFlarumIndividualObject.id"><code class="name">var <span class="ident">id</span> : Optional[int]</code></dt>
+<dd>
+<div class="desc"><p>The <code>int</code> ID of the object. This should always be unique for the object's type.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\__init__.py#L114-L123" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">@property
+def id(self) -&gt; Optional[int]:
+    &#34;&#34;&#34;
+        The `int` ID of the object. This should always be unique for the object&#39;s type.
+    &#34;&#34;&#34;
+
+    raw = self.data.get(&#34;id&#34;, None)
+
+    if raw:
+        return int(raw)</code></pre>
+</details>
+</dd>
+<dt id="pyflarum.flarum.core.BaseFlarumIndividualObject.relationships"><code class="name">var <span class="ident">relationships</span> : dict</code></dt>
+<dd>
+<div class="desc"><p>Raw <code>dict</code> of the object's relationships with
+other objects.</p>
+<p>This contains references to objects in the included data.
+Read more about <a href="https://cwkevo.github.io/pyflarum/docs/#included-data">included data</a>.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\__init__.py#L135-L145" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">@property
+def relationships(self) -&gt; dict:
+    &#34;&#34;&#34;
+        Raw `dict` of the object&#39;s relationships with
+        other objects.
+
+        This contains references to objects in the included data.
+        Read more about [included data](https://cwkevo.github.io/pyflarum/docs/#included-data).
+    &#34;&#34;&#34;
+
+    return self.data.get(&#34;relationships&#34;, {})</code></pre>
+</details>
+</dd>
+<dt id="pyflarum.flarum.core.BaseFlarumIndividualObject.type"><code class="name">var <span class="ident">type</span> : Optional[str]</code></dt>
+<dd>
+<div class="desc"><p>The type of the object.</p>
+<p>This should always be the plural form of Flarum's name of the object, e. g. <code><a title="pyflarum.flarum.core.discussions" href="discussions.html">pyflarum.flarum.core.discussions</a></code>, <code><a title="pyflarum.flarum.core.posts" href="posts.html">pyflarum.flarum.core.posts</a></code>, <code><a title="pyflarum.flarum.core.users" href="users.html">pyflarum.flarum.core.users</a></code>, etc&hellip;</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\__init__.py#L103-L111" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">@property
+def type(self) -&gt; Optional[str]:
+    &#34;&#34;&#34;
+        The type of the object.
+        
+        This should always be the plural form of Flarum&#39;s name of the object, e. g. `discussions`, `posts`, `users`, etc...
+    &#34;&#34;&#34;
+
+    return self.data.get(&#34;type&#34;, None)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyflarum.flarum.core.BaseFlarumObject"><code class="flex name class">
+<span>class <span class="ident">BaseFlarumObject</span></span>
+<span>(</span><span>user: FlarumUser, _fetched_data: dict)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>The base Flarum object - all API objects have properties of this object.</p>
+<h3 id="parameters">Parameters:</h3>
+<ul>
+<li><code>user</code> - the <code><a title="pyflarum.session.FlarumUser" href="../../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code> object, required to make additional API calls.</li>
+<li><code>_fetched_data</code> - the JSON data that was fetched from the API.</li>
+</ul>
+<p>I strongly discourage from forging objects this way, unless you are creating an extension.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\__init__.py#L7-L31" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">class BaseFlarumObject(dict):
+    &#34;&#34;&#34;
+        The base Flarum object - all API objects have properties of this object.
+    &#34;&#34;&#34;
+
+    def __init__(self, user: &#39;FlarumUser&#39;, _fetched_data: dict):
+        &#34;&#34;&#34;
+            ### Parameters:
+            - `user` - the `pyflarum.session.FlarumUser` object, required to make additional API calls.
+            - `_fetched_data` - the JSON data that was fetched from the API.
+
+            I strongly discourage from forging objects this way, unless you are creating an extension.
+        &#34;&#34;&#34;
+
+        self.user = user
+        super().__init__(_fetched_data)
+
+
+    @property
+    def data(self) -&gt; Union[List[dict], dict]:
+        &#34;&#34;&#34;
+            A raw `dict` of the object&#39;s data.
+        &#34;&#34;&#34;
+
+        return self.get(&#34;data&#34;, [{}])</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.dict</li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="pyflarum.flarum.core.BaseFlarumBulkObject" href="#pyflarum.flarum.core.BaseFlarumBulkObject">BaseFlarumBulkObject</a></li>
+<li><a title="pyflarum.flarum.core.BaseFlarumIndividualObject" href="#pyflarum.flarum.core.BaseFlarumIndividualObject">BaseFlarumIndividualObject</a></li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="pyflarum.flarum.core.BaseFlarumObject.data"><code class="name">var <span class="ident">data</span> : Union[List[dict], dict]</code></dt>
+<dd>
+<div class="desc"><p>A raw <code>dict</code> of the object's data.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\__init__.py#L25-L31" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">@property
+def data(self) -&gt; Union[List[dict], dict]:
+    &#34;&#34;&#34;
+        A raw `dict` of the object&#39;s data.
+    &#34;&#34;&#34;
+
+    return self.get(&#34;data&#34;, [{}])</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
 </section>
 </article>
 <nav id="sidebar">
@@ -129,6 +756,37 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="pyflarum.flarum.core.notifications" href="notifications.html">pyflarum.flarum.core.notifications</a></code></li>
 <li><code><a title="pyflarum.flarum.core.posts" href="posts.html">pyflarum.flarum.core.posts</a></code></li>
 <li><code><a title="pyflarum.flarum.core.users" href="users.html">pyflarum.flarum.core.users</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="pyflarum.flarum.core.BaseFlarumBulkObject" href="#pyflarum.flarum.core.BaseFlarumBulkObject">BaseFlarumBulkObject</a></code></h4>
+<ul class="two-column">
+<li><code><a title="pyflarum.flarum.core.BaseFlarumBulkObject.data" href="#pyflarum.flarum.core.BaseFlarumBulkObject.data">data</a></code></li>
+<li><code><a title="pyflarum.flarum.core.BaseFlarumBulkObject.first_link" href="#pyflarum.flarum.core.BaseFlarumBulkObject.first_link">first_link</a></code></li>
+<li><code><a title="pyflarum.flarum.core.BaseFlarumBulkObject.included" href="#pyflarum.flarum.core.BaseFlarumBulkObject.included">included</a></code></li>
+<li><code><a title="pyflarum.flarum.core.BaseFlarumBulkObject.links" href="#pyflarum.flarum.core.BaseFlarumBulkObject.links">links</a></code></li>
+<li><code><a title="pyflarum.flarum.core.BaseFlarumBulkObject.next_link" href="#pyflarum.flarum.core.BaseFlarumBulkObject.next_link">next_link</a></code></li>
+<li><code><a title="pyflarum.flarum.core.BaseFlarumBulkObject.previous_link" href="#pyflarum.flarum.core.BaseFlarumBulkObject.previous_link">previous_link</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject" href="#pyflarum.flarum.core.BaseFlarumIndividualObject">BaseFlarumIndividualObject</a></code></h4>
+<ul class="">
+<li><code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject.attributes" href="#pyflarum.flarum.core.BaseFlarumIndividualObject.attributes">attributes</a></code></li>
+<li><code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject.data" href="#pyflarum.flarum.core.BaseFlarumIndividualObject.data">data</a></code></li>
+<li><code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject.id" href="#pyflarum.flarum.core.BaseFlarumIndividualObject.id">id</a></code></li>
+<li><code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject.relationships" href="#pyflarum.flarum.core.BaseFlarumIndividualObject.relationships">relationships</a></code></li>
+<li><code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject.type" href="#pyflarum.flarum.core.BaseFlarumIndividualObject.type">type</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyflarum.flarum.core.BaseFlarumObject" href="#pyflarum.flarum.core.BaseFlarumObject">BaseFlarumObject</a></code></h4>
+<ul class="">
+<li><code><a title="pyflarum.flarum.core.BaseFlarumObject.data" href="#pyflarum.flarum.core.BaseFlarumObject.data">data</a></code></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

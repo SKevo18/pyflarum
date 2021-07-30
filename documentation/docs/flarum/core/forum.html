@@ -25,162 +25,217 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\forum.py#L0-L181" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\forum.py#L0-L242" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">from pyflarum.flarum.core.groups import Group
-from typing import TYPE_CHECKING, Optional, List
-
-# Avoid my greatest enemy in Python: circular import:
-if TYPE_CHECKING:
-    from ...session import FlarumUser
-
-from datetime import datetime
-
-from ...error_handler import FlarumError, parse_request
-from ...datetime_conversions import flarum_to_datetime
+<pre><code class="python">from typing import Optional, List
 
 
-class Forum(dict):
+from ...flarum.core import BaseFlarumIndividualObject
+from ...flarum.core.groups import Group
+
+
+
+class Forum(BaseFlarumIndividualObject):
     &#34;&#34;&#34;
-        Forum JSON data
+        Entire forum, lives under the main `/api` route.
     &#34;&#34;&#34;
-
-    def __init__(self, user: &#39;FlarumUser&#39;, _fetched_data: dict):
-        self.user = user
-
-        super().__init__(_fetched_data)
-
-
-    @property
-    def data(self) -&gt; dict:
-        return self.get(&#34;data&#34;, {})
-
-
-    @property
-    def type(self) -&gt; Optional[str]:
-        return self.data.get(&#34;type&#34;, None)
-
-
-    @property
-    def id(self) -&gt; Optional[int]:
-        raw = self.data.get(&#34;id&#34;, None)
-
-        if raw:
-            return int(raw)
-
-
-    @property
-    def attributes(self) -&gt; dict:
-        return self.data.get(&#34;attributes&#34;, {})
 
 
     @property
     def title(self) -&gt; Optional[str]:
+        &#34;&#34;&#34;
+            The forum&#39;s title.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;title&#34;, None)
 
 
     @property
     def description(self) -&gt; Optional[str]:
+        &#34;&#34;&#34;
+            The description of the forum.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;description&#34;, None)
 
 
     @property
     def showLanguageSelector(self) -&gt; bool:
+        &#34;&#34;&#34;
+            Whether or not the language selector is available.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;showLanguageSelector&#34;, False)
 
 
     @property
     def baseUrl(self) -&gt; Optional[str]:
+        &#34;&#34;&#34;
+            Base URL of the forum/where the forum is located at.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;baseUrl&#34;, None)
 
 
     @property
     def basePath(self) -&gt; Optional[str]:
+        &#34;&#34;&#34;
+            Base path to the forum.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;basePath&#34;, None)
 
 
     @property
     def debug(self) -&gt; bool:
+        &#34;&#34;&#34;
+            Whether or not debug mode is enabled.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;debug&#34;, False)
 
 
     @property
     def apiUrl(self) -&gt; Optional[str]:
+        &#34;&#34;&#34;
+            The API URL of the forum.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;apiUrl&#34;, None)
 
 
     @property
     def welcomeTitle(self) -&gt; Optional[str]:
+        &#34;&#34;&#34;
+            The title of the welcome message box of the forum.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;welcomeTitle&#34;, None)
 
 
     @property
     def welcomeMessage(self) -&gt; Optional[str]:
+        &#34;&#34;&#34;
+            The welcome message of the forum (shown in the welcome box).
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;welcomeMessage&#34;, None)
 
 
     @property
     def themePrimaryColor(self) -&gt; Optional[str]:
+        &#34;&#34;&#34;
+            Forum&#39;s primary color in HEX format.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;themePrimaryColor&#34;, None)
 
 
     @property
     def themeSecondaryColor(self) -&gt; Optional[str]:
+        &#34;&#34;&#34;
+            Forum&#39;s secondary color in HEX format.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;themeSecondaryColor&#34;, None)
 
 
     @property
     def logoUrl(self) -&gt; Optional[str]:
+        &#34;&#34;&#34;
+            URL to forum&#39;s logo.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;logoUrl&#34;, None)
 
 
     @property
     def faviconUrl(self) -&gt; Optional[str]:
+        &#34;&#34;&#34;
+            URL to forum&#39;s favicon.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;faviconUrl&#34;, None)
 
 
     @property
     def headerHtml(self) -&gt; Optional[str]:
+        &#34;&#34;&#34;
+            The header HTML of the forum.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;headerHtml&#34;, None)
 
 
     @property
     def footerHtml(self) -&gt; Optional[str]:
+        &#34;&#34;&#34;
+            The footer HTML of the forum.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;footerHtml&#34;, None)
 
 
     @property
     def allowSignUp(self) -&gt; bool:
+        &#34;&#34;&#34;
+            Whether or not signup is allowed.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;allowSignUp&#34;, False)
 
 
     @property
     def defaultRoute(self) -&gt; Optional[str]:
+        &#34;&#34;&#34;
+            The homepage of the forum (default route)
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;defaultRoute&#34;, None)
 
 
     @property
     def canViewForum(self) -&gt; bool:
+        &#34;&#34;&#34;
+            Whether or not you are allowed to view the forum.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;canViewForum&#34;, False)
 
 
     @property
     def canStartDiscussion(self) -&gt; bool:
+        &#34;&#34;&#34;
+            Whether or not you are allowed to start a discussion.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;canStartDiscussion&#34;, False)
 
 
     @property
     def canSearchUsers(self) -&gt; bool:
+        &#34;&#34;&#34;
+            Whether or not you are able to search for users.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;canSearchUsers&#34;, False)
 
 
     @property
     def adminUrl(self) -&gt; Optional[str]:
+        &#34;&#34;&#34;
+            The administration panel URL of the forum.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;adminUrl&#34;, None)
 
 
     @property
     def version(self) -&gt; Optional[str]:
+        &#34;&#34;&#34;
+            The Flarum version this forum is running on.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;version&#34;, None)
 
 
@@ -189,12 +244,13 @@ class Forum(dict):
         return self.attributes.get(&#34;allowUsernameMentionFormat&#34;, False)
 
 
-    @property
-    def relationships(self) -&gt; dict:
-        return self.get(&#34;relationships&#34;, {})
+    def get_groups(self) -&gt; List[Group]:
+        &#34;&#34;&#34;
+            Obtains the forum groups.
 
+            Returns a list of `Group` objects.
+        &#34;&#34;&#34;
 
-    def get_groups(self):
         all_groups = list() # type: List[Group]
 
         for raw_group in self.relationships.get(&#34;groups&#34;, {}).get(&#34;data&#34;, [{}]):
@@ -206,8 +262,13 @@ class Forum(dict):
         return all_groups
 
 
+    # Required: `Forum` is not a standard bulk route, can&#39;t include from that.
     @property
     def included(self) -&gt; List[dict]:
+        &#34;&#34;&#34;
+            Raw `list[dict]` of the forum&#39;s included objects.
+        &#34;&#34;&#34;
+
         return self.get(&#34;included&#34;, [{}])</code></pre>
 </details>
 </section>
@@ -225,153 +286,219 @@ class Forum(dict):
 <span>(</span><span>user: FlarumUser, _fetched_data: dict)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Forum JSON data</p></div>
+<div class="desc"><p>Entire forum, lives under the main <code>/api</code> route.</p>
+<h3 id="parameters">Parameters:</h3>
+<ul>
+<li><code>user</code> - the <code><a title="pyflarum.session.FlarumUser" href="../../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code> object, required to make additional API calls.</li>
+<li><code>_fetched_data</code> - the JSON data that was fetched from the API.</li>
+</ul>
+<p>I strongly discourage from forging objects this way, unless you are creating an extension.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\forum.py#L14-L182" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\forum.py#L9-L243" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">class Forum(dict):
+<pre><code class="python">class Forum(BaseFlarumIndividualObject):
     &#34;&#34;&#34;
-        Forum JSON data
+        Entire forum, lives under the main `/api` route.
     &#34;&#34;&#34;
-
-    def __init__(self, user: &#39;FlarumUser&#39;, _fetched_data: dict):
-        self.user = user
-
-        super().__init__(_fetched_data)
-
-
-    @property
-    def data(self) -&gt; dict:
-        return self.get(&#34;data&#34;, {})
-
-
-    @property
-    def type(self) -&gt; Optional[str]:
-        return self.data.get(&#34;type&#34;, None)
-
-
-    @property
-    def id(self) -&gt; Optional[int]:
-        raw = self.data.get(&#34;id&#34;, None)
-
-        if raw:
-            return int(raw)
-
-
-    @property
-    def attributes(self) -&gt; dict:
-        return self.data.get(&#34;attributes&#34;, {})
 
 
     @property
     def title(self) -&gt; Optional[str]:
+        &#34;&#34;&#34;
+            The forum&#39;s title.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;title&#34;, None)
 
 
     @property
     def description(self) -&gt; Optional[str]:
+        &#34;&#34;&#34;
+            The description of the forum.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;description&#34;, None)
 
 
     @property
     def showLanguageSelector(self) -&gt; bool:
+        &#34;&#34;&#34;
+            Whether or not the language selector is available.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;showLanguageSelector&#34;, False)
 
 
     @property
     def baseUrl(self) -&gt; Optional[str]:
+        &#34;&#34;&#34;
+            Base URL of the forum/where the forum is located at.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;baseUrl&#34;, None)
 
 
     @property
     def basePath(self) -&gt; Optional[str]:
+        &#34;&#34;&#34;
+            Base path to the forum.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;basePath&#34;, None)
 
 
     @property
     def debug(self) -&gt; bool:
+        &#34;&#34;&#34;
+            Whether or not debug mode is enabled.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;debug&#34;, False)
 
 
     @property
     def apiUrl(self) -&gt; Optional[str]:
+        &#34;&#34;&#34;
+            The API URL of the forum.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;apiUrl&#34;, None)
 
 
     @property
     def welcomeTitle(self) -&gt; Optional[str]:
+        &#34;&#34;&#34;
+            The title of the welcome message box of the forum.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;welcomeTitle&#34;, None)
 
 
     @property
     def welcomeMessage(self) -&gt; Optional[str]:
+        &#34;&#34;&#34;
+            The welcome message of the forum (shown in the welcome box).
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;welcomeMessage&#34;, None)
 
 
     @property
     def themePrimaryColor(self) -&gt; Optional[str]:
+        &#34;&#34;&#34;
+            Forum&#39;s primary color in HEX format.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;themePrimaryColor&#34;, None)
 
 
     @property
     def themeSecondaryColor(self) -&gt; Optional[str]:
+        &#34;&#34;&#34;
+            Forum&#39;s secondary color in HEX format.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;themeSecondaryColor&#34;, None)
 
 
     @property
     def logoUrl(self) -&gt; Optional[str]:
+        &#34;&#34;&#34;
+            URL to forum&#39;s logo.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;logoUrl&#34;, None)
 
 
     @property
     def faviconUrl(self) -&gt; Optional[str]:
+        &#34;&#34;&#34;
+            URL to forum&#39;s favicon.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;faviconUrl&#34;, None)
 
 
     @property
     def headerHtml(self) -&gt; Optional[str]:
+        &#34;&#34;&#34;
+            The header HTML of the forum.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;headerHtml&#34;, None)
 
 
     @property
     def footerHtml(self) -&gt; Optional[str]:
+        &#34;&#34;&#34;
+            The footer HTML of the forum.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;footerHtml&#34;, None)
 
 
     @property
     def allowSignUp(self) -&gt; bool:
+        &#34;&#34;&#34;
+            Whether or not signup is allowed.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;allowSignUp&#34;, False)
 
 
     @property
     def defaultRoute(self) -&gt; Optional[str]:
+        &#34;&#34;&#34;
+            The homepage of the forum (default route)
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;defaultRoute&#34;, None)
 
 
     @property
     def canViewForum(self) -&gt; bool:
+        &#34;&#34;&#34;
+            Whether or not you are allowed to view the forum.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;canViewForum&#34;, False)
 
 
     @property
     def canStartDiscussion(self) -&gt; bool:
+        &#34;&#34;&#34;
+            Whether or not you are allowed to start a discussion.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;canStartDiscussion&#34;, False)
 
 
     @property
     def canSearchUsers(self) -&gt; bool:
+        &#34;&#34;&#34;
+            Whether or not you are able to search for users.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;canSearchUsers&#34;, False)
 
 
     @property
     def adminUrl(self) -&gt; Optional[str]:
+        &#34;&#34;&#34;
+            The administration panel URL of the forum.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;adminUrl&#34;, None)
 
 
     @property
     def version(self) -&gt; Optional[str]:
+        &#34;&#34;&#34;
+            The Flarum version this forum is running on.
+        &#34;&#34;&#34;
+
         return self.attributes.get(&#34;version&#34;, None)
 
 
@@ -380,12 +507,13 @@ class Forum(dict):
         return self.attributes.get(&#34;allowUsernameMentionFormat&#34;, False)
 
 
-    @property
-    def relationships(self) -&gt; dict:
-        return self.get(&#34;relationships&#34;, {})
+    def get_groups(self) -&gt; List[Group]:
+        &#34;&#34;&#34;
+            Obtains the forum groups.
 
+            Returns a list of `Group` objects.
+        &#34;&#34;&#34;
 
-    def get_groups(self):
         all_groups = list() # type: List[Group]
 
         for raw_group in self.relationships.get(&#34;groups&#34;, {}).get(&#34;data&#34;, [{}]):
@@ -397,12 +525,19 @@ class Forum(dict):
         return all_groups
 
 
+    # Required: `Forum` is not a standard bulk route, can&#39;t include from that.
     @property
     def included(self) -&gt; List[dict]:
+        &#34;&#34;&#34;
+            Raw `list[dict]` of the forum&#39;s included objects.
+        &#34;&#34;&#34;
+
         return self.get(&#34;included&#34;, [{}])</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
+<li><a title="pyflarum.flarum.core.BaseFlarumIndividualObject" href="index.html#pyflarum.flarum.core.BaseFlarumIndividualObject">BaseFlarumIndividualObject</a></li>
+<li><a title="pyflarum.flarum.core.BaseFlarumObject" href="index.html#pyflarum.flarum.core.BaseFlarumObject">BaseFlarumObject</a></li>
 <li>builtins.dict</li>
 </ul>
 <h3>Subclasses</h3>
@@ -415,27 +550,35 @@ class Forum(dict):
 <dl>
 <dt id="pyflarum.flarum.core.forum.Forum.adminUrl"><code class="name">var <span class="ident">adminUrl</span> : Optional[str]</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The administration panel URL of the forum.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\forum.py#L148-L150" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\forum.py#L195-L201" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def adminUrl(self) -&gt; Optional[str]:
+    &#34;&#34;&#34;
+        The administration panel URL of the forum.
+    &#34;&#34;&#34;
+
     return self.attributes.get(&#34;adminUrl&#34;, None)</code></pre>
 </details>
 </dd>
 <dt id="pyflarum.flarum.core.forum.Forum.allowSignUp"><code class="name">var <span class="ident">allowSignUp</span> : bool</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Whether or not signup is allowed.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\forum.py#L123-L125" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\forum.py#L150-L156" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def allowSignUp(self) -&gt; bool:
+    &#34;&#34;&#34;
+        Whether or not signup is allowed.
+    &#34;&#34;&#34;
+
     return self.attributes.get(&#34;allowSignUp&#34;, False)</code></pre>
 </details>
 </dd>
@@ -445,7 +588,7 @@ def allowSignUp(self) -&gt; bool:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\forum.py#L158-L160" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\forum.py#L213-L215" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def allowUsernameMentionFormat(self) -&gt; bool:
@@ -454,342 +597,399 @@ def allowUsernameMentionFormat(self) -&gt; bool:
 </dd>
 <dt id="pyflarum.flarum.core.forum.Forum.apiUrl"><code class="name">var <span class="ident">apiUrl</span> : Optional[str]</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The API URL of the forum.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\forum.py#L78-L80" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\forum.py#L69-L75" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def apiUrl(self) -&gt; Optional[str]:
+    &#34;&#34;&#34;
+        The API URL of the forum.
+    &#34;&#34;&#34;
+
     return self.attributes.get(&#34;apiUrl&#34;, None)</code></pre>
 </details>
 </dd>
 <dt id="pyflarum.flarum.core.forum.Forum.attributes"><code class="name">var <span class="ident">attributes</span> : dict</code></dt>
 <dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\forum.py#L43-L45" class="git-link">Browse git</a>
-</summary>
-<pre><code class="python">@property
-def attributes(self) -&gt; dict:
-    return self.data.get(&#34;attributes&#34;, {})</code></pre>
-</details>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject" href="index.html#pyflarum.flarum.core.BaseFlarumIndividualObject">BaseFlarumIndividualObject</a></code>.<code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject.attributes" href="index.html#pyflarum.flarum.core.BaseFlarumIndividualObject.attributes">attributes</a></code>
+</p>
+<div class="desc inherited"><p>Raw <code>dict</code> of the object's attributes.</p></div>
 </dd>
 <dt id="pyflarum.flarum.core.forum.Forum.basePath"><code class="name">var <span class="ident">basePath</span> : Optional[str]</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Base path to the forum.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\forum.py#L68-L70" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\forum.py#L51-L57" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def basePath(self) -&gt; Optional[str]:
+    &#34;&#34;&#34;
+        Base path to the forum.
+    &#34;&#34;&#34;
+
     return self.attributes.get(&#34;basePath&#34;, None)</code></pre>
 </details>
 </dd>
 <dt id="pyflarum.flarum.core.forum.Forum.baseUrl"><code class="name">var <span class="ident">baseUrl</span> : Optional[str]</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Base URL of the forum/where the forum is located at.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\forum.py#L63-L65" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\forum.py#L42-L48" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def baseUrl(self) -&gt; Optional[str]:
+    &#34;&#34;&#34;
+        Base URL of the forum/where the forum is located at.
+    &#34;&#34;&#34;
+
     return self.attributes.get(&#34;baseUrl&#34;, None)</code></pre>
 </details>
 </dd>
 <dt id="pyflarum.flarum.core.forum.Forum.canSearchUsers"><code class="name">var <span class="ident">canSearchUsers</span> : bool</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Whether or not you are able to search for users.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\forum.py#L143-L145" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\forum.py#L186-L192" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def canSearchUsers(self) -&gt; bool:
+    &#34;&#34;&#34;
+        Whether or not you are able to search for users.
+    &#34;&#34;&#34;
+
     return self.attributes.get(&#34;canSearchUsers&#34;, False)</code></pre>
 </details>
 </dd>
 <dt id="pyflarum.flarum.core.forum.Forum.canStartDiscussion"><code class="name">var <span class="ident">canStartDiscussion</span> : bool</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Whether or not you are allowed to start a discussion.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\forum.py#L138-L140" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\forum.py#L177-L183" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def canStartDiscussion(self) -&gt; bool:
+    &#34;&#34;&#34;
+        Whether or not you are allowed to start a discussion.
+    &#34;&#34;&#34;
+
     return self.attributes.get(&#34;canStartDiscussion&#34;, False)</code></pre>
 </details>
 </dd>
 <dt id="pyflarum.flarum.core.forum.Forum.canViewForum"><code class="name">var <span class="ident">canViewForum</span> : bool</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Whether or not you are allowed to view the forum.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\forum.py#L133-L135" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\forum.py#L168-L174" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def canViewForum(self) -&gt; bool:
+    &#34;&#34;&#34;
+        Whether or not you are allowed to view the forum.
+    &#34;&#34;&#34;
+
     return self.attributes.get(&#34;canViewForum&#34;, False)</code></pre>
 </details>
 </dd>
-<dt id="pyflarum.flarum.core.forum.Forum.data"><code class="name">var <span class="ident">data</span> : dict</code></dt>
+<dt id="pyflarum.flarum.core.forum.Forum.data"><code class="name">var <span class="ident">data</span> : Union[List[dict], dict]</code></dt>
 <dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\forum.py#L25-L27" class="git-link">Browse git</a>
-</summary>
-<pre><code class="python">@property
-def data(self) -&gt; dict:
-    return self.get(&#34;data&#34;, {})</code></pre>
-</details>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject" href="index.html#pyflarum.flarum.core.BaseFlarumIndividualObject">BaseFlarumIndividualObject</a></code>.<code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject.data" href="index.html#pyflarum.flarum.core.BaseFlarumIndividualObject.data">data</a></code>
+</p>
+<div class="desc inherited"><p>A raw <code>dict</code> of the object's data.</p></div>
 </dd>
 <dt id="pyflarum.flarum.core.forum.Forum.debug"><code class="name">var <span class="ident">debug</span> : bool</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Whether or not debug mode is enabled.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\forum.py#L73-L75" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\forum.py#L60-L66" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def debug(self) -&gt; bool:
+    &#34;&#34;&#34;
+        Whether or not debug mode is enabled.
+    &#34;&#34;&#34;
+
     return self.attributes.get(&#34;debug&#34;, False)</code></pre>
 </details>
 </dd>
 <dt id="pyflarum.flarum.core.forum.Forum.defaultRoute"><code class="name">var <span class="ident">defaultRoute</span> : Optional[str]</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The homepage of the forum (default route)</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\forum.py#L128-L130" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\forum.py#L159-L165" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def defaultRoute(self) -&gt; Optional[str]:
+    &#34;&#34;&#34;
+        The homepage of the forum (default route)
+    &#34;&#34;&#34;
+
     return self.attributes.get(&#34;defaultRoute&#34;, None)</code></pre>
 </details>
 </dd>
 <dt id="pyflarum.flarum.core.forum.Forum.description"><code class="name">var <span class="ident">description</span> : Optional[str]</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The description of the forum.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\forum.py#L53-L55" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\forum.py#L24-L30" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def description(self) -&gt; Optional[str]:
+    &#34;&#34;&#34;
+        The description of the forum.
+    &#34;&#34;&#34;
+
     return self.attributes.get(&#34;description&#34;, None)</code></pre>
 </details>
 </dd>
 <dt id="pyflarum.flarum.core.forum.Forum.faviconUrl"><code class="name">var <span class="ident">faviconUrl</span> : Optional[str]</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>URL to forum's favicon.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\forum.py#L108-L110" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\forum.py#L123-L129" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def faviconUrl(self) -&gt; Optional[str]:
+    &#34;&#34;&#34;
+        URL to forum&#39;s favicon.
+    &#34;&#34;&#34;
+
     return self.attributes.get(&#34;faviconUrl&#34;, None)</code></pre>
 </details>
 </dd>
 <dt id="pyflarum.flarum.core.forum.Forum.footerHtml"><code class="name">var <span class="ident">footerHtml</span> : Optional[str]</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The footer HTML of the forum.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\forum.py#L118-L120" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\forum.py#L141-L147" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def footerHtml(self) -&gt; Optional[str]:
+    &#34;&#34;&#34;
+        The footer HTML of the forum.
+    &#34;&#34;&#34;
+
     return self.attributes.get(&#34;footerHtml&#34;, None)</code></pre>
 </details>
 </dd>
 <dt id="pyflarum.flarum.core.forum.Forum.headerHtml"><code class="name">var <span class="ident">headerHtml</span> : Optional[str]</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The header HTML of the forum.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\forum.py#L113-L115" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\forum.py#L132-L138" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def headerHtml(self) -&gt; Optional[str]:
+    &#34;&#34;&#34;
+        The header HTML of the forum.
+    &#34;&#34;&#34;
+
     return self.attributes.get(&#34;headerHtml&#34;, None)</code></pre>
 </details>
 </dd>
 <dt id="pyflarum.flarum.core.forum.Forum.id"><code class="name">var <span class="ident">id</span> : Optional[int]</code></dt>
 <dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\forum.py#L35-L40" class="git-link">Browse git</a>
-</summary>
-<pre><code class="python">@property
-def id(self) -&gt; Optional[int]:
-    raw = self.data.get(&#34;id&#34;, None)
-
-    if raw:
-        return int(raw)</code></pre>
-</details>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject" href="index.html#pyflarum.flarum.core.BaseFlarumIndividualObject">BaseFlarumIndividualObject</a></code>.<code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject.id" href="index.html#pyflarum.flarum.core.BaseFlarumIndividualObject.id">id</a></code>
+</p>
+<div class="desc inherited"><p>The <code>int</code> ID of the object. This should always be unique for the object's type.</p></div>
 </dd>
 <dt id="pyflarum.flarum.core.forum.Forum.included"><code class="name">var <span class="ident">included</span> : List[dict]</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Raw <code>list[dict]</code> of the forum's included objects.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\forum.py#L180-L182" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\forum.py#L237-L243" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def included(self) -&gt; List[dict]:
+    &#34;&#34;&#34;
+        Raw `list[dict]` of the forum&#39;s included objects.
+    &#34;&#34;&#34;
+
     return self.get(&#34;included&#34;, [{}])</code></pre>
 </details>
 </dd>
 <dt id="pyflarum.flarum.core.forum.Forum.logoUrl"><code class="name">var <span class="ident">logoUrl</span> : Optional[str]</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>URL to forum's logo.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\forum.py#L103-L105" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\forum.py#L114-L120" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def logoUrl(self) -&gt; Optional[str]:
+    &#34;&#34;&#34;
+        URL to forum&#39;s logo.
+    &#34;&#34;&#34;
+
     return self.attributes.get(&#34;logoUrl&#34;, None)</code></pre>
 </details>
 </dd>
 <dt id="pyflarum.flarum.core.forum.Forum.relationships"><code class="name">var <span class="ident">relationships</span> : dict</code></dt>
 <dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\forum.py#L163-L165" class="git-link">Browse git</a>
-</summary>
-<pre><code class="python">@property
-def relationships(self) -&gt; dict:
-    return self.get(&#34;relationships&#34;, {})</code></pre>
-</details>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject" href="index.html#pyflarum.flarum.core.BaseFlarumIndividualObject">BaseFlarumIndividualObject</a></code>.<code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject.relationships" href="index.html#pyflarum.flarum.core.BaseFlarumIndividualObject.relationships">relationships</a></code>
+</p>
+<div class="desc inherited"><p>Raw <code>dict</code> of the object's relationships with
+other objects …</p></div>
 </dd>
 <dt id="pyflarum.flarum.core.forum.Forum.showLanguageSelector"><code class="name">var <span class="ident">showLanguageSelector</span> : bool</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Whether or not the language selector is available.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\forum.py#L58-L60" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\forum.py#L33-L39" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def showLanguageSelector(self) -&gt; bool:
+    &#34;&#34;&#34;
+        Whether or not the language selector is available.
+    &#34;&#34;&#34;
+
     return self.attributes.get(&#34;showLanguageSelector&#34;, False)</code></pre>
 </details>
 </dd>
 <dt id="pyflarum.flarum.core.forum.Forum.themePrimaryColor"><code class="name">var <span class="ident">themePrimaryColor</span> : Optional[str]</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Forum's primary color in HEX format.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\forum.py#L93-L95" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\forum.py#L96-L102" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def themePrimaryColor(self) -&gt; Optional[str]:
+    &#34;&#34;&#34;
+        Forum&#39;s primary color in HEX format.
+    &#34;&#34;&#34;
+
     return self.attributes.get(&#34;themePrimaryColor&#34;, None)</code></pre>
 </details>
 </dd>
 <dt id="pyflarum.flarum.core.forum.Forum.themeSecondaryColor"><code class="name">var <span class="ident">themeSecondaryColor</span> : Optional[str]</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Forum's secondary color in HEX format.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\forum.py#L98-L100" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\forum.py#L105-L111" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def themeSecondaryColor(self) -&gt; Optional[str]:
+    &#34;&#34;&#34;
+        Forum&#39;s secondary color in HEX format.
+    &#34;&#34;&#34;
+
     return self.attributes.get(&#34;themeSecondaryColor&#34;, None)</code></pre>
 </details>
 </dd>
 <dt id="pyflarum.flarum.core.forum.Forum.title"><code class="name">var <span class="ident">title</span> : Optional[str]</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The forum's title.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\forum.py#L48-L50" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\forum.py#L15-L21" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def title(self) -&gt; Optional[str]:
+    &#34;&#34;&#34;
+        The forum&#39;s title.
+    &#34;&#34;&#34;
+
     return self.attributes.get(&#34;title&#34;, None)</code></pre>
 </details>
 </dd>
 <dt id="pyflarum.flarum.core.forum.Forum.type"><code class="name">var <span class="ident">type</span> : Optional[str]</code></dt>
 <dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\forum.py#L30-L32" class="git-link">Browse git</a>
-</summary>
-<pre><code class="python">@property
-def type(self) -&gt; Optional[str]:
-    return self.data.get(&#34;type&#34;, None)</code></pre>
-</details>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject" href="index.html#pyflarum.flarum.core.BaseFlarumIndividualObject">BaseFlarumIndividualObject</a></code>.<code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject.type" href="index.html#pyflarum.flarum.core.BaseFlarumIndividualObject.type">type</a></code>
+</p>
+<div class="desc inherited"><p>The type of the object …</p></div>
 </dd>
 <dt id="pyflarum.flarum.core.forum.Forum.version"><code class="name">var <span class="ident">version</span> : Optional[str]</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The Flarum version this forum is running on.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\forum.py#L153-L155" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\forum.py#L204-L210" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def version(self) -&gt; Optional[str]:
+    &#34;&#34;&#34;
+        The Flarum version this forum is running on.
+    &#34;&#34;&#34;
+
     return self.attributes.get(&#34;version&#34;, None)</code></pre>
 </details>
 </dd>
 <dt id="pyflarum.flarum.core.forum.Forum.welcomeMessage"><code class="name">var <span class="ident">welcomeMessage</span> : Optional[str]</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The welcome message of the forum (shown in the welcome box).</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\forum.py#L88-L90" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\forum.py#L87-L93" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def welcomeMessage(self) -&gt; Optional[str]:
+    &#34;&#34;&#34;
+        The welcome message of the forum (shown in the welcome box).
+    &#34;&#34;&#34;
+
     return self.attributes.get(&#34;welcomeMessage&#34;, None)</code></pre>
 </details>
 </dd>
 <dt id="pyflarum.flarum.core.forum.Forum.welcomeTitle"><code class="name">var <span class="ident">welcomeTitle</span> : Optional[str]</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The title of the welcome message box of the forum.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\forum.py#L83-L85" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\forum.py#L78-L84" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def welcomeTitle(self) -&gt; Optional[str]:
+    &#34;&#34;&#34;
+        The title of the welcome message box of the forum.
+    &#34;&#34;&#34;
+
     return self.attributes.get(&#34;welcomeTitle&#34;, None)</code></pre>
 </details>
 </dd>
@@ -797,16 +997,23 @@ def welcomeTitle(self) -&gt; Optional[str]:
 <h3>Methods</h3>
 <dl>
 <dt id="pyflarum.flarum.core.forum.Forum.get_groups"><code class="name flex">
-<span>def <span class="ident">get_groups</span></span>(<span>self)</span>
+<span>def <span class="ident">get_groups</span></span>(<span>self) ‑> List[<a title="pyflarum.flarum.core.groups.Group" href="groups.html#pyflarum.flarum.core.groups.Group">Group</a>]</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Obtains the forum groups.</p>
+<p>Returns a list of <code>Group</code> objects.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\flarum\core\forum.py#L168-L177" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\forum.py#L218-L233" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">def get_groups(self):
+<pre><code class="python">def get_groups(self) -&gt; List[Group]:
+    &#34;&#34;&#34;
+        Obtains the forum groups.
+
+        Returns a list of `Group` objects.
+    &#34;&#34;&#34;
+
     all_groups = list() # type: List[Group]
 
     for raw_group in self.relationships.get(&#34;groups&#34;, {}).get(&#34;data&#34;, [{}]):
@@ -889,13 +1096,13 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="pyflarum.flarum.core.forum.Forum.allowSignUp" href="#pyflarum.flarum.core.forum.Forum.allowSignUp">allowSignUp</a></code></li>
 <li><code><a title="pyflarum.flarum.core.forum.Forum.allowUsernameMentionFormat" href="#pyflarum.flarum.core.forum.Forum.allowUsernameMentionFormat">allowUsernameMentionFormat</a></code></li>
 <li><code><a title="pyflarum.flarum.core.forum.Forum.apiUrl" href="#pyflarum.flarum.core.forum.Forum.apiUrl">apiUrl</a></code></li>
-<li><code><a title="pyflarum.flarum.core.forum.Forum.attributes" href="#pyflarum.flarum.core.forum.Forum.attributes">attributes</a></code></li>
+<li><code><a title="pyflarum.flarum.core.forum.Forum.attributes" href="index.html#pyflarum.flarum.core.forum.Forum.attributes">attributes</a></code></li>
 <li><code><a title="pyflarum.flarum.core.forum.Forum.basePath" href="#pyflarum.flarum.core.forum.Forum.basePath">basePath</a></code></li>
 <li><code><a title="pyflarum.flarum.core.forum.Forum.baseUrl" href="#pyflarum.flarum.core.forum.Forum.baseUrl">baseUrl</a></code></li>
 <li><code><a title="pyflarum.flarum.core.forum.Forum.canSearchUsers" href="#pyflarum.flarum.core.forum.Forum.canSearchUsers">canSearchUsers</a></code></li>
 <li><code><a title="pyflarum.flarum.core.forum.Forum.canStartDiscussion" href="#pyflarum.flarum.core.forum.Forum.canStartDiscussion">canStartDiscussion</a></code></li>
 <li><code><a title="pyflarum.flarum.core.forum.Forum.canViewForum" href="#pyflarum.flarum.core.forum.Forum.canViewForum">canViewForum</a></code></li>
-<li><code><a title="pyflarum.flarum.core.forum.Forum.data" href="#pyflarum.flarum.core.forum.Forum.data">data</a></code></li>
+<li><code><a title="pyflarum.flarum.core.forum.Forum.data" href="index.html#pyflarum.flarum.core.forum.Forum.data">data</a></code></li>
 <li><code><a title="pyflarum.flarum.core.forum.Forum.debug" href="#pyflarum.flarum.core.forum.Forum.debug">debug</a></code></li>
 <li><code><a title="pyflarum.flarum.core.forum.Forum.defaultRoute" href="#pyflarum.flarum.core.forum.Forum.defaultRoute">defaultRoute</a></code></li>
 <li><code><a title="pyflarum.flarum.core.forum.Forum.description" href="#pyflarum.flarum.core.forum.Forum.description">description</a></code></li>
@@ -903,15 +1110,15 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="pyflarum.flarum.core.forum.Forum.footerHtml" href="#pyflarum.flarum.core.forum.Forum.footerHtml">footerHtml</a></code></li>
 <li><code><a title="pyflarum.flarum.core.forum.Forum.get_groups" href="#pyflarum.flarum.core.forum.Forum.get_groups">get_groups</a></code></li>
 <li><code><a title="pyflarum.flarum.core.forum.Forum.headerHtml" href="#pyflarum.flarum.core.forum.Forum.headerHtml">headerHtml</a></code></li>
-<li><code><a title="pyflarum.flarum.core.forum.Forum.id" href="#pyflarum.flarum.core.forum.Forum.id">id</a></code></li>
+<li><code><a title="pyflarum.flarum.core.forum.Forum.id" href="index.html#pyflarum.flarum.core.forum.Forum.id">id</a></code></li>
 <li><code><a title="pyflarum.flarum.core.forum.Forum.included" href="#pyflarum.flarum.core.forum.Forum.included">included</a></code></li>
 <li><code><a title="pyflarum.flarum.core.forum.Forum.logoUrl" href="#pyflarum.flarum.core.forum.Forum.logoUrl">logoUrl</a></code></li>
-<li><code><a title="pyflarum.flarum.core.forum.Forum.relationships" href="#pyflarum.flarum.core.forum.Forum.relationships">relationships</a></code></li>
+<li><code><a title="pyflarum.flarum.core.forum.Forum.relationships" href="index.html#pyflarum.flarum.core.forum.Forum.relationships">relationships</a></code></li>
 <li><code><a title="pyflarum.flarum.core.forum.Forum.showLanguageSelector" href="#pyflarum.flarum.core.forum.Forum.showLanguageSelector">showLanguageSelector</a></code></li>
 <li><code><a title="pyflarum.flarum.core.forum.Forum.themePrimaryColor" href="#pyflarum.flarum.core.forum.Forum.themePrimaryColor">themePrimaryColor</a></code></li>
 <li><code><a title="pyflarum.flarum.core.forum.Forum.themeSecondaryColor" href="#pyflarum.flarum.core.forum.Forum.themeSecondaryColor">themeSecondaryColor</a></code></li>
 <li><code><a title="pyflarum.flarum.core.forum.Forum.title" href="#pyflarum.flarum.core.forum.Forum.title">title</a></code></li>
-<li><code><a title="pyflarum.flarum.core.forum.Forum.type" href="#pyflarum.flarum.core.forum.Forum.type">type</a></code></li>
+<li><code><a title="pyflarum.flarum.core.forum.Forum.type" href="index.html#pyflarum.flarum.core.forum.Forum.type">type</a></code></li>
 <li><code><a title="pyflarum.flarum.core.forum.Forum.version" href="#pyflarum.flarum.core.forum.Forum.version">version</a></code></li>
 <li><code><a title="pyflarum.flarum.core.forum.Forum.welcomeMessage" href="#pyflarum.flarum.core.forum.Forum.welcomeMessage">welcomeMessage</a></code></li>
 <li><code><a title="pyflarum.flarum.core.forum.Forum.welcomeTitle" href="#pyflarum.flarum.core.forum.Forum.welcomeTitle">welcomeTitle</a></code></li>

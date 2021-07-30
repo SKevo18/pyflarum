@@ -25,7 +25,7 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\absolutely_all.py#L0-L153" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\absolutely_all.py#L0-L153" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">from typing import Generator, Optional, TYPE_CHECKING
 if TYPE_CHECKING:
@@ -65,13 +65,13 @@ class AbsolutelyAllFlarumUserMixin:
 
 
         _filter.page = 0
-        users = self.all_users(_filter)
+        users = self.get_users(_filter)
 
 
         while True:
             yield users
 
-            users = self.all_users(_filter)
+            users = self.get_users(_filter)
             _filter.page += 1
 
             if not users.next_link:
@@ -91,13 +91,13 @@ class AbsolutelyAllFlarumUserMixin:
 
 
         _filter.page = 0
-        posts = self.all_posts(_filter)
+        posts = self.get_posts(_filter)
 
 
         while True:
             yield posts
 
-            posts = self.all_posts(_filter)
+            posts = self.get_posts(_filter)
             _filter.page += 1
 
             if not posts.next_link:
@@ -117,13 +117,13 @@ class AbsolutelyAllFlarumUserMixin:
 
 
         _filter.page = 0
-        discussions = self.all_discussions(_filter)
+        discussions = self.get_discussions(_filter)
 
 
         while True:
             yield discussions
 
-            discussions = self.all_discussions(_filter)
+            discussions = self.get_discussions(_filter)
             _filter.page += 1
 
             if not discussions.next_link:
@@ -201,7 +201,7 @@ class AbsolutelyAllExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\absolutely_all.py#L133-L154" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\absolutely_all.py#L133-L154" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class AbsolutelyAllExtension(ExtensionMixin):
     &#34;&#34;&#34;
@@ -249,7 +249,7 @@ class AbsolutelyAllExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\absolutely_all.py#L146-L150" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\absolutely_all.py#L146-L150" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_dependencies(self):
     return {
@@ -270,7 +270,7 @@ class AbsolutelyAllExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\absolutely_all.py#L153-L154" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\absolutely_all.py#L153-L154" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def mixin(self):
     super().mixin(self, FlarumUser, AbsolutelyAllFlarumUserMixin)</code></pre>
@@ -286,7 +286,7 @@ class AbsolutelyAllExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\absolutely_all.py#L25-L127" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\absolutely_all.py#L25-L127" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class AbsolutelyAllFlarumUserMixin:
     def absolutely_all_users(self: FlarumUser, filter: Optional[Filter]=None)  -&gt; Generator[&#39;Users&#39;, None, None]:
@@ -302,13 +302,13 @@ class AbsolutelyAllExtension(ExtensionMixin):
 
 
         _filter.page = 0
-        users = self.all_users(_filter)
+        users = self.get_users(_filter)
 
 
         while True:
             yield users
 
-            users = self.all_users(_filter)
+            users = self.get_users(_filter)
             _filter.page += 1
 
             if not users.next_link:
@@ -328,13 +328,13 @@ class AbsolutelyAllExtension(ExtensionMixin):
 
 
         _filter.page = 0
-        posts = self.all_posts(_filter)
+        posts = self.get_posts(_filter)
 
 
         while True:
             yield posts
 
-            posts = self.all_posts(_filter)
+            posts = self.get_posts(_filter)
             _filter.page += 1
 
             if not posts.next_link:
@@ -354,13 +354,13 @@ class AbsolutelyAllExtension(ExtensionMixin):
 
 
         _filter.page = 0
-        discussions = self.all_discussions(_filter)
+        discussions = self.get_discussions(_filter)
 
 
         while True:
             yield discussions
 
-            discussions = self.all_discussions(_filter)
+            discussions = self.get_discussions(_filter)
             _filter.page += 1
 
             if not discussions.next_link:
@@ -402,7 +402,7 @@ class AbsolutelyAllExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\absolutely_all.py#L78-L101" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\absolutely_all.py#L78-L101" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def absolutely_all_discussions(self: FlarumUser, filter: Optional[Filter]=None) -&gt; Generator[&#39;Discussions&#39;, None, None]:
     &#34;&#34;&#34;
@@ -417,13 +417,13 @@ class AbsolutelyAllExtension(ExtensionMixin):
 
 
     _filter.page = 0
-    discussions = self.all_discussions(_filter)
+    discussions = self.get_discussions(_filter)
 
 
     while True:
         yield discussions
 
-        discussions = self.all_discussions(_filter)
+        discussions = self.get_discussions(_filter)
         _filter.page += 1
 
         if not discussions.next_link:
@@ -438,7 +438,7 @@ class AbsolutelyAllExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\absolutely_all.py#L104-L127" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\absolutely_all.py#L104-L127" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def absolutely_all_notifications(self: FlarumUser, filter: Optional[Filter]=None) -&gt; Generator[&#39;Notifications&#39;, None, None]:
     &#34;&#34;&#34;
@@ -474,7 +474,7 @@ class AbsolutelyAllExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\absolutely_all.py#L52-L75" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\absolutely_all.py#L52-L75" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def absolutely_all_posts(self: FlarumUser, filter: Optional[Filter]=None) -&gt; Generator[&#39;Posts&#39;, None, None]:
     &#34;&#34;&#34;
@@ -489,13 +489,13 @@ class AbsolutelyAllExtension(ExtensionMixin):
 
 
     _filter.page = 0
-    posts = self.all_posts(_filter)
+    posts = self.get_posts(_filter)
 
 
     while True:
         yield posts
 
-        posts = self.all_posts(_filter)
+        posts = self.get_posts(_filter)
         _filter.page += 1
 
         if not posts.next_link:
@@ -510,7 +510,7 @@ class AbsolutelyAllExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\extensions\absolutely_all.py#L26-L49" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\absolutely_all.py#L26-L49" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def absolutely_all_users(self: FlarumUser, filter: Optional[Filter]=None)  -&gt; Generator[&#39;Users&#39;, None, None]:
     &#34;&#34;&#34;
@@ -525,13 +525,13 @@ class AbsolutelyAllExtension(ExtensionMixin):
 
 
     _filter.page = 0
-    users = self.all_users(_filter)
+    users = self.get_users(_filter)
 
 
     while True:
         yield users
 
-        users = self.all_users(_filter)
+        users = self.get_users(_filter)
         _filter.page += 1
 
         if not users.next_link:

@@ -32,7 +32,7 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/7ed27a36b4f20b9e15306719e4baae207ebb9ced/pyflarum\custom_types.py#L0-L19" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\custom_types.py#L0-L19" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">&#34;&#34;&#34;
     Custom types for pyFlarum.
@@ -43,17 +43,17 @@
     - `AnyPost` - `Post`, `PostFromBulk`, `PostFromNotification`
 &#34;&#34;&#34;
 
-from typing import Union
+from typing import Union, TYPE_CHECKING
 
 
-from .flarum.core.users import User, UserFromBulk, UserFromNotification
-from .flarum.core.discussions import Discussion, DiscussionFromBulk, DiscussionFromNotification
-from .flarum.core.posts import Post, PostFromBulk, PostFromNotification
+if TYPE_CHECKING:
+    from .flarum.core.users import User, UserFromBulk, UserFromNotification
+    from .flarum.core.discussions import Discussion, DiscussionFromBulk, DiscussionFromNotification
+    from .flarum.core.posts import Post, PostFromBulk, PostFromNotification, PostFromDiscussion
 
-
-AnyUser = Union[User, UserFromBulk, UserFromNotification]
-AnyDiscussion = Union[Discussion, DiscussionFromBulk, DiscussionFromNotification]
-AnyPost = Union[Post, PostFromBulk, PostFromNotification]</code></pre>
+    AnyUser = Union[User, UserFromBulk, UserFromNotification]
+    AnyDiscussion = Union[Discussion, DiscussionFromBulk, DiscussionFromNotification]
+    AnyPost = Union[Post, PostFromBulk, PostFromNotification, PostFromDiscussion]</code></pre>
 </details>
 </section>
 <section>

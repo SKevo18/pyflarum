@@ -1,5 +1,5 @@
 #!/bin/bash
 cd "$(dirname "$0")"
 
-compile_documentation.sh
-compile_for_pypi.sh
+bash ./compile_documentation.sh
+bash ./compile_for_pypi.sh
