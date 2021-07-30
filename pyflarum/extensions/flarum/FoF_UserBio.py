@@ -1,5 +1,7 @@
-from typing import Optional
-from ...custom_types import AnyUser
+from typing import Optional, TYPE_CHECKING, Union
+if TYPE_CHECKING:
+    from ...custom_types import AnyUser
+    from ...flarum.core.users import User
 
 from .. import ExtensionMixin
 from ...session import FlarumUser
@@ -26,7 +28,9 @@ class UserBioForumMixin(Forum):
 
 
 class UserBioFlarumUserMixin(FlarumUser):
-    def update_user_bio(self, bio: Optional[str]=None, user: Optional[AnyUser]=None):
+    def update_user_bio(self, bio: Optional[str]=None, user: Optional['AnyUser']=None) -> Union['FlarumUser', 'User']:
+        id = user.id if user else self.data.id
+
         post_data = {
             "data": {
                 "type": "users",
@@ -37,10 +41,12 @@ class UserBioFlarumUserMixin(FlarumUser):
             }
         }
 
-        raw = self.session.patch(f"{self.api_urls['users']}/{user.id if user else self.data.id}", json=post_data)
+        raw = self.session.patch(f"{self.api_urls['users']}/{id}", json=post_data)
         json = parse_request(raw)
 
+
         return self._update_user_data(new_data=json)
+
 
 
 class UserBioUserFromBulkMixin(UserFromBulk):

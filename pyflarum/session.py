@@ -1,5 +1,6 @@
-from typing import Any, BinaryIO, Dict, List, Union, Optional, Literal
-from .custom_types import AnyUser
+from typing import Any, BinaryIO, Dict, Iterable, List, Tuple, Union, Optional, Literal, TYPE_CHECKING
+if TYPE_CHECKING:
+    from .custom_types import AnyUser
 
 
 import warnings
@@ -19,18 +20,33 @@ from .flarum.core.posts import Post, Posts
 from .flarum.core.filters import Filter
 
 
-from .error_handler import MissingExtensionError, MissingExtensionWarning, parse_request
+from .error_handler import MissingExtensionWarning, MissingExtensionError, parse_request
 from .datetime_conversions import datetime_to_flarum
 
 
 from .extensions import ExtensionMixin
 
 
-class FlarumSession(object):
-    def __init__(self, forum_url: str, username: Union[str]=None, password: Union[str, None]=None, api_endpoint: str="api", user_agent: str="pyflarum", session_object: Union[Session, Any]=Session()):
+class FlarumSession:
+    """
+        The main object that carries the Flarum session.
+    """
+
+    def __init__(self, forum_url: str, username_or_email: Union[str]=None, password: Union[str, None]=None, api_endpoint: str="api", user_agent: str='pyflarum', session_object: Union[Session, Any]=Session()):
+        """
+            ### Parameters:
+            - `forum_url` - the forum URL that you want the bot to fetch/update data from. This mustn't end with trailing slash (e. g.: https://domain.tld/ - wrong; https://domain.tld - correct).
+            - `username_or_email` - optional. The username or E-mail address to log into. If `None`, then the user isn't logged in.
+            - `password` - optional. The user's password. If `None`, then the user isn't logged in.
+            - `api_endpoint` - the API endpoint of the forum, without slashes. This can be specified in Flarum's `config.php` and normally forums don't need to change the default `'api'`
+            - `user_agent` - the user agent that will be used to make all requests. Defaults to `'pyflarum'`.
+            - `session_object` - the `Session` object to make requests with. You can pass any object that supports all operations from the [requests](https://pypi.org/project/requests/) library, check [requests_cache](https://pypi.org/project/requests-cache/) as an example.
+            ```
+        """
+
         self.forum_url = forum_url
         self.api_endpoint = api_endpoint
-        self.username = username
+        self.username_or_email = username_or_email
         self.session = session_object
 
         self.session.headers.update({
@@ -38,20 +54,29 @@ class FlarumSession(object):
         })
 
 
-        self.authenticate(username, password)
+        self.authenticate(username_or_email, password)
 
 
     def __str__(self) -> str:
-        return f'<{type(self).__name__}> authenticated={self.is_authenticated}; username={self.username}'
+        return f'<{type(self).__name__}> authenticated={self.is_authenticated}; username={self.username_or_email}'
 
 
     def __repr__(self) -> str:
         return self.__str__()
 
 
-    def authenticate(self, username: Union[str]=None, password: Union[str, None]=None):
-        if username and password:
-            identification_data = {"identification": username, "password": password}
+    def authenticate(self, username_or_email: Optional[str]=None, password: Optional[str]=None) -> None:
+        """
+            Authenticates your user. This can be run after `FlarumUser` was initialized, to switch to a different user. You can even change
+            `FlarumUser.forum_url` to login to another forum.
+
+            ### Parameters:
+            - `username_or_email` - optional. The username or E-mail address to log into. If `None`, then the user isn't logged in.
+            - `password` - optional. The user's password. If `None`, then the user isn't logged in.
+        """
+
+        if username_or_email and password:
+            identification_data = {"identification": username_or_email, "password": password}
 
             raw = self.session.post(url=f'{self.forum_url}/api/token', json=identification_data)
             token_data = parse_request(raw)
@@ -78,7 +103,7 @@ class FlarumSession(object):
 
 
     @property
-    def api_urls(self):
+    def api_urls(self) -> Dict[str, str]:
         """
             Simple, hardcoded `'key: value'` `dict` of Flarum's API routes for quick access.
 
@@ -106,6 +131,18 @@ class FlarumSession(object):
 
 class FlarumUser(FlarumSession, dict):
     def __init__(self, extensions: Optional[List[ExtensionMixin]]=None, **kwargs):
+        """
+            ### Parameters:
+            - `forum_url` - the forum URL that you want the bot to fetch/update data from. This mustn't end with trailing slash (e. g.: https://domain.tld/ - wrong; https://domain.tld - correct).
+            - `username_or_email` - optional. The username or E-mail address to log into. If `None`, then the bot doesn't login.
+            - `password` - optional. The user's password. If `None`, then the bot doesn't login.
+            - `api_endpoint` - the API endpoint of the forum, without slashes. This can be specified in Flarum's `config.php` and normally forums don't need to change the default `'api'`
+            - `user_agent` - the user agent that will be used to make all requests. Defaults to `pyflarum <version>`.
+            - `session_object` - the `Session` object to make requests with. You can pass any object that supports all operations from the [requests](https://pypi.org/project/requests/) library, check [requests_cache](https://pypi.org/project/requests-cache/) as an example.
+            - `extensions` - a list of `ExtensionMixin` classes. These are monkey-patched on initialization. Learn more about [extensions](https://cwkevo.github.io/pyflarum/docs/#extensions).
+            ```
+        """
+
         self.extensions = extensions
 
         if self.extensions:
@@ -122,7 +159,6 @@ class FlarumUser(FlarumSession, dict):
 
                 extension.mixin(extension)
 
-            for extension in self.extensions:
                 if soft and len(soft) > 0:
                     for soft_dependency in soft:
                         if soft_dependency not in self.extensions:
@@ -135,37 +171,71 @@ class FlarumUser(FlarumSession, dict):
 
         if __json:
             self.data = MyUser(user=self, _fetched_data=dict(data=__json))
+            self.username = self.data.username
+
+        else:
+            self.username = self.username_or_email
 
 
-    def _fetch_user_data(self):
+    def _fetch_user_data(self) -> Optional[dict]:
         """
             Fetches your user's JSON data.
         """
 
-        filter = Filter(query=self.username, limit=1)
+        filter = Filter(limit=1)
+
+        if '@' in self.username_or_email:
+            filter.query = f'email:{self.username_or_email}'
+
+        else:
+            filter.query = self.username_or_email
+
+
         raw = self.session.get(f"{self.api_urls['users']}", params=filter.to_dict)
         json = parse_request(raw)
 
-        for possible_user in json.get("data", {}):
-            if possible_user.get("attributes", {}).get("username", None) == self.username:
-                return possible_user
+        for possible_user in json.get("data", [{}]):
+            if '@' in self.username_or_email:
+                if possible_user.get("attributes", {}).get("email", None) == self.username_or_email:
+                    return possible_user
+
+            else:
+                if possible_user.get("attributes", {}).get("username", None) == self.username_or_email:
+                    return possible_user
+
 
         return None
 
 
-    def _update_user_data(self, new_data: dict):
-        if new_data.get("data", {}).get("id", None) == self.data.id:
+    def _update_user_data(self, new_data: dict) -> Union['FlarumUser', User]:
+        """
+            Updates your user data with new data, if the data belongs to you.
+            Then returns updated `FlarumUser`.
+
+            If the data doesn't belong to you, the other `User` is returned.
+        """
+
+        if int(new_data.get("data", {}).get("id", -1)) == self.data.id:
             self.data = MyUser(user=self, _fetched_data=new_data)
 
             return self
 
+
         else:
-            return self
+            user = User(user=self, _fetched_data=new_data)
+
+            return user
 
 
-    def get_forum_data(self):
+
+    def get_forum_data(self) -> Forum:
+        """
+            Obtains the forum data, returns `Forum` object.
+        """
+
         raw = self.session.get(f"{self.api_urls['base']}")
         json = parse_request(raw)
+
 
         return Forum(user=self, _fetched_data=json)
 
@@ -178,6 +248,7 @@ class FlarumUser(FlarumSession, dict):
         raw = self.session.get(f"{self.api_urls['users']}/{id}")
         json = parse_request(raw)
 
+
         return User(user=self, _fetched_data=json)
 
 
@@ -189,6 +260,7 @@ class FlarumUser(FlarumSession, dict):
         raw = self.session.get(f"{self.api_urls['discussions']}/{id}")
         json = parse_request(raw)
 
+
         return Discussion(user=self, _fetched_data=json)
 
 
@@ -199,6 +271,7 @@ class FlarumUser(FlarumSession, dict):
 
         raw = self.session.get(f"{self.api_urls['posts']}/{id}")
         json = parse_request(raw)
+
 
         return Post(user=self, _fetched_data=json)
 
@@ -216,6 +289,7 @@ class FlarumUser(FlarumSession, dict):
 
         json = parse_request(raw)
 
+
         return Discussions(user=self, _fetched_data=json)
 
 
@@ -224,7 +298,6 @@ class FlarumUser(FlarumSession, dict):
             Obtains all posts from `/api/posts`, optionally filtering results by using `filter`.
         """
 
-
         if filter:
             raw = self.session.get(f"{self.api_urls['posts']}", params=filter.to_dict)
 
@@ -232,6 +305,7 @@ class FlarumUser(FlarumSession, dict):
             raw = self.session.get(f"{self.api_urls['posts']}")
 
         json = parse_request(raw)
+
 
         return Posts(user=self, _fetched_data=json)
 
@@ -250,6 +324,7 @@ class FlarumUser(FlarumSession, dict):
 
         json = parse_request(raw)
 
+
         return Users(user=self, _fetched_data=json)
 
 
@@ -266,6 +341,7 @@ class FlarumUser(FlarumSession, dict):
 
 
         json = parse_request(raw)
+
 
         return Notifications(user=self, _fetched_data=json)
 
@@ -291,6 +367,7 @@ class FlarumUser(FlarumSession, dict):
         raw = self.session.patch(f"{self.api_urls['users']}/{self.data.id}", json=post_data)
         parse_request(raw)
 
+
         return True
 
 
@@ -301,6 +378,7 @@ class FlarumUser(FlarumSession, dict):
 
         raw = self.session.post(f"{self.api_urls['notifications']}/read")
         parse_request(raw)
+
 
         return True
 
@@ -313,10 +391,11 @@ class FlarumUser(FlarumSession, dict):
         raw = self.session.get(f"{self.api_urls['groups']}")
         json = parse_request(raw)
 
+
         return Groups(user=self, _fetched_data=json)
 
 
-    def update_user_info(self, user: Optional[AnyUser]=None, new_username: Optional[str]=None, groups: Optional[Union[List[Union[str, int]], List[Group], Groups]]=None) -> Union['FlarumUser', User]:
+    def update_user_info(self, user: Optional['AnyUser']=None, new_username: Optional[str]=None, groups: Optional[Union[List[Union[str, int]], List[Group], Groups]]=None) -> Union['FlarumUser', User]:
         """
             Updates the info of a user (this can be your user or someone else).
 
@@ -353,23 +432,30 @@ class FlarumUser(FlarumSession, dict):
         json = parse_request(raw)
 
 
-        if user:
-            return User(user=self, _fetched_data=json)
-
-        else:
-            return self._update_user_data(new_data=dict(data=json))
+        return self._update_user_data(new_data=json)
 
 
-    def send_password_reset_email(self):
-        patch_data = { "email": self.data.email }
+    def send_password_reset_email(self) -> Union['FlarumUser', User]:
+        """
+            Allows you to send yourself a password reset E-mail.
+        """
+
+        patch_data = {"email": self.data.email}
 
         raw = self.session.patch(f"{self.api_urls['users']}/{self.data.id}", json=patch_data)
         json = parse_request(raw)
 
+
         return self._update_user_data(new_data=dict(data=json))
 
 
-    def update_preferences(self, notification: str, type: str=Literal['alert', 'email'], user: Optional[AnyUser]=None, state: bool=True):
+    def update_preferences(self, preferences: Iterable[Tuple[str, Any]], user: Optional['AnyUser']=None) -> Union['FlarumUser', User]:
+        """
+            Updates an user's preferences.
+
+            If no user is specified, then your user is updated.
+        """
+
         id = user.id if user else self.data.id
 
         patch_data = {
@@ -377,20 +463,30 @@ class FlarumUser(FlarumSession, dict):
                 "type": "users",
                 "id": id,
                 "attributes": {
-                    "preferences": {
-                        f"notify_{notification}_{type}": state
-                    }
+                    "preferences": {}
                 }
             }
         }
 
+
+        for preference, value in preferences:
+            patch_data['data']['attributes']['preferences'][preference] = value
+
+
         raw = self.session.patch(f"{self.api_urls['users']}/{id}", json=patch_data)
         json = parse_request(raw)
+
 
         return self._update_user_data(new_data=json)
 
 
-    def change_email(self, new_email: str, password_confirmation: str, user: Optional[AnyUser]=None):
+    def change_email(self, new_email: str, password_confirmation: str, user: Optional['AnyUser']=None) -> Union['FlarumUser', User]:
+        """
+            Changes your E-mail. If `user` is specified, then that user's E-mail is changed.
+
+            If you are changing the E-mail of another user, you do not need to specify their password.
+        """
+
         id = user.id if user else self.data.id
 
         patch_data = {
@@ -409,19 +505,31 @@ class FlarumUser(FlarumSession, dict):
         raw = self.session.patch(f"{self.api_urls['users']}/{id}", json=patch_data)
         json = parse_request(raw)
 
+
         return self._update_user_data(new_data=json)
 
 
-    def upload_user_avatar(self, file: BinaryIO, user: Optional[AnyUser]=None, file_name: str="avatar", file_type: Literal['image/png', 'image/jpeg', 'image/gif']="image/png"):
-        raw = self.session.post(url=f"{self.api_urls['users']}/{user.id if user else self.data.id}/avatar", files={ "avatar": (file_name, file, file_type) })
+    def upload_user_avatar(self, file: BinaryIO, user: Optional['AnyUser']=None, file_name: str="avatar", file_type: Literal['image/png', 'image/jpeg', 'image/gif']="image/png") -> Union['FlarumUser', User]:
+        """
+            Uploads an avatar for yourself. If `user` is specified, then avatar of that user is changed.
+        """
 
+        id = user.id if user else self.data.id
+
+        raw = self.session.post(url=f"{self.api_urls['users']}/{id}/avatar", files={ "avatar": (file_name, file, file_type) })
         json = parse_request(raw)
 
+
         return self._update_user_data(new_data=json)
 
 
-    def remove_user_avatar(self, user: Optional[AnyUser]=None):
+    def remove_user_avatar(self, user: Optional['AnyUser']=None) -> Union['FlarumUser', User]:
+        """
+            Removes your user's avatar. If `user` is specified, then avatar of that user is removed.
+        """
+
         raw = self.session.delete(url=f"{self.api_urls['users']}/{user.id if user else self.data.id}/avatar")
         json = parse_request(raw)
+ 
 
         return self._update_user_data(new_data=json)

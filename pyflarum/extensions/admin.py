@@ -1,4 +1,4 @@
-from typing import Any, Literal, Optional, BinaryIO
+from typing import Literal, Optional, BinaryIO, Union
 
 from ..extensions import ExtensionMixin
 
@@ -108,18 +108,18 @@ class MailSettings(dict):
 
 
 class AdminFlarumUserMixin(FlarumUser):
-    def __enable_or_disable_extension(self, id: str, enabled: bool=True):
+    def __enable_or_disable_extension(self, id: Union[str, int], enabled: bool=True):
         raw = self.session.patch(f"{self.api_urls['extensions']}/{id}", json={"enabled": enabled})
         parse_request(raw)
 
         return True
 
 
-    def enable_extension(self, id: str):
+    def enable_extension(self, id: Union[str, int]):
         return self.__enable_or_disable_extension(id=id, enabled=True)
 
 
-    def disable_extension(self, id: str):
+    def disable_extension(self, extension: str):
         return self.__enable_or_disable_extension(id=id, enabled=False)
 
 
@@ -149,7 +149,7 @@ class AdminFlarumUserMixin(FlarumUser):
         if welcome_message:
             post_data["welcome_message"] = welcome_message
 
-        if user_slug_driver:
+        if user_slug_driver is not None:
             post_data["slug_driver_Flarum\\User\\User"] = user_slug_driver
 
 

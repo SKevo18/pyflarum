@@ -14,7 +14,7 @@ from pyflarum.extensions import absolutely_all
 
 USER = FlarumUser(
     forum_url=os.environ['forum_url'],
-    username='test',
+    username_or_email='test',
     password=os.environ['account_password'],
     extensions=[Flarum_Likes.LikesExtension, absolutely_all.AbsolutelyAllExtension]
 ) # type: absolutely_all.AbsolutelyAllFlarumUserMixin

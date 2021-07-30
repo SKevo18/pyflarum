@@ -1,9 +1,9 @@
-from typing import Literal, TYPE_CHECKING, Optional, Union, List
+from typing import Literal, TYPE_CHECKING, Optional, List
 
-# Avoid my greatest enemy in Python: circular import:
 if TYPE_CHECKING:
     from ...session import FlarumUser
-    from ...flarum.core.discussions import DiscussionFromBulk, Discussion
+    from ...custom_types import AnyDiscussion
+
 
 from datetime import datetime
 
@@ -19,7 +19,7 @@ class PreparedPost(BaseFlarumIndividualObject):
         A prepared post that can be sent to the API.
     """
 
-    def __init__(self, user: 'FlarumUser', discussion: Optional[Union['Discussion', 'DiscussionFromBulk', 'DiscussionFromNotification']]=None, content: Optional[str]=None):
+    def __init__(self, user: 'FlarumUser', discussion: Optional['AnyDiscussion']=None, content: Optional[str]=None):
         """
             ### Parameters:
             - `user` - the `pyflarum.session.FlarumUser` object that will create the post
