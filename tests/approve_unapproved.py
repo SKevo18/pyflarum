@@ -38,3 +38,6 @@ if __name__ == "__main__":
                 if not post.isApproved:
                     post.approve()
                     print(f"Approved {post.url}")
+
+                else:
+                    print(f"{post.url} is already approved.")

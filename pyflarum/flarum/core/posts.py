@@ -37,7 +37,7 @@ class PreparedPost(BaseFlarumIndividualObject):
 
 
     @property
-    def to_dict(self):
+    def to_dict(self) -> dict:
         """
             Converts the post to a `dict`, so that
             it can be sent to the API.
@@ -56,7 +56,7 @@ class PreparedPost(BaseFlarumIndividualObject):
                     "discussion": {
                         "data": {
                             "type": "discussions",
-                            "id": self.discussion.id
+                            "id": self.discussion.id if self.discussion else 0
                         }
                     }
                 }
@@ -325,10 +325,10 @@ class PostFromNotification(PostFromDiscussion):
             Replies to this `Post` with another `PreparedPost`.
         """
 
-        to_post = post
-        to_post.discussion = self.get_discussion()
+        post.discussion = self.get_discussion()
+        post.as_json = post.to_dict
 
-        return to_post.post()
+        return post.post()
 
 
     def get_author(self):

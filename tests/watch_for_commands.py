@@ -25,7 +25,7 @@ EXTENSIONS = [
     Flarum_Likes.LikesExtension
 ]
 
-user = FlarumUser(forum_url=os.environ['forum_url'], username="test", password=os.environ['account_password'], extensions=EXTENSIONS) # type: Union[watch.WatchFlarumUserMixin, commands.CommandsFlarumUserMixin]
+user = FlarumUser(forum_url=os.environ['forum_url'], username_or_email="test", password=os.environ['account_password'], extensions=EXTENSIONS) # type: Union[watch.WatchFlarumUserMixin, commands.CommandsFlarumUserMixin]
 api_key = os.environ['openweather_api_key']
 
 weather_post = """**{city}**, `{country}` has **{weather}** and __{temperature} °C__"""
@@ -43,7 +43,7 @@ def on_notification(notification: Notification):
             if command[0].lower() == 'weather':
                 if command[1]:
                     city = command[1].strip()
-                    weather_data = requests.get(f"http://api.openweathermap.org/data/2.5/weather?q={city}&appid={api_key}&units=metric").json() # type: dict
+                    weather_data = requests.get(f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={api_key}&units=metric").json() # type: dict
 
                     reply_post = PreparedPost(user=user, content=weather_post.format(
                         city=city,

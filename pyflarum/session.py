@@ -182,26 +182,27 @@ class FlarumUser(FlarumSession, dict):
             Fetches your user's JSON data.
         """
 
-        filter = Filter(limit=1)
+        if self.username_or_email:
+            filter = Filter(limit=1)
 
-        if '@' in self.username_or_email:
-            filter.query = f'email:{self.username_or_email}'
-
-        else:
-            filter.query = self.username_or_email
-
-
-        raw = self.session.get(f"{self.api_urls['users']}", params=filter.to_dict)
-        json = parse_request(raw)
-
-        for possible_user in json.get("data", [{}]):
             if '@' in self.username_or_email:
-                if possible_user.get("attributes", {}).get("email", None) == self.username_or_email:
-                    return possible_user
+                filter.query = f'email:{self.username_or_email}'
 
             else:
-                if possible_user.get("attributes", {}).get("username", None) == self.username_or_email:
-                    return possible_user
+                filter.query = self.username_or_email
+
+
+            raw = self.session.get(f"{self.api_urls['users']}", params=filter.to_dict)
+            json = parse_request(raw)
+
+            for possible_user in json.get("data", [{}]):
+                if '@' in self.username_or_email:
+                    if possible_user.get("attributes", {}).get("email", None) == self.username_or_email:
+                        return possible_user
+
+                else:
+                    if possible_user.get("attributes", {}).get("username", None) == self.username_or_email:
+                        return possible_user
 
 
         return None

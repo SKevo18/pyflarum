@@ -30,6 +30,9 @@ if __name__ == "__main__":
         for discussion in discussions:
             discussion: Union[Flarum_Lock.LockDiscussionFromBulkMixin, Type['DiscussionFromBulk']]
 
-            print(discussion.url)
-            locked = discussion.lock()
-            print(f"Locked {locked.url}")
+            if not discussion.isLocked:
+                locked = discussion.lock()
+                print(f"Locked {locked.url}")
+
+            else:
+                print(f"{discussion.url} is already locked.")
