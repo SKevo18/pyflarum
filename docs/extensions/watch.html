@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.9.2" />
+<meta name="generator" content="pdoc 0.10.0" />
 <title>pyflarum.extensions.watch API documentation</title>
 <meta name="description" content="" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
@@ -25,9 +25,9 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/watch.py#L0-L48" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/watch.py#L1-L49" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">from typing import Any, Callable, Optional
+<pre><code class="python">from typing import Any, Callable, NoReturn, Optional
 
 import time
 
@@ -46,7 +46,7 @@ HARD_DEPENCENDIES = []
 
 
 class WatchFlarumUserMixin(FlarumUser):
-    def watch_notifications(self, on_notification: Callable[[Notification], Any], interval: Optional[float]=10, auto_mark_as_read: bool=True, **kwargs):
+    def watch_notifications(self, on_notification: Callable[[Notification], Any], interval: Optional[float]=10, auto_mark_as_read: bool=True, **kwargs) -&gt; NoReturn:
         while True:
             all_notifications = self.get_notifications(**kwargs)
 
@@ -150,7 +150,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/watch.py#L35-L49" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/watch.py#L35-L49" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class WatchExtension(ExtensionMixin, WatchFlarumUserMixin):
     def __init__(self):
@@ -178,7 +178,7 @@ class ExampleExtension(ExtensionMixin):
 </ul>
 <h3>Instance variables</h3>
 <dl>
-<dt id="pyflarum.extensions.watch.WatchExtension.api_urls"><code class="name">var <span class="ident">api_urls</span> : Dict[str, str]</code></dt>
+<dt id="pyflarum.extensions.watch.WatchExtension.api_urls"><code class="name">var <span class="ident">api_urls</span> : dict</code></dt>
 <dd>
 <p class="inheritance">
 <em>Inherited from:</em>
@@ -190,7 +190,7 @@ class ExampleExtension(ExtensionMixin):
 <h3>Methods</h3>
 <dl>
 <dt id="pyflarum.extensions.watch.WatchExtension.authenticate"><code class="name flex">
-<span>def <span class="ident">authenticate</span></span>(<span>self, username_or_email: Optional[str] = None, password: Optional[str] = None) ‑> NoneType</span>
+<span>def <span class="ident">authenticate</span></span>(<span>self, username_or_email: Optional[str] = None, password: Optional[str] = None) ‑> None</span>
 </code></dt>
 <dd>
 <p class="inheritance">
@@ -201,7 +201,7 @@ class ExampleExtension(ExtensionMixin):
 <code>FlarumUser.forum_url</code> …</p></div>
 </dd>
 <dt id="pyflarum.extensions.watch.WatchExtension.change_email"><code class="name flex">
-<span>def <span class="ident">change_email</span></span>(<span>self, new_email: str, password_confirmation: str, user: Optional[ForwardRef('AnyUser')] = None) ‑> Union[<a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a>, <a title="pyflarum.flarum.core.users.User" href="../flarum/core/users.html#pyflarum.flarum.core.users.User">User</a>]</span>
+<span>def <span class="ident">change_email</span></span>(<span>self, new_email: str, password_confirmation: str, user: Optional[ForwardRef('AnyUser')] = None) ‑> <a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a> | User</span>
 </code></dt>
 <dd>
 <p class="inheritance">
@@ -227,7 +227,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/watch.py#L41-L45" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/watch.py#L41-L45" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_dependencies(self):
     return {
@@ -247,7 +247,7 @@ class ExampleExtension(ExtensionMixin):
 <div class="desc inherited"><p>Obtains a discussion by specific ID.</p></div>
 </dd>
 <dt id="pyflarum.extensions.watch.WatchExtension.get_discussions"><code class="name flex">
-<span>def <span class="ident">get_discussions</span></span>(<span>self, filter: <a title="pyflarum.flarum.core.filters.Filter" href="../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a> = None)</span>
+<span>def <span class="ident">get_discussions</span></span>(<span>self, filter: Optional[<a title="pyflarum.flarum.core.filters.Filter" href="../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a>] = None) ‑> <a title="pyflarum.flarum.core.discussions.Discussions" href="../flarum/core/discussions.html#pyflarum.flarum.core.discussions.Discussions">Discussions</a></span>
 </code></dt>
 <dd>
 <p class="inheritance">
@@ -297,7 +297,7 @@ class ExampleExtension(ExtensionMixin):
 <div class="desc inherited"><p>Obtains a post by specific ID.</p></div>
 </dd>
 <dt id="pyflarum.extensions.watch.WatchExtension.get_posts"><code class="name flex">
-<span>def <span class="ident">get_posts</span></span>(<span>self, filter: <a title="pyflarum.flarum.core.filters.Filter" href="../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a> = None)</span>
+<span>def <span class="ident">get_posts</span></span>(<span>self, filter: Optional[<a title="pyflarum.flarum.core.filters.Filter" href="../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a>] = None)</span>
 </code></dt>
 <dd>
 <p class="inheritance">
@@ -327,7 +327,7 @@ class ExampleExtension(ExtensionMixin):
 <div class="desc inherited"><p>Obtains all users from <code>/api/users</code>, optionally filtering results by using <code>filter</code>.</p></div>
 </dd>
 <dt id="pyflarum.extensions.watch.WatchExtension.mark_all_discussions_as_read"><code class="name flex">
-<span>def <span class="ident">mark_all_discussions_as_read</span></span>(<span>self, at: datetime.datetime = datetime.datetime(2021, 7, 30, 10, 0, 37, 16357)) ‑> Literal[True]</span>
+<span>def <span class="ident">mark_all_discussions_as_read</span></span>(<span>self, at: datetime.datetime = datetime.datetime(2021, 8, 19, 7, 56, 39, 340906)) ‑> Literal[True]</span>
 </code></dt>
 <dd>
 <p class="inheritance">
@@ -358,14 +358,14 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/watch.py#L48-L49" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/watch.py#L48-L49" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def mixin(self):
     super().mixin(self, FlarumUser, WatchFlarumUserMixin)</code></pre>
 </details>
 </dd>
 <dt id="pyflarum.extensions.watch.WatchExtension.remove_user_avatar"><code class="name flex">
-<span>def <span class="ident">remove_user_avatar</span></span>(<span>self, user: Optional[ForwardRef('AnyUser')] = None) ‑> Union[<a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a>, <a title="pyflarum.flarum.core.users.User" href="../flarum/core/users.html#pyflarum.flarum.core.users.User">User</a>]</span>
+<span>def <span class="ident">remove_user_avatar</span></span>(<span>self, user: Optional[ForwardRef('AnyUser')] = None) ‑> <a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a> | User</span>
 </code></dt>
 <dd>
 <p class="inheritance">
@@ -375,7 +375,7 @@ class ExampleExtension(ExtensionMixin):
 <div class="desc inherited"><p>Removes your user's avatar. If <code>user</code> is specified, then avatar of that user is removed.</p></div>
 </dd>
 <dt id="pyflarum.extensions.watch.WatchExtension.send_password_reset_email"><code class="name flex">
-<span>def <span class="ident">send_password_reset_email</span></span>(<span>self) ‑> Union[<a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a>, <a title="pyflarum.flarum.core.users.User" href="../flarum/core/users.html#pyflarum.flarum.core.users.User">User</a>]</span>
+<span>def <span class="ident">send_password_reset_email</span></span>(<span>self) ‑> <a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a> | User</span>
 </code></dt>
 <dd>
 <p class="inheritance">
@@ -385,7 +385,7 @@ class ExampleExtension(ExtensionMixin):
 <div class="desc inherited"><p>Allows you to send yourself a password reset E-mail.</p></div>
 </dd>
 <dt id="pyflarum.extensions.watch.WatchExtension.update_preferences"><code class="name flex">
-<span>def <span class="ident">update_preferences</span></span>(<span>self, preferences: Iterable[Tuple[str, Any]], user: Optional[ForwardRef('AnyUser')] = None) ‑> Union[<a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a>, <a title="pyflarum.flarum.core.users.User" href="../flarum/core/users.html#pyflarum.flarum.core.users.User">User</a>]</span>
+<span>def <span class="ident">update_preferences</span></span>(<span>self, preferences: Iterable[tuple[str, Any]], user: Optional[ForwardRef('AnyUser')] = None) ‑> <a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a> | User</span>
 </code></dt>
 <dd>
 <p class="inheritance">
@@ -395,7 +395,7 @@ class ExampleExtension(ExtensionMixin):
 <div class="desc inherited"><p>Updates an user's preferences …</p></div>
 </dd>
 <dt id="pyflarum.extensions.watch.WatchExtension.update_user_info"><code class="name flex">
-<span>def <span class="ident">update_user_info</span></span>(<span>self, user: Optional[ForwardRef('AnyUser')] = None, new_username: Optional[str] = None, groups: Union[List[Union[str, int]], List[<a title="pyflarum.flarum.core.groups.Group" href="../flarum/core/groups.html#pyflarum.flarum.core.groups.Group">Group</a>], <a title="pyflarum.flarum.core.groups.Groups" href="../flarum/core/groups.html#pyflarum.flarum.core.groups.Groups">Groups</a>, NoneType] = None) ‑> Union[<a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a>, <a title="pyflarum.flarum.core.users.User" href="../flarum/core/users.html#pyflarum.flarum.core.users.User">User</a>]</span>
+<span>def <span class="ident">update_user_info</span></span>(<span>self, user: Optional[ForwardRef('AnyUser')] = None, new_username: Optional[str] = None, groups: Optional[ForwardRef('list[str | int] | list[Group] | Groups')] = None) ‑> <a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a> | User</span>
 </code></dt>
 <dd>
 <p class="inheritance">
@@ -405,7 +405,7 @@ class ExampleExtension(ExtensionMixin):
 <div class="desc inherited"><p>Updates the info of a user (this can be your user or someone else) …</p></div>
 </dd>
 <dt id="pyflarum.extensions.watch.WatchExtension.upload_user_avatar"><code class="name flex">
-<span>def <span class="ident">upload_user_avatar</span></span>(<span>self, file: <class 'BinaryIO'>, user: Optional[ForwardRef('AnyUser')] = None, file_name: str = 'avatar', file_type: Literal['image/png', 'image/jpeg', 'image/gif'] = 'image/png') ‑> Union[<a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a>, <a title="pyflarum.flarum.core.users.User" href="../flarum/core/users.html#pyflarum.flarum.core.users.User">User</a>]</span>
+<span>def <span class="ident">upload_user_avatar</span></span>(<span>self, file: <class 'BinaryIO'>, user: Optional[ForwardRef('AnyUser')] = None, file_name: str = 'avatar', file_type: Literal['image/png', 'image/jpeg', 'image/gif'] = 'image/png') ‑> <a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a> | User</span>
 </code></dt>
 <dd>
 <p class="inheritance">
@@ -418,7 +418,7 @@ class ExampleExtension(ExtensionMixin):
 </dd>
 <dt id="pyflarum.extensions.watch.WatchFlarumUserMixin"><code class="flex name class">
 <span>class <span class="ident">WatchFlarumUserMixin</span></span>
-<span>(</span><span>extensions: Optional[List[<a title="pyflarum.extensions.ExtensionMixin" href="index.html#pyflarum.extensions.ExtensionMixin">ExtensionMixin</a>]] = None, **kwargs)</span>
+<span>(</span><span>extensions: Optional[list] = None, **kwargs)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>The main object that carries the Flarum session.</p>
@@ -436,10 +436,10 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/watch.py#L19-L32" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/watch.py#L19-L32" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class WatchFlarumUserMixin(FlarumUser):
-    def watch_notifications(self, on_notification: Callable[[Notification], Any], interval: Optional[float]=10, auto_mark_as_read: bool=True, **kwargs):
+    def watch_notifications(self, on_notification: Callable[[Notification], Any], interval: Optional[float]=10, auto_mark_as_read: bool=True, **kwargs) -&gt; NoReturn:
         while True:
             all_notifications = self.get_notifications(**kwargs)
 
@@ -465,7 +465,7 @@ class ExampleExtension(ExtensionMixin):
 </ul>
 <h3>Instance variables</h3>
 <dl>
-<dt id="pyflarum.extensions.watch.WatchFlarumUserMixin.api_urls"><code class="name">var <span class="ident">api_urls</span> : Dict[str, str]</code></dt>
+<dt id="pyflarum.extensions.watch.WatchFlarumUserMixin.api_urls"><code class="name">var <span class="ident">api_urls</span> : dict</code></dt>
 <dd>
 <p class="inheritance">
 <em>Inherited from:</em>
@@ -477,7 +477,7 @@ class ExampleExtension(ExtensionMixin):
 <h3>Methods</h3>
 <dl>
 <dt id="pyflarum.extensions.watch.WatchFlarumUserMixin.authenticate"><code class="name flex">
-<span>def <span class="ident">authenticate</span></span>(<span>self, username_or_email: Optional[str] = None, password: Optional[str] = None) ‑> NoneType</span>
+<span>def <span class="ident">authenticate</span></span>(<span>self, username_or_email: Optional[str] = None, password: Optional[str] = None) ‑> None</span>
 </code></dt>
 <dd>
 <p class="inheritance">
@@ -488,7 +488,7 @@ class ExampleExtension(ExtensionMixin):
 <code>FlarumUser.forum_url</code> …</p></div>
 </dd>
 <dt id="pyflarum.extensions.watch.WatchFlarumUserMixin.change_email"><code class="name flex">
-<span>def <span class="ident">change_email</span></span>(<span>self, new_email: str, password_confirmation: str, user: Optional[ForwardRef('AnyUser')] = None) ‑> Union[<a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a>, <a title="pyflarum.flarum.core.users.User" href="../flarum/core/users.html#pyflarum.flarum.core.users.User">User</a>]</span>
+<span>def <span class="ident">change_email</span></span>(<span>self, new_email: str, password_confirmation: str, user: Optional[ForwardRef('AnyUser')] = None) ‑> <a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a> | User</span>
 </code></dt>
 <dd>
 <p class="inheritance">
@@ -508,7 +508,7 @@ class ExampleExtension(ExtensionMixin):
 <div class="desc inherited"><p>Obtains a discussion by specific ID.</p></div>
 </dd>
 <dt id="pyflarum.extensions.watch.WatchFlarumUserMixin.get_discussions"><code class="name flex">
-<span>def <span class="ident">get_discussions</span></span>(<span>self, filter: <a title="pyflarum.flarum.core.filters.Filter" href="../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a> = None)</span>
+<span>def <span class="ident">get_discussions</span></span>(<span>self, filter: Optional[<a title="pyflarum.flarum.core.filters.Filter" href="../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a>] = None) ‑> <a title="pyflarum.flarum.core.discussions.Discussions" href="../flarum/core/discussions.html#pyflarum.flarum.core.discussions.Discussions">Discussions</a></span>
 </code></dt>
 <dd>
 <p class="inheritance">
@@ -558,7 +558,7 @@ class ExampleExtension(ExtensionMixin):
 <div class="desc inherited"><p>Obtains a post by specific ID.</p></div>
 </dd>
 <dt id="pyflarum.extensions.watch.WatchFlarumUserMixin.get_posts"><code class="name flex">
-<span>def <span class="ident">get_posts</span></span>(<span>self, filter: <a title="pyflarum.flarum.core.filters.Filter" href="../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a> = None)</span>
+<span>def <span class="ident">get_posts</span></span>(<span>self, filter: Optional[<a title="pyflarum.flarum.core.filters.Filter" href="../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a>] = None)</span>
 </code></dt>
 <dd>
 <p class="inheritance">
@@ -588,7 +588,7 @@ class ExampleExtension(ExtensionMixin):
 <div class="desc inherited"><p>Obtains all users from <code>/api/users</code>, optionally filtering results by using <code>filter</code>.</p></div>
 </dd>
 <dt id="pyflarum.extensions.watch.WatchFlarumUserMixin.mark_all_discussions_as_read"><code class="name flex">
-<span>def <span class="ident">mark_all_discussions_as_read</span></span>(<span>self, at: datetime.datetime = datetime.datetime(2021, 7, 30, 10, 0, 37, 16357)) ‑> Literal[True]</span>
+<span>def <span class="ident">mark_all_discussions_as_read</span></span>(<span>self, at: datetime.datetime = datetime.datetime(2021, 8, 19, 7, 56, 39, 340906)) ‑> Literal[True]</span>
 </code></dt>
 <dd>
 <p class="inheritance">
@@ -608,7 +608,7 @@ class ExampleExtension(ExtensionMixin):
 <div class="desc inherited"><p>Marks all notifications as read. Returns <code>True</code> when successful.</p></div>
 </dd>
 <dt id="pyflarum.extensions.watch.WatchFlarumUserMixin.remove_user_avatar"><code class="name flex">
-<span>def <span class="ident">remove_user_avatar</span></span>(<span>self, user: Optional[ForwardRef('AnyUser')] = None) ‑> Union[<a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a>, <a title="pyflarum.flarum.core.users.User" href="../flarum/core/users.html#pyflarum.flarum.core.users.User">User</a>]</span>
+<span>def <span class="ident">remove_user_avatar</span></span>(<span>self, user: Optional[ForwardRef('AnyUser')] = None) ‑> <a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a> | User</span>
 </code></dt>
 <dd>
 <p class="inheritance">
@@ -618,7 +618,7 @@ class ExampleExtension(ExtensionMixin):
 <div class="desc inherited"><p>Removes your user's avatar. If <code>user</code> is specified, then avatar of that user is removed.</p></div>
 </dd>
 <dt id="pyflarum.extensions.watch.WatchFlarumUserMixin.send_password_reset_email"><code class="name flex">
-<span>def <span class="ident">send_password_reset_email</span></span>(<span>self) ‑> Union[<a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a>, <a title="pyflarum.flarum.core.users.User" href="../flarum/core/users.html#pyflarum.flarum.core.users.User">User</a>]</span>
+<span>def <span class="ident">send_password_reset_email</span></span>(<span>self) ‑> <a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a> | User</span>
 </code></dt>
 <dd>
 <p class="inheritance">
@@ -628,7 +628,7 @@ class ExampleExtension(ExtensionMixin):
 <div class="desc inherited"><p>Allows you to send yourself a password reset E-mail.</p></div>
 </dd>
 <dt id="pyflarum.extensions.watch.WatchFlarumUserMixin.update_preferences"><code class="name flex">
-<span>def <span class="ident">update_preferences</span></span>(<span>self, preferences: Iterable[Tuple[str, Any]], user: Optional[ForwardRef('AnyUser')] = None) ‑> Union[<a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a>, <a title="pyflarum.flarum.core.users.User" href="../flarum/core/users.html#pyflarum.flarum.core.users.User">User</a>]</span>
+<span>def <span class="ident">update_preferences</span></span>(<span>self, preferences: Iterable[tuple[str, Any]], user: Optional[ForwardRef('AnyUser')] = None) ‑> <a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a> | User</span>
 </code></dt>
 <dd>
 <p class="inheritance">
@@ -638,7 +638,7 @@ class ExampleExtension(ExtensionMixin):
 <div class="desc inherited"><p>Updates an user's preferences …</p></div>
 </dd>
 <dt id="pyflarum.extensions.watch.WatchFlarumUserMixin.update_user_info"><code class="name flex">
-<span>def <span class="ident">update_user_info</span></span>(<span>self, user: Optional[ForwardRef('AnyUser')] = None, new_username: Optional[str] = None, groups: Union[List[Union[str, int]], List[<a title="pyflarum.flarum.core.groups.Group" href="../flarum/core/groups.html#pyflarum.flarum.core.groups.Group">Group</a>], <a title="pyflarum.flarum.core.groups.Groups" href="../flarum/core/groups.html#pyflarum.flarum.core.groups.Groups">Groups</a>, NoneType] = None) ‑> Union[<a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a>, <a title="pyflarum.flarum.core.users.User" href="../flarum/core/users.html#pyflarum.flarum.core.users.User">User</a>]</span>
+<span>def <span class="ident">update_user_info</span></span>(<span>self, user: Optional[ForwardRef('AnyUser')] = None, new_username: Optional[str] = None, groups: Optional[ForwardRef('list[str | int] | list[Group] | Groups')] = None) ‑> <a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a> | User</span>
 </code></dt>
 <dd>
 <p class="inheritance">
@@ -648,7 +648,7 @@ class ExampleExtension(ExtensionMixin):
 <div class="desc inherited"><p>Updates the info of a user (this can be your user or someone else) …</p></div>
 </dd>
 <dt id="pyflarum.extensions.watch.WatchFlarumUserMixin.upload_user_avatar"><code class="name flex">
-<span>def <span class="ident">upload_user_avatar</span></span>(<span>self, file: <class 'BinaryIO'>, user: Optional[ForwardRef('AnyUser')] = None, file_name: str = 'avatar', file_type: Literal['image/png', 'image/jpeg', 'image/gif'] = 'image/png') ‑> Union[<a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a>, <a title="pyflarum.flarum.core.users.User" href="../flarum/core/users.html#pyflarum.flarum.core.users.User">User</a>]</span>
+<span>def <span class="ident">upload_user_avatar</span></span>(<span>self, file: <class 'BinaryIO'>, user: Optional[ForwardRef('AnyUser')] = None, file_name: str = 'avatar', file_type: Literal['image/png', 'image/jpeg', 'image/gif'] = 'image/png') ‑> <a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a> | User</span>
 </code></dt>
 <dd>
 <p class="inheritance">
@@ -658,16 +658,16 @@ class ExampleExtension(ExtensionMixin):
 <div class="desc inherited"><p>Uploads an avatar for yourself. If <code>user</code> is specified, then avatar of that user is changed.</p></div>
 </dd>
 <dt id="pyflarum.extensions.watch.WatchFlarumUserMixin.watch_notifications"><code class="name flex">
-<span>def <span class="ident">watch_notifications</span></span>(<span>self, on_notification: Callable[[<a title="pyflarum.flarum.core.notifications.Notification" href="../flarum/core/notifications.html#pyflarum.flarum.core.notifications.Notification">Notification</a>], Any], interval: Optional[float] = 10, auto_mark_as_read: bool = True, **kwargs)</span>
+<span>def <span class="ident">watch_notifications</span></span>(<span>self, on_notification: Callable[[<a title="pyflarum.flarum.core.notifications.Notification" href="../flarum/core/notifications.html#pyflarum.flarum.core.notifications.Notification">Notification</a>], Any], interval: Optional[float] = 10, auto_mark_as_read: bool = True, **kwargs) ‑> NoReturn</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/watch.py#L20-L32" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/watch.py#L20-L32" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">def watch_notifications(self, on_notification: Callable[[Notification], Any], interval: Optional[float]=10, auto_mark_as_read: bool=True, **kwargs):
+<pre><code class="python">def watch_notifications(self, on_notification: Callable[[Notification], Any], interval: Optional[float]=10, auto_mark_as_read: bool=True, **kwargs) -&gt; NoReturn:
     while True:
         all_notifications = self.get_notifications(**kwargs)
 
@@ -803,7 +803,7 @@ setTimeout(() => input.focus(), 100);
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
 </footer>
 </body>
 </html>

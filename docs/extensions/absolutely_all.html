@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.9.2" />
+<meta name="generator" content="pdoc 0.10.0" />
 <title>pyflarum.extensions.absolutely_all API documentation</title>
 <meta name="description" content="" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
@@ -25,7 +25,7 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/absolutely_all.py#L0-L153" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/absolutely_all.py#L1-L154" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">from typing import Generator, Optional, TYPE_CHECKING
 if TYPE_CHECKING:
@@ -201,7 +201,7 @@ class AbsolutelyAllExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/absolutely_all.py#L133-L154" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/absolutely_all.py#L133-L154" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class AbsolutelyAllExtension(ExtensionMixin):
     &#34;&#34;&#34;
@@ -249,7 +249,7 @@ class AbsolutelyAllExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/absolutely_all.py#L146-L150" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/absolutely_all.py#L146-L150" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_dependencies(self):
     return {
@@ -270,7 +270,7 @@ class AbsolutelyAllExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/absolutely_all.py#L153-L154" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/absolutely_all.py#L153-L154" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def mixin(self):
     super().mixin(self, FlarumUser, AbsolutelyAllFlarumUserMixin)</code></pre>
@@ -286,7 +286,7 @@ class AbsolutelyAllExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/absolutely_all.py#L25-L127" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/absolutely_all.py#L25-L127" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class AbsolutelyAllFlarumUserMixin:
     def absolutely_all_users(self: FlarumUser, filter: Optional[Filter]=None)  -&gt; Generator[&#39;Users&#39;, None, None]:
@@ -395,14 +395,14 @@ class AbsolutelyAllExtension(ExtensionMixin):
 <h3>Methods</h3>
 <dl>
 <dt id="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.absolutely_all_discussions"><code class="name flex">
-<span>def <span class="ident">absolutely_all_discussions</span></span>(<span>self: <a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a>, filter: Optional[<a title="pyflarum.flarum.core.filters.Filter" href="../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a>] = None) ‑> Generator[Discussions, NoneType, NoneType]</span>
+<span>def <span class="ident">absolutely_all_discussions</span></span>(<span>self: <a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a>, filter: Optional[<a title="pyflarum.flarum.core.filters.Filter" href="../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a>] = None) ‑> Generator[Discussions, None, None]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>A generator that yields <code>Discussions</code> from entire forum, until there are <code>None</code> left. <code>Filter</code> compatible.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/absolutely_all.py#L78-L101" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/absolutely_all.py#L78-L101" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def absolutely_all_discussions(self: FlarumUser, filter: Optional[Filter]=None) -&gt; Generator[&#39;Discussions&#39;, None, None]:
     &#34;&#34;&#34;
@@ -431,14 +431,14 @@ class AbsolutelyAllExtension(ExtensionMixin):
 </details>
 </dd>
 <dt id="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.absolutely_all_notifications"><code class="name flex">
-<span>def <span class="ident">absolutely_all_notifications</span></span>(<span>self: <a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a>, filter: Optional[<a title="pyflarum.flarum.core.filters.Filter" href="../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a>] = None) ‑> Generator[Notifications, NoneType, NoneType]</span>
+<span>def <span class="ident">absolutely_all_notifications</span></span>(<span>self: <a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a>, filter: Optional[<a title="pyflarum.flarum.core.filters.Filter" href="../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a>] = None) ‑> Generator[Notifications, None, None]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>A generator that yields all of your <code>Notifications</code>, until there are <code>None</code> left. <code>Filter</code> compatible.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/absolutely_all.py#L104-L127" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/absolutely_all.py#L104-L127" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def absolutely_all_notifications(self: FlarumUser, filter: Optional[Filter]=None) -&gt; Generator[&#39;Notifications&#39;, None, None]:
     &#34;&#34;&#34;
@@ -467,14 +467,14 @@ class AbsolutelyAllExtension(ExtensionMixin):
 </details>
 </dd>
 <dt id="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.absolutely_all_posts"><code class="name flex">
-<span>def <span class="ident">absolutely_all_posts</span></span>(<span>self: <a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a>, filter: Optional[<a title="pyflarum.flarum.core.filters.Filter" href="../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a>] = None) ‑> Generator[Posts, NoneType, NoneType]</span>
+<span>def <span class="ident">absolutely_all_posts</span></span>(<span>self: <a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a>, filter: Optional[<a title="pyflarum.flarum.core.filters.Filter" href="../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a>] = None) ‑> Generator[Posts, None, None]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>A generator that yields <code>Posts</code> from entire forum, until there are <code>None</code> left. <code>Filter</code> compatible.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/absolutely_all.py#L52-L75" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/absolutely_all.py#L52-L75" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def absolutely_all_posts(self: FlarumUser, filter: Optional[Filter]=None) -&gt; Generator[&#39;Posts&#39;, None, None]:
     &#34;&#34;&#34;
@@ -503,14 +503,14 @@ class AbsolutelyAllExtension(ExtensionMixin):
 </details>
 </dd>
 <dt id="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.absolutely_all_users"><code class="name flex">
-<span>def <span class="ident">absolutely_all_users</span></span>(<span>self: <a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a>, filter: Optional[<a title="pyflarum.flarum.core.filters.Filter" href="../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a>] = None) ‑> Generator[Users, NoneType, NoneType]</span>
+<span>def <span class="ident">absolutely_all_users</span></span>(<span>self: <a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a>, filter: Optional[<a title="pyflarum.flarum.core.filters.Filter" href="../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a>] = None) ‑> Generator[Users, None, None]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>A generator that yields <code>Users</code> from entire forum, until there are <code>None</code> left. <code>Filter</code> compatible.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/557b4d3de83963583e9d8685c328390e985c37b6/pyflarum/extensions/absolutely_all.py#L26-L49" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/absolutely_all.py#L26-L49" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def absolutely_all_users(self: FlarumUser, filter: Optional[Filter]=None)  -&gt; Generator[&#39;Users&#39;, None, None]:
     &#34;&#34;&#34;
@@ -624,7 +624,7 @@ setTimeout(() => input.focus(), 100);
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
 </footer>
 </body>
 </html>
