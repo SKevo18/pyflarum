@@ -2,11 +2,12 @@ from dotenv import load_dotenv
 load_dotenv()
 
 import os
-import time
+#import time
 
 from pyflarum import FlarumUser
 from pyflarum.extensions.flarum import Flarum_Likes
 from pyflarum.extensions import absolutely_all
+from pyflarum.flarum.core.posts import PostFromBulk
 
 
 USER = FlarumUser(
@@ -20,17 +21,10 @@ USER = FlarumUser(
 if __name__ == "__main__":
     for posts in USER.absolutely_all_posts():
         for post in posts:
-            post: Flarum_Likes.LikesPostFromBulkMixin
+            post: 'Flarum_Likes.LikesPostFromBulkMixin | PostFromBulk'
 
-            for user in post.get_liked_by():
-                if user.id == USER.data.id:
-                    print(f"Post {post.id} ({post.url}) is already liked by me, skipping...")
+            liked = post.like()
+            print(f"Liked post {liked.id} ({liked.url})")
+            # time.sleep(1)
 
-                    break
-
-                else:
-                    liked = post.like()
-                    print(f"Liked post {liked.id} ({liked.url})")
-                    # time.sleep(1)
-
-                    continue
+            continue

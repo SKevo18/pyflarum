@@ -278,7 +278,7 @@ class FlarumUser(FlarumSession, dict):
         return Post(user=self, _fetched_data=json)
 
 
-    def get_discussions(self, filter: Optional[Filter]=None):
+    def get_discussions(self, filter: Optional[Filter]=None) -> Discussions:
         """
             Obtains all discussions from `/api/discussions`, optionally filtering results by using `filter`.
         """

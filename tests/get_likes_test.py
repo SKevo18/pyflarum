@@ -5,16 +5,17 @@ import os
 
 from pyflarum import FlarumUser
 from pyflarum.extensions.flarum import Flarum_Likes
+from pyflarum.flarum.core.posts import PostFromBulk
 
 
 USER = FlarumUser(forum_url=os.environ['forum_url'], username_or_email='test', password=os.environ['account_password'], extensions=[Flarum_Likes.LikesExtension])
 
 
 if __name__ == "__main__":
-    discussion = USER.get_discussion_by_id(4)
+    discussion = USER.get_discussions().get_discussions()[0].get_full_data()
 
     for post in discussion.get_posts():
-        post: Flarum_Likes.LikesPostFromBulkMixin
+        post: 'Flarum_Likes.LikesPostFromBulkMixin | PostFromBulk'
 
         liked_by = post.get_liked_by()
 
