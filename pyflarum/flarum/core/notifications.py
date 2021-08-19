@@ -1,11 +1,11 @@
-from typing import Literal, TYPE_CHECKING, Optional, List
+from typing import Optional
 
 from datetime import datetime
 
-from ...flarum.core import BaseFlarumBulkObject, BaseFlarumIndividualObject
-from ...flarum.core.discussions import DiscussionFromNotification
-from ...flarum.core.users import UserFromNotification
-from ...flarum.core.posts import PostFromNotification
+from ..core import BaseFlarumBulkObject, BaseFlarumIndividualObject
+from ..core.discussions import DiscussionFromNotification
+from ..core.users import UserFromNotification
+from ..core.posts import PostFromNotification
 
 from ...error_handler import parse_request
 from ...datetime_conversions import flarum_to_datetime
@@ -21,12 +21,12 @@ class Notifications(BaseFlarumBulkObject):
         return iter(self.get_notifications())
 
 
-    def get_notifications(self):
+    def get_notifications(self) -> list['Notification']:
         """
             All notifications from the `Notifications` object.
         """
 
-        all_notifications = [] # type: List[Notification]
+        all_notifications = [] # type: list[Notification]
 
         for raw_notification in self.data:
             if raw_notification.get("type", None) == 'notifications':
@@ -36,7 +36,7 @@ class Notifications(BaseFlarumBulkObject):
         return all_notifications
 
 
-    def mark_all_as_read(self) -> Literal[True]:
+    def mark_all_as_read(self) -> True:
         """
             Marks all notifications as read. Returns `True` when successful.
         """
@@ -119,7 +119,7 @@ class Notification(BaseFlarumIndividualObject):
         return self.attributes.get("isRead", False)
 
 
-    def from_user(self):
+    def from_user(self) -> Optional[UserFromNotification]:
         """
             From which user does the notification originate from?
 
@@ -136,7 +136,7 @@ class Notification(BaseFlarumIndividualObject):
         return None
 
 
-    def get_subject(self):
+    def get_subject(self) -> Optional['DiscussionFromNotification | PostFromNotification']:
         """
             Returns the subject of the notification, either one of these:
             - `pyflarum.flarum.core.discussions.DiscussionFromNotification`
@@ -158,7 +158,7 @@ class Notification(BaseFlarumIndividualObject):
         return None
 
 
-    def mark_as_read(self):
+    def mark_as_read(self) -> True:
         """
             Marks the notification as read.
 

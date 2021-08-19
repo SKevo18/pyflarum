@@ -1,4 +1,4 @@
-from typing import Optional, TYPE_CHECKING
+from typing import Optional
 
 from datetime import datetime
 

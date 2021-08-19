@@ -1,4 +1,2 @@
-- [x] - Cover forum JSON data
-    - [x] - Also extensions
-
-- [ ] - Docstring everything in detail
+- [ ] Extensions
+  - [ ] Extensions docs & type-hints

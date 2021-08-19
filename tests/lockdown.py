@@ -1,9 +1,7 @@
-from typing import Type, Union, TYPE_CHECKING
+from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from pyflarum.flarum.core.discussions import DiscussionFromBulk
 
-from normalize_path import normalize_path
-normalize_path()
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -28,7 +26,7 @@ USER = FlarumUser(forum_url=os.environ['forum_url'], username_or_email='test', p
 if __name__ == "__main__":
     for discussions in USER.absolutely_all_discussions():
         for discussion in discussions:
-            discussion: Union[Flarum_Lock.LockDiscussionFromBulkMixin, Type['DiscussionFromBulk']]
+            discussion: 'Flarum_Lock.LockDiscussionFromBulkMixin | DiscussionFromBulk'
 
             if not discussion.isLocked:
                 locked = discussion.lock()

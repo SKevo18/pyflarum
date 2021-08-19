@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import Optional
 
 from datetime import datetime
 
@@ -232,10 +232,10 @@ class TagsDiscussionMixin(DiscussionFromBulk):
         return self.attributes.get("canTag", False)
 
 
-    def get_tags(self) -> List[Tag]:
-        all_tags = [] # type: List[Tag]
+    def get_tags(self) -> list[Tag]:
+        all_tags = [] # type: list[Tag]
         seen = set()
-        tags = self.relationships.get("tags", {}).get("data", [{}]) # type: List[dict]
+        tags = self.relationships.get("tags", {}).get("data", [{}]) # type: list[dict]
 
         for raw_tag in tags:
             id = raw_tag.get("id", None)

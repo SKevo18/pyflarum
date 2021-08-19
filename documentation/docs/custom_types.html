@@ -25,35 +25,33 @@
 <p>Custom types for pyFlarum.</p>
 <h3 id="types">Types:</h3>
 <ul>
-<li><code>AnyUser</code> - <code>User</code>, <code>UserFromBulk</code>, <code>UserFromNotification</code></li>
-<li><code>AnyDiscussion</code> - <code>Discussion</code>, <code>DiscussionFromBulk</code>, <code>DiscussionFromNotification</code></li>
-<li><code>AnyPost</code> - <code>Post</code>, <code>PostFromBulk</code>, <code>PostFromNotification</code></li>
+<li><code>AnyUser</code> - <code>User</code> | <code>UserFromBulk</code> | <code>UserFromNotification</code></li>
+<li><code>AnyDiscussion</code> - <code>Discussion</code> | <code>DiscussionFromBulk</code> | <code>DiscussionFromNotification</code></li>
+<li><code>AnyPost</code> - <code>Post</code> | <code>PostFromBulk</code> | <code>PostFromNotification</code></li>
 </ul>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\custom_types.py#L0-L19" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\custom_types.py#L0-L17" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">&#34;&#34;&#34;
     Custom types for pyFlarum.
 
     ### Types:
-    - `AnyUser` - `User`, `UserFromBulk`, `UserFromNotification`
-    - `AnyDiscussion` - `Discussion`, `DiscussionFromBulk`, `DiscussionFromNotification`
-    - `AnyPost` - `Post`, `PostFromBulk`, `PostFromNotification`
+    - `AnyUser` - `User` | `UserFromBulk` | `UserFromNotification`
+    - `AnyDiscussion` - `Discussion` | `DiscussionFromBulk` | `DiscussionFromNotification`
+    - `AnyPost` - `Post` | `PostFromBulk` | `PostFromNotification`
 &#34;&#34;&#34;
 
-from typing import Union, TYPE_CHECKING
-
-
+from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from .flarum.core.users import User, UserFromBulk, UserFromNotification
     from .flarum.core.discussions import Discussion, DiscussionFromBulk, DiscussionFromNotification
     from .flarum.core.posts import Post, PostFromBulk, PostFromNotification, PostFromDiscussion
 
-    AnyUser = Union[User, UserFromBulk, UserFromNotification]
-    AnyDiscussion = Union[Discussion, DiscussionFromBulk, DiscussionFromNotification]
-    AnyPost = Union[Post, PostFromBulk, PostFromNotification, PostFromDiscussion]</code></pre>
+    AnyUser: &#39;User | UserFromBulk | UserFromNotification&#39;
+    AnyDiscussion: &#39;Discussion | DiscussionFromBulk | DiscussionFromNotification&#39;
+    AnyPost:  &#39;Post | PostFromBulk | PostFromNotification | PostFromDiscussion&#39;</code></pre>
 </details>
 </section>
 <section>

@@ -1,8 +1,3 @@
-from typing import Union
-
-from normalize_path import normalize_path
-normalize_path()
-
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -25,7 +20,7 @@ EXTENSIONS = [
     Flarum_Likes.LikesExtension
 ]
 
-user = FlarumUser(forum_url=os.environ['forum_url'], username_or_email="test", password=os.environ['account_password'], extensions=EXTENSIONS) # type: Union[watch.WatchFlarumUserMixin, commands.CommandsFlarumUserMixin]
+user = FlarumUser(forum_url=os.environ['forum_url'], username_or_email="test", password=os.environ['account_password'], extensions=EXTENSIONS) # type: watch.WatchFlarumUserMixin | commands.CommandsFlarumUserMixin
 api_key = os.environ['openweather_api_key']
 
 weather_post = """**{city}**, `{country}` has **{weather}** and __{temperature} °C__"""

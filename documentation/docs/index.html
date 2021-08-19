@@ -29,6 +29,7 @@
 <p>Thus, I present to you my first (real) Python package - <a href="https://pypi.org/project/pyFlarum">pyFlarum</a>.</p>
 <h2 id="useful-links">🔗 Useful links:</h2>
 <ul>
+<li><a href="https://github.com/CWKevo/pyflarum/releases">❗ Changelog</a></li>
 <li><a href="https://discuss.flarum.org/d/28221">🗣 Discuss</a></li>
 <li><a href="https://cwkevo.github.io/pyflarum/docs/">📚 Documentation</a></li>
 <li><a href="https://github.com/CWKevo/pyflarum">👨‍💻 GitHub repository</a></li>
@@ -42,7 +43,7 @@
 <li>The data is fetched and stored as JSON, but the keys can be retrieved by using class properties, which also handles type conversions.</li>
 <li>This means that instead of using <code>discussion['data']['attributes']['title']</code>, it is as simple as <code>discussion.title</code>.</li>
 <li>Flarum's JSON API works in saving mode. What I mean is that when you fetch a discussion from notification, not all of the discussion's data is present in the JSON. On the other hand, obtaining the discussion directly by it's ID results in a much detailed JSON.</li>
-<li>To save you headaches, pyFlarum obviously handles this too and all of the objects have different hierarchy and inheritance. Example: <code>DiscussionFromNotification</code> is parent for <code>DiscussionFromBulk</code> and that's parent for <code>Discussion</code>, where <code>Discussion</code> object is discussion obtained directly from API, and therefore logically contains all properties of the previous objects (and JSON). This is all nicely rendered thanks to your editor's linting and type hints, so you won't make a mistake by accessing unexisting properties from parent objects. More about pyFlarum's inheritance system and it's flaws can be found <a href="https://cwkevo.github.io/pyflarum/docs/#class-inheritance">here</a>.</li>
+<li>To save you headaches, pyFlarum obviously handles this too and all of the objects have different hierarchy and inheritance. Example: <code>DiscussionFromNotification</code> is parent for <code>DiscussionFromBulk</code> and that's parent for <code><a title="pyflarum.Discussion" href="#pyflarum.Discussion">Discussion</a></code>, where <code><a title="pyflarum.Discussion" href="#pyflarum.Discussion">Discussion</a></code> object is discussion obtained directly from API, and therefore logically contains all properties of the previous objects (and JSON). This is all nicely rendered thanks to your editor's linting and type hints, so you won't make a mistake by accessing unexisting properties from parent objects. More about pyFlarum's inheritance system and it's flaws can be found <a href="https://cwkevo.github.io/pyflarum/docs/#class-inheritance">here</a>.</li>
 </ul>
 <h2 id="quickstart">🚀 Quickstart:</h2>
 <h3 id="installation">📀 Installation:</h3>
@@ -137,7 +138,7 @@ USER = FlarumUser(
 <p>The cache really makes a difference and can speed requests by up to 10x! But I decided to make it optional, as it is not ideal for frequent API calls (e. g. watching for notifications/mentions to respond to user's commands - yes, that's possible with <a href="https://github.com/CWKevo/pyflarum/blob/main/tests/watch_for_commands.py">the commands and watch extensions</a>)</p>
 <h2 id="extensions">🧩 Extensions</h2>
 <p>Similarly to <a href="https://discuss.flarum.org/t/extensions">Flarum</a>, pyFlarum also works around the concept of <a href="https://cwkevo.github.io/pyflarum/docs/extensions/index.html">extensions</a>.</p>
-<p>These can be imported and included in your <code>FlarumUser</code> object as a list of extension classes:</p>
+<p>These can be imported and included in your <code><a title="pyflarum.FlarumUser" href="#pyflarum.FlarumUser">FlarumUser</a></code> object as a list of extension classes:</p>
 <pre><code class="language-python">from pyflarum import FlarumUser
 from pyflarum.extensions.flarum.core import Flarum_Likes
 
@@ -152,7 +153,7 @@ USER = FlarumUser(
 </code></pre>
 <h3 id="dealing-with-type-hints">🐲 Dealing with type hints</h3>
 <p>I really tried to make this work, but I couldn't. In case you haven't head about them, read <a href="https://docs.python.org/3/library/typing.html">this</a>. Basically, they help you read your code before it's run.</p>
-<p>The thing is, extensions work on principe of <a href="https://stackoverflow.com/questions/5626193/what-is-monkey-patching">monkey-patching</a>. When you create a <code>FlarumUser</code> object with extensions, the mixins (classes of properties and functions) of that extensions are copied to the main <code>FlarumUser</code> class (or others). And there is no way for your editor to handle this (or at least, I haven't found a way around this - if you do, that would be amazing).</p>
+<p>The thing is, extensions work on principe of <a href="https://stackoverflow.com/questions/5626193/what-is-monkey-patching">monkey-patching</a>. When you create a <code><a title="pyflarum.FlarumUser" href="#pyflarum.FlarumUser">FlarumUser</a></code> object with extensions, the mixins (classes of properties and functions) of that extensions are copied to the main <code><a title="pyflarum.FlarumUser" href="#pyflarum.FlarumUser">FlarumUser</a></code> class (or others). And there is no way for your editor to handle this (or at least, I haven't found a way around this - if you do, that would be amazing).</p>
 <p>The only option for now is to type hint the mixins directly, to make your editor recognize also the functions and properties from the extension:</p>
 <p>Example:</p>
 <pre><code class="language-python">from pyflarum import FlarumUser
@@ -173,7 +174,7 @@ discussion.isApproved # &lt;- no syntax highlighting
 discussion.isApproved # &lt;- syntax highlighting works
 </code></pre>
 <blockquote>
-<p><strong>Note:</strong> The <code>Flarum_Approval</code> extension contains only one mixin for discussions: <code>Flarum_Approval.ApprovalDiscussionFromNotificationMixin</code>. Since this is a parent of <code>Discussion</code> because of the <a href="#⬆-class-inheritance">inheritance</a>, you can type-hint just that for it to work (no <code>Union</code> from <a href="https://docs.python.org/3/library/typing.html">typing</a> is required). You can check the <a href="https://cwkevo.github.io/pyflarum/docs/extensions">extensions documentation</a> for list of available mixins and extensions, or the <a href="https://github.com/CWKevo/pyflarum/tree/main/pyflarum/extensions">source code</a>.</p>
+<p><strong>Note:</strong> The <code>Flarum_Approval</code> extension contains only one mixin for discussions: <code>Flarum_Approval.ApprovalDiscussionFromNotificationMixin</code>. Since this is a parent of <code><a title="pyflarum.Discussion" href="#pyflarum.Discussion">Discussion</a></code> because of the <a href="#⬆-class-inheritance">inheritance</a>, you can type-hint just that for it to work (no <code>Union</code> from <a href="https://docs.python.org/3/library/typing.html">typing</a> is required). You can check the <a href="https://cwkevo.github.io/pyflarum/docs/extensions">extensions documentation</a> for list of available mixins and extensions, or the <a href="https://github.com/CWKevo/pyflarum/tree/main/pyflarum/extensions">source code</a>.</p>
 </blockquote>
 <h2 id="class-inheritance">⬆ Class Inheritance</h2>
 <p>pyFlarum's inhertitance needed to be wrapped around Flarum's API, so that these two can work together. To understand this system, we need to first understand how Flarum's API works:</p>
@@ -195,7 +196,7 @@ Notifications       &gt;&gt;       Notification       &gt;&gt;       PostFromNot
 <pre><code class="language-python">for discussion in USER.all_discussions():
     print(type(discussion)) # &lt;class 'DiscussionFromBulk'&gt;
 </code></pre>
-<p>Note how the type is <code>DiscussionFromBulk</code> instead of <code>Discussion</code>? That's because <code>DiscussionFromBulk</code> doesn't contain full data like <code>Discussion</code> does.</p>
+<p>Note how the type is <code>DiscussionFromBulk</code> instead of <code><a title="pyflarum.Discussion" href="#pyflarum.Discussion">Discussion</a></code>? That's because <code>DiscussionFromBulk</code> doesn't contain full data like <code><a title="pyflarum.Discussion" href="#pyflarum.Discussion">Discussion</a></code> does.</p>
 <p>The data gets limited for Flarum's purposes. For example, you don't need all posts in order to render the discussions at the front page - so Flarum omits the posts from the data. You need to make additional API call to fetch the full data (with posts):</p>
 <pre><code class="language-python"># Wrong:
 for discussion in USER.all_discussions():
@@ -264,7 +265,7 @@ usage of pyFlarum during testing, but there's perhaps a very tiny chance that th
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\__init__.py#L0-L43" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\__init__.py#L0-L34" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">from pathlib import Path
 
@@ -276,12 +277,15 @@ from .flarum.core.discussions import Discussion
 from .flarum.core.filters import Filter
 
 
+__all__ = [&#39;FlarumUser&#39;, &#39;FlarumError&#39;, &#39;Discussion&#39;, &#39;Filter&#39;]
+
+
 __description__ = &#34;An unofficial Python package for manipulating with Flarum&#39;s API&#34;
 __author__      = &#34;SKevo&#34;
 __copyright__   = &#34;Copyright 2021, SKevo&#34;
 __credits__     = [&#34;SKevo&#34;]
 __license__     = &#34;GPLv3&#34;
-__version__     = &#34;v1.0.7-beta&#34;
+__version__     = &#34;v1.0.8-beta&#34;
 __maintainer__  = &#34;SKevo&#34;
 __email__       = &#34;me@kevo.link&#34;
 __status__      = &#34;4 - Beta&#34;
@@ -289,27 +293,15 @@ __status__      = &#34;4 - Beta&#34;
 # Default readme:
 __readme__ = &#34;(c) SKevo&#34;
 
-# Overwrite docstring, so pdoc can render it nicely
+# Overwrite docstring, so pdoc can render it:
 try:
     with open(f&#34;{Path(__file__).parent.parent.absolute()}{Path(&#39;/README.md&#39;)}&#34;, &#39;r&#39;, encoding=&#34;UTF-8&#34;) as readme:
         __readme__ = readme.read()
 
-except FileNotFoundError:
+except:
     pass
 
-
-__doc__ = __readme__
-
-
-if __name__ == &#34;__main__&#34;:
-    from typing import Union
-
-    _: Union[
-        FlarumUser,
-        FlarumError,
-        Discussion,
-        Filter
-    ]</code></pre>
+__doc__ = __readme__</code></pre>
 </details>
 </section>
 <section>
@@ -346,6 +338,1598 @@ if __name__ == &#34;__main__&#34;:
 <section>
 </section>
 <section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="pyflarum.Discussion"><code class="flex name class">
+<span>class <span class="ident">Discussion</span></span>
+<span>(</span><span>user: <a title="pyflarum.FlarumUser" href="#pyflarum.FlarumUser">FlarumUser</a>, _fetched_data: dict)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>A Flarum discussion, obtained directly from the API by ID.</p>
+<p>This is the top-level discussion object that contains all the properties of a discussion, and
+inherits properties from all previous discussion-like objects.</p>
+<p>Learn more about inheritance <a href="https://cwkevo.github.io/pyflarum/docs/#class-inheritance">here</a></p>
+<h3 id="parameters">Parameters:</h3>
+<ul>
+<li><code>user</code> - the <code><a title="pyflarum.session.FlarumUser" href="session.html#pyflarum.session.FlarumUser">FlarumUser</a></code> object, required to make additional API calls.</li>
+<li><code>_fetched_data</code> - the JSON data that was fetched from the API.</li>
+</ul>
+<p>I strongly discourage from forging objects this way, unless you are creating an extension.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\discussions.py#L467-L556" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">class Discussion(DiscussionFromBulk):
+    &#34;&#34;&#34;
+        A Flarum discussion, obtained directly from the API by ID.
+        
+        This is the top-level discussion object that contains all the properties of a discussion, and
+        inherits properties from all previous discussion-like objects.
+
+        Learn more about inheritance [here](https://cwkevo.github.io/pyflarum/docs/#class-inheritance)
+    &#34;&#34;&#34;
+
+
+    @property
+    def included(self) -&gt; list[dict]:
+        &#34;&#34;&#34;
+            Returns raw list of JSON included data.
+
+            Learn more about included data [here](https://cwkevo.github.io/pyflarum/docs/#included-data)
+        &#34;&#34;&#34;
+
+        return self.get(&#34;included&#34;, [{}])
+
+
+    def get_author(self, mode: &#39;Any | Literal[&#34;first_number&#34;]&#39;=&#39;first_number&#39;) -&gt; UserFromBulk:
+        &#34;&#34;&#34;
+            Obtains the discussion&#39;s author, AKA. the author
+            of the post with number 1 in a discussion.
+
+            `mode` allows you to specify the mode that is used to determine whether or not the post is the first post
+            of the discussion.
+
+            - `&#39;first_number&#39;` - checks if the number of the post is 1 - if yes, it fetches that post&#39;s author.
+            - `Any` - if anything other than `&#39;first_number&#39;` is passed (e. g. `&#39;first_user``, but this can be anything), then this
+            returns the author of the first post in the JSON.
+            I am not sure how reliable is this, and whether or not the posts are actually ordered correctly in the API, so it&#39;s
+            probably a good idea to also check if the number of the post is 1 - but then again, what if the first post gets removed?
+        &#34;&#34;&#34;
+
+        for post in self.get_posts():
+            if mode == &#39;first_number&#39;:
+                if post.number == 1:
+                    author = post.get_author()
+
+                    return author
+
+            else:
+                author = post.get_author()
+                return author
+
+        return None
+
+
+    def get_posts(self) -&gt; list[PostFromBulk]:
+        &#34;&#34;&#34;
+            Returns a list of `pyflarum.flarum.core.posts.PostFromBulk` objects.
+
+            It might seem strange why this doesn&#39;t return `pyflarum.flarum.core.posts.PostFromDiscussion` instead,
+            but these posts are in fact identical to `pyflarum.flarum.core.posts.PostFromBulk`, that&#39;s why they are returned.
+        &#34;&#34;&#34;
+
+        all_posts = list() # type: list[PostFromBulk]
+        raw_posts = self.relationships.get(&#34;posts&#34;, {}).get(&#34;data&#34;, [{}]) # type: list[dict]
+
+        for raw_post in raw_posts:
+            if raw_post.get(&#34;type&#34;, None) == &#39;posts&#39;:
+                id_to_find = raw_post.get(&#34;id&#34;, None)
+
+                if id_to_find:
+                    for possible_raw_post in self.included:
+                        if (possible_raw_post.get(&#34;type&#34;, None) == &#39;posts&#39;) and (possible_raw_post.get(&#34;id&#34;, None) == id_to_find):
+                            post = PostFromBulk(user=self.user, _fetched_data=dict(data=possible_raw_post, _parent_included=self.included))
+
+                            all_posts.append(post)
+
+        return all_posts
+
+
+    def get_first_post(self) -&gt; NoReturn:
+        &#34;&#34;&#34;
+            The `Discussion` object does not have the first post&#39;s JSON data in it&#39;s own JSON. Because of Python&#39;s subclass inheritance, this
+            function was included in `Discussion`, but it does not work!
+
+            ### Alternative:
+
+            ```python
+            discussion = user.get_discussion_by_id(1)
+            first_post = discussion.get_posts()[0]
+            ```
+        &#34;&#34;&#34;
+
+        raise NotImplementedError(&#34;`Discussion` does not have the first post data to fetch. Please, use the snippet in this function&#39;s docstring instead to obtain the first post.&#34;)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></li>
+<li><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification" href="flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromNotification">DiscussionFromNotification</a></li>
+<li><a title="pyflarum.flarum.core.BaseFlarumIndividualObject" href="flarum/core/index.html#pyflarum.flarum.core.BaseFlarumIndividualObject">BaseFlarumIndividualObject</a></li>
+<li><a title="pyflarum.flarum.core.BaseFlarumObject" href="flarum/core/index.html#pyflarum.flarum.core.BaseFlarumObject">BaseFlarumObject</a></li>
+<li>builtins.dict</li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="pyflarum.Discussion.attributes"><code class="name">var <span class="ident">attributes</span> : dict</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.attributes" href="flarum/core/index.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.attributes">attributes</a></code>
+</p>
+<div class="desc inherited"><p>Raw <code>dict</code> of the object's attributes.</p></div>
+</dd>
+<dt id="pyflarum.Discussion.canDelete"><code class="name">var <span class="ident">canDelete</span> : bool</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.canDelete" href="flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.canDelete">canDelete</a></code>
+</p>
+<div class="desc inherited"><p>Whether or not you are able to delete the discussion.</p></div>
+</dd>
+<dt id="pyflarum.Discussion.canHide"><code class="name">var <span class="ident">canHide</span> : bool</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.canHide" href="flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.canHide">canHide</a></code>
+</p>
+<div class="desc inherited"><p>Whether or not you are able to hide the discussion.</p></div>
+</dd>
+<dt id="pyflarum.Discussion.canRename"><code class="name">var <span class="ident">canRename</span> : bool</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.canRename" href="flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.canRename">canRename</a></code>
+</p>
+<div class="desc inherited"><p>Whether or not you are able to rename the discussion.</p></div>
+</dd>
+<dt id="pyflarum.Discussion.canReply"><code class="name">var <span class="ident">canReply</span> : bool</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.canReply" href="flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.canReply">canReply</a></code>
+</p>
+<div class="desc inherited"><p>Whether or not you are able to create a post in the discussion.</p></div>
+</dd>
+<dt id="pyflarum.Discussion.commentCount"><code class="name">var <span class="ident">commentCount</span> : Optional[str]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.commentCount" href="flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.commentCount">commentCount</a></code>
+</p>
+<div class="desc inherited"><p>Obtains the comment count of the discussion …</p></div>
+</dd>
+<dt id="pyflarum.Discussion.createdAt"><code class="name">var <span class="ident">createdAt</span> : Optional[datetime.datetime]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.createdAt" href="flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.createdAt">createdAt</a></code>
+</p>
+<div class="desc inherited"><p>The <code>datetime</code> of when this discussion was created at.</p></div>
+</dd>
+<dt id="pyflarum.Discussion.data"><code class="name">var <span class="ident">data</span> : list[dict] | dict</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.data" href="flarum/core/index.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.data">data</a></code>
+</p>
+<div class="desc inherited"><p>A raw <code>dict</code> of the object's data.</p></div>
+</dd>
+<dt id="pyflarum.Discussion.id"><code class="name">var <span class="ident">id</span> : Optional[int]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.id" href="flarum/core/index.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.id">id</a></code>
+</p>
+<div class="desc inherited"><p>The <code>int</code> ID of the object. This should always be unique for the object's type.</p></div>
+</dd>
+<dt id="pyflarum.Discussion.included"><code class="name">var <span class="ident">included</span> : list</code></dt>
+<dd>
+<div class="desc"><p>Returns raw list of JSON included data.</p>
+<p>Learn more about included data <a href="https://cwkevo.github.io/pyflarum/docs/#included-data">here</a></p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\discussions.py#L478-L486" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">@property
+def included(self) -&gt; list[dict]:
+    &#34;&#34;&#34;
+        Returns raw list of JSON included data.
+
+        Learn more about included data [here](https://cwkevo.github.io/pyflarum/docs/#included-data)
+    &#34;&#34;&#34;
+
+    return self.get(&#34;included&#34;, [{}])</code></pre>
+</details>
+</dd>
+<dt id="pyflarum.Discussion.isHidden"><code class="name">var <span class="ident">isHidden</span> : bool</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.isHidden" href="flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.isHidden">isHidden</a></code>
+</p>
+<div class="desc inherited"><p>Whether or not the discussion is hidden. This happens when
+you delete the discussion for the first time.</p></div>
+</dd>
+<dt id="pyflarum.Discussion.lastPostNumber"><code class="name">var <span class="ident">lastPostNumber</span> : Optional[int]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.lastPostNumber" href="flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.lastPostNumber">lastPostNumber</a></code>
+</p>
+<div class="desc inherited"><p>Returns the number of the newest post in the
+discussion.</p></div>
+</dd>
+<dt id="pyflarum.Discussion.lastPostedAt"><code class="name">var <span class="ident">lastPostedAt</span> : Optional[datetime.datetime]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.lastPostedAt" href="flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.lastPostedAt">lastPostedAt</a></code>
+</p>
+<div class="desc inherited"><p>The <code>datetime</code> of when the last post in this
+discussion was made, e. g. when was this
+discussion last updated at.</p></div>
+</dd>
+<dt id="pyflarum.Discussion.lastReadAt"><code class="name">var <span class="ident">lastReadAt</span> : Optional[datetime.datetime]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.lastReadAt" href="flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.lastReadAt">lastReadAt</a></code>
+</p>
+<div class="desc inherited"><p>The <code>datetime</code> when you last read that discussion.</p></div>
+</dd>
+<dt id="pyflarum.Discussion.lastReadPostNumber"><code class="name">var <span class="ident">lastReadPostNumber</span> : Optional[int]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.lastReadPostNumber" href="flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.lastReadPostNumber">lastReadPostNumber</a></code>
+</p>
+<div class="desc inherited"><p>Number of a post that you've last read in the discussion.</p></div>
+</dd>
+<dt id="pyflarum.Discussion.participantCount"><code class="name">var <span class="ident">participantCount</span> : Optional[str]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.participantCount" href="flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.participantCount">participantCount</a></code>
+</p>
+<div class="desc inherited"><p>The participant count of the discussion. This is
+the number of all users that have participated in a
+discussion by posting.</p></div>
+</dd>
+<dt id="pyflarum.Discussion.relationships"><code class="name">var <span class="ident">relationships</span> : dict</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.relationships" href="flarum/core/index.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.relationships">relationships</a></code>
+</p>
+<div class="desc inherited"><p>Raw <code>dict</code> of the object's relationships with
+other objects …</p></div>
+</dd>
+<dt id="pyflarum.Discussion.slug"><code class="name">var <span class="ident">slug</span> : Optional[str]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.slug" href="flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.slug">slug</a></code>
+</p>
+<div class="desc inherited"><p>Returns the discussion's slug
+(consists of ID and dash separated words from discussion's title,
+e. g. <code>123-some-title</code>).</p></div>
+</dd>
+<dt id="pyflarum.Discussion.title"><code class="name">var <span class="ident">title</span> : Optional[str]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.title" href="flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.title">title</a></code>
+</p>
+<div class="desc inherited"><p>Returns the discussion's title.</p></div>
+</dd>
+<dt id="pyflarum.Discussion.type"><code class="name">var <span class="ident">type</span> : Optional[str]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.type" href="flarum/core/index.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.type">type</a></code>
+</p>
+<div class="desc inherited"><p>The type of the object …</p></div>
+</dd>
+<dt id="pyflarum.Discussion.url"><code class="name">var <span class="ident">url</span></code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.url" href="flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.url">url</a></code>
+</p>
+<div class="desc inherited"><p>Returns the discussion's URL (including slug, if it's available).</p></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="pyflarum.Discussion.delete"><code class="name flex">
+<span>def <span class="ident">delete</span></span>(<span>self, force: bool = False) ‑> bool</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.delete" href="flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.delete">delete</a></code>
+</p>
+<div class="desc inherited"><p>Scronches the discussion forever. This cannot be reverted …</p></div>
+</dd>
+<dt id="pyflarum.Discussion.get_author"><code class="name flex">
+<span>def <span class="ident">get_author</span></span>(<span>self, mode: Any | Literal["first_number"] = 'first_number') ‑> <a title="pyflarum.flarum.core.users.UserFromBulk" href="flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Obtains the discussion's author, AKA. the author
+of the post with number 1 in a discussion.</p>
+<p><code>mode</code> allows you to specify the mode that is used to determine whether or not the post is the first post
+of the discussion.</p>
+<ul>
+<li><code>'first_number'</code> - checks if the number of the post is 1 - if yes, it fetches that post's author.</li>
+<li><code>Any</code> - if anything other than <code>'first_number'</code> is passed (e. g. `'first_user``, but this can be anything), then this
+returns the author of the first post in the JSON.
+I am not sure how reliable is this, and whether or not the posts are actually ordered correctly in the API, so it's
+probably a good idea to also check if the number of the post is 1 - but then again, what if the first post gets removed?</li>
+</ul></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\discussions.py#L489-L515" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def get_author(self, mode: &#39;Any | Literal[&#34;first_number&#34;]&#39;=&#39;first_number&#39;) -&gt; UserFromBulk:
+    &#34;&#34;&#34;
+        Obtains the discussion&#39;s author, AKA. the author
+        of the post with number 1 in a discussion.
+
+        `mode` allows you to specify the mode that is used to determine whether or not the post is the first post
+        of the discussion.
+
+        - `&#39;first_number&#39;` - checks if the number of the post is 1 - if yes, it fetches that post&#39;s author.
+        - `Any` - if anything other than `&#39;first_number&#39;` is passed (e. g. `&#39;first_user``, but this can be anything), then this
+        returns the author of the first post in the JSON.
+        I am not sure how reliable is this, and whether or not the posts are actually ordered correctly in the API, so it&#39;s
+        probably a good idea to also check if the number of the post is 1 - but then again, what if the first post gets removed?
+    &#34;&#34;&#34;
+
+    for post in self.get_posts():
+        if mode == &#39;first_number&#39;:
+            if post.number == 1:
+                author = post.get_author()
+
+                return author
+
+        else:
+            author = post.get_author()
+            return author
+
+    return None</code></pre>
+</details>
+</dd>
+<dt id="pyflarum.Discussion.get_first_post"><code class="name flex">
+<span>def <span class="ident">get_first_post</span></span>(<span>self) ‑> NoReturn</span>
+</code></dt>
+<dd>
+<div class="desc"><p>The <code><a title="pyflarum.Discussion" href="#pyflarum.Discussion">Discussion</a></code> object does not have the first post's JSON data in it's own JSON. Because of Python's subclass inheritance, this
+function was included in <code><a title="pyflarum.Discussion" href="#pyflarum.Discussion">Discussion</a></code>, but it does not work!</p>
+<h3 id="alternative">Alternative:</h3>
+<pre><code class="language-python">discussion = user.get_discussion_by_id(1)
+first_post = discussion.get_posts()[0]
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\discussions.py#L543-L556" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def get_first_post(self) -&gt; NoReturn:
+    &#34;&#34;&#34;
+        The `Discussion` object does not have the first post&#39;s JSON data in it&#39;s own JSON. Because of Python&#39;s subclass inheritance, this
+        function was included in `Discussion`, but it does not work!
+
+        ### Alternative:
+
+        ```python
+        discussion = user.get_discussion_by_id(1)
+        first_post = discussion.get_posts()[0]
+        ```
+    &#34;&#34;&#34;
+
+    raise NotImplementedError(&#34;`Discussion` does not have the first post data to fetch. Please, use the snippet in this function&#39;s docstring instead to obtain the first post.&#34;)</code></pre>
+</details>
+</dd>
+<dt id="pyflarum.Discussion.get_full_data"><code class="name flex">
+<span>def <span class="ident">get_full_data</span></span>(<span>self) ‑> <a title="pyflarum.flarum.core.discussions.Discussion" href="flarum/core/discussions.html#pyflarum.flarum.core.discussions.Discussion">Discussion</a></span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.get_full_data" href="flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.get_full_data">get_full_data</a></code>
+</p>
+<div class="desc inherited"><p>Makes an additional API call to fetch the full data of the discussion, e. g.
+the top-level discussion class (<code><a title="pyflarum.Discussion" href="#pyflarum.Discussion">Discussion</a></code>) …</p></div>
+</dd>
+<dt id="pyflarum.Discussion.get_last_posted_user"><code class="name flex">
+<span>def <span class="ident">get_last_posted_user</span></span>(<span>self) ‑> Optional[<a title="pyflarum.flarum.core.users.UserFromNotification" href="flarum/core/users.html#pyflarum.flarum.core.users.UserFromNotification">UserFromNotification</a>]</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.get_last_posted_user" href="flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.get_last_posted_user">get_last_posted_user</a></code>
+</p>
+<div class="desc inherited"><p>Obtains the user that posted the latest post in the discussion …</p></div>
+</dd>
+<dt id="pyflarum.Discussion.get_posts"><code class="name flex">
+<span>def <span class="ident">get_posts</span></span>(<span>self) ‑> list</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns a list of <code><a title="pyflarum.flarum.core.posts.PostFromBulk" href="flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromBulk">PostFromBulk</a></code> objects.</p>
+<p>It might seem strange why this doesn't return <code><a title="pyflarum.flarum.core.posts.PostFromDiscussion" href="flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromDiscussion">PostFromDiscussion</a></code> instead,
+but these posts are in fact identical to <code><a title="pyflarum.flarum.core.posts.PostFromBulk" href="flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromBulk">PostFromBulk</a></code>, that's why they are returned.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\discussions.py#L518-L540" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def get_posts(self) -&gt; list[PostFromBulk]:
+    &#34;&#34;&#34;
+        Returns a list of `pyflarum.flarum.core.posts.PostFromBulk` objects.
+
+        It might seem strange why this doesn&#39;t return `pyflarum.flarum.core.posts.PostFromDiscussion` instead,
+        but these posts are in fact identical to `pyflarum.flarum.core.posts.PostFromBulk`, that&#39;s why they are returned.
+    &#34;&#34;&#34;
+
+    all_posts = list() # type: list[PostFromBulk]
+    raw_posts = self.relationships.get(&#34;posts&#34;, {}).get(&#34;data&#34;, [{}]) # type: list[dict]
+
+    for raw_post in raw_posts:
+        if raw_post.get(&#34;type&#34;, None) == &#39;posts&#39;:
+            id_to_find = raw_post.get(&#34;id&#34;, None)
+
+            if id_to_find:
+                for possible_raw_post in self.included:
+                    if (possible_raw_post.get(&#34;type&#34;, None) == &#39;posts&#39;) and (possible_raw_post.get(&#34;id&#34;, None) == id_to_find):
+                        post = PostFromBulk(user=self.user, _fetched_data=dict(data=possible_raw_post, _parent_included=self.included))
+
+                        all_posts.append(post)
+
+    return all_posts</code></pre>
+</details>
+</dd>
+<dt id="pyflarum.Discussion.hide"><code class="name flex">
+<span>def <span class="ident">hide</span></span>(<span>self, force: bool = False)</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.hide" href="flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.hide">hide</a></code>
+</p>
+<div class="desc inherited"><p>Hides the discussion from the sight of other unprivileged users
+that are not worthy to view such thread.</p></div>
+</dd>
+<dt id="pyflarum.Discussion.restore"><code class="name flex">
+<span>def <span class="ident">restore</span></span>(<span>self, force: bool = False)</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.restore" href="flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.restore">restore</a></code>
+</p>
+<div class="desc inherited"><p>Restores the discussion (unhides it), bringing it back to life.</p></div>
+</dd>
+<dt id="pyflarum.Discussion.unhide"><code class="name flex">
+<span>def <span class="ident">unhide</span></span>(<span>self, force: bool = False)</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.unhide" href="flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.unhide">unhide</a></code>
+</p>
+<div class="desc inherited"><p>Restores the discussion (unhides it), bringing it back to life.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="pyflarum.Filter"><code class="flex name class">
+<span>class <span class="ident">Filter</span></span>
+<span>(</span><span>order_by: Optional[Literal['commentCount', '-commentCount', 'createdAt', '-createdAt']] = None, query: Optional[str] = None, limit: int = 20, page: Optional[int] = None, include: Optional[list[str]] = None, additional_data: Optional[dict] = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Represents a Flarum API filter as a <code>dict</code>.</p>
+<p>It allows you to filter discussions without having to manually specify URL parameters.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\filters.py#L4-L52" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">class Filter:
+    &#34;&#34;&#34;
+        Represents a Flarum API filter as a `dict`.
+
+        It allows you to filter discussions without having to manually specify URL parameters.
+    &#34;&#34;&#34;
+
+    def __init__(self, order_by: Optional[Literal[&#39;commentCount&#39;, &#39;-commentCount&#39;, &#39;createdAt&#39;, &#39;-createdAt&#39;]]=None, query: Optional[str]=None, limit: int=20, page: Optional[int]=None, include: Optional[list[str]]=None, additional_data: Optional[dict]=None):
+        self.order_by = order_by
+        self.query = query
+        self.limit = limit
+        self.page = page
+        self.include = include
+        self.additional_data = additional_data
+
+        self.as_json = self.to_dict
+
+
+    @property
+    def to_dict(self) -&gt; dict:
+        &#34;&#34;&#34;
+            Converts the filter to a `dict`, so that
+            it can be sent to the API.
+
+            An extension might add additional data during runtime.
+        &#34;&#34;&#34;
+
+        __data = {}
+
+        if self.order_by:
+            __data[&#34;sort&#34;] = self.order_by
+
+        if self.query:
+            __data[&#34;filter[q]&#34;] = self.query
+
+        if self.limit:
+            __data[&#34;page[limit]&#34;] = self.limit
+
+        if self.page:
+            __data[&#34;page[offset]&#34;] = self.page * self.limit
+
+        if self.include:
+            __data[&#34;include&#34;] = &#39;,&#39;.join(self.include)
+
+
+        if self.additional_data:
+            __data.update(self.additional_data)
+        
+        return __data</code></pre>
+</details>
+<h3>Instance variables</h3>
+<dl>
+<dt id="pyflarum.Filter.to_dict"><code class="name">var <span class="ident">to_dict</span> : dict</code></dt>
+<dd>
+<div class="desc"><p>Converts the filter to a <code>dict</code>, so that
+it can be sent to the API.</p>
+<p>An extension might add additional data during runtime.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\filters.py#L22-L52" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">@property
+def to_dict(self) -&gt; dict:
+    &#34;&#34;&#34;
+        Converts the filter to a `dict`, so that
+        it can be sent to the API.
+
+        An extension might add additional data during runtime.
+    &#34;&#34;&#34;
+
+    __data = {}
+
+    if self.order_by:
+        __data[&#34;sort&#34;] = self.order_by
+
+    if self.query:
+        __data[&#34;filter[q]&#34;] = self.query
+
+    if self.limit:
+        __data[&#34;page[limit]&#34;] = self.limit
+
+    if self.page:
+        __data[&#34;page[offset]&#34;] = self.page * self.limit
+
+    if self.include:
+        __data[&#34;include&#34;] = &#39;,&#39;.join(self.include)
+
+
+    if self.additional_data:
+        __data.update(self.additional_data)
+    
+    return __data</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyflarum.FlarumError"><code class="flex name class">
+<span>class <span class="ident">FlarumError</span></span>
+<span>(</span><span>message: Optional[str] = None, status: Optional[int] = None, code: Optional[str] = None, details: Optional[str] = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Generic class for all Flarum related errors.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\error_handler.py#L9-L19" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">class FlarumError(Exception):
+    &#34;&#34;&#34;
+        Generic class for all Flarum related errors.
+    &#34;&#34;&#34;
+
+    def __init__(self, message: Optional[str]=None, status: Optional[int]=None, code: Optional[str]=None, details: Optional[str]=None):
+        self.status = status
+        self.code = code
+        self.details = details
+
+        return super().__init__(message)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="pyflarum.FlarumUser"><code class="flex name class">
+<span>class <span class="ident">FlarumUser</span></span>
+<span>(</span><span>extensions: Optional[list[<a title="pyflarum.extensions.ExtensionMixin" href="extensions/index.html#pyflarum.extensions.ExtensionMixin">ExtensionMixin</a>]] = None, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>The main object that carries the Flarum session.</p>
+<h3 id="parameters">Parameters:</h3>
+<ul>
+<li><code>forum_url</code> - the forum URL that you want the bot to fetch/update data from. This mustn't end with trailing slash (e. g.: <a href="https://domain.tld/">https://domain.tld/</a> - wrong; <a href="https://domain.tld">https://domain.tld</a> - correct).</li>
+<li><code>username_or_email</code> - optional. The username or E-mail address to log into. If <code>None</code>, then the bot doesn't login.</li>
+<li><code>password</code> - optional. The user's password. If <code>None</code>, then the bot doesn't login.</li>
+<li><code>api_endpoint</code> - the API endpoint of the forum, without slashes. This can be specified in Flarum's <code>config.php</code> and normally forums don't need to change the default <code>'api'</code></li>
+<li><code>user_agent</code> - the user agent that will be used to make all requests. Defaults to <code>pyflarum &lt;version&gt;</code>.</li>
+<li><code>session_object</code> - the <code>Session</code> object to make requests with. You can pass any object that supports all operations from the <a href="https://pypi.org/project/requests/">requests</a> library, check <a href="https://pypi.org/project/requests-cache/">requests_cache</a> as an example.</li>
+<li><code><a title="pyflarum.extensions" href="extensions/index.html">pyflarum.extensions</a></code> - a list of <code>ExtensionMixin</code> classes. These are monkey-patched on initialization. Learn more about <a href="https://cwkevo.github.io/pyflarum/docs/#extensions">extensions</a>.
+```</li>
+</ul></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\session.py#L133-L537" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">class FlarumUser(FlarumSession, dict):
+    def __init__(self, extensions: Optional[list[ExtensionMixin]]=None, **kwargs):
+        &#34;&#34;&#34;
+            ### Parameters:
+            - `forum_url` - the forum URL that you want the bot to fetch/update data from. This mustn&#39;t end with trailing slash (e. g.: https://domain.tld/ - wrong; https://domain.tld - correct).
+            - `username_or_email` - optional. The username or E-mail address to log into. If `None`, then the bot doesn&#39;t login.
+            - `password` - optional. The user&#39;s password. If `None`, then the bot doesn&#39;t login.
+            - `api_endpoint` - the API endpoint of the forum, without slashes. This can be specified in Flarum&#39;s `config.php` and normally forums don&#39;t need to change the default `&#39;api&#39;`
+            - `user_agent` - the user agent that will be used to make all requests. Defaults to `pyflarum &lt;version&gt;`.
+            - `session_object` - the `Session` object to make requests with. You can pass any object that supports all operations from the [requests](https://pypi.org/project/requests/) library, check [requests_cache](https://pypi.org/project/requests-cache/) as an example.
+            - `extensions` - a list of `ExtensionMixin` classes. These are monkey-patched on initialization. Learn more about [extensions](https://cwkevo.github.io/pyflarum/docs/#extensions).
+            ```
+        &#34;&#34;&#34;
+
+        self.extensions = extensions
+
+        if self.extensions:
+            for extension in self.extensions:
+                dependencies = extension.get_dependencies(extension) # type: dict
+
+                hard = dependencies.get(&#34;hard&#34;, None)
+                soft = dependencies.get(&#34;soft&#34;, None)
+
+                if hard and len(hard) &gt; 0:
+                    for hard_dependency in hard:
+                        if hard_dependency not in self.extensions:
+                            raise MissingExtensionError(f&#39;`{extension}` hardly depends on `{hard_dependency}`. Please, include that extension too in your extension list.&#39;)
+
+                extension.mixin(extension)
+
+                if soft and len(soft) &gt; 0:
+                    for soft_dependency in soft:
+                        if soft_dependency not in self.extensions:
+                            warnings.warn(f&#39;`{extension}` softly depends on `{soft_dependency}`. Some features might be unavailable.&#39;, MissingExtensionWarning)
+
+
+        super().__init__(**kwargs)
+        __json = self._fetch_user_data()
+
+
+        if __json:
+            self.data = MyUser(user=self, _fetched_data=dict(data=__json))
+            self.username = self.data.username
+
+        else:
+            self.username = self.username_or_email
+
+
+    def _fetch_user_data(self) -&gt; Optional[dict]:
+        &#34;&#34;&#34;
+            Fetches your user&#39;s JSON data.
+        &#34;&#34;&#34;
+
+        if self.username_or_email:
+            filter = Filter(limit=1)
+
+            if &#39;@&#39; in self.username_or_email:
+                filter.query = f&#39;email:{self.username_or_email}&#39;
+
+            else:
+                filter.query = self.username_or_email
+
+
+            raw = self.session.get(f&#34;{self.api_urls[&#39;users&#39;]}&#34;, params=filter.to_dict)
+            json = parse_request(raw)
+
+            for possible_user in json.get(&#34;data&#34;, [{}]):
+                if &#39;@&#39; in self.username_or_email:
+                    if possible_user.get(&#34;attributes&#34;, {}).get(&#34;email&#34;, None) == self.username_or_email:
+                        return possible_user
+
+                else:
+                    if possible_user.get(&#34;attributes&#34;, {}).get(&#34;username&#34;, None) == self.username_or_email:
+                        return possible_user
+
+
+        return None
+
+
+    def _update_user_data(self, new_data: dict) -&gt; &#39;FlarumUser | User&#39;:
+        &#34;&#34;&#34;
+            Updates your user data with new data, if the data belongs to you.
+            Then returns updated `FlarumUser`.
+
+            If the data doesn&#39;t belong to you, the other `User` is returned.
+        &#34;&#34;&#34;
+
+        if int(new_data.get(&#34;data&#34;, {}).get(&#34;id&#34;, -1)) == self.data.id:
+            self.data = MyUser(user=self, _fetched_data=new_data)
+
+            return self
+
+
+        else:
+            user = User(user=self, _fetched_data=new_data)
+
+            return user
+
+
+
+    def get_forum_data(self) -&gt; Forum:
+        &#34;&#34;&#34;
+            Obtains the forum data, returns `Forum` object.
+        &#34;&#34;&#34;
+
+        raw = self.session.get(f&#34;{self.api_urls[&#39;base&#39;]}&#34;)
+        json = parse_request(raw)
+
+
+        return Forum(user=self, _fetched_data=json)
+
+
+    def get_user_by_id(self, id: int) -&gt; User:
+        &#34;&#34;&#34;
+            Obtains a user by specific ID.
+        &#34;&#34;&#34;
+
+        raw = self.session.get(f&#34;{self.api_urls[&#39;users&#39;]}/{id}&#34;)
+        json = parse_request(raw)
+
+
+        return User(user=self, _fetched_data=json)
+
+
+    def get_discussion_by_id(self, id: int) -&gt; Discussion:
+        &#34;&#34;&#34;
+            Obtains a discussion by specific ID.
+        &#34;&#34;&#34;
+
+        raw = self.session.get(f&#34;{self.api_urls[&#39;discussions&#39;]}/{id}&#34;)
+        json = parse_request(raw)
+
+
+        return Discussion(user=self, _fetched_data=json)
+
+
+    def get_post_by_id(self, id: int) -&gt; Post:
+        &#34;&#34;&#34;
+            Obtains a post by specific ID.
+        &#34;&#34;&#34;
+
+        raw = self.session.get(f&#34;{self.api_urls[&#39;posts&#39;]}/{id}&#34;)
+        json = parse_request(raw)
+
+
+        return Post(user=self, _fetched_data=json)
+
+
+    def get_discussions(self, filter: Optional[Filter]=None):
+        &#34;&#34;&#34;
+            Obtains all discussions from `/api/discussions`, optionally filtering results by using `filter`.
+        &#34;&#34;&#34;
+
+        if filter:
+            raw = self.session.get(f&#34;{self.api_urls[&#39;discussions&#39;]}&#34;, params=filter.to_dict)
+
+        else:
+            raw = self.session.get(f&#34;{self.api_urls[&#39;discussions&#39;]}&#34;)
+
+        json = parse_request(raw)
+
+
+        return Discussions(user=self, _fetched_data=json)
+
+
+    def get_posts(self, filter: Optional[Filter]=None):
+        &#34;&#34;&#34;
+            Obtains all posts from `/api/posts`, optionally filtering results by using `filter`.
+        &#34;&#34;&#34;
+
+        if filter:
+            raw = self.session.get(f&#34;{self.api_urls[&#39;posts&#39;]}&#34;, params=filter.to_dict)
+
+        else:
+            raw = self.session.get(f&#34;{self.api_urls[&#39;posts&#39;]}&#34;)
+
+        json = parse_request(raw)
+
+
+        return Posts(user=self, _fetched_data=json)
+
+
+    def get_users(self, filter: Filter=None) -&gt; Users:
+        &#34;&#34;&#34;
+            Obtains all users from `/api/users`, optionally filtering results by using `filter`.
+        &#34;&#34;&#34;
+
+
+        if filter:
+            raw = self.session.get(f&#34;{self.api_urls[&#39;users&#39;]}&#34;, params=filter.to_dict)
+
+        else:
+            raw = self.session.get(f&#34;{self.api_urls[&#39;users&#39;]}&#34;)
+
+        json = parse_request(raw)
+
+
+        return Users(user=self, _fetched_data=json)
+
+
+    def get_notifications(self, filter: Optional[Filter]=None) -&gt; Notifications:
+        &#34;&#34;&#34;
+            Obtains all of your notifications from `/api/notifications`, optionally filtering results by using `filter`.
+        &#34;&#34;&#34;
+
+        if filter:
+            raw = self.session.get(f&#34;{self.api_urls[&#39;notifications&#39;]}&#34;, params=filter.to_dict)
+        
+        else:
+            raw = self.session.get(f&#34;{self.api_urls[&#39;notifications&#39;]}&#34;)
+
+
+        json = parse_request(raw)
+
+
+        return Notifications(user=self, _fetched_data=json)
+
+
+    def mark_all_discussions_as_read(self, at: datetime=datetime.now()) -&gt; Literal[True]:
+        &#34;&#34;&#34;
+            Marks all discussions as read.
+
+            Specify `at` to mark discussions as read at a specific date (strange how this is allowed, might be
+            because of timezones).
+        &#34;&#34;&#34;
+
+        post_data = {
+            &#34;data&#34;: {
+                &#34;type&#34;: &#34;users&#34;,
+                &#34;id&#34;: self.data.id,
+                &#34;attributes&#34;: {
+                    &#34;markedAllAsReadAt&#34;: datetime_to_flarum(at)
+                }
+            }
+        }
+
+        raw = self.session.patch(f&#34;{self.api_urls[&#39;users&#39;]}/{self.data.id}&#34;, json=post_data)
+        parse_request(raw)
+
+
+        return True
+
+
+    def mark_all_notifications_as_read(self) -&gt; Literal[True]:
+        &#34;&#34;&#34;
+            Marks all notifications as read. Returns `True` when successful.
+        &#34;&#34;&#34;
+
+        raw = self.session.post(f&#34;{self.api_urls[&#39;notifications&#39;]}/read&#34;)
+        parse_request(raw)
+
+
+        return True
+
+
+    def get_groups(self) -&gt; Groups:
+        &#34;&#34;&#34;
+            Obtains all groups of a forum from `/api/groups`.
+        &#34;&#34;&#34;
+
+        raw = self.session.get(f&#34;{self.api_urls[&#39;groups&#39;]}&#34;)
+        json = parse_request(raw)
+
+
+        return Groups(user=self, _fetched_data=json)
+
+
+    def update_user_info(self, user: Optional[&#39;AnyUser&#39;]=None, new_username: Optional[str]=None, groups: Optional[&#39;list[str | int] | list[Group] | Groups&#39;]=None) -&gt; &#39;FlarumUser | User&#39;:
+        &#34;&#34;&#34;
+            Updates the info of a user (this can be your user or someone else).
+
+            If you are updating yourself, then `FlarumUser` is returned (with the new data).
+            If you are updating someone else, then the updated `User` is returned.
+
+            ### Parameters:
+            - `user` - the user to update.
+            - `new_username` - the user&#39;s new username.
+            - `groups` - new groups of the user. This can either be a list of `pyflarum.flarum.core.groups.Group` objects,
+            or just one `pyflarum.flarum.core.groups.Groups`, or a list of `str` or `int` representing the group IDs.
+        &#34;&#34;&#34;
+
+        id = user.id if user else self.data.id
+
+        patch_data = {
+            &#34;data&#34;: {
+                &#34;type&#34;: &#34;users&#34;,
+                &#34;id&#34;: id,
+                &#34;attributes&#34;: {},
+                &#34;relationships&#34;: {}
+            }
+        } # type: dict[str, dict[str, dict]]
+
+
+        if new_username:
+            patch_data[&#39;attributes&#39;][&#39;username&#39;] = new_username
+
+        if groups:
+            patch_data[&#39;data&#39;][&#39;relationships&#39;].update({&#34;groups&#34;: {&#34;data&#34;: [group.id if isinstance(group, Group) else group for group in groups]}})
+
+
+        raw = self.session.patch(f&#34;{self.api_urls[&#39;users&#39;]}/{id}&#34;, json=patch_data)
+        json = parse_request(raw)
+
+
+        return self._update_user_data(new_data=json)
+
+
+    def send_password_reset_email(self) -&gt; &#39;FlarumUser | User&#39;:
+        &#34;&#34;&#34;
+            Allows you to send yourself a password reset E-mail.
+        &#34;&#34;&#34;
+
+        patch_data = {&#34;email&#34;: self.data.email}
+
+        raw = self.session.patch(f&#34;{self.api_urls[&#39;users&#39;]}/{self.data.id}&#34;, json=patch_data)
+        json = parse_request(raw)
+
+
+        return self._update_user_data(new_data=dict(data=json))
+
+
+    def update_preferences(self, preferences: Iterable[tuple[str, Any]], user: Optional[&#39;AnyUser&#39;]=None) -&gt; &#39;FlarumUser | User&#39;:
+        &#34;&#34;&#34;
+            Updates an user&#39;s preferences.
+
+            If no user is specified, then your user is updated.
+        &#34;&#34;&#34;
+
+        id = user.id if user else self.data.id
+
+        patch_data = {
+            &#34;data&#34;: {
+                &#34;type&#34;: &#34;users&#34;,
+                &#34;id&#34;: id,
+                &#34;attributes&#34;: {
+                    &#34;preferences&#34;: {}
+                }
+            }
+        }
+
+
+        for preference, value in preferences:
+            patch_data[&#39;data&#39;][&#39;attributes&#39;][&#39;preferences&#39;][preference] = value
+
+
+        raw = self.session.patch(f&#34;{self.api_urls[&#39;users&#39;]}/{id}&#34;, json=patch_data)
+        json = parse_request(raw)
+
+
+        return self._update_user_data(new_data=json)
+
+
+    def change_email(self, new_email: str, password_confirmation: str, user: Optional[&#39;AnyUser&#39;]=None) -&gt; &#39;FlarumUser | User&#39;:
+        &#34;&#34;&#34;
+            Changes your E-mail. If `user` is specified, then that user&#39;s E-mail is changed.
+
+            If you are changing the E-mail of another user, you do not need to specify their password.
+        &#34;&#34;&#34;
+
+        id = user.id if user else self.data.id
+
+        patch_data = {
+            &#34;data&#34;: {
+                &#34;type&#34;: &#34;users&#34;,
+                &#34;id&#34;: id,
+                &#34;attributes&#34;: {
+                    &#34;email&#34;: new_email
+                }
+            },
+            &#34;meta&#34;: {
+                &#34;password&#34;: password_confirmation
+            }
+        }
+
+        raw = self.session.patch(f&#34;{self.api_urls[&#39;users&#39;]}/{id}&#34;, json=patch_data)
+        json = parse_request(raw)
+
+
+        return self._update_user_data(new_data=json)
+
+
+    def upload_user_avatar(self, file: BinaryIO, user: Optional[&#39;AnyUser&#39;]=None, file_name: str=&#34;avatar&#34;, file_type: Literal[&#39;image/png&#39;, &#39;image/jpeg&#39;, &#39;image/gif&#39;]=&#34;image/png&#34;) -&gt; &#39;FlarumUser | User&#39;:
+        &#34;&#34;&#34;
+            Uploads an avatar for yourself. If `user` is specified, then avatar of that user is changed.
+        &#34;&#34;&#34;
+
+        id = user.id if user else self.data.id
+
+        raw = self.session.post(url=f&#34;{self.api_urls[&#39;users&#39;]}/{id}/avatar&#34;, files={ &#34;avatar&#34;: (file_name, file, file_type) })
+        json = parse_request(raw)
+
+
+        return self._update_user_data(new_data=json)
+
+
+    def remove_user_avatar(self, user: Optional[&#39;AnyUser&#39;]=None) -&gt; &#39;FlarumUser | User&#39;:
+        &#34;&#34;&#34;
+            Removes your user&#39;s avatar. If `user` is specified, then avatar of that user is removed.
+        &#34;&#34;&#34;
+
+        raw = self.session.delete(url=f&#34;{self.api_urls[&#39;users&#39;]}/{user.id if user else self.data.id}/avatar&#34;)
+        json = parse_request(raw)
+ 
+
+        return self._update_user_data(new_data=json)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pyflarum.session.FlarumSession" href="session.html#pyflarum.session.FlarumSession">FlarumSession</a></li>
+<li>builtins.dict</li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="pyflarum.extensions.admin.AdminFlarumUserMixin" href="extensions/admin.html#pyflarum.extensions.admin.AdminFlarumUserMixin">AdminFlarumUserMixin</a></li>
+<li><a title="pyflarum.extensions.advanced_search.AdvancedSearchFlarumUserMixin" href="extensions/advanced_search.html#pyflarum.extensions.advanced_search.AdvancedSearchFlarumUserMixin">AdvancedSearchFlarumUserMixin</a></li>
+<li><a title="pyflarum.extensions.commands.CommandsFlarumUserMixin" href="extensions/commands.html#pyflarum.extensions.commands.CommandsFlarumUserMixin">CommandsFlarumUserMixin</a></li>
+<li><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin" href="extensions/flarum/FoF_UserBio.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin">UserBioFlarumUserMixin</a></li>
+<li><a title="pyflarum.extensions.watch.WatchFlarumUserMixin" href="extensions/watch.html#pyflarum.extensions.watch.WatchFlarumUserMixin">WatchFlarumUserMixin</a></li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="pyflarum.FlarumUser.api_urls"><code class="name">var <span class="ident">api_urls</span> : dict</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.session.FlarumSession" href="session.html#pyflarum.session.FlarumSession">FlarumSession</a></code>.<code><a title="pyflarum.session.FlarumSession.api_urls" href="session.html#pyflarum.session.FlarumSession.api_urls">api_urls</a></code>
+</p>
+<div class="desc inherited"><p>Simple, hardcoded <code>'key: value'</code> <code>dict</code> of Flarum's API routes for quick access …</p></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="pyflarum.FlarumUser.authenticate"><code class="name flex">
+<span>def <span class="ident">authenticate</span></span>(<span>self, username_or_email: Optional[str] = None, password: Optional[str] = None) ‑> NoneType</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.session.FlarumSession" href="session.html#pyflarum.session.FlarumSession">FlarumSession</a></code>.<code><a title="pyflarum.session.FlarumSession.authenticate" href="session.html#pyflarum.session.FlarumSession.authenticate">authenticate</a></code>
+</p>
+<div class="desc inherited"><p>Authenticates your user. This can be run after <code><a title="pyflarum.FlarumUser" href="#pyflarum.FlarumUser">FlarumUser</a></code> was initialized, to switch to a different user. You can even change
+<code>FlarumUser.forum_url</code> …</p></div>
+</dd>
+<dt id="pyflarum.FlarumUser.change_email"><code class="name flex">
+<span>def <span class="ident">change_email</span></span>(<span>self, new_email: str, password_confirmation: str, user: Optional[ForwardRef('AnyUser')] = None) ‑> <a title="pyflarum.FlarumUser" href="#pyflarum.FlarumUser">FlarumUser</a> | User</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Changes your E-mail. If <code>user</code> is specified, then that user's E-mail is changed.</p>
+<p>If you are changing the E-mail of another user, you do not need to specify their password.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\session.py#L485-L511" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def change_email(self, new_email: str, password_confirmation: str, user: Optional[&#39;AnyUser&#39;]=None) -&gt; &#39;FlarumUser | User&#39;:
+    &#34;&#34;&#34;
+        Changes your E-mail. If `user` is specified, then that user&#39;s E-mail is changed.
+
+        If you are changing the E-mail of another user, you do not need to specify their password.
+    &#34;&#34;&#34;
+
+    id = user.id if user else self.data.id
+
+    patch_data = {
+        &#34;data&#34;: {
+            &#34;type&#34;: &#34;users&#34;,
+            &#34;id&#34;: id,
+            &#34;attributes&#34;: {
+                &#34;email&#34;: new_email
+            }
+        },
+        &#34;meta&#34;: {
+            &#34;password&#34;: password_confirmation
+        }
+    }
+
+    raw = self.session.patch(f&#34;{self.api_urls[&#39;users&#39;]}/{id}&#34;, json=patch_data)
+    json = parse_request(raw)
+
+
+    return self._update_user_data(new_data=json)</code></pre>
+</details>
+</dd>
+<dt id="pyflarum.FlarumUser.get_discussion_by_id"><code class="name flex">
+<span>def <span class="ident">get_discussion_by_id</span></span>(<span>self, id: int) ‑> <a title="pyflarum.flarum.core.discussions.Discussion" href="flarum/core/discussions.html#pyflarum.flarum.core.discussions.Discussion">Discussion</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Obtains a discussion by specific ID.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\session.py#L257-L266" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def get_discussion_by_id(self, id: int) -&gt; Discussion:
+    &#34;&#34;&#34;
+        Obtains a discussion by specific ID.
+    &#34;&#34;&#34;
+
+    raw = self.session.get(f&#34;{self.api_urls[&#39;discussions&#39;]}/{id}&#34;)
+    json = parse_request(raw)
+
+
+    return Discussion(user=self, _fetched_data=json)</code></pre>
+</details>
+</dd>
+<dt id="pyflarum.FlarumUser.get_discussions"><code class="name flex">
+<span>def <span class="ident">get_discussions</span></span>(<span>self, filter: Optional[<a title="pyflarum.flarum.core.filters.Filter" href="flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a>] = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Obtains all discussions from <code>/api/discussions</code>, optionally filtering results by using <code>filter</code>.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\session.py#L281-L295" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def get_discussions(self, filter: Optional[Filter]=None):
+    &#34;&#34;&#34;
+        Obtains all discussions from `/api/discussions`, optionally filtering results by using `filter`.
+    &#34;&#34;&#34;
+
+    if filter:
+        raw = self.session.get(f&#34;{self.api_urls[&#39;discussions&#39;]}&#34;, params=filter.to_dict)
+
+    else:
+        raw = self.session.get(f&#34;{self.api_urls[&#39;discussions&#39;]}&#34;)
+
+    json = parse_request(raw)
+
+
+    return Discussions(user=self, _fetched_data=json)</code></pre>
+</details>
+</dd>
+<dt id="pyflarum.FlarumUser.get_forum_data"><code class="name flex">
+<span>def <span class="ident">get_forum_data</span></span>(<span>self) ‑> <a title="pyflarum.flarum.core.forum.Forum" href="flarum/core/forum.html#pyflarum.flarum.core.forum.Forum">Forum</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Obtains the forum data, returns <code>Forum</code> object.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\session.py#L233-L242" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def get_forum_data(self) -&gt; Forum:
+    &#34;&#34;&#34;
+        Obtains the forum data, returns `Forum` object.
+    &#34;&#34;&#34;
+
+    raw = self.session.get(f&#34;{self.api_urls[&#39;base&#39;]}&#34;)
+    json = parse_request(raw)
+
+
+    return Forum(user=self, _fetched_data=json)</code></pre>
+</details>
+</dd>
+<dt id="pyflarum.FlarumUser.get_groups"><code class="name flex">
+<span>def <span class="ident">get_groups</span></span>(<span>self) ‑> <a title="pyflarum.flarum.core.groups.Groups" href="flarum/core/groups.html#pyflarum.flarum.core.groups.Groups">Groups</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Obtains all groups of a forum from <code>/api/groups</code>.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\session.py#L388-L397" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def get_groups(self) -&gt; Groups:
+    &#34;&#34;&#34;
+        Obtains all groups of a forum from `/api/groups`.
+    &#34;&#34;&#34;
+
+    raw = self.session.get(f&#34;{self.api_urls[&#39;groups&#39;]}&#34;)
+    json = parse_request(raw)
+
+
+    return Groups(user=self, _fetched_data=json)</code></pre>
+</details>
+</dd>
+<dt id="pyflarum.FlarumUser.get_notifications"><code class="name flex">
+<span>def <span class="ident">get_notifications</span></span>(<span>self, filter: Optional[<a title="pyflarum.flarum.core.filters.Filter" href="flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a>] = None) ‑> <a title="pyflarum.flarum.core.notifications.Notifications" href="flarum/core/notifications.html#pyflarum.flarum.core.notifications.Notifications">Notifications</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Obtains all of your notifications from <code>/api/notifications</code>, optionally filtering results by using <code>filter</code>.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\session.py#L333-L348" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def get_notifications(self, filter: Optional[Filter]=None) -&gt; Notifications:
+    &#34;&#34;&#34;
+        Obtains all of your notifications from `/api/notifications`, optionally filtering results by using `filter`.
+    &#34;&#34;&#34;
+
+    if filter:
+        raw = self.session.get(f&#34;{self.api_urls[&#39;notifications&#39;]}&#34;, params=filter.to_dict)
+    
+    else:
+        raw = self.session.get(f&#34;{self.api_urls[&#39;notifications&#39;]}&#34;)
+
+
+    json = parse_request(raw)
+
+
+    return Notifications(user=self, _fetched_data=json)</code></pre>
+</details>
+</dd>
+<dt id="pyflarum.FlarumUser.get_post_by_id"><code class="name flex">
+<span>def <span class="ident">get_post_by_id</span></span>(<span>self, id: int) ‑> <a title="pyflarum.flarum.core.posts.Post" href="flarum/core/posts.html#pyflarum.flarum.core.posts.Post">Post</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Obtains a post by specific ID.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\session.py#L269-L278" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def get_post_by_id(self, id: int) -&gt; Post:
+    &#34;&#34;&#34;
+        Obtains a post by specific ID.
+    &#34;&#34;&#34;
+
+    raw = self.session.get(f&#34;{self.api_urls[&#39;posts&#39;]}/{id}&#34;)
+    json = parse_request(raw)
+
+
+    return Post(user=self, _fetched_data=json)</code></pre>
+</details>
+</dd>
+<dt id="pyflarum.FlarumUser.get_posts"><code class="name flex">
+<span>def <span class="ident">get_posts</span></span>(<span>self, filter: Optional[<a title="pyflarum.flarum.core.filters.Filter" href="flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a>] = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Obtains all posts from <code>/api/posts</code>, optionally filtering results by using <code>filter</code>.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\session.py#L298-L312" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def get_posts(self, filter: Optional[Filter]=None):
+    &#34;&#34;&#34;
+        Obtains all posts from `/api/posts`, optionally filtering results by using `filter`.
+    &#34;&#34;&#34;
+
+    if filter:
+        raw = self.session.get(f&#34;{self.api_urls[&#39;posts&#39;]}&#34;, params=filter.to_dict)
+
+    else:
+        raw = self.session.get(f&#34;{self.api_urls[&#39;posts&#39;]}&#34;)
+
+    json = parse_request(raw)
+
+
+    return Posts(user=self, _fetched_data=json)</code></pre>
+</details>
+</dd>
+<dt id="pyflarum.FlarumUser.get_user_by_id"><code class="name flex">
+<span>def <span class="ident">get_user_by_id</span></span>(<span>self, id: int) ‑> <a title="pyflarum.flarum.core.users.User" href="flarum/core/users.html#pyflarum.flarum.core.users.User">User</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Obtains a user by specific ID.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\session.py#L245-L254" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def get_user_by_id(self, id: int) -&gt; User:
+    &#34;&#34;&#34;
+        Obtains a user by specific ID.
+    &#34;&#34;&#34;
+
+    raw = self.session.get(f&#34;{self.api_urls[&#39;users&#39;]}/{id}&#34;)
+    json = parse_request(raw)
+
+
+    return User(user=self, _fetched_data=json)</code></pre>
+</details>
+</dd>
+<dt id="pyflarum.FlarumUser.get_users"><code class="name flex">
+<span>def <span class="ident">get_users</span></span>(<span>self, filter: <a title="pyflarum.flarum.core.filters.Filter" href="flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a> = None) ‑> <a title="pyflarum.flarum.core.users.Users" href="flarum/core/users.html#pyflarum.flarum.core.users.Users">Users</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Obtains all users from <code>/api/users</code>, optionally filtering results by using <code>filter</code>.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\session.py#L315-L330" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def get_users(self, filter: Filter=None) -&gt; Users:
+    &#34;&#34;&#34;
+        Obtains all users from `/api/users`, optionally filtering results by using `filter`.
+    &#34;&#34;&#34;
+
+
+    if filter:
+        raw = self.session.get(f&#34;{self.api_urls[&#39;users&#39;]}&#34;, params=filter.to_dict)
+
+    else:
+        raw = self.session.get(f&#34;{self.api_urls[&#39;users&#39;]}&#34;)
+
+    json = parse_request(raw)
+
+
+    return Users(user=self, _fetched_data=json)</code></pre>
+</details>
+</dd>
+<dt id="pyflarum.FlarumUser.mark_all_discussions_as_read"><code class="name flex">
+<span>def <span class="ident">mark_all_discussions_as_read</span></span>(<span>self, at: datetime.datetime = datetime.datetime(2021, 8, 19, 8, 44, 1, 429940)) ‑> Literal[True]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Marks all discussions as read.</p>
+<p>Specify <code>at</code> to mark discussions as read at a specific date (strange how this is allowed, might be
+because of timezones).</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\session.py#L351-L373" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def mark_all_discussions_as_read(self, at: datetime=datetime.now()) -&gt; Literal[True]:
+    &#34;&#34;&#34;
+        Marks all discussions as read.
+
+        Specify `at` to mark discussions as read at a specific date (strange how this is allowed, might be
+        because of timezones).
+    &#34;&#34;&#34;
+
+    post_data = {
+        &#34;data&#34;: {
+            &#34;type&#34;: &#34;users&#34;,
+            &#34;id&#34;: self.data.id,
+            &#34;attributes&#34;: {
+                &#34;markedAllAsReadAt&#34;: datetime_to_flarum(at)
+            }
+        }
+    }
+
+    raw = self.session.patch(f&#34;{self.api_urls[&#39;users&#39;]}/{self.data.id}&#34;, json=post_data)
+    parse_request(raw)
+
+
+    return True</code></pre>
+</details>
+</dd>
+<dt id="pyflarum.FlarumUser.mark_all_notifications_as_read"><code class="name flex">
+<span>def <span class="ident">mark_all_notifications_as_read</span></span>(<span>self) ‑> Literal[True]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Marks all notifications as read. Returns <code>True</code> when successful.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\session.py#L376-L385" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def mark_all_notifications_as_read(self) -&gt; Literal[True]:
+    &#34;&#34;&#34;
+        Marks all notifications as read. Returns `True` when successful.
+    &#34;&#34;&#34;
+
+    raw = self.session.post(f&#34;{self.api_urls[&#39;notifications&#39;]}/read&#34;)
+    parse_request(raw)
+
+
+    return True</code></pre>
+</details>
+</dd>
+<dt id="pyflarum.FlarumUser.remove_user_avatar"><code class="name flex">
+<span>def <span class="ident">remove_user_avatar</span></span>(<span>self, user: Optional[ForwardRef('AnyUser')] = None) ‑> <a title="pyflarum.FlarumUser" href="#pyflarum.FlarumUser">FlarumUser</a> | User</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Removes your user's avatar. If <code>user</code> is specified, then avatar of that user is removed.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\session.py#L528-L537" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def remove_user_avatar(self, user: Optional[&#39;AnyUser&#39;]=None) -&gt; &#39;FlarumUser | User&#39;:
+    &#34;&#34;&#34;
+        Removes your user&#39;s avatar. If `user` is specified, then avatar of that user is removed.
+    &#34;&#34;&#34;
+
+    raw = self.session.delete(url=f&#34;{self.api_urls[&#39;users&#39;]}/{user.id if user else self.data.id}/avatar&#34;)
+    json = parse_request(raw)
+
+
+    return self._update_user_data(new_data=json)</code></pre>
+</details>
+</dd>
+<dt id="pyflarum.FlarumUser.send_password_reset_email"><code class="name flex">
+<span>def <span class="ident">send_password_reset_email</span></span>(<span>self) ‑> <a title="pyflarum.FlarumUser" href="#pyflarum.FlarumUser">FlarumUser</a> | User</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Allows you to send yourself a password reset E-mail.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\session.py#L440-L451" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def send_password_reset_email(self) -&gt; &#39;FlarumUser | User&#39;:
+    &#34;&#34;&#34;
+        Allows you to send yourself a password reset E-mail.
+    &#34;&#34;&#34;
+
+    patch_data = {&#34;email&#34;: self.data.email}
+
+    raw = self.session.patch(f&#34;{self.api_urls[&#39;users&#39;]}/{self.data.id}&#34;, json=patch_data)
+    json = parse_request(raw)
+
+
+    return self._update_user_data(new_data=dict(data=json))</code></pre>
+</details>
+</dd>
+<dt id="pyflarum.FlarumUser.update_preferences"><code class="name flex">
+<span>def <span class="ident">update_preferences</span></span>(<span>self, preferences: Iterable[tuple[str, Any]], user: Optional[ForwardRef('AnyUser')] = None) ‑> <a title="pyflarum.FlarumUser" href="#pyflarum.FlarumUser">FlarumUser</a> | User</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Updates an user's preferences.</p>
+<p>If no user is specified, then your user is updated.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\session.py#L454-L482" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def update_preferences(self, preferences: Iterable[tuple[str, Any]], user: Optional[&#39;AnyUser&#39;]=None) -&gt; &#39;FlarumUser | User&#39;:
+    &#34;&#34;&#34;
+        Updates an user&#39;s preferences.
+
+        If no user is specified, then your user is updated.
+    &#34;&#34;&#34;
+
+    id = user.id if user else self.data.id
+
+    patch_data = {
+        &#34;data&#34;: {
+            &#34;type&#34;: &#34;users&#34;,
+            &#34;id&#34;: id,
+            &#34;attributes&#34;: {
+                &#34;preferences&#34;: {}
+            }
+        }
+    }
+
+
+    for preference, value in preferences:
+        patch_data[&#39;data&#39;][&#39;attributes&#39;][&#39;preferences&#39;][preference] = value
+
+
+    raw = self.session.patch(f&#34;{self.api_urls[&#39;users&#39;]}/{id}&#34;, json=patch_data)
+    json = parse_request(raw)
+
+
+    return self._update_user_data(new_data=json)</code></pre>
+</details>
+</dd>
+<dt id="pyflarum.FlarumUser.update_user_info"><code class="name flex">
+<span>def <span class="ident">update_user_info</span></span>(<span>self, user: Optional[ForwardRef('AnyUser')] = None, new_username: Optional[str] = None, groups: Optional[ForwardRef('list[str | int] | list[Group] | Groups')] = None) ‑> <a title="pyflarum.FlarumUser" href="#pyflarum.FlarumUser">FlarumUser</a> | User</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Updates the info of a user (this can be your user or someone else).</p>
+<p>If you are updating yourself, then <code><a title="pyflarum.FlarumUser" href="#pyflarum.FlarumUser">FlarumUser</a></code> is returned (with the new data).
+If you are updating someone else, then the updated <code>User</code> is returned.</p>
+<h3 id="parameters">Parameters:</h3>
+<ul>
+<li><code>user</code> - the user to update.</li>
+<li><code>new_username</code> - the user's new username.</li>
+<li><code>groups</code> - new groups of the user. This can either be a list of <code><a title="pyflarum.flarum.core.groups.Group" href="flarum/core/groups.html#pyflarum.flarum.core.groups.Group">Group</a></code> objects,
+or just one <code><a title="pyflarum.flarum.core.groups.Groups" href="flarum/core/groups.html#pyflarum.flarum.core.groups.Groups">Groups</a></code>, or a list of <code>str</code> or <code>int</code> representing the group IDs.</li>
+</ul></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\session.py#L400-L437" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def update_user_info(self, user: Optional[&#39;AnyUser&#39;]=None, new_username: Optional[str]=None, groups: Optional[&#39;list[str | int] | list[Group] | Groups&#39;]=None) -&gt; &#39;FlarumUser | User&#39;:
+    &#34;&#34;&#34;
+        Updates the info of a user (this can be your user or someone else).
+
+        If you are updating yourself, then `FlarumUser` is returned (with the new data).
+        If you are updating someone else, then the updated `User` is returned.
+
+        ### Parameters:
+        - `user` - the user to update.
+        - `new_username` - the user&#39;s new username.
+        - `groups` - new groups of the user. This can either be a list of `pyflarum.flarum.core.groups.Group` objects,
+        or just one `pyflarum.flarum.core.groups.Groups`, or a list of `str` or `int` representing the group IDs.
+    &#34;&#34;&#34;
+
+    id = user.id if user else self.data.id
+
+    patch_data = {
+        &#34;data&#34;: {
+            &#34;type&#34;: &#34;users&#34;,
+            &#34;id&#34;: id,
+            &#34;attributes&#34;: {},
+            &#34;relationships&#34;: {}
+        }
+    } # type: dict[str, dict[str, dict]]
+
+
+    if new_username:
+        patch_data[&#39;attributes&#39;][&#39;username&#39;] = new_username
+
+    if groups:
+        patch_data[&#39;data&#39;][&#39;relationships&#39;].update({&#34;groups&#34;: {&#34;data&#34;: [group.id if isinstance(group, Group) else group for group in groups]}})
+
+
+    raw = self.session.patch(f&#34;{self.api_urls[&#39;users&#39;]}/{id}&#34;, json=patch_data)
+    json = parse_request(raw)
+
+
+    return self._update_user_data(new_data=json)</code></pre>
+</details>
+</dd>
+<dt id="pyflarum.FlarumUser.upload_user_avatar"><code class="name flex">
+<span>def <span class="ident">upload_user_avatar</span></span>(<span>self, file: <class 'BinaryIO'>, user: Optional[ForwardRef('AnyUser')] = None, file_name: str = 'avatar', file_type: Literal['image/png', 'image/jpeg', 'image/gif'] = 'image/png') ‑> <a title="pyflarum.FlarumUser" href="#pyflarum.FlarumUser">FlarumUser</a> | User</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Uploads an avatar for yourself. If <code>user</code> is specified, then avatar of that user is changed.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\session.py#L514-L525" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def upload_user_avatar(self, file: BinaryIO, user: Optional[&#39;AnyUser&#39;]=None, file_name: str=&#34;avatar&#34;, file_type: Literal[&#39;image/png&#39;, &#39;image/jpeg&#39;, &#39;image/gif&#39;]=&#34;image/png&#34;) -&gt; &#39;FlarumUser | User&#39;:
+    &#34;&#34;&#34;
+        Uploads an avatar for yourself. If `user` is specified, then avatar of that user is changed.
+    &#34;&#34;&#34;
+
+    id = user.id if user else self.data.id
+
+    raw = self.session.post(url=f&#34;{self.api_urls[&#39;users&#39;]}/{id}/avatar&#34;, files={ &#34;avatar&#34;: (file_name, file, file_type) })
+    json = parse_request(raw)
+
+
+    return self._update_user_data(new_data=json)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
 </section>
 </article>
 <nav id="sidebar">
@@ -441,6 +2025,78 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="pyflarum.extensions" href="extensions/index.html">pyflarum.extensions</a></code></li>
 <li><code><a title="pyflarum.flarum" href="flarum/index.html">pyflarum.flarum</a></code></li>
 <li><code><a title="pyflarum.session" href="session.html">pyflarum.session</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="pyflarum.Discussion" href="#pyflarum.Discussion">Discussion</a></code></h4>
+<ul class="">
+<li><code><a title="pyflarum.Discussion.attributes" href="flarum/core/index.html#pyflarum.Discussion.attributes">attributes</a></code></li>
+<li><code><a title="pyflarum.Discussion.canDelete" href="flarum/core/discussions.html#pyflarum.Discussion.canDelete">canDelete</a></code></li>
+<li><code><a title="pyflarum.Discussion.canHide" href="flarum/core/discussions.html#pyflarum.Discussion.canHide">canHide</a></code></li>
+<li><code><a title="pyflarum.Discussion.canRename" href="flarum/core/discussions.html#pyflarum.Discussion.canRename">canRename</a></code></li>
+<li><code><a title="pyflarum.Discussion.canReply" href="flarum/core/discussions.html#pyflarum.Discussion.canReply">canReply</a></code></li>
+<li><code><a title="pyflarum.Discussion.commentCount" href="flarum/core/discussions.html#pyflarum.Discussion.commentCount">commentCount</a></code></li>
+<li><code><a title="pyflarum.Discussion.createdAt" href="flarum/core/discussions.html#pyflarum.Discussion.createdAt">createdAt</a></code></li>
+<li><code><a title="pyflarum.Discussion.data" href="flarum/core/index.html#pyflarum.Discussion.data">data</a></code></li>
+<li><code><a title="pyflarum.Discussion.delete" href="flarum/core/discussions.html#pyflarum.Discussion.delete">delete</a></code></li>
+<li><code><a title="pyflarum.Discussion.get_author" href="#pyflarum.Discussion.get_author">get_author</a></code></li>
+<li><code><a title="pyflarum.Discussion.get_first_post" href="#pyflarum.Discussion.get_first_post">get_first_post</a></code></li>
+<li><code><a title="pyflarum.Discussion.get_full_data" href="flarum/core/discussions.html#pyflarum.Discussion.get_full_data">get_full_data</a></code></li>
+<li><code><a title="pyflarum.Discussion.get_last_posted_user" href="flarum/core/discussions.html#pyflarum.Discussion.get_last_posted_user">get_last_posted_user</a></code></li>
+<li><code><a title="pyflarum.Discussion.get_posts" href="#pyflarum.Discussion.get_posts">get_posts</a></code></li>
+<li><code><a title="pyflarum.Discussion.hide" href="flarum/core/discussions.html#pyflarum.Discussion.hide">hide</a></code></li>
+<li><code><a title="pyflarum.Discussion.id" href="flarum/core/index.html#pyflarum.Discussion.id">id</a></code></li>
+<li><code><a title="pyflarum.Discussion.included" href="#pyflarum.Discussion.included">included</a></code></li>
+<li><code><a title="pyflarum.Discussion.isHidden" href="flarum/core/discussions.html#pyflarum.Discussion.isHidden">isHidden</a></code></li>
+<li><code><a title="pyflarum.Discussion.lastPostNumber" href="flarum/core/discussions.html#pyflarum.Discussion.lastPostNumber">lastPostNumber</a></code></li>
+<li><code><a title="pyflarum.Discussion.lastPostedAt" href="flarum/core/discussions.html#pyflarum.Discussion.lastPostedAt">lastPostedAt</a></code></li>
+<li><code><a title="pyflarum.Discussion.lastReadAt" href="flarum/core/discussions.html#pyflarum.Discussion.lastReadAt">lastReadAt</a></code></li>
+<li><code><a title="pyflarum.Discussion.lastReadPostNumber" href="flarum/core/discussions.html#pyflarum.Discussion.lastReadPostNumber">lastReadPostNumber</a></code></li>
+<li><code><a title="pyflarum.Discussion.participantCount" href="flarum/core/discussions.html#pyflarum.Discussion.participantCount">participantCount</a></code></li>
+<li><code><a title="pyflarum.Discussion.relationships" href="flarum/core/index.html#pyflarum.Discussion.relationships">relationships</a></code></li>
+<li><code><a title="pyflarum.Discussion.restore" href="flarum/core/discussions.html#pyflarum.Discussion.restore">restore</a></code></li>
+<li><code><a title="pyflarum.Discussion.slug" href="flarum/core/discussions.html#pyflarum.Discussion.slug">slug</a></code></li>
+<li><code><a title="pyflarum.Discussion.title" href="flarum/core/discussions.html#pyflarum.Discussion.title">title</a></code></li>
+<li><code><a title="pyflarum.Discussion.type" href="flarum/core/index.html#pyflarum.Discussion.type">type</a></code></li>
+<li><code><a title="pyflarum.Discussion.unhide" href="flarum/core/discussions.html#pyflarum.Discussion.unhide">unhide</a></code></li>
+<li><code><a title="pyflarum.Discussion.url" href="flarum/core/discussions.html#pyflarum.Discussion.url">url</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyflarum.Filter" href="#pyflarum.Filter">Filter</a></code></h4>
+<ul class="">
+<li><code><a title="pyflarum.Filter.to_dict" href="#pyflarum.Filter.to_dict">to_dict</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyflarum.FlarumError" href="#pyflarum.FlarumError">FlarumError</a></code></h4>
+</li>
+<li>
+<h4><code><a title="pyflarum.FlarumUser" href="#pyflarum.FlarumUser">FlarumUser</a></code></h4>
+<ul class="">
+<li><code><a title="pyflarum.FlarumUser.api_urls" href="session.html#pyflarum.FlarumUser.api_urls">api_urls</a></code></li>
+<li><code><a title="pyflarum.FlarumUser.authenticate" href="session.html#pyflarum.FlarumUser.authenticate">authenticate</a></code></li>
+<li><code><a title="pyflarum.FlarumUser.change_email" href="#pyflarum.FlarumUser.change_email">change_email</a></code></li>
+<li><code><a title="pyflarum.FlarumUser.get_discussion_by_id" href="#pyflarum.FlarumUser.get_discussion_by_id">get_discussion_by_id</a></code></li>
+<li><code><a title="pyflarum.FlarumUser.get_discussions" href="#pyflarum.FlarumUser.get_discussions">get_discussions</a></code></li>
+<li><code><a title="pyflarum.FlarumUser.get_forum_data" href="#pyflarum.FlarumUser.get_forum_data">get_forum_data</a></code></li>
+<li><code><a title="pyflarum.FlarumUser.get_groups" href="#pyflarum.FlarumUser.get_groups">get_groups</a></code></li>
+<li><code><a title="pyflarum.FlarumUser.get_notifications" href="#pyflarum.FlarumUser.get_notifications">get_notifications</a></code></li>
+<li><code><a title="pyflarum.FlarumUser.get_post_by_id" href="#pyflarum.FlarumUser.get_post_by_id">get_post_by_id</a></code></li>
+<li><code><a title="pyflarum.FlarumUser.get_posts" href="#pyflarum.FlarumUser.get_posts">get_posts</a></code></li>
+<li><code><a title="pyflarum.FlarumUser.get_user_by_id" href="#pyflarum.FlarumUser.get_user_by_id">get_user_by_id</a></code></li>
+<li><code><a title="pyflarum.FlarumUser.get_users" href="#pyflarum.FlarumUser.get_users">get_users</a></code></li>
+<li><code><a title="pyflarum.FlarumUser.mark_all_discussions_as_read" href="#pyflarum.FlarumUser.mark_all_discussions_as_read">mark_all_discussions_as_read</a></code></li>
+<li><code><a title="pyflarum.FlarumUser.mark_all_notifications_as_read" href="#pyflarum.FlarumUser.mark_all_notifications_as_read">mark_all_notifications_as_read</a></code></li>
+<li><code><a title="pyflarum.FlarumUser.remove_user_avatar" href="#pyflarum.FlarumUser.remove_user_avatar">remove_user_avatar</a></code></li>
+<li><code><a title="pyflarum.FlarumUser.send_password_reset_email" href="#pyflarum.FlarumUser.send_password_reset_email">send_password_reset_email</a></code></li>
+<li><code><a title="pyflarum.FlarumUser.update_preferences" href="#pyflarum.FlarumUser.update_preferences">update_preferences</a></code></li>
+<li><code><a title="pyflarum.FlarumUser.update_user_info" href="#pyflarum.FlarumUser.update_user_info">update_user_info</a></code></li>
+<li><code><a title="pyflarum.FlarumUser.upload_user_avatar" href="#pyflarum.FlarumUser.upload_user_avatar">upload_user_avatar</a></code></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

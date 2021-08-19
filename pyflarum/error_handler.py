@@ -1,4 +1,4 @@
-from typing import Literal, NoReturn, Optional, List, Dict, TYPE_CHECKING, Union
+from typing import Literal, NoReturn, Optional, TYPE_CHECKING
 if TYPE_CHECKING:
     from requests.models import Response
 
@@ -30,7 +30,7 @@ class MissingExtensionWarning(Warning):
 
 
 
-def parse_request(response: 'Response') -> dict:
+def parse_request(response: 'Response') -> 'dict | NoReturn | Literal[True]':
     """
         Parses the request as JSON, raises `FlarumError` if
         something went wrong.
@@ -58,7 +58,7 @@ def parse_request(response: 'Response') -> dict:
     return json
 
 
-def handle_errors(errors: Optional[List[Dict[str, str]]]=None, status_code: Optional[str]=None) -> Union[Literal[True], NoReturn]:
+def handle_errors(errors: Optional[list[dict[str, str]]]=None, status_code: Optional[str]=None) -> 'Literal[True] | NoReturn':
     """
         Handles Flarum & request related errors.
         Returns `FlarumError` if an error was found, `True` otherwise.

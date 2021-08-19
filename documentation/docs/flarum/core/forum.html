@@ -25,13 +25,13 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\forum.py#L0-L242" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\forum.py#L0-L242" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">from typing import Optional, List
+<pre><code class="python">from typing import Optional
 
 
-from ...flarum.core import BaseFlarumIndividualObject
-from ...flarum.core.groups import Group
+from ..core import BaseFlarumIndividualObject
+from ..core.groups import Group
 
 
 
@@ -244,14 +244,14 @@ class Forum(BaseFlarumIndividualObject):
         return self.attributes.get(&#34;allowUsernameMentionFormat&#34;, False)
 
 
-    def get_groups(self) -&gt; List[Group]:
+    def get_groups(self) -&gt; list[Group]:
         &#34;&#34;&#34;
             Obtains the forum groups.
 
             Returns a list of `Group` objects.
         &#34;&#34;&#34;
 
-        all_groups = list() # type: List[Group]
+        all_groups = list() # type: list[Group]
 
         for raw_group in self.relationships.get(&#34;groups&#34;, {}).get(&#34;data&#34;, [{}]):
             if raw_group.get(&#34;type&#34;, None) == &#39;groups&#39;:
@@ -262,9 +262,9 @@ class Forum(BaseFlarumIndividualObject):
         return all_groups
 
 
-    # Required: `Forum` is not a standard bulk route, can&#39;t include from that.
+    # Required: `Forum` is not a standard bulk route, so we can&#39;t inherit from that.
     @property
-    def included(self) -&gt; List[dict]:
+    def included(self) -&gt; list[dict]:
         &#34;&#34;&#34;
             Raw `list[dict]` of the forum&#39;s included objects.
         &#34;&#34;&#34;
@@ -296,7 +296,7 @@ class Forum(BaseFlarumIndividualObject):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\forum.py#L9-L243" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\forum.py#L9-L243" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class Forum(BaseFlarumIndividualObject):
     &#34;&#34;&#34;
@@ -507,14 +507,14 @@ class Forum(BaseFlarumIndividualObject):
         return self.attributes.get(&#34;allowUsernameMentionFormat&#34;, False)
 
 
-    def get_groups(self) -&gt; List[Group]:
+    def get_groups(self) -&gt; list[Group]:
         &#34;&#34;&#34;
             Obtains the forum groups.
 
             Returns a list of `Group` objects.
         &#34;&#34;&#34;
 
-        all_groups = list() # type: List[Group]
+        all_groups = list() # type: list[Group]
 
         for raw_group in self.relationships.get(&#34;groups&#34;, {}).get(&#34;data&#34;, [{}]):
             if raw_group.get(&#34;type&#34;, None) == &#39;groups&#39;:
@@ -525,9 +525,9 @@ class Forum(BaseFlarumIndividualObject):
         return all_groups
 
 
-    # Required: `Forum` is not a standard bulk route, can&#39;t include from that.
+    # Required: `Forum` is not a standard bulk route, so we can&#39;t inherit from that.
     @property
-    def included(self) -&gt; List[dict]:
+    def included(self) -&gt; list[dict]:
         &#34;&#34;&#34;
             Raw `list[dict]` of the forum&#39;s included objects.
         &#34;&#34;&#34;
@@ -554,7 +554,7 @@ class Forum(BaseFlarumIndividualObject):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\forum.py#L195-L201" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\forum.py#L195-L201" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def adminUrl(self) -&gt; Optional[str]:
@@ -571,7 +571,7 @@ def adminUrl(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\forum.py#L150-L156" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\forum.py#L150-L156" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def allowSignUp(self) -&gt; bool:
@@ -588,7 +588,7 @@ def allowSignUp(self) -&gt; bool:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\forum.py#L213-L215" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\forum.py#L213-L215" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def allowUsernameMentionFormat(self) -&gt; bool:
@@ -601,7 +601,7 @@ def allowUsernameMentionFormat(self) -&gt; bool:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\forum.py#L69-L75" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\forum.py#L69-L75" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def apiUrl(self) -&gt; Optional[str]:
@@ -626,7 +626,7 @@ def apiUrl(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\forum.py#L51-L57" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\forum.py#L51-L57" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def basePath(self) -&gt; Optional[str]:
@@ -643,7 +643,7 @@ def basePath(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\forum.py#L42-L48" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\forum.py#L42-L48" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def baseUrl(self) -&gt; Optional[str]:
@@ -660,7 +660,7 @@ def baseUrl(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\forum.py#L186-L192" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\forum.py#L186-L192" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def canSearchUsers(self) -&gt; bool:
@@ -677,7 +677,7 @@ def canSearchUsers(self) -&gt; bool:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\forum.py#L177-L183" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\forum.py#L177-L183" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def canStartDiscussion(self) -&gt; bool:
@@ -694,7 +694,7 @@ def canStartDiscussion(self) -&gt; bool:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\forum.py#L168-L174" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\forum.py#L168-L174" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def canViewForum(self) -&gt; bool:
@@ -705,7 +705,7 @@ def canViewForum(self) -&gt; bool:
     return self.attributes.get(&#34;canViewForum&#34;, False)</code></pre>
 </details>
 </dd>
-<dt id="pyflarum.flarum.core.forum.Forum.data"><code class="name">var <span class="ident">data</span> : Union[List[dict], dict]</code></dt>
+<dt id="pyflarum.flarum.core.forum.Forum.data"><code class="name">var <span class="ident">data</span> : list[dict] | dict</code></dt>
 <dd>
 <p class="inheritance">
 <em>Inherited from:</em>
@@ -719,7 +719,7 @@ def canViewForum(self) -&gt; bool:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\forum.py#L60-L66" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\forum.py#L60-L66" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def debug(self) -&gt; bool:
@@ -736,7 +736,7 @@ def debug(self) -&gt; bool:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\forum.py#L159-L165" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\forum.py#L159-L165" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def defaultRoute(self) -&gt; Optional[str]:
@@ -753,7 +753,7 @@ def defaultRoute(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\forum.py#L24-L30" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\forum.py#L24-L30" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def description(self) -&gt; Optional[str]:
@@ -770,7 +770,7 @@ def description(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\forum.py#L123-L129" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\forum.py#L123-L129" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def faviconUrl(self) -&gt; Optional[str]:
@@ -787,7 +787,7 @@ def faviconUrl(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\forum.py#L141-L147" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\forum.py#L141-L147" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def footerHtml(self) -&gt; Optional[str]:
@@ -804,7 +804,7 @@ def footerHtml(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\forum.py#L132-L138" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\forum.py#L132-L138" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def headerHtml(self) -&gt; Optional[str]:
@@ -823,16 +823,16 @@ def headerHtml(self) -&gt; Optional[str]:
 </p>
 <div class="desc inherited"><p>The <code>int</code> ID of the object. This should always be unique for the object's type.</p></div>
 </dd>
-<dt id="pyflarum.flarum.core.forum.Forum.included"><code class="name">var <span class="ident">included</span> : List[dict]</code></dt>
+<dt id="pyflarum.flarum.core.forum.Forum.included"><code class="name">var <span class="ident">included</span> : list</code></dt>
 <dd>
 <div class="desc"><p>Raw <code>list[dict]</code> of the forum's included objects.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\forum.py#L237-L243" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\forum.py#L237-L243" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
-def included(self) -&gt; List[dict]:
+def included(self) -&gt; list[dict]:
     &#34;&#34;&#34;
         Raw `list[dict]` of the forum&#39;s included objects.
     &#34;&#34;&#34;
@@ -846,7 +846,7 @@ def included(self) -&gt; List[dict]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\forum.py#L114-L120" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\forum.py#L114-L120" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def logoUrl(self) -&gt; Optional[str]:
@@ -872,7 +872,7 @@ other objects …</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\forum.py#L33-L39" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\forum.py#L33-L39" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def showLanguageSelector(self) -&gt; bool:
@@ -889,7 +889,7 @@ def showLanguageSelector(self) -&gt; bool:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\forum.py#L96-L102" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\forum.py#L96-L102" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def themePrimaryColor(self) -&gt; Optional[str]:
@@ -906,7 +906,7 @@ def themePrimaryColor(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\forum.py#L105-L111" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\forum.py#L105-L111" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def themeSecondaryColor(self) -&gt; Optional[str]:
@@ -923,7 +923,7 @@ def themeSecondaryColor(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\forum.py#L15-L21" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\forum.py#L15-L21" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def title(self) -&gt; Optional[str]:
@@ -948,7 +948,7 @@ def title(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\forum.py#L204-L210" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\forum.py#L204-L210" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def version(self) -&gt; Optional[str]:
@@ -965,7 +965,7 @@ def version(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\forum.py#L87-L93" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\forum.py#L87-L93" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def welcomeMessage(self) -&gt; Optional[str]:
@@ -982,7 +982,7 @@ def welcomeMessage(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\forum.py#L78-L84" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\forum.py#L78-L84" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def welcomeTitle(self) -&gt; Optional[str]:
@@ -997,7 +997,7 @@ def welcomeTitle(self) -&gt; Optional[str]:
 <h3>Methods</h3>
 <dl>
 <dt id="pyflarum.flarum.core.forum.Forum.get_groups"><code class="name flex">
-<span>def <span class="ident">get_groups</span></span>(<span>self) ‑> List[<a title="pyflarum.flarum.core.groups.Group" href="groups.html#pyflarum.flarum.core.groups.Group">Group</a>]</span>
+<span>def <span class="ident">get_groups</span></span>(<span>self) ‑> list</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Obtains the forum groups.</p>
@@ -1005,16 +1005,16 @@ def welcomeTitle(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\forum.py#L218-L233" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\forum.py#L218-L233" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">def get_groups(self) -&gt; List[Group]:
+<pre><code class="python">def get_groups(self) -&gt; list[Group]:
     &#34;&#34;&#34;
         Obtains the forum groups.
 
         Returns a list of `Group` objects.
     &#34;&#34;&#34;
 
-    all_groups = list() # type: List[Group]
+    all_groups = list() # type: list[Group]
 
     for raw_group in self.relationships.get(&#34;groups&#34;, {}).get(&#34;data&#34;, [{}]):
         if raw_group.get(&#34;type&#34;, None) == &#39;groups&#39;:

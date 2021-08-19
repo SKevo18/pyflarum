@@ -1,4 +1,4 @@
-from typing import Any, Literal, NoReturn, TYPE_CHECKING, Optional, List, Union
+from typing import Any, Literal, NoReturn, TYPE_CHECKING, Optional
 
 # Avoid my greatest enemy in Python: circular import:
 if TYPE_CHECKING:
@@ -6,8 +6,8 @@ if TYPE_CHECKING:
 
 from datetime import datetime
 
-from ...flarum.core import BaseFlarumBulkObject, BaseFlarumIndividualObject
-from ...flarum.core.users import UserFromBulk, UserFromNotification
+from ..core import BaseFlarumBulkObject, BaseFlarumIndividualObject
+from ..core.users import UserFromBulk, UserFromNotification
 from ...error_handler import FlarumError, parse_request
 from ...datetime_conversions import flarum_to_datetime
 
@@ -85,13 +85,13 @@ class Discussions(BaseFlarumBulkObject):
         return iter(self.get_discussions())
 
 
-    def get_discussions(self) -> List['DiscussionFromBulk']:
+    def get_discussions(self) -> list['DiscussionFromBulk']:
         """
             Obtains all discussions from the `Discussions` object as a `list`.
             Returns a `list` of `DiscussionFromBulk`.
         """
 
-        all_discussions = [] # type: List[DiscussionFromBulk]
+        all_discussions = [] # type: list[DiscussionFromBulk]
 
         for raw_discussion in self.data:
             if raw_discussion.get("type", None) == 'discussions':
@@ -476,7 +476,7 @@ class Discussion(DiscussionFromBulk):
 
 
     @property
-    def included(self) -> List[dict]:
+    def included(self) -> list[dict]:
         """
             Returns raw list of JSON included data.
 
@@ -486,7 +486,7 @@ class Discussion(DiscussionFromBulk):
         return self.get("included", [{}])
 
 
-    def get_author(self, mode: Union[Literal['first_number'], Any]='first_number') -> UserFromBulk:
+    def get_author(self, mode: 'Any | Literal["first_number"]'='first_number') -> UserFromBulk:
         """
             Obtains the discussion's author, AKA. the author
             of the post with number 1 in a discussion.
@@ -515,7 +515,7 @@ class Discussion(DiscussionFromBulk):
         return None
 
 
-    def get_posts(self) -> List[PostFromBulk]:
+    def get_posts(self) -> list[PostFromBulk]:
         """
             Returns a list of `pyflarum.flarum.core.posts.PostFromBulk` objects.
 
@@ -523,8 +523,8 @@ class Discussion(DiscussionFromBulk):
             but these posts are in fact identical to `pyflarum.flarum.core.posts.PostFromBulk`, that's why they are returned.
         """
 
-        all_posts = list() # type: List[PostFromBulk]
-        raw_posts = self.relationships.get("posts", {}).get("data", [{}]) # type: List[dict]
+        all_posts = list() # type: list[PostFromBulk]
+        raw_posts = self.relationships.get("posts", {}).get("data", [{}]) # type: list[dict]
 
         for raw_post in raw_posts:
             if raw_post.get("type", None) == 'posts':

@@ -1,4 +1,4 @@
-from typing import Any, BinaryIO, Dict, Iterable, List, Tuple, Union, Optional, Literal, TYPE_CHECKING
+from typing import Any, BinaryIO, Iterable, Optional, Literal, TYPE_CHECKING
 if TYPE_CHECKING:
     from .custom_types import AnyUser
 
@@ -32,7 +32,7 @@ class FlarumSession:
         The main object that carries the Flarum session.
     """
 
-    def __init__(self, forum_url: str, username_or_email: Union[str]=None, password: Union[str, None]=None, api_endpoint: str="api", user_agent: str='pyflarum', session_object: Union[Session, Any]=Session()):
+    def __init__(self, forum_url: str, username_or_email: Optional[str]=None, password: Optional[str]=None, api_endpoint: str="api", user_agent: str='pyflarum', session_object: 'Session | Any'=Session()):
         """
             ### Parameters:
             - `forum_url` - the forum URL that you want the bot to fetch/update data from. This mustn't end with trailing slash (e. g.: https://domain.tld/ - wrong; https://domain.tld - correct).
@@ -103,7 +103,7 @@ class FlarumSession:
 
 
     @property
-    def api_urls(self) -> Dict[str, str]:
+    def api_urls(self) -> dict[str, str]:
         """
             Simple, hardcoded `'key: value'` `dict` of Flarum's API routes for quick access.
 
@@ -129,8 +129,9 @@ class FlarumSession:
         }
 
 
+
 class FlarumUser(FlarumSession, dict):
-    def __init__(self, extensions: Optional[List[ExtensionMixin]]=None, **kwargs):
+    def __init__(self, extensions: Optional[list[ExtensionMixin]]=None, **kwargs):
         """
             ### Parameters:
             - `forum_url` - the forum URL that you want the bot to fetch/update data from. This mustn't end with trailing slash (e. g.: https://domain.tld/ - wrong; https://domain.tld - correct).
@@ -208,7 +209,7 @@ class FlarumUser(FlarumSession, dict):
         return None
 
 
-    def _update_user_data(self, new_data: dict) -> Union['FlarumUser', User]:
+    def _update_user_data(self, new_data: dict) -> 'FlarumUser | User':
         """
             Updates your user data with new data, if the data belongs to you.
             Then returns updated `FlarumUser`.
@@ -277,7 +278,7 @@ class FlarumUser(FlarumSession, dict):
         return Post(user=self, _fetched_data=json)
 
 
-    def get_discussions(self, filter: Filter=None):
+    def get_discussions(self, filter: Optional[Filter]=None):
         """
             Obtains all discussions from `/api/discussions`, optionally filtering results by using `filter`.
         """
@@ -294,7 +295,7 @@ class FlarumUser(FlarumSession, dict):
         return Discussions(user=self, _fetched_data=json)
 
 
-    def get_posts(self, filter: Filter=None):
+    def get_posts(self, filter: Optional[Filter]=None):
         """
             Obtains all posts from `/api/posts`, optionally filtering results by using `filter`.
         """
@@ -396,7 +397,7 @@ class FlarumUser(FlarumSession, dict):
         return Groups(user=self, _fetched_data=json)
 
 
-    def update_user_info(self, user: Optional['AnyUser']=None, new_username: Optional[str]=None, groups: Optional[Union[List[Union[str, int]], List[Group], Groups]]=None) -> Union['FlarumUser', User]:
+    def update_user_info(self, user: Optional['AnyUser']=None, new_username: Optional[str]=None, groups: Optional['list[str | int] | list[Group] | Groups']=None) -> 'FlarumUser | User':
         """
             Updates the info of a user (this can be your user or someone else).
 
@@ -419,7 +420,7 @@ class FlarumUser(FlarumSession, dict):
                 "attributes": {},
                 "relationships": {}
             }
-        } # type: Dict[str, Dict[str, Union[Any, dict]]]
+        } # type: dict[str, dict[str, dict]]
 
 
         if new_username:
@@ -436,7 +437,7 @@ class FlarumUser(FlarumSession, dict):
         return self._update_user_data(new_data=json)
 
 
-    def send_password_reset_email(self) -> Union['FlarumUser', User]:
+    def send_password_reset_email(self) -> 'FlarumUser | User':
         """
             Allows you to send yourself a password reset E-mail.
         """
@@ -450,7 +451,7 @@ class FlarumUser(FlarumSession, dict):
         return self._update_user_data(new_data=dict(data=json))
 
 
-    def update_preferences(self, preferences: Iterable[Tuple[str, Any]], user: Optional['AnyUser']=None) -> Union['FlarumUser', User]:
+    def update_preferences(self, preferences: Iterable[tuple[str, Any]], user: Optional['AnyUser']=None) -> 'FlarumUser | User':
         """
             Updates an user's preferences.
 
@@ -481,7 +482,7 @@ class FlarumUser(FlarumSession, dict):
         return self._update_user_data(new_data=json)
 
 
-    def change_email(self, new_email: str, password_confirmation: str, user: Optional['AnyUser']=None) -> Union['FlarumUser', User]:
+    def change_email(self, new_email: str, password_confirmation: str, user: Optional['AnyUser']=None) -> 'FlarumUser | User':
         """
             Changes your E-mail. If `user` is specified, then that user's E-mail is changed.
 
@@ -510,7 +511,7 @@ class FlarumUser(FlarumSession, dict):
         return self._update_user_data(new_data=json)
 
 
-    def upload_user_avatar(self, file: BinaryIO, user: Optional['AnyUser']=None, file_name: str="avatar", file_type: Literal['image/png', 'image/jpeg', 'image/gif']="image/png") -> Union['FlarumUser', User]:
+    def upload_user_avatar(self, file: BinaryIO, user: Optional['AnyUser']=None, file_name: str="avatar", file_type: Literal['image/png', 'image/jpeg', 'image/gif']="image/png") -> 'FlarumUser | User':
         """
             Uploads an avatar for yourself. If `user` is specified, then avatar of that user is changed.
         """
@@ -524,7 +525,7 @@ class FlarumUser(FlarumSession, dict):
         return self._update_user_data(new_data=json)
 
 
-    def remove_user_avatar(self, user: Optional['AnyUser']=None) -> Union['FlarumUser', User]:
+    def remove_user_avatar(self, user: Optional['AnyUser']=None) -> 'FlarumUser | User':
         """
             Removes your user's avatar. If `user` is specified, then avatar of that user is removed.
         """

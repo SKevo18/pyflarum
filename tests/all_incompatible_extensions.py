@@ -1,15 +1,9 @@
-from typing import Union
-
-
-from normalize_path import normalize_path
-normalize_path()
-
 from dotenv import load_dotenv
 load_dotenv()
 
 
 from pyflarum import FlarumUser
-
+from pyflarum.flarum.core.discussions import Discussion
 from pyflarum.flarum.core.filters import Filter
 
 from pyflarum.extensions import absolutely_all
@@ -25,7 +19,7 @@ user = FlarumUser(forum_url="https://discuss.flarum.org", extensions=EXTENSIONS)
 
 
 def incompatible_extensions():
-    discussion: Union[Flarum_Tags.TagsDiscussionMixin]
+    discussion: 'Flarum_Tags.TagsDiscussionMixin | Discussion'
 
     for discussions in user.absolutely_all_discussions(Filter(order_by='createdAt')):
         for discussion in discussions:

@@ -25,9 +25,9 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\FoF_BestAnswer.py#L0-L49" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\FoF_BestAnswer.py#L0-L49" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">from typing import Optional, TYPE_CHECKING
+<pre><code class="python">from typing import Optional
 
 from datetime import datetime
 
@@ -103,7 +103,7 @@ class BestAnswerExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\FoF_BestAnswer.py#L33-L36" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\FoF_BestAnswer.py#L33-L36" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class BestAnswerDiscussionMixin(DiscussionFromBulk):
     @property
@@ -166,7 +166,7 @@ class BestAnswerExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\FoF_BestAnswer.py#L34-L36" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\FoF_BestAnswer.py#L34-L36" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def canSelectBestAnswer(self) -&gt; bool:
@@ -189,7 +189,7 @@ def canSelectBestAnswer(self) -&gt; bool:
 </p>
 <div class="desc inherited"><p>The <code>datetime</code> of when this discussion was created at.</p></div>
 </dd>
-<dt id="pyflarum.extensions.flarum.FoF_BestAnswer.BestAnswerDiscussionMixin.data"><code class="name">var <span class="ident">data</span> : Union[List[dict], dict]</code></dt>
+<dt id="pyflarum.extensions.flarum.FoF_BestAnswer.BestAnswerDiscussionMixin.data"><code class="name">var <span class="ident">data</span> : list[dict] | dict</code></dt>
 <dd>
 <p class="inheritance">
 <em>Inherited from:</em>
@@ -406,7 +406,7 @@ data from all of the discussion classes (see <a href="https://cwkevo.github.io/p
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\FoF_BestAnswer.py#L20-L30" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\FoF_BestAnswer.py#L20-L30" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class BestAnswerDiscussionNotificationMixin(DiscussionFromNotification):
     @property
@@ -443,7 +443,7 @@ data from all of the discussion classes (see <a href="https://cwkevo.github.io/p
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\FoF_BestAnswer.py#L26-L30" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\FoF_BestAnswer.py#L26-L30" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def bestAnswerSetAt(self) -&gt; Optional[datetime]:
@@ -452,7 +452,7 @@ def bestAnswerSetAt(self) -&gt; Optional[datetime]:
     return flarum_to_datetime(raw)</code></pre>
 </details>
 </dd>
-<dt id="pyflarum.extensions.flarum.FoF_BestAnswer.BestAnswerDiscussionNotificationMixin.data"><code class="name">var <span class="ident">data</span> : Union[List[dict], dict]</code></dt>
+<dt id="pyflarum.extensions.flarum.FoF_BestAnswer.BestAnswerDiscussionNotificationMixin.data"><code class="name">var <span class="ident">data</span> : list[dict] | dict</code></dt>
 <dd>
 <p class="inheritance">
 <em>Inherited from:</em>
@@ -466,7 +466,7 @@ def bestAnswerSetAt(self) -&gt; Optional[datetime]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\FoF_BestAnswer.py#L21-L23" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\FoF_BestAnswer.py#L21-L23" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def hasBestAnswer(self) -&gt; bool:
@@ -628,7 +628,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\FoF_BestAnswer.py#L40-L50" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\FoF_BestAnswer.py#L40-L50" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class BestAnswerExtension(ExtensionMixin):
     def get_dependencies(self):
@@ -665,7 +665,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\FoF_BestAnswer.py#L41-L45" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\FoF_BestAnswer.py#L41-L45" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_dependencies(self):
     return {
@@ -686,7 +686,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\FoF_BestAnswer.py#L48-L50" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\FoF_BestAnswer.py#L48-L50" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def mixin(self):
     super().mixin(self, DiscussionFromNotification, BestAnswerDiscussionNotificationMixin)

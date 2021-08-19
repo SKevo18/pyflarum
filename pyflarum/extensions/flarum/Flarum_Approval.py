@@ -1,5 +1,3 @@
-from typing import Union
-
 from .. import ExtensionMixin
 
 from ...flarum.core.discussions import DiscussionFromNotification
@@ -47,7 +45,7 @@ class ApprovalPostFromNotificationMixin:
         return self.attributes.get("canApprove", False)
 
 
-    def approve(self: Union[PostFromNotification, 'ApprovalPostFromNotificationMixin'], force: bool=False) -> Post:
+    def approve(self: 'PostFromNotification | ApprovalPostFromNotificationMixin', force: bool=False) -> Post:
         """
             Approve the post. Use `force` to approve despite the post being approved already, and do not raise `FlarumError`.
         """

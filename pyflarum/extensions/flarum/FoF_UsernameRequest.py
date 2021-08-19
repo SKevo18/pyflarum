@@ -1,4 +1,4 @@
-from typing import Dict, List, Optional
+from typing import Optional
 
 from datetime import datetime
 
@@ -17,9 +17,9 @@ HARD_DEPENCENDIES = []
 
 class UsernameRequestUserMixin(UserFromBulk):
     @property
-    def usernameHistory(self) -> Optional[List[Dict[str, datetime]]]:
-        raw_list = self.attributes.get("usernameHistory", None) # type: List[Dict[str, int]]
-        formatted_list = [] # type: List[Dict[str, datetime]]
+    def usernameHistory(self) -> Optional[list[dict[str, datetime]]]:
+        raw_list = self.attributes.get("usernameHistory", None) # type: list[dict[str, int]]
+        formatted_list = [] # type: list[dict[str, datetime]]
 
         if raw_list and isinstance(raw_list[0], dict):
             for raw_dict in raw_list:

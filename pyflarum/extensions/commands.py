@@ -1,5 +1,3 @@
-from typing import List
-
 from . import ExtensionMixin
 from ..session import FlarumUser
 
@@ -16,7 +14,7 @@ HARD_DEPENCENDIES = []
 
 
 class CommandsFlarumUserMixin(FlarumUser):
-    def is_mentioned_in(self, string: str):
+    def is_mentioned_in(self, string: str) -> bool:
         match = re.search(rf'@"({self.username})"#[a-z0-9]+', string)
 
         if match:
@@ -26,7 +24,7 @@ class CommandsFlarumUserMixin(FlarumUser):
             return False
 
 
-    def parse_as_command(self, string: str, is_mentioned: bool=True, split_at: str=' '):
+    def parse_as_command(self, string: str, is_mentioned: bool=True, split_at: str=' ') -> list[str]:
         """
             Parses a command from a string (e. g.: post's content). The result is list of arguments.
 
@@ -43,7 +41,7 @@ class CommandsFlarumUserMixin(FlarumUser):
                 group = match.group(1)
 
                 if group:
-                    parsed = group.split(sep=split_at) # type: List[str]
+                    parsed = group.split(sep=split_at) # type: list[str]
 
                     return parsed
 

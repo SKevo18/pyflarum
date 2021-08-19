@@ -1,4 +1,4 @@
-from typing import Literal, Optional, List
+from typing import Literal, Optional
 
 
 class Filter:
@@ -8,7 +8,7 @@ class Filter:
         It allows you to filter discussions without having to manually specify URL parameters.
     """
 
-    def __init__(self, order_by: Optional[Literal['commentCount', '-commentCount', 'createdAt', '-createdAt']]=None, query: Optional[str]=None, limit: int=20, page: Optional[int]=None, include: Optional[List[str]]=None, additional_data: Optional[dict]=None):
+    def __init__(self, order_by: Optional[Literal['commentCount', '-commentCount', 'createdAt', '-createdAt']]=None, query: Optional[str]=None, limit: int=20, page: Optional[int]=None, include: Optional[list[str]]=None, additional_data: Optional[dict]=None):
         self.order_by = order_by
         self.query = query
         self.limit = limit

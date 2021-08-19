@@ -1,11 +1,11 @@
-from pyflarum.flarum.core import BaseFlarumBulkObject, BaseFlarumIndividualObject
-from typing import Literal, TYPE_CHECKING, Optional, List
+from typing import TYPE_CHECKING, Optional
 
 # Avoid my greatest enemy in Python: circular import:
 if TYPE_CHECKING:
     from ...session import FlarumUser
 
 from ...error_handler import parse_request
+from ..core import BaseFlarumBulkObject, BaseFlarumIndividualObject
 
 
 
@@ -24,7 +24,7 @@ class PreparedGroup(BaseFlarumIndividualObject):
 
 
     @property
-    def to_dict(self):
+    def to_dict(self) -> dict:
         """
             Converts the group to a `dict`, so that
             it can be sent to the API.
@@ -71,12 +71,12 @@ class Groups(BaseFlarumBulkObject):
         return iter(self.get_groups())
 
 
-    def get_groups(self) -> List['Group']:
+    def get_groups(self) -> list['Group']:
         """
             All groups from the `Groups` object, as a `list` of `Group` objects.
         """
 
-        all_groups = [] # type: List[Group]
+        all_groups = [] # type: list[Group]
 
         for raw_group in self.data:
             if raw_group.get("type", None) == 'groups':
@@ -152,7 +152,7 @@ class Group(BaseFlarumIndividualObject):
         return Group(user=self.user, _fetched_data=json)
 
 
-    def delete(self) -> Literal[True]:
+    def delete(self) -> True:
         """
             Removes the group forever. This is irreversible!
 

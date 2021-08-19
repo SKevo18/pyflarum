@@ -25,7 +25,7 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\FoF_PreventNecrobumping.py#L0-L35" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\FoF_PreventNecrobumping.py#L0-L35" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">from typing import Optional
 
@@ -89,7 +89,7 @@ class PreventNecrobumpingExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\FoF_PreventNecrobumping.py#L16-L23" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\FoF_PreventNecrobumping.py#L16-L23" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class PreventNecrobumpingDiscussionMixin(DiscussionFromBulk):
     @property
@@ -166,7 +166,7 @@ class PreventNecrobumpingExtension(ExtensionMixin):
 </p>
 <div class="desc inherited"><p>The <code>datetime</code> of when this discussion was created at.</p></div>
 </dd>
-<dt id="pyflarum.extensions.flarum.FoF_PreventNecrobumping.PreventNecrobumpingDiscussionMixin.data"><code class="name">var <span class="ident">data</span> : Union[List[dict], dict]</code></dt>
+<dt id="pyflarum.extensions.flarum.FoF_PreventNecrobumping.PreventNecrobumpingDiscussionMixin.data"><code class="name">var <span class="ident">data</span> : list[dict] | dict</code></dt>
 <dd>
 <p class="inheritance">
 <em>Inherited from:</em>
@@ -180,7 +180,7 @@ class PreventNecrobumpingExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\FoF_PreventNecrobumping.py#L17-L23" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\FoF_PreventNecrobumping.py#L17-L23" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def fof_prevent_necrobumping(self) -&gt; Optional[int]:
@@ -436,7 +436,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\FoF_PreventNecrobumping.py#L27-L36" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\FoF_PreventNecrobumping.py#L27-L36" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class PreventNecrobumpingExtension(ExtensionMixin):
     def get_dependencies(self):
@@ -472,7 +472,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\FoF_PreventNecrobumping.py#L28-L32" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\FoF_PreventNecrobumping.py#L28-L32" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_dependencies(self):
     return {
@@ -493,7 +493,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\FoF_PreventNecrobumping.py#L35-L36" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\FoF_PreventNecrobumping.py#L35-L36" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def mixin(self):
     super().mixin(self, DiscussionFromBulk, PreventNecrobumpingDiscussionMixin)</code></pre>

@@ -1,8 +1,8 @@
-from typing import List, Optional
+from typing import Optional
 
 from datetime import datetime
 
-from ...flarum.core import BaseFlarumBulkObject, BaseFlarumIndividualObject
+from ..core import BaseFlarumBulkObject, BaseFlarumIndividualObject
 from ...datetime_conversions import flarum_to_datetime
 
 
@@ -16,12 +16,12 @@ class Users(BaseFlarumBulkObject):
         return iter(self.get_users())
 
 
-    def get_users(self):
+    def get_users(self) -> list['UserFromBulk']:
         """
             All users from the `Users` object.
         """
 
-        all_users = [] # type: List[UserFromBulk]
+        all_users = [] # type: list[UserFromBulk]
 
         for raw_user in self.data:
             if raw_user.get("type", None) == 'users':
@@ -124,7 +124,7 @@ class UserFromBulk(UserFromNotification):
     @property
     def commentCount(self) -> Optional[int]:
         """
-            The user's comment count.
+            The user's comment/post count.
         """
 
         return self.attributes.get("commentCount", None)
@@ -181,4 +181,40 @@ class MyUser(User):
         Your user, contains fullest user data.
     """
 
-    pass
+    @property
+    def markedAllAsReadAt(self) -> Optional[datetime]:
+        """
+            When did you mark all discussions as read.
+        """
+
+        raw = self.attributes.get("markedAllAsReadAt", None)
+
+        return flarum_to_datetime(raw)
+    
+
+    @property
+    def unreadNotificationCount(self) -> Optional[int]:
+        """
+            Amount of your unread notifications.
+        """
+
+        return self.attributes.get("unreadNotificationCount", None)
+
+
+    @property
+    def newNotificationCount(self) -> Optional[int]:
+        """
+            Amount of your new notifications.
+        """
+
+        return self.attributes.get("newNotificationCount", None)
+
+
+    @property
+    def preferences(self) -> dict:
+        """
+            A raw `dict` of your preferences (for notifications).
+        """
+
+        return self.attributes.get("preferences", {})
+

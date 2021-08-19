@@ -1,8 +1,8 @@
-from typing import Optional, List
+from typing import Optional
 
 
-from ...flarum.core import BaseFlarumIndividualObject
-from ...flarum.core.groups import Group
+from ..core import BaseFlarumIndividualObject
+from ..core.groups import Group
 
 
 
@@ -215,14 +215,14 @@ class Forum(BaseFlarumIndividualObject):
         return self.attributes.get("allowUsernameMentionFormat", False)
 
 
-    def get_groups(self) -> List[Group]:
+    def get_groups(self) -> list[Group]:
         """
             Obtains the forum groups.
 
             Returns a list of `Group` objects.
         """
 
-        all_groups = list() # type: List[Group]
+        all_groups = list() # type: list[Group]
 
         for raw_group in self.relationships.get("groups", {}).get("data", [{}]):
             if raw_group.get("type", None) == 'groups':
@@ -233,9 +233,9 @@ class Forum(BaseFlarumIndividualObject):
         return all_groups
 
 
-    # Required: `Forum` is not a standard bulk route, can't include from that.
+    # Required: `Forum` is not a standard bulk route, so we can't inherit from that.
     @property
-    def included(self) -> List[dict]:
+    def included(self) -> list[dict]:
         """
             Raw `list[dict]` of the forum's included objects.
         """

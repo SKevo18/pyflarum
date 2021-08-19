@@ -1,6 +1,3 @@
-from normalize_path import normalize_path
-normalize_path()
-
 from dotenv import load_dotenv
 load_dotenv()
 

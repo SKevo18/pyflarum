@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import Optional
 
 from . import ExtensionMixin
 from ..session import FlarumUser
@@ -19,13 +19,13 @@ HARD_DEPENCENDIES = []
 
 
 class AdvancedSearchFlarumUserMixin(FlarumUser):
-    def get_user_by_username(self, username: str):
+    def get_user_by_username(self, username: str) -> Optional[User]:
         filter = Filter(query=username, limit=1)
 
         raw = self.session.get(f"{self.api_urls['users']}", params=filter.to_dict)
         json = parse_request(raw)
 
-        for possible_user in json.get("data", {}):
+        for possible_user in json.get("data", [{}]):
             if possible_user.get("attributes", {}).get("username", None) == username:
                 return User(user=self, _fetched_data=dict(data=possible_user))
 

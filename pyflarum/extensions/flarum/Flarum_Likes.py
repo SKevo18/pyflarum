@@ -1,8 +1,7 @@
-from typing import List, Optional, Type, Union
+from typing import Type
 
 from .. import ExtensionMixin
 
-from ...session import FlarumUser
 from ...error_handler import parse_request
 
 from ...flarum.core.users import UserFromBulk
@@ -57,23 +56,23 @@ class LikesPostFromDiscussionMixin:
         """
 
         return self.__like_or_unlike(liked=False)
-LikesPostFromDiscussionMixin: Union[Type[LikesPostFromDiscussionMixin], Type[PostFromDiscussion]]
+LikesPostFromDiscussionMixin: 'Type[LikesPostFromDiscussionMixin] | Type[PostFromDiscussion]'
 
 
 class LikesPostFromNotificationMixin:
     @property
     def canLike(self: PostFromNotification) -> bool:
         return self.attributes.get("canLike", False)
-LikesPostFromNotificationMixin: Union[Type[LikesPostFromNotificationMixin], Type[LikesPostFromDiscussionMixin]]
+LikesPostFromNotificationMixin: 'Type[LikesPostFromNotificationMixin] | Type[LikesPostFromDiscussionMixin]'
 
 
 class LikesPostFromBulkMixin:
-    def get_liked_by(self: PostFromBulk) -> List[UserFromBulk]:
+    def get_liked_by(self: PostFromBulk) -> list[UserFromBulk]:
         """
             Obtain the list of users that liked the post.
         """
 
-        all_users = list() # type: List[UserFromBulk]
+        all_users = list() # type: list[UserFromBulk]
 
         for raw_user in self.relationships.get("likes", {}).get("data", [{}]):
             if raw_user.get("type", None) == "users":
@@ -87,7 +86,7 @@ class LikesPostFromBulkMixin:
                             all_users.append(user)
 
         return all_users
-LikesPostFromBulkMixin: Union[Type[LikesPostFromBulkMixin], Type[LikesPostFromNotificationMixin]]
+LikesPostFromBulkMixin: 'Type[LikesPostFromBulkMixin] | Type[LikesPostFromNotificationMixin]'
 
 
 

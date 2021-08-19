@@ -1,4 +1,4 @@
-from typing import Literal, Optional, BinaryIO, Union
+from typing import Literal, Optional, BinaryIO
 
 from ..extensions import ExtensionMixin
 
@@ -108,29 +108,29 @@ class MailSettings(dict):
 
 
 class AdminFlarumUserMixin(FlarumUser):
-    def __enable_or_disable_extension(self, id: Union[str, int], enabled: bool=True):
+    def __enable_or_disable_extension(self, id: 'str | int', enabled: bool=True) -> True:
         raw = self.session.patch(f"{self.api_urls['extensions']}/{id}", json={"enabled": enabled})
         parse_request(raw)
 
         return True
 
 
-    def enable_extension(self, id: Union[str, int]):
+    def enable_extension(self, id: 'str | int') -> True:
         return self.__enable_or_disable_extension(id=id, enabled=True)
 
 
-    def disable_extension(self, extension: str):
+    def disable_extension(self, id: 'str | int') -> True:
         return self.__enable_or_disable_extension(id=id, enabled=False)
 
 
-    def clear_cache(self):
+    def clear_cache(self) -> True:
         raw = self.session.delete(f"{self.api_urls['base']}/cache")
         parse_request(raw)
 
         return True
 
 
-    def update_forum_info(self, forum_title: Optional[str]=None, forum_description: Optional[str]=None, default_route: Optional[str]=None, welcome_title: Optional[str]=None, welcome_message: Optional[str]=None, user_slug_driver: Optional[Literal["", "default", "id"]]=None):
+    def update_forum_info(self, forum_title: Optional[str]=None, forum_description: Optional[str]=None, default_route: Optional[str]=None, welcome_title: Optional[str]=None, welcome_message: Optional[str]=None, user_slug_driver: Optional[Literal["", "default", "id"]]=None) -> True:
         post_data = {}
 
 
@@ -156,7 +156,7 @@ class AdminFlarumUserMixin(FlarumUser):
         return self.__update_settings(post_data)
 
 
-    def get_mail_settings(self):
+    def get_mail_settings(self) -> MailSettings:
         raw = self.session.get(f"{self.api_urls['base']}/mail/settings")
         json = parse_request(raw)
 
@@ -183,14 +183,14 @@ class AdminFlarumUserMixin(FlarumUser):
         return self.__update_settings(post_data)
 
 
-    def send_test_mail(self):
+    def send_test_mail(self) -> True:
         raw = self.session.post(f"{self.api_urls['base']}/mail/test")
         parse_request(raw)
 
         return True
 
 
-    def update_appearance(self, theme_primary_color: Optional[str]=None, theme_secondary_color: Optional[str]=None, theme_dark_mode: Optional[bool]=None, theme_colored_header: bool=None):
+    def update_appearance(self, theme_primary_color: Optional[str]=None, theme_secondary_color: Optional[str]=None, theme_dark_mode: Optional[bool]=None, theme_colored_header: bool=None) -> True:
         post_data = {}
 
 
@@ -213,7 +213,7 @@ class AdminFlarumUserMixin(FlarumUser):
         return True
 
 
-    def upload_logo(self, file: BinaryIO, file_name: str="logo", file_type: Literal['image/png', 'image/jpeg', 'image/gif']="image/png"):
+    def upload_logo(self, file: BinaryIO, file_name: str="logo", file_type: Literal['image/png', 'image/jpeg', 'image/gif']="image/png") -> True:
         raw = self.session.post(url=f"{self.api_urls['base']}/logo", files={ "logo": (file_name, file, file_type) })
 
         parse_request(raw)
@@ -221,14 +221,14 @@ class AdminFlarumUserMixin(FlarumUser):
         return True
 
 
-    def remove_logo(self):
+    def remove_logo(self) -> True:
         raw = self.session.delete(f"{self.api_urls['base']}/logo")
         parse_request(raw)
 
         return True
 
 
-    def upload_favicon(self, file: BinaryIO, file_name: str="favicon", file_type: Literal['image/png', 'image/jpeg', 'image/gif']="image/png"):
+    def upload_favicon(self, file: BinaryIO, file_name: str="favicon", file_type: Literal['image/png', 'image/jpeg', 'image/gif']="image/png") -> True:
         raw = self.session.post(url=f"{self.api_urls['base']}/favicon", files={ "favicon": (file_name, file, file_type) })
 
         parse_request(raw)
@@ -236,26 +236,26 @@ class AdminFlarumUserMixin(FlarumUser):
         return True
 
 
-    def remove_favicon(self):
+    def remove_favicon(self) -> True:
         raw = self.session.delete(f"{self.api_urls['base']}/favicon")
         parse_request(raw)
 
         return True
 
 
-    def update_custom_header(self, header: Optional[str]=None):
-        return self.__update_settings({ "custom_header": (header if header else "") })
+    def update_custom_header(self, header: Optional[str]=None) -> True:
+        return self.__update_settings({ "custom_header": header if header else "" })
 
 
-    def update_custom_footer(self, footer: Optional[str]=None):
-        return self.__update_settings({ "custom_footer": (footer if footer else "") })
+    def update_custom_footer(self, footer: Optional[str]=None) -> True:
+        return self.__update_settings({ "custom_footer": footer if footer else "" })
 
 
-    def update_custom_css(self, css: Optional[str]=None):
-        return self.__update_settings({ "custom_header": (css if css else "") })
+    def update_custom_css(self, css: Optional[str]=None) -> True:
+        return self.__update_settings({ "custom_header": css if css else "" })
 
 
-    def __update_settings(self, data: dict):
+    def __update_settings(self, data: dict) -> True:
         raw = self.session.post(f"{self.api_urls['base']}/settings", json=data)
         parse_request(raw)
 

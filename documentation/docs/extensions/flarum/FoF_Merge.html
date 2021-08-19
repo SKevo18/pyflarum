@@ -25,7 +25,7 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\FoF_Merge.py#L0-L30" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\FoF_Merge.py#L0-L30" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">from .. import ExtensionMixin
 
@@ -84,7 +84,7 @@ class MergeExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\FoF_Merge.py#L15-L18" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\FoF_Merge.py#L15-L18" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class MergeDiscussionMixin(DiscussionFromBulk):
     @property
@@ -131,7 +131,7 @@ class MergeExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\FoF_Merge.py#L16-L18" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\FoF_Merge.py#L16-L18" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def canMerge(self) -&gt; bool:
@@ -170,7 +170,7 @@ def canMerge(self) -&gt; bool:
 </p>
 <div class="desc inherited"><p>The <code>datetime</code> of when this discussion was created at.</p></div>
 </dd>
-<dt id="pyflarum.extensions.flarum.FoF_Merge.MergeDiscussionMixin.data"><code class="name">var <span class="ident">data</span> : Union[List[dict], dict]</code></dt>
+<dt id="pyflarum.extensions.flarum.FoF_Merge.MergeDiscussionMixin.data"><code class="name">var <span class="ident">data</span> : list[dict] | dict</code></dt>
 <dd>
 <p class="inheritance">
 <em>Inherited from:</em>
@@ -423,7 +423,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\FoF_Merge.py#L22-L31" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\FoF_Merge.py#L22-L31" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class MergeExtension(ExtensionMixin):
     def get_dependencies(self):
@@ -459,7 +459,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\FoF_Merge.py#L23-L27" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\FoF_Merge.py#L23-L27" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_dependencies(self):
     return {
@@ -480,7 +480,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\FoF_Merge.py#L30-L31" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\FoF_Merge.py#L30-L31" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def mixin(self):
     super().mixin(self, DiscussionFromBulk, MergeDiscussionMixin)</code></pre>

@@ -25,9 +25,9 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\FoF_UsernameRequest.py#L0-L44" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\FoF_UsernameRequest.py#L0-L44" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">from typing import Dict, List, Optional
+<pre><code class="python">from typing import Optional
 
 from datetime import datetime
 
@@ -46,9 +46,9 @@ HARD_DEPENCENDIES = []
 
 class UsernameRequestUserMixin(UserFromBulk):
     @property
-    def usernameHistory(self) -&gt; Optional[List[Dict[str, datetime]]]:
-        raw_list = self.attributes.get(&#34;usernameHistory&#34;, None) # type: List[Dict[str, int]]
-        formatted_list = [] # type: List[Dict[str, datetime]]
+    def usernameHistory(self) -&gt; Optional[list[dict[str, datetime]]]:
+        raw_list = self.attributes.get(&#34;usernameHistory&#34;, None) # type: list[dict[str, int]]
+        formatted_list = [] # type: list[dict[str, datetime]]
 
         if raw_list and isinstance(raw_list[0], dict):
             for raw_dict in raw_list:
@@ -135,7 +135,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\FoF_UsernameRequest.py#L36-L45" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\FoF_UsernameRequest.py#L36-L45" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class UsernameRequestExtension(ExtensionMixin):
     def get_dependencies(self):
@@ -171,7 +171,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\FoF_UsernameRequest.py#L37-L41" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\FoF_UsernameRequest.py#L37-L41" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_dependencies(self):
     return {
@@ -192,7 +192,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\FoF_UsernameRequest.py#L44-L45" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\FoF_UsernameRequest.py#L44-L45" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def mixin(self):
     super().mixin(self, UserFromBulk, UsernameRequestUserMixin)</code></pre>
@@ -215,13 +215,13 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\FoF_UsernameRequest.py#L18-L33" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\FoF_UsernameRequest.py#L18-L33" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class UsernameRequestUserMixin(UserFromBulk):
     @property
-    def usernameHistory(self) -&gt; Optional[List[Dict[str, datetime]]]:
-        raw_list = self.attributes.get(&#34;usernameHistory&#34;, None) # type: List[Dict[str, int]]
-        formatted_list = [] # type: List[Dict[str, datetime]]
+    def usernameHistory(self) -&gt; Optional[list[dict[str, datetime]]]:
+        raw_list = self.attributes.get(&#34;usernameHistory&#34;, None) # type: list[dict[str, int]]
+        formatted_list = [] # type: list[dict[str, datetime]]
 
         if raw_list and isinstance(raw_list[0], dict):
             for raw_dict in raw_list:
@@ -298,9 +298,9 @@ class ExampleExtension(ExtensionMixin):
 <em>Inherited from:</em>
 <code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.commentCount" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk.commentCount">commentCount</a></code>
 </p>
-<div class="desc inherited"><p>The user's comment count.</p></div>
+<div class="desc inherited"><p>The user's comment/post count.</p></div>
 </dd>
-<dt id="pyflarum.extensions.flarum.FoF_UsernameRequest.UsernameRequestUserMixin.data"><code class="name">var <span class="ident">data</span> : Union[List[dict], dict]</code></dt>
+<dt id="pyflarum.extensions.flarum.FoF_UsernameRequest.UsernameRequestUserMixin.data"><code class="name">var <span class="ident">data</span> : list[dict] | dict</code></dt>
 <dd>
 <p class="inheritance">
 <em>Inherited from:</em>
@@ -389,18 +389,18 @@ other objects …</p></div>
 </p>
 <div class="desc inherited"><p>The user's username.</p></div>
 </dd>
-<dt id="pyflarum.extensions.flarum.FoF_UsernameRequest.UsernameRequestUserMixin.usernameHistory"><code class="name">var <span class="ident">usernameHistory</span> : Optional[List[Dict[str, datetime.datetime]]]</code></dt>
+<dt id="pyflarum.extensions.flarum.FoF_UsernameRequest.UsernameRequestUserMixin.usernameHistory"><code class="name">var <span class="ident">usernameHistory</span> : Optional[list[dict[str, datetime.datetime]]]</code></dt>
 <dd>
 <div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\FoF_UsernameRequest.py#L19-L33" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\FoF_UsernameRequest.py#L19-L33" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
-def usernameHistory(self) -&gt; Optional[List[Dict[str, datetime]]]:
-    raw_list = self.attributes.get(&#34;usernameHistory&#34;, None) # type: List[Dict[str, int]]
-    formatted_list = [] # type: List[Dict[str, datetime]]
+def usernameHistory(self) -&gt; Optional[list[dict[str, datetime]]]:
+    raw_list = self.attributes.get(&#34;usernameHistory&#34;, None) # type: list[dict[str, int]]
+    formatted_list = [] # type: list[dict[str, datetime]]
 
     if raw_list and isinstance(raw_list[0], dict):
         for raw_dict in raw_list:

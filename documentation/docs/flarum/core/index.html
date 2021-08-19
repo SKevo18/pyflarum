@@ -25,9 +25,9 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\__init__.py#L0-L157" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\__init__.py#L0-L157" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">from typing import List, Optional, Union, TYPE_CHECKING
+<pre><code class="python">from typing import Optional, TYPE_CHECKING
 if TYPE_CHECKING:
     from ...session import FlarumUser
 
@@ -52,12 +52,12 @@ class BaseFlarumObject(dict):
 
 
     @property
-    def data(self) -&gt; Union[List[dict], dict]:
+    def data(self) -&gt; &#39;list[dict] | dict&#39;:
         &#34;&#34;&#34;
             A raw `dict` of the object&#39;s data.
         &#34;&#34;&#34;
 
-        return self.get(&#34;data&#34;, [{}])
+        return self.get(&#34;data&#34;, {})
 
 
 
@@ -109,7 +109,7 @@ class BaseFlarumBulkObject(BaseFlarumObject):
 
 
     @property
-    def included(self) -&gt; List[dict]:
+    def included(self) -&gt; list[dict]:
         &#34;&#34;&#34;
             Raw `dict` of the object&#39;s included data.
         &#34;&#34;&#34;
@@ -175,7 +175,7 @@ class BaseFlarumIndividualObject(BaseFlarumObject):
 
 
     @property
-    def _parent_included(self) -&gt; List[dict]:
+    def _parent_included(self) -&gt; list[dict]:
         &#34;&#34;&#34;
             Raw data of the parent&#39;s included JSON data.
 
@@ -247,7 +247,7 @@ that contain other objects have these properties.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\__init__.py#L35-L88" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\__init__.py#L35-L88" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class BaseFlarumBulkObject(BaseFlarumObject):
     &#34;&#34;&#34;
@@ -297,7 +297,7 @@ that contain other objects have these properties.</p>
 
 
     @property
-    def included(self) -&gt; List[dict]:
+    def included(self) -&gt; list[dict]:
         &#34;&#34;&#34;
             Raw `dict` of the object&#39;s included data.
         &#34;&#34;&#34;
@@ -319,7 +319,7 @@ that contain other objects have these properties.</p>
 </ul>
 <h3>Instance variables</h3>
 <dl>
-<dt id="pyflarum.flarum.core.BaseFlarumBulkObject.data"><code class="name">var <span class="ident">data</span> : Union[List[dict], dict]</code></dt>
+<dt id="pyflarum.flarum.core.BaseFlarumBulkObject.data"><code class="name">var <span class="ident">data</span> : list[dict] | dict</code></dt>
 <dd>
 <p class="inheritance">
 <em>Inherited from:</em>
@@ -333,7 +333,7 @@ that contain other objects have these properties.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\__init__.py#L55-L61" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\__init__.py#L55-L61" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def first_link(self) -&gt; Optional[str]:
@@ -344,16 +344,16 @@ def first_link(self) -&gt; Optional[str]:
     return self.links.get(&#34;first&#34;, None)</code></pre>
 </details>
 </dd>
-<dt id="pyflarum.flarum.core.BaseFlarumBulkObject.included"><code class="name">var <span class="ident">included</span> : List[dict]</code></dt>
+<dt id="pyflarum.flarum.core.BaseFlarumBulkObject.included"><code class="name">var <span class="ident">included</span> : list</code></dt>
 <dd>
 <div class="desc"><p>Raw <code>dict</code> of the object's included data.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\__init__.py#L82-L88" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\__init__.py#L82-L88" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
-def included(self) -&gt; List[dict]:
+def included(self) -&gt; list[dict]:
     &#34;&#34;&#34;
         Raw `dict` of the object&#39;s included data.
     &#34;&#34;&#34;
@@ -367,7 +367,7 @@ def included(self) -&gt; List[dict]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\__init__.py#L46-L52" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\__init__.py#L46-L52" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def links(self) -&gt; dict:
@@ -384,7 +384,7 @@ def links(self) -&gt; dict:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\__init__.py#L73-L79" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\__init__.py#L73-L79" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def next_link(self) -&gt; Optional[str]:
@@ -401,7 +401,7 @@ def next_link(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\__init__.py#L64-L70" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\__init__.py#L64-L70" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def previous_link(self) -&gt; Optional[str]:
@@ -434,7 +434,7 @@ objects have these properties.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\__init__.py#L92-L158" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\__init__.py#L92-L158" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class BaseFlarumIndividualObject(BaseFlarumObject):
     &#34;&#34;&#34;
@@ -493,7 +493,7 @@ objects have these properties.</p>
 
 
     @property
-    def _parent_included(self) -&gt; List[dict]:
+    def _parent_included(self) -&gt; list[dict]:
         &#34;&#34;&#34;
             Raw data of the parent&#39;s included JSON data.
 
@@ -529,7 +529,7 @@ objects have these properties.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\__init__.py#L126-L132" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\__init__.py#L126-L132" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def attributes(self) -&gt; dict:
@@ -540,7 +540,7 @@ def attributes(self) -&gt; dict:
     return self.data.get(&#34;attributes&#34;, {})</code></pre>
 </details>
 </dd>
-<dt id="pyflarum.flarum.core.BaseFlarumIndividualObject.data"><code class="name">var <span class="ident">data</span> : Union[List[dict], dict]</code></dt>
+<dt id="pyflarum.flarum.core.BaseFlarumIndividualObject.data"><code class="name">var <span class="ident">data</span> : list[dict] | dict</code></dt>
 <dd>
 <p class="inheritance">
 <em>Inherited from:</em>
@@ -554,7 +554,7 @@ def attributes(self) -&gt; dict:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\__init__.py#L114-L123" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\__init__.py#L114-L123" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def id(self) -&gt; Optional[int]:
@@ -577,7 +577,7 @@ Read more about <a href="https://cwkevo.github.io/pyflarum/docs/#included-data">
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\__init__.py#L135-L145" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\__init__.py#L135-L145" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def relationships(self) -&gt; dict:
@@ -599,7 +599,7 @@ def relationships(self) -&gt; dict:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\__init__.py#L103-L111" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\__init__.py#L103-L111" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def type(self) -&gt; Optional[str]:
@@ -629,7 +629,7 @@ def type(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\__init__.py#L7-L31" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\__init__.py#L7-L31" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class BaseFlarumObject(dict):
     &#34;&#34;&#34;
@@ -650,12 +650,12 @@ def type(self) -&gt; Optional[str]:
 
 
     @property
-    def data(self) -&gt; Union[List[dict], dict]:
+    def data(self) -&gt; &#39;list[dict] | dict&#39;:
         &#34;&#34;&#34;
             A raw `dict` of the object&#39;s data.
         &#34;&#34;&#34;
 
-        return self.get(&#34;data&#34;, [{}])</code></pre>
+        return self.get(&#34;data&#34;, {})</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -668,21 +668,21 @@ def type(self) -&gt; Optional[str]:
 </ul>
 <h3>Instance variables</h3>
 <dl>
-<dt id="pyflarum.flarum.core.BaseFlarumObject.data"><code class="name">var <span class="ident">data</span> : Union[List[dict], dict]</code></dt>
+<dt id="pyflarum.flarum.core.BaseFlarumObject.data"><code class="name">var <span class="ident">data</span> : list[dict] | dict</code></dt>
 <dd>
 <div class="desc"><p>A raw <code>dict</code> of the object's data.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\flarum\core\__init__.py#L25-L31" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\__init__.py#L25-L31" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
-def data(self) -&gt; Union[List[dict], dict]:
+def data(self) -&gt; &#39;list[dict] | dict&#39;:
     &#34;&#34;&#34;
         A raw `dict` of the object&#39;s data.
     &#34;&#34;&#34;
 
-    return self.get(&#34;data&#34;, [{}])</code></pre>
+    return self.get(&#34;data&#34;, {})</code></pre>
 </details>
 </dd>
 </dl>

@@ -1,4 +1,4 @@
-from typing import List, Optional, Union, TYPE_CHECKING
+from typing import Optional, TYPE_CHECKING
 if TYPE_CHECKING:
     from ...session import FlarumUser
 
@@ -23,12 +23,12 @@ class BaseFlarumObject(dict):
 
 
     @property
-    def data(self) -> Union[List[dict], dict]:
+    def data(self) -> 'list[dict] | dict':
         """
             A raw `dict` of the object's data.
         """
 
-        return self.get("data", [{}])
+        return self.get("data", {})
 
 
 
@@ -80,7 +80,7 @@ class BaseFlarumBulkObject(BaseFlarumObject):
 
 
     @property
-    def included(self) -> List[dict]:
+    def included(self) -> list[dict]:
         """
             Raw `dict` of the object's included data.
         """
@@ -146,7 +146,7 @@ class BaseFlarumIndividualObject(BaseFlarumObject):
 
 
     @property
-    def _parent_included(self) -> List[dict]:
+    def _parent_included(self) -> list[dict]:
         """
             Raw data of the parent's included JSON data.
 

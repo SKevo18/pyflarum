@@ -1,8 +1,3 @@
-from typing import Union
-
-from normalize_path import normalize_path
-normalize_path()
-
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -10,6 +5,7 @@ import os
 import time
 
 from pyflarum import FlarumUser
+from pyflarum.flarum.core.discussions import Discussion
 
 from pyflarum.extensions import absolutely_all
 from pyflarum.extensions.flarum import Flarum_Approval
@@ -26,7 +22,7 @@ user = FlarumUser(forum_url=os.environ['forum_url'], username_or_email='test', p
 
 if __name__ == "__main__":
     for discussions in user.absolutely_all_discussions():
-        discussion: Union[Flarum_Approval.ApprovalDiscussionFromNotificationMixin]
+        discussion: 'Flarum_Approval.ApprovalDiscussionFromNotificationMixin | Discussion'
 
         for discussion in discussions:
             time.sleep(5) # prevent 429

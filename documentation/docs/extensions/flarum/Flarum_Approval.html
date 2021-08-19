@@ -25,11 +25,9 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\Flarum_Approval.py#L0-L89" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Approval.py#L0-L87" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">from typing import Union
-
-from .. import ExtensionMixin
+<pre><code class="python">from .. import ExtensionMixin
 
 from ...flarum.core.discussions import DiscussionFromNotification
 from ...flarum.core.posts import Post, PostFromNotification
@@ -76,7 +74,7 @@ class ApprovalPostFromNotificationMixin:
         return self.attributes.get(&#34;canApprove&#34;, False)
 
 
-    def approve(self: Union[PostFromNotification, &#39;ApprovalPostFromNotificationMixin&#39;], force: bool=False) -&gt; Post:
+    def approve(self: &#39;PostFromNotification | ApprovalPostFromNotificationMixin&#39;, force: bool=False) -&gt; Post:
         &#34;&#34;&#34;
             Approve the post. Use `force` to approve despite the post being approved already, and do not raise `FlarumError`.
         &#34;&#34;&#34;
@@ -136,7 +134,7 @@ class ApprovalExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\Flarum_Approval.py#L20-L27" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Approval.py#L18-L25" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class ApprovalDiscussionFromNotificationMixin:
     @property
@@ -155,7 +153,7 @@ class ApprovalExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\Flarum_Approval.py#L21-L27" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Approval.py#L19-L25" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def isApproved(self: DiscussionFromNotification) -&gt; bool:
@@ -176,7 +174,7 @@ def isApproved(self: DiscussionFromNotification) -&gt; bool:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\Flarum_Approval.py#L76-L90" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Approval.py#L74-L88" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class ApprovalExtension(ExtensionMixin):
     &#34;&#34;&#34;
@@ -217,7 +215,7 @@ def isApproved(self: DiscussionFromNotification) -&gt; bool:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\Flarum_Approval.py#L81-L85" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Approval.py#L79-L83" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_dependencies(self):
     return {
@@ -238,7 +236,7 @@ def isApproved(self: DiscussionFromNotification) -&gt; bool:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\Flarum_Approval.py#L88-L90" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Approval.py#L86-L88" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def mixin(self):
     super().mixin(self, DiscussionFromNotification, ApprovalDiscussionFromNotificationMixin)
@@ -255,7 +253,7 @@ def isApproved(self: DiscussionFromNotification) -&gt; bool:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\Flarum_Approval.py#L31-L72" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Approval.py#L29-L70" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class ApprovalPostFromNotificationMixin:
     @property
@@ -276,7 +274,7 @@ def isApproved(self: DiscussionFromNotification) -&gt; bool:
         return self.attributes.get(&#34;canApprove&#34;, False)
 
 
-    def approve(self: Union[PostFromNotification, &#39;ApprovalPostFromNotificationMixin&#39;], force: bool=False) -&gt; Post:
+    def approve(self: &#39;PostFromNotification | ApprovalPostFromNotificationMixin&#39;, force: bool=False) -&gt; Post:
         &#34;&#34;&#34;
             Approve the post. Use `force` to approve despite the post being approved already, and do not raise `FlarumError`.
         &#34;&#34;&#34;
@@ -308,7 +306,7 @@ def isApproved(self: DiscussionFromNotification) -&gt; bool:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\Flarum_Approval.py#L41-L47" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Approval.py#L39-L45" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def canApprove(self: PostFromNotification) -&gt; bool:
@@ -325,7 +323,7 @@ def canApprove(self: PostFromNotification) -&gt; bool:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\Flarum_Approval.py#L32-L38" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Approval.py#L30-L36" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def isApproved(self: PostFromNotification) -&gt; bool:
@@ -340,16 +338,16 @@ def isApproved(self: PostFromNotification) -&gt; bool:
 <h3>Methods</h3>
 <dl>
 <dt id="pyflarum.extensions.flarum.Flarum_Approval.ApprovalPostFromNotificationMixin.approve"><code class="name flex">
-<span>def <span class="ident">approve</span></span>(<span>self: Union[<a title="pyflarum.flarum.core.posts.PostFromNotification" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromNotification">PostFromNotification</a>, ForwardRef('<a title="pyflarum.extensions.flarum.Flarum_Approval.ApprovalPostFromNotificationMixin" href="#pyflarum.extensions.flarum.Flarum_Approval.ApprovalPostFromNotificationMixin">ApprovalPostFromNotificationMixin</a>')], force: bool = False) ‑> <a title="pyflarum.flarum.core.posts.Post" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.Post">Post</a></span>
+<span>def <span class="ident">approve</span></span>(<span>self: PostFromNotification | <a title="pyflarum.extensions.flarum.Flarum_Approval.ApprovalPostFromNotificationMixin" href="#pyflarum.extensions.flarum.Flarum_Approval.ApprovalPostFromNotificationMixin">ApprovalPostFromNotificationMixin</a>, force: bool = False) ‑> <a title="pyflarum.flarum.core.posts.Post" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.Post">Post</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Approve the post. Use <code>force</code> to approve despite the post being approved already, and do not raise <code>FlarumError</code>.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\Flarum_Approval.py#L50-L72" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Approval.py#L48-L70" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">def approve(self: Union[PostFromNotification, &#39;ApprovalPostFromNotificationMixin&#39;], force: bool=False) -&gt; Post:
+<pre><code class="python">def approve(self: &#39;PostFromNotification | ApprovalPostFromNotificationMixin&#39;, force: bool=False) -&gt; Post:
     &#34;&#34;&#34;
         Approve the post. Use `force` to approve despite the post being approved already, and do not raise `FlarumError`.
     &#34;&#34;&#34;

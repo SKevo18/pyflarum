@@ -25,9 +25,9 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\Flarum_Lock.py#L0-L94" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Lock.py#L0-L94" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">from typing import Type, Union
+<pre><code class="python">from typing import Type
 
 from .. import ExtensionMixin
 
@@ -141,7 +141,7 @@ class LockExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\Flarum_Lock.py#L60-L76" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Lock.py#L60-L76" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class LockDiscussionFromBulkMixin:
     @property
@@ -169,7 +169,7 @@ class LockExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\Flarum_Lock.py#L70-L76" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Lock.py#L70-L76" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def canLock(self: DiscussionFromBulk) -&gt; bool:
@@ -186,7 +186,7 @@ def canLock(self: DiscussionFromBulk) -&gt; bool:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\Flarum_Lock.py#L61-L67" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Lock.py#L61-L67" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def isLocked(self: DiscussionFromBulk) -&gt; bool:
@@ -207,7 +207,7 @@ def isLocked(self: DiscussionFromBulk) -&gt; bool:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\Flarum_Lock.py#L18-L55" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Lock.py#L18-L55" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class LockDiscussionFromNotificationMixin:
     def __lock_or_unlock(self: DiscussionFromNotification, locked: bool=True) -&gt; Discussion:
@@ -258,7 +258,7 @@ def isLocked(self: DiscussionFromBulk) -&gt; bool:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\Flarum_Lock.py#L42-L47" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Lock.py#L42-L47" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def lock(self) -&gt; Discussion:
     &#34;&#34;&#34;
@@ -276,7 +276,7 @@ def isLocked(self: DiscussionFromBulk) -&gt; bool:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\Flarum_Lock.py#L50-L55" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Lock.py#L50-L55" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def unlock(self) -&gt; Discussion:
     &#34;&#34;&#34;
@@ -296,7 +296,7 @@ def isLocked(self: DiscussionFromBulk) -&gt; bool:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\Flarum_Lock.py#L81-L95" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Lock.py#L81-L95" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class LockExtension(ExtensionMixin):
     &#34;&#34;&#34;
@@ -337,7 +337,7 @@ def isLocked(self: DiscussionFromBulk) -&gt; bool:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\Flarum_Lock.py#L86-L90" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Lock.py#L86-L90" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_dependencies(self):
     return {
@@ -358,7 +358,7 @@ def isLocked(self: DiscussionFromBulk) -&gt; bool:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\Flarum_Lock.py#L93-L95" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Lock.py#L93-L95" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def mixin(self):
     super().mixin(self, DiscussionFromNotification, LockDiscussionFromNotificationMixin)

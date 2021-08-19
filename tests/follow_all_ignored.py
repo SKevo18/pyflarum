@@ -1,15 +1,10 @@
-from typing import Union
-
-
-from normalize_path import normalize_path
-normalize_path()
-
 from dotenv import load_dotenv
 load_dotenv()
 
 import os
 
 from pyflarum import FlarumUser
+from pyflarum.flarum.core.discussions import Discussion
 
 from pyflarum.flarum.core.filters import Filter
 
@@ -26,7 +21,7 @@ user = FlarumUser(forum_url=os.environ['forum_url'], username_or_email='test', p
 
 
 def follow_all():
-    discussion: Union[Flarum_Subscriptions.SubscriptionsDiscussionFromBulkMixin]
+    discussion: 'Flarum_Subscriptions.SubscriptionsDiscussionFromBulkMixin | Discussion'
 
     for discussions in user.absolutely_all_discussions(Filter(query='is:ignored')):
         for discussion in discussions:

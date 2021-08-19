@@ -1,4 +1,4 @@
-from typing import Optional, TYPE_CHECKING, Union
+from typing import Optional, TYPE_CHECKING
 if TYPE_CHECKING:
     from ...custom_types import AnyUser
     from ...flarum.core.users import User
@@ -28,7 +28,7 @@ class UserBioForumMixin(Forum):
 
 
 class UserBioFlarumUserMixin(FlarumUser):
-    def update_user_bio(self, bio: Optional[str]=None, user: Optional['AnyUser']=None) -> Union['FlarumUser', 'User']:
+    def update_user_bio(self, bio: Optional[str]=None, user: Optional['AnyUser']=None) -> 'FlarumUser | User':
         id = user.id if user else self.data.id
 
         post_data = {

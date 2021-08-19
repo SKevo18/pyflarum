@@ -1,4 +1,4 @@
-from typing import List, Optional, Union
+from typing import Optional
 
 from ...extensions import ExtensionMixin
 from ...extensions.admin import AdminExtension, AdminFlarumUserMixin
@@ -112,7 +112,7 @@ class AchievementsForumMixin(Forum):
 
 
 class AchievementsAdminFlarumUserMixin(AdminFlarumUserMixin):
-    def update_settings(self, show_achievement_list_in_each_post_footer: Optional[bool]=None, show_achievement_list_in_user_badge: Optional[bool]=None):
+    def update_settings(self, show_achievement_list_in_each_post_footer: Optional[bool]=None, show_achievement_list_in_user_badge: Optional[bool]=None) -> True:
         post_data = {}
 
 
@@ -129,7 +129,7 @@ class AchievementsAdminFlarumUserMixin(AdminFlarumUserMixin):
         return True
 
 
-    def create_achievement(self, name: str, description: str, computation: str, points: int, image_url_or_fa_icon: str, active: Union[bool, int]=1, hidden: Union[bool, int]=0):
+    def create_achievement(self, name: str, description: str, computation: str, points: int, image_url_or_fa_icon: str, active: 'bool | int'=1, hidden: 'bool | int'=0) -> Achievement:
         post_data = {
             "data": {
                 "type": "achievements",
@@ -152,11 +152,11 @@ class AchievementsAdminFlarumUserMixin(AdminFlarumUserMixin):
         return Achievement(user=self, _fetched_data=json)
 
 
-    def get_all_achievements(self):
+    def get_all_achievements(self) -> list[Achievement]:
         raw = self.session.get(f"{self.api_urls['base']}/achievements")
         json = parse_request(raw)
 
-        all_achievements = list() # type: List[Achievement]
+        all_achievements = list() # type: list[Achievement]
 
         for raw_achievement in json['data']:
             achievement = Achievement(user=self, _fetched_data=dict(data=raw_achievement))

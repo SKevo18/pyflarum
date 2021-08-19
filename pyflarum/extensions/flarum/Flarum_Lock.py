@@ -1,4 +1,4 @@
-from typing import Type, Union
+from typing import Type
 
 from .. import ExtensionMixin
 

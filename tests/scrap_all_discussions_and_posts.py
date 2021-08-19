@@ -1,13 +1,7 @@
-from typing import List, Union
-
-from normalize_path import normalize_path, ROOT_PATH
-normalize_path()
-
 from dotenv import load_dotenv
 load_dotenv()
 
 import os
-import time
 
 from datetime import datetime
 from pathlib import Path
@@ -25,7 +19,7 @@ EXTENSIONS = [
 ]
 
 
-def scrap_all(file_name: Union[str, bytes, Path]="scrapped.html"):
+def scrap_all(file_name: 'str | bytes | Path'="scrapped.html"):
     user = FlarumUser(forum_url=os.environ['forum_url'], extensions=EXTENSIONS, session_object=CachedSession()) # type: absolutely_all.AbsolutelyAllFlarumUserMixin
 
     with open(file_name, 'w') as scrap:
@@ -46,7 +40,7 @@ def scrap_all(file_name: Union[str, bytes, Path]="scrapped.html"):
                         scrap.write(data)
 
                         all_posts = discussion.get_posts()
-                        sorted_posts = sorted(all_posts, key=lambda x: x.number) # type: List[PostFromBulk]
+                        sorted_posts = sorted(all_posts, key=lambda x: x.number) # type: list[PostFromBulk]
 
                         for post in sorted_posts:
                             if post.contentHtml:
@@ -73,4 +67,6 @@ def scrap_all(file_name: Union[str, bytes, Path]="scrapped.html"):
 
 
 if __name__ == "__main__":
+    from tests import ROOT_PATH
+
     scrap_all(f"{ROOT_PATH}/tests/scrapped.html")

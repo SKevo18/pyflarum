@@ -1,4 +1,4 @@
-from typing import Literal, TYPE_CHECKING, Optional, List
+from typing import TYPE_CHECKING, Optional
 
 if TYPE_CHECKING:
     from ...session import FlarumUser
@@ -7,9 +7,9 @@ if TYPE_CHECKING:
 
 from datetime import datetime
 
-from ...flarum.core import BaseFlarumBulkObject, BaseFlarumIndividualObject
-from ...flarum.core.discussions import DiscussionFromNotification
-from ...flarum.core.users import UserFromBulk
+from ..core import BaseFlarumBulkObject, BaseFlarumIndividualObject
+from ..core.discussions import DiscussionFromNotification
+from ..core.users import UserFromBulk
 from ...error_handler import parse_request
 from ...datetime_conversions import flarum_to_datetime
 
@@ -88,12 +88,12 @@ class Posts(BaseFlarumBulkObject):
         return iter(self.get_posts())
 
 
-    def get_posts(self) -> List['PostFromBulk']:
+    def get_posts(self) -> list['PostFromBulk']:
         """
             All posts from the `Posts` object, as `list`.
         """
 
-        all_posts = [] # type: List[PostFromBulk]
+        all_posts = [] # type: list[PostFromBulk]
 
         for raw_post in self.data:
             if raw_post.get("type", None) == 'posts':
@@ -198,7 +198,7 @@ class PostFromDiscussion(BaseFlarumIndividualObject):
     unhide = restore
 
 
-    def delete(self) -> Literal[True]:
+    def delete(self) -> True:
         """
             Removes the post forever.
 

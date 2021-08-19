@@ -1,9 +1,10 @@
-from typing import Optional, Union
+from typing import Optional
 
 from datetime import datetime
 
 
-def flarum_to_datetime(flarum_dt: Optional[Union[str, datetime]]=None):
+
+def flarum_to_datetime(flarum_dt: Optional['str | datetime']=None):
     """
         Converts Flarum's datetime string to Python's datetime object.
         Doesn't convert if the parameter is already a datetime object.
@@ -23,7 +24,7 @@ def flarum_to_datetime(flarum_dt: Optional[Union[str, datetime]]=None):
         return strpped
 
 
-def datetime_to_flarum(dt: Optional[Union[datetime, str]]=None):
+def datetime_to_flarum(dt: Optional['datetime | str']=None):
     """
         Converts Python's datetime object to Flarum's datetime string.
         Doesn't convert if the parameter is already a string.

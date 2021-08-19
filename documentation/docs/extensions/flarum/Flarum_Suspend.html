@@ -25,7 +25,7 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\Flarum_Suspend.py#L0-L74" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Suspend.py#L0-L74" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">from typing import Optional
 
@@ -165,7 +165,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\Flarum_Suspend.py#L66-L75" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Suspend.py#L66-L75" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class SuspendExtension(ExtensionMixin):
     def get_dependencies(self):
@@ -201,7 +201,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\Flarum_Suspend.py#L67-L71" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Suspend.py#L67-L71" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_dependencies(self):
     return {
@@ -222,7 +222,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\Flarum_Suspend.py#L74-L75" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Suspend.py#L74-L75" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def mixin(self):
     super().mixin(self, UserFromBulk, SuspendUserMixin)</code></pre>
@@ -245,7 +245,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\Flarum_Suspend.py#L20-L61" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Suspend.py#L20-L61" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class SuspendUserMixin(UserFromBulk):
     @property
@@ -354,7 +354,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\Flarum_Suspend.py#L21-L23" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Suspend.py#L21-L23" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def canSuspend(self) -&gt; bool:
@@ -367,9 +367,9 @@ def canSuspend(self) -&gt; bool:
 <em>Inherited from:</em>
 <code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.commentCount" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk.commentCount">commentCount</a></code>
 </p>
-<div class="desc inherited"><p>The user's comment count.</p></div>
+<div class="desc inherited"><p>The user's comment/post count.</p></div>
 </dd>
-<dt id="pyflarum.extensions.flarum.Flarum_Suspend.SuspendUserMixin.data"><code class="name">var <span class="ident">data</span> : Union[List[dict], dict]</code></dt>
+<dt id="pyflarum.extensions.flarum.Flarum_Suspend.SuspendUserMixin.data"><code class="name">var <span class="ident">data</span> : list[dict] | dict</code></dt>
 <dd>
 <p class="inheritance">
 <em>Inherited from:</em>
@@ -448,7 +448,7 @@ other objects …</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\Flarum_Suspend.py#L26-L30" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Suspend.py#L26-L30" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def suspendedUntil(self):
@@ -484,7 +484,7 @@ def suspendedUntil(self):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\Flarum_Suspend.py#L33-L61" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Suspend.py#L33-L61" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def suspend(self, suspended_until: Optional[datetime]=None, suspended_for: Optional[timedelta]=None):
     if suspended_until:

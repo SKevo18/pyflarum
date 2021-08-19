@@ -25,13 +25,12 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\Flarum_Likes.py#L0-L108" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Likes.py#L0-L107" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">from typing import List, Optional, Type, Union
+<pre><code class="python">from typing import Type
 
 from .. import ExtensionMixin
 
-from ...session import FlarumUser
 from ...error_handler import parse_request
 
 from ...flarum.core.users import UserFromBulk
@@ -86,23 +85,23 @@ class LikesPostFromDiscussionMixin:
         &#34;&#34;&#34;
 
         return self.__like_or_unlike(liked=False)
-LikesPostFromDiscussionMixin: Union[Type[LikesPostFromDiscussionMixin], Type[PostFromDiscussion]]
+LikesPostFromDiscussionMixin: &#39;Type[LikesPostFromDiscussionMixin] | Type[PostFromDiscussion]&#39;
 
 
 class LikesPostFromNotificationMixin:
     @property
     def canLike(self: PostFromNotification) -&gt; bool:
         return self.attributes.get(&#34;canLike&#34;, False)
-LikesPostFromNotificationMixin: Union[Type[LikesPostFromNotificationMixin], Type[LikesPostFromDiscussionMixin]]
+LikesPostFromNotificationMixin: &#39;Type[LikesPostFromNotificationMixin] | Type[LikesPostFromDiscussionMixin]&#39;
 
 
 class LikesPostFromBulkMixin:
-    def get_liked_by(self: PostFromBulk) -&gt; List[UserFromBulk]:
+    def get_liked_by(self: PostFromBulk) -&gt; list[UserFromBulk]:
         &#34;&#34;&#34;
             Obtain the list of users that liked the post.
         &#34;&#34;&#34;
 
-        all_users = list() # type: List[UserFromBulk]
+        all_users = list() # type: list[UserFromBulk]
 
         for raw_user in self.relationships.get(&#34;likes&#34;, {}).get(&#34;data&#34;, [{}]):
             if raw_user.get(&#34;type&#34;, None) == &#34;users&#34;:
@@ -116,7 +115,7 @@ class LikesPostFromBulkMixin:
                             all_users.append(user)
 
         return all_users
-LikesPostFromBulkMixin: Union[Type[LikesPostFromBulkMixin], Type[LikesPostFromNotificationMixin]]
+LikesPostFromBulkMixin: &#39;Type[LikesPostFromBulkMixin] | Type[LikesPostFromNotificationMixin]&#39;
 
 
 
@@ -155,7 +154,7 @@ class LikesExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\Flarum_Likes.py#L94-L109" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Likes.py#L93-L108" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class LikesExtension(ExtensionMixin):
     &#34;&#34;&#34;
@@ -197,7 +196,7 @@ class LikesExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\Flarum_Likes.py#L99-L103" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Likes.py#L98-L102" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_dependencies(self):
     return {
@@ -218,7 +217,7 @@ class LikesExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\Flarum_Likes.py#L106-L109" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Likes.py#L105-L108" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def mixin(self):
     super().mixin(self, PostFromDiscussion, LikesPostFromDiscussionMixin)
@@ -236,15 +235,15 @@ class LikesExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\Flarum_Likes.py#L70-L89" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Likes.py#L69-L88" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class LikesPostFromBulkMixin:
-    def get_liked_by(self: PostFromBulk) -&gt; List[UserFromBulk]:
+    def get_liked_by(self: PostFromBulk) -&gt; list[UserFromBulk]:
         &#34;&#34;&#34;
             Obtain the list of users that liked the post.
         &#34;&#34;&#34;
 
-        all_users = list() # type: List[UserFromBulk]
+        all_users = list() # type: list[UserFromBulk]
 
         for raw_user in self.relationships.get(&#34;likes&#34;, {}).get(&#34;data&#34;, [{}]):
             if raw_user.get(&#34;type&#34;, None) == &#34;users&#34;:
@@ -262,21 +261,21 @@ class LikesExtension(ExtensionMixin):
 <h3>Methods</h3>
 <dl>
 <dt id="pyflarum.extensions.flarum.Flarum_Likes.LikesPostFromBulkMixin.get_liked_by"><code class="name flex">
-<span>def <span class="ident">get_liked_by</span></span>(<span>self: <a title="pyflarum.flarum.core.posts.PostFromBulk" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromBulk">PostFromBulk</a>) ‑> List[<a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a>]</span>
+<span>def <span class="ident">get_liked_by</span></span>(<span>self: <a title="pyflarum.flarum.core.posts.PostFromBulk" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromBulk">PostFromBulk</a>) ‑> list</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Obtain the list of users that liked the post.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\Flarum_Likes.py#L71-L89" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Likes.py#L70-L88" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">def get_liked_by(self: PostFromBulk) -&gt; List[UserFromBulk]:
+<pre><code class="python">def get_liked_by(self: PostFromBulk) -&gt; list[UserFromBulk]:
     &#34;&#34;&#34;
         Obtain the list of users that liked the post.
     &#34;&#34;&#34;
 
-    all_users = list() # type: List[UserFromBulk]
+    all_users = list() # type: list[UserFromBulk]
 
     for raw_user in self.relationships.get(&#34;likes&#34;, {}).get(&#34;data&#34;, [{}]):
         if raw_user.get(&#34;type&#34;, None) == &#34;users&#34;:
@@ -302,7 +301,7 @@ class LikesExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\Flarum_Likes.py#L22-L59" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Likes.py#L21-L58" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class LikesPostFromDiscussionMixin:
     def __like_or_unlike(self: PostFromDiscussion, liked: bool=True) -&gt; Post:
@@ -353,7 +352,7 @@ class LikesExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\Flarum_Likes.py#L46-L51" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Likes.py#L45-L50" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def like(self) -&gt; Post:
     &#34;&#34;&#34;
@@ -371,7 +370,7 @@ class LikesExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\Flarum_Likes.py#L54-L59" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Likes.py#L53-L58" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def unlike(self) -&gt; Post:
     &#34;&#34;&#34;
@@ -391,7 +390,7 @@ class LikesExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\Flarum_Likes.py#L63-L66" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Likes.py#L62-L65" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class LikesPostFromNotificationMixin:
     @property
@@ -406,7 +405,7 @@ class LikesExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/34c73be471b00e6f8db85df51c6e50b367d3b656/pyflarum\extensions\flarum\Flarum_Likes.py#L64-L66" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Likes.py#L63-L65" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def canLike(self: PostFromNotification) -&gt; bool:
