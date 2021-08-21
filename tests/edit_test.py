@@ -13,7 +13,7 @@ user = FlarumUser(forum_url=os.environ['forum_url'], username_or_email='test', p
 
 if __name__ == "__main__":
     # Edit first post of discussion with ID 16 to the current time.
-    first_discussion = user.get_discussions().get_discussions()[0].get_full_data()
+    first_discussion = user.get_discussions()[0].get_full_data()
     first_post = first_discussion.get_posts()[0]
 
     if first_post.contentType == 'comment':

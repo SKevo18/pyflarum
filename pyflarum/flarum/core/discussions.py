@@ -1,4 +1,4 @@
-from typing import Any, Literal, NoReturn, TYPE_CHECKING, Optional
+from typing import Any, Iterator, Literal, NoReturn, TYPE_CHECKING, Optional
 
 # Avoid my greatest enemy in Python: circular import:
 if TYPE_CHECKING:
@@ -80,25 +80,14 @@ class Discussions(BaseFlarumBulkObject):
         A data of multiple discussions fetched from `/api/discussions`.
     """
 
+    def __init__(self, user: 'FlarumUser', _fetched_data: dict):
+        return super().__init__(user=user, _fetched_data=_fetched_data, _listclass=DiscussionFromBulk, _required_type='discussions')
 
-    def __iter__(self):
-        return iter(self.get_discussions())
 
+    if TYPE_CHECKING:
+        def __getitem__(self, key: int) -> 'DiscussionFromBulk': ...
+        def __iter__(self) -> Iterator['DiscussionFromBulk']: ...
 
-    def get_discussions(self) -> list['DiscussionFromBulk']:
-        """
-            Obtains all discussions from the `Discussions` object as a `list`.
-            Returns a `list` of `DiscussionFromBulk`.
-        """
-
-        all_discussions = [] # type: list[DiscussionFromBulk]
-
-        for raw_discussion in self.data:
-            if raw_discussion.get("type", None) == 'discussions':
-                discussion = DiscussionFromBulk(user=self.user, _fetched_data=dict(data=raw_discussion, _parent_included=self.included))
-                all_discussions.append(discussion)
-
-        return all_discussions
 
 
 class DiscussionFromNotification(BaseFlarumIndividualObject):
@@ -521,9 +510,11 @@ class Discussion(DiscussionFromBulk):
 
             It might seem strange why this doesn't return `pyflarum.flarum.core.posts.PostFromDiscussion` instead,
             but these posts are in fact identical to `pyflarum.flarum.core.posts.PostFromBulk`, that's why they are returned.
+
+            `pyflarum.flarum.core.posts.PostFromDiscussion` comes from `pyflarum.flarum.core.discussions.DiscussionFromBulk` instead.
         """
 
-        all_posts = list() # type: list[PostFromBulk]
+        all_posts = list()
         raw_posts = self.relationships.get("posts", {}).get("data", [{}]) # type: list[dict]
 
         for raw_post in raw_posts:

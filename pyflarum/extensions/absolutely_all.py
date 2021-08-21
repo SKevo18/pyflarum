@@ -22,8 +22,8 @@ HARD_DEPENCENDIES = []
 
 
 
-class AbsolutelyAllFlarumUserMixin:
-    def absolutely_all_users(self: FlarumUser, filter: Optional[Filter]=None)  -> Generator['Users', None, None]:
+class AbsolutelyAllFlarumUserMixin(FlarumUser):
+    def absolutely_all_users(self, filter: Optional[Filter]=None)  -> Generator['Users', None, None]:
         """
             A generator that yields `Users` from entire forum, until there are `None` left. `Filter` compatible.
         """
@@ -49,7 +49,7 @@ class AbsolutelyAllFlarumUserMixin:
                 break
 
 
-    def absolutely_all_posts(self: FlarumUser, filter: Optional[Filter]=None) -> Generator['Posts', None, None]:
+    def absolutely_all_posts(self, filter: Optional[Filter]=None) -> Generator['Posts', None, None]:
         """
             A generator that yields `Posts` from entire forum, until there are `None` left. `Filter` compatible.
         """
@@ -75,7 +75,7 @@ class AbsolutelyAllFlarumUserMixin:
                 break
 
 
-    def absolutely_all_discussions(self: FlarumUser, filter: Optional[Filter]=None) -> Generator['Discussions', None, None]:
+    def absolutely_all_discussions(self, filter: Optional[Filter]=None) -> Generator['Discussions', None, None]:
         """
             A generator that yields `Discussions` from entire forum, until there are `None` left. `Filter` compatible.
         """
@@ -101,7 +101,7 @@ class AbsolutelyAllFlarumUserMixin:
                 break
 
 
-    def absolutely_all_notifications(self: FlarumUser, filter: Optional[Filter]=None) -> Generator['Notifications', None, None]:
+    def absolutely_all_notifications(self, filter: Optional[Filter]=None) -> Generator['Notifications', None, None]:
         """
             A generator that yields all of your `Notifications`, until there are `None` left. `Filter` compatible.
         """
@@ -125,8 +125,6 @@ class AbsolutelyAllFlarumUserMixin:
 
             if not discussions.next_link:
                 break
-# TODO: How to type hint inheritance? 
-# AbsolutelyAllFlarumUserMixin: Type[FlarumUser]
 
 
 

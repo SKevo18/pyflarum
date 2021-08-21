@@ -1,9 +1,9 @@
 from dotenv import load_dotenv
 load_dotenv()
 
+from pathlib import Path
 
 from pyflarum import FlarumUser
-from pyflarum.flarum.core.discussions import Discussion
 from pyflarum.flarum.core.filters import Filter
 
 from pyflarum.extensions import absolutely_all
@@ -19,10 +19,9 @@ user = FlarumUser(forum_url="https://discuss.flarum.org", extensions=EXTENSIONS)
 
 
 def incompatible_extensions():
-    discussion: 'Flarum_Tags.TagsDiscussionMixin | Discussion'
-
     for discussions in user.absolutely_all_discussions(Filter(order_by='createdAt')):
         for discussion in discussions:
+            discussion: Flarum_Tags.TagsDiscussionMixin
             tags = discussion.get_tags()
 
             for tag in tags:
@@ -31,7 +30,7 @@ def incompatible_extensions():
 
 
 def write():
-    with open('incompatible_extensions.txt', 'w') as incompatible_extensions_file:
+    with open(Path('tests/incompatible_extensions.txt'), 'w', encoding="utf-8") as incompatible_extensions_file:
         for discussion in incompatible_extensions():
             print(f"Incompatible: {discussion.title}")
             incompatible_extensions_file.write(f"{discussion.createdAt} | {discussion.url}\n")

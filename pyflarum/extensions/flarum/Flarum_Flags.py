@@ -15,9 +15,9 @@ HARD_DEPENCENDIES = []
 
 
 
-class FlagsForumMixin:
+class FlagsForumMixin(Forum):
     @property
-    def canViewFlags(self: Forum) -> bool:
+    def canViewFlags(self) -> bool:
         """
             Whether or not you can view all the flags on the forum.
         """
@@ -26,7 +26,7 @@ class FlagsForumMixin:
 
 
     @property
-    def flagCount(self: Forum) -> Optional[int]:
+    def flagCount(self) -> Optional[int]:
         """
             The total flagged post/discussion count (forum-wide).
         """
@@ -35,7 +35,7 @@ class FlagsForumMixin:
 
 
     @property
-    def guidelinesUrl(self: Forum) -> Optional[str]:
+    def guidelinesUrl(self) -> Optional[str]:
         """
             The URL of the forum's guidelines, if specified by the admin.
         """
@@ -44,9 +44,9 @@ class FlagsForumMixin:
 
 
 
-class FlagsPostFromNotificationMixin:
+class FlagsPostFromNotificationMixin(PostFromNotification):
     @property
-    def canFlag(self: PostFromNotification) -> bool:
+    def canFlag(self) -> bool:
         return self.attributes.get("canFlag", False)
 
 

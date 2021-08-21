@@ -1,6 +1,7 @@
 from typing import Optional, TYPE_CHECKING
 if TYPE_CHECKING:
     from ...session import FlarumUser
+    from ...custom_types import AnyFlarumClass
 
 
 
@@ -32,7 +33,7 @@ class BaseFlarumObject(dict):
 
 
 
-class BaseFlarumBulkObject(BaseFlarumObject):
+class BaseFlarumBulkObject(list):
     """
         The base object for Flarum "bulk" objects - all API objects
         that contain other objects have these properties.
@@ -43,13 +44,14 @@ class BaseFlarumBulkObject(BaseFlarumObject):
         - `pyflarum.flarum.core.posts.PostFromBulk`
     """
 
-    @property
-    def links(self) -> dict:
-        """
-            A raw `dict` of the object's API links.
-        """
 
-        return self.get("links", {})
+    def __init__(self, user: 'FlarumUser', _fetched_data: dict, _listclass: 'AnyFlarumClass', _required_type: str):
+        self.links = _fetched_data.get("links", {}) # type: dict
+        self.included = _fetched_data.get("included", [{}]) # type: list[dict]
+
+        self.user = user
+        converted = [_listclass(user=user, _fetched_data=dict(data=data, _parent_included=self.included)) for data in _fetched_data.get("data", []) if data.get("type", _required_type) == _required_type]
+        super().__init__(converted)
 
 
     @property
@@ -79,13 +81,23 @@ class BaseFlarumBulkObject(BaseFlarumObject):
         return self.links.get("next", None)
 
 
-    @property
-    def included(self) -> list[dict]:
-        """
-            Raw `dict` of the object's included data.
-        """
+    if TYPE_CHECKING:
+        @property
+        def included(self) -> list[dict]:
+            """
+                Returns raw list of JSON included data.
 
-        return self.get("included", [{}])
+                Learn more about included data [here](https://cwkevo.github.io/pyflarum/docs/#included-data)
+            """
+            ...
+
+
+        @property
+        def links(self) -> dict:
+            """
+                Returns raw list of API links.
+            """
+            ...
 
 
 

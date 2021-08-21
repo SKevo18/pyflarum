@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Iterator, Optional
 
 if TYPE_CHECKING:
     from ...session import FlarumUser
@@ -84,23 +84,13 @@ class Posts(BaseFlarumBulkObject):
         A data of multiple posts fetched from `/api/posts`.
     """
 
-    def __iter__(self):
-        return iter(self.get_posts())
+    def __init__(self, user: 'FlarumUser', _fetched_data: dict):
+        return super().__init__(user=user, _fetched_data=_fetched_data, _listclass=PostFromBulk, _required_type='posts')
 
 
-    def get_posts(self) -> list['PostFromBulk']:
-        """
-            All posts from the `Posts` object, as `list`.
-        """
-
-        all_posts = [] # type: list[PostFromBulk]
-
-        for raw_post in self.data:
-            if raw_post.get("type", None) == 'posts':
-                post = PostFromBulk(user=self.user, _fetched_data=dict(data=raw_post, _parent_included=self.included))
-                all_posts.append(post)
-
-        return all_posts
+    if TYPE_CHECKING:
+        def __getitem__(self, key: int) -> 'PostFromBulk': ...
+        def __iter__(self) -> Iterator['PostFromBulk']: ...
 
 
 

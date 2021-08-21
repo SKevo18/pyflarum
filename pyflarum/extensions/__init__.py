@@ -7,7 +7,6 @@ class ExtensionMixin:
 
         ### Example extension code:
         ```python
-        from typing import Type
 
         from pyflarum.extensions import ExtensionMixin
         from pyflarum.extensions.admin import AdminExtension
@@ -27,7 +26,7 @@ class ExtensionMixin:
 
         # I recommend to use the following naming pattern: `<YourExtensionName><ClassToMixin>Mixin`
         # Example:
-        class ExampleFlarumUserMixin:
+        class ExampleFlarumUserMixin(FlarumUser):
             @property
             def example(self):
                 '''
@@ -35,7 +34,6 @@ class ExtensionMixin:
                 '''
 
                 return "Example"
-        ExampleFlarumUserMixin: Type[FlarumUser] # mimick class inheritance, without inheriting at runtime, acts just as a type hint
 
 
         class ExampleExtension(ExtensionMixin):

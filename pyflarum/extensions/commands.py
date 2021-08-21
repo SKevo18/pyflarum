@@ -13,6 +13,7 @@ SOFT_DEPENDENCIES = []
 HARD_DEPENCENDIES = []
 
 
+
 class CommandsFlarumUserMixin(FlarumUser):
     def is_mentioned_in(self, string: str) -> bool:
         match = re.search(rf'@"({self.username})"#[a-z0-9]+', string)
@@ -46,6 +47,7 @@ class CommandsFlarumUserMixin(FlarumUser):
                     return parsed
 
         return string.split(sep=split_at)
+
 
 
 class CommandsExtension(ExtensionMixin, CommandsFlarumUserMixin):

@@ -222,7 +222,7 @@ class Forum(BaseFlarumIndividualObject):
             Returns a list of `Group` objects.
         """
 
-        all_groups = list() # type: list[Group]
+        all_groups = list()
 
         for raw_group in self.relationships.get("groups", {}).get("data", [{}]):
             if raw_group.get("type", None) == 'groups':
@@ -237,7 +237,9 @@ class Forum(BaseFlarumIndividualObject):
     @property
     def included(self) -> list[dict]:
         """
-            Raw `list[dict]` of the forum's included objects.
+            Returns raw list of JSON included data.
+
+            Learn more about included data [here](https://cwkevo.github.io/pyflarum/docs/#included-data)
         """
 
         return self.get("included", [{}])

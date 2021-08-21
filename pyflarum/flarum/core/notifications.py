@@ -1,4 +1,6 @@
-from typing import Optional
+from typing import Iterator, Optional, TYPE_CHECKING
+if TYPE_CHECKING:
+    from ...session import FlarumUser
 
 from datetime import datetime
 
@@ -17,23 +19,8 @@ class Notifications(BaseFlarumBulkObject):
     """
 
 
-    def __iter__(self):
-        return iter(self.get_notifications())
-
-
-    def get_notifications(self) -> list['Notification']:
-        """
-            All notifications from the `Notifications` object.
-        """
-
-        all_notifications = [] # type: list[Notification]
-
-        for raw_notification in self.data:
-            if raw_notification.get("type", None) == 'notifications':
-                notification = Notification(user=self.user, _fetched_data=dict(data=raw_notification, _parent_included=self.included))
-                all_notifications.append(notification)
-
-        return all_notifications
+    def __init__(self, user: 'FlarumUser', _fetched_data: dict):
+        return super().__init__(user=user, _fetched_data=_fetched_data, _listclass=Notification, _required_type='notifications')
 
 
     def mark_all_as_read(self) -> True:
@@ -41,7 +28,12 @@ class Notifications(BaseFlarumBulkObject):
             Marks all notifications as read. Returns `True` when successful.
         """
 
-        return super().user.mark_all_notifications_as_read()
+        return self.user.mark_all_notifications_as_read()
+
+
+    if TYPE_CHECKING:
+        def __getitem__(self, key: int) -> 'Notification': ...
+        def __iter__(self) -> Iterator['Notification']: ...
 
 
 

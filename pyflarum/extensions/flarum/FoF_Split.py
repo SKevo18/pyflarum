@@ -11,6 +11,7 @@ SOFT_DEPENDENCIES = []
 HARD_DEPENCENDIES = []
 
 
+
 class SplitDiscussionMixin(DiscussionFromBulk):
     @property
     def canSplit(self) -> bool:

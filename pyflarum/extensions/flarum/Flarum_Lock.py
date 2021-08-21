@@ -1,5 +1,3 @@
-from typing import Type
-
 from .. import ExtensionMixin
 
 from ...error_handler import parse_request
@@ -15,8 +13,8 @@ HARD_DEPENCENDIES = []
 
 
 
-class LockDiscussionFromNotificationMixin:
-    def __lock_or_unlock(self: DiscussionFromNotification, locked: bool=True) -> Discussion:
+class LockDiscussionFromNotificationMixin(DiscussionFromNotification):
+    def __lock_or_unlock(self, locked: bool=True) -> Discussion:
         """
             A function to either lock or unlock the post, to prevent repetition.
 
@@ -53,13 +51,12 @@ class LockDiscussionFromNotificationMixin:
         """
 
         return self.__lock_or_unlock(locked=False)
-LockDiscussionFromNotificationMixin: Type[DiscussionFromNotification]
 
 
 
-class LockDiscussionFromBulkMixin:
+class LockDiscussionFromBulkMixin(DiscussionFromBulk, LockDiscussionFromNotificationMixin):
     @property
-    def isLocked(self: DiscussionFromBulk) -> bool:
+    def isLocked(self) -> bool:
         """
             Whether or not the discussion is locked.
         """
@@ -68,13 +65,12 @@ class LockDiscussionFromBulkMixin:
 
 
     @property
-    def canLock(self: DiscussionFromBulk) -> bool:
+    def canLock(self) -> bool:
         """
             Whether or not you are able to lock the discussion.
         """
 
         return self.attributes.get("canLock", False)
-LockDiscussionFromBulkMixin: Type[LockDiscussionFromNotificationMixin]
 
 
 

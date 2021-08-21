@@ -30,6 +30,7 @@ class BestAnswerDiscussionNotificationMixin(DiscussionFromNotification):
         return flarum_to_datetime(raw)
 
 
+
 class BestAnswerDiscussionMixin(DiscussionFromBulk):
     @property
     def canSelectBestAnswer(self) -> bool:

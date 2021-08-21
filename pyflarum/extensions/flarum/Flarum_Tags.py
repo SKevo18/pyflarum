@@ -1,9 +1,9 @@
+from pyflarum.flarum.core import BaseFlarumIndividualObject
 from typing import Optional
 
 from datetime import datetime
 
 from .. import ExtensionMixin
-from ...session import FlarumUser
 
 from ...flarum.core.forum import Forum
 from ...flarum.core.discussions import DiscussionFromBulk
@@ -20,34 +20,10 @@ HARD_DEPENCENDIES = []
 
 
 
-class Tag(dict):
+class Tag(BaseFlarumIndividualObject):
     """
         A Flarum tag.
     """
-
-    def __init__(self, user: 'FlarumUser', _fetched_data: dict):
-        self.user = user
-        super().__init__(_fetched_data)
-
-
-    @property
-    def data(self) -> dict:
-        return self.get("data", {})
-
-
-    @property
-    def type(self) -> Optional[str]:
-        return self.data.get("type", None)
-
-
-    @property
-    def id(self) -> Optional[int]:
-        return self.data.get("id", None)
-
-
-    @property
-    def attributes(self) -> dict:
-        return self.data.get("attributes", {})
 
 
     @property

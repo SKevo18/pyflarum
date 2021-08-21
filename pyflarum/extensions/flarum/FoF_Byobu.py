@@ -40,6 +40,7 @@ class ByobuUserMixin(UserFromBulk):
         return self.attributes.get("cannotBeDirectlyMessaged", False)
 
 
+
 class ByobuExtension(ExtensionMixin):
     def get_dependencies(self):
         return {

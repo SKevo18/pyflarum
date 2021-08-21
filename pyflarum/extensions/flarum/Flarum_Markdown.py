@@ -12,9 +12,9 @@ HARD_DEPENCENDIES = []
 
 
 
-class ForumMixin:
+class ForumMixin(Forum):
     @property
-    def markdown_mdarea(self: Forum) -> bool:
+    def markdown_mdarea(self) -> bool:
         """
             Whether or not the MDArea is enabled for markdown.
         """

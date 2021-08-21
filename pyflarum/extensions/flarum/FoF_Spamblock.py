@@ -1,6 +1,6 @@
 from .. import ExtensionMixin
 
-from ...flarum.core.users import User, UserFromBulk, UserFromNotification
+from ...flarum.core.users import UserFromBulk, UserFromNotification
 from ...error_handler import parse_request
 
 
@@ -22,7 +22,7 @@ class SpamblockUserFromNotificationMixin(UserFromNotification):
 
 
 
-class SpamblockUserMixin(User, UserFromBulk, SpamblockUserFromNotificationMixin):
+class SpamblockUserMixin(UserFromBulk, SpamblockUserFromNotificationMixin):
     @property
     def canSpamblock(self) -> bool:
         return self.attributes.get("canSpamblock", False)

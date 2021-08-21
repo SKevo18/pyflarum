@@ -3,6 +3,7 @@ from typing import Literal, Optional, BinaryIO
 from ..extensions import ExtensionMixin
 
 from ..session import FlarumUser
+from ..flarum.core import BaseFlarumIndividualObject
 from ..error_handler import parse_request
 
 
@@ -15,27 +16,7 @@ SOFT_DEPENDENCIES = []
 HARD_DEPENCENDIES = []
 
 
-class MailSettings(dict):
-    @property
-    def data(self) -> dict:
-        return self.get("data", {})
-
-
-    @property
-    def type(self) -> Optional[str]:
-        return self.data.get("type", None)
-
-
-    @property
-    def id(self) -> Optional[str]:
-        return self.data.get("id", None)
-
-
-    @property
-    def attributes(self) -> dict:
-        return self.data.get("attributes", {})
-
-
+class MailSettings(BaseFlarumIndividualObject):
     @property
     def fields(self) -> dict:
         return self.attributes.get("fields", {})

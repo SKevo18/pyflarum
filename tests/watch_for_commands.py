@@ -57,8 +57,8 @@ def on_notification(notification: Notification):
                     print("No city specified for 'weather' command")
             
             elif command[0].lower() == "like":
-                subject.like()
-                print(f"Successfuly liked post {subject.id} ({subject.url})")
+                liked = subject.like()
+                print(f"Successfuly liked post {liked.id} ({liked.url})")
 
             else:
                 print("Match not found for command data:", command)

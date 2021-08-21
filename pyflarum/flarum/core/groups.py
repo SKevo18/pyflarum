@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Iterator, Optional
 
 # Avoid my greatest enemy in Python: circular import:
 if TYPE_CHECKING:
@@ -67,24 +67,13 @@ class Groups(BaseFlarumBulkObject):
     """
 
 
-    def __iter__(self):
-        return iter(self.get_groups())
+    def __init__(self, user: 'FlarumUser', _fetched_data: dict):
+        return super().__init__(user=user, _fetched_data=_fetched_data, _listclass=Group, _required_type='groups')
 
 
-    def get_groups(self) -> list['Group']:
-        """
-            All groups from the `Groups` object, as a `list` of `Group` objects.
-        """
-
-        all_groups = [] # type: list[Group]
-
-        for raw_group in self.data:
-            if raw_group.get("type", None) == 'groups':
-                group = Group(user=self.user, _fetched_data=dict(data=raw_group))
-
-                all_groups.append(group)
-
-        return all_groups
+    if TYPE_CHECKING:
+        def __getitem__(self, key: int) -> 'Group': ...
+        def __iter__(self) -> Iterator['Group']: ...
 
 
 

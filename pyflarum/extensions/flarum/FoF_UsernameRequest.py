@@ -15,6 +15,7 @@ SOFT_DEPENDENCIES = []
 HARD_DEPENCENDIES = []
 
 
+
 class UsernameRequestUserMixin(UserFromBulk):
     @property
     def usernameHistory(self) -> Optional[list[dict[str, datetime]]]:
@@ -31,6 +32,7 @@ class UsernameRequestUserMixin(UserFromBulk):
             return formatted_list
 
         return None
+
 
 
 class UsernameRequestExtension(ExtensionMixin):

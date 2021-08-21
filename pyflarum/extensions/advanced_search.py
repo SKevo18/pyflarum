@@ -18,6 +18,7 @@ SOFT_DEPENDENCIES = []
 HARD_DEPENCENDIES = []
 
 
+
 class AdvancedSearchFlarumUserMixin(FlarumUser):
     def get_user_by_username(self, username: str) -> Optional[User]:
         filter = Filter(query=username, limit=1)
@@ -30,6 +31,7 @@ class AdvancedSearchFlarumUserMixin(FlarumUser):
                 return User(user=self, _fetched_data=dict(data=possible_user))
 
         return None
+
 
 
 class AdvancedSearchExtension(ExtensionMixin, AdvancedSearchFlarumUserMixin):

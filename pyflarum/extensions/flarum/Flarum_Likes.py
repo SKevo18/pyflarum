@@ -1,5 +1,3 @@
-from typing import Type
-
 from .. import ExtensionMixin
 
 from ...error_handler import parse_request
@@ -18,8 +16,8 @@ HARD_DEPENCENDIES = []
 
 
 
-class LikesPostFromDiscussionMixin:
-    def __like_or_unlike(self: PostFromDiscussion, liked: bool=True) -> Post:
+class LikesPostFromDiscussionMixin(PostFromDiscussion):
+    def __like_or_unlike(self, liked: bool=True) -> Post:
         """
             A function to either like or unlike post, to prevent repetition.
 
@@ -56,23 +54,23 @@ class LikesPostFromDiscussionMixin:
         """
 
         return self.__like_or_unlike(liked=False)
-LikesPostFromDiscussionMixin: 'Type[LikesPostFromDiscussionMixin] | Type[PostFromDiscussion]'
 
 
-class LikesPostFromNotificationMixin:
+
+class LikesPostFromNotificationMixin(PostFromNotification, LikesPostFromDiscussionMixin):
     @property
-    def canLike(self: PostFromNotification) -> bool:
+    def canLike(self) -> bool:
         return self.attributes.get("canLike", False)
-LikesPostFromNotificationMixin: 'Type[LikesPostFromNotificationMixin] | Type[LikesPostFromDiscussionMixin]'
 
 
-class LikesPostFromBulkMixin:
-    def get_liked_by(self: PostFromBulk) -> list[UserFromBulk]:
+
+class LikesPostFromBulkMixin(PostFromBulk):
+    def get_liked_by(self) -> list[UserFromBulk]:
         """
             Obtain the list of users that liked the post.
         """
 
-        all_users = list() # type: list[UserFromBulk]
+        all_users = list()
 
         for raw_user in self.relationships.get("likes", {}).get("data", [{}]):
             if raw_user.get("type", None) == "users":
@@ -86,7 +84,6 @@ class LikesPostFromBulkMixin:
                             all_users.append(user)
 
         return all_users
-LikesPostFromBulkMixin: 'Type[LikesPostFromBulkMixin] | Type[LikesPostFromNotificationMixin]'
 
 
 

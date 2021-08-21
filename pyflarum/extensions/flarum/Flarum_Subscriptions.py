@@ -15,8 +15,8 @@ SOFT_DEPENDENCIES = []
 HARD_DEPENCENDIES = []
 
 
-class SubscriptionsDiscussionFromNotificationMixin:
-    def __change_subscription_state(self: DiscussionFromNotification, state: Optional[Literal['following', 'ignoring']]):
+class SubscriptionsDiscussionFromNotificationMixin(DiscussionFromNotification):
+    def __change_subscription_state(self, state: Optional[Literal['following', 'ignoring']]):
         """
             Changes the subscription state of a discussion.
 
@@ -66,7 +66,6 @@ class SubscriptionsDiscussionFromNotificationMixin:
             2. Using `pyflarum.flarum.core.filters.Filter` (e. g. `Filter(query="is:ignored")`).
         """
         return self.__change_subscription_state(state='ignore')
-SubscriptionsDiscussionFromNotificationMixin: Type[DiscussionFromNotification]
 
 
 

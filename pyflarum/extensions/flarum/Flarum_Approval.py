@@ -15,9 +15,9 @@ HARD_DEPENCENDIES = []
 
 
 
-class ApprovalDiscussionFromNotificationMixin:
+class ApprovalDiscussionFromNotificationMixin(DiscussionFromNotification):
     @property
-    def isApproved(self: DiscussionFromNotification) -> bool:
+    def isApproved(self) -> bool:
         """
             Whether or not the discussion is approved.
         """
@@ -26,9 +26,9 @@ class ApprovalDiscussionFromNotificationMixin:
 
 
 
-class ApprovalPostFromNotificationMixin:
+class ApprovalPostFromNotificationMixin(PostFromNotification):
     @property
-    def isApproved(self: PostFromNotification) -> bool:
+    def isApproved(self) -> bool:
         """
             Whether or not the post is approved.
         """
@@ -37,7 +37,7 @@ class ApprovalPostFromNotificationMixin:
 
 
     @property
-    def canApprove(self: PostFromNotification) -> bool:
+    def canApprove(self) -> bool:
         """
             Whether or not you are able to approve the post
         """
@@ -45,7 +45,7 @@ class ApprovalPostFromNotificationMixin:
         return self.attributes.get("canApprove", False)
 
 
-    def approve(self: 'PostFromNotification | ApprovalPostFromNotificationMixin', force: bool=False) -> Post:
+    def approve(self, force: bool=False) -> Post:
         """
             Approve the post. Use `force` to approve despite the post being approved already, and do not raise `FlarumError`.
         """

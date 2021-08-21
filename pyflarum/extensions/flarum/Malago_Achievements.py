@@ -1,10 +1,10 @@
+from pyflarum.flarum.core import BaseFlarumIndividualObject
 from typing import Optional
 
 from ...extensions import ExtensionMixin
 from ...extensions.admin import AdminExtension, AdminFlarumUserMixin
 
 from ...flarum.core.forum import Forum
-from ...session import FlarumUser
 from ...error_handler import parse_request
 
 
@@ -16,30 +16,11 @@ SOFT_DEPENDENCIES = [AdminExtension]
 HARD_DEPENCENDIES = []
 
 
-class Achievement(dict):
+
+class Achievement(BaseFlarumIndividualObject):
     """
         An achievement (Malago's Achievements extension).
     """
-
-    def __init__(self, user: 'FlarumUser', _fetched_data: dict):
-        self.user = user
-
-        super().__init__(_fetched_data)
-
-
-    @property
-    def data(self) -> dict:
-        return self.get("data", {})
-
-
-    @property
-    def type(self) -> Optional[str]:
-        return self.data.get("type", None)
-
-
-    @property
-    def attributes(self) -> dict:
-        return self.data.get("attributes", {})
 
 
     @property
@@ -100,6 +81,7 @@ class Achievement(dict):
         return self.attributes.get("new", None)
 
 
+
 class AchievementsForumMixin(Forum):
     @property
     def show_achievements_in_post_footer(self) -> bool:
@@ -109,6 +91,7 @@ class AchievementsForumMixin(Forum):
     @property
     def show_achievements_in_user_card(self) -> bool:
         return self.attributes.get("malago-achievements.show-user-card", False)
+
 
 
 class AchievementsAdminFlarumUserMixin(AdminFlarumUserMixin):
@@ -156,7 +139,7 @@ class AchievementsAdminFlarumUserMixin(AdminFlarumUserMixin):
         raw = self.session.get(f"{self.api_urls['base']}/achievements")
         json = parse_request(raw)
 
-        all_achievements = list() # type: list[Achievement]
+        all_achievements = list()
 
         for raw_achievement in json['data']:
             achievement = Achievement(user=self, _fetched_data=dict(data=raw_achievement))

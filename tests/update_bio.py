@@ -16,5 +16,5 @@ if __name__ == "__main__":
     quote = requests.get("http://api.quotable.io/random").json() # type: dict
 
     # Set it as your bio:
-    updated = user.update_user_bio(f"{quote['content']}\n\n- {quote.get('author', 'Unknown')}")
-    print(updated.data.bio)
+    updated = user.update_user_bio(f"{quote['content']}\n\n- {quote.get('author', 'Unknown')}") # type: FlarumUser
+    print(updated.data.bio) # can't type hint updated.data

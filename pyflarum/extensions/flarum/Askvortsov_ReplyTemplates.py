@@ -14,7 +14,7 @@ HARD_DEPENCENDIES = []
 
 class ReplyTemplatesDiscussionFromBulkMixin:
     @property
-    def replyTemplate(self: DiscussionFromBulk) -> str:
+    def replyTemplate(self) -> str:
         """
             The reply template for the discussion.
         """
@@ -23,7 +23,7 @@ class ReplyTemplatesDiscussionFromBulkMixin:
 
 
     @property
-    def canManageReplyTemplates(self: DiscussionFromBulk) -> bool:
+    def canManageReplyTemplates(self) -> bool:
         """
             Whether or not you are able to manage the discussion's reply templates.
         """

@@ -16,6 +16,7 @@ SOFT_DEPENDENCIES = []
 HARD_DEPENCENDIES = []
 
 
+
 class WatchFlarumUserMixin(FlarumUser):
     def watch_notifications(self, on_notification: Callable[[Notification], Any], interval: Optional[float]=10, auto_mark_as_read: bool=True, **kwargs) -> NoReturn:
         while True:
@@ -30,6 +31,7 @@ class WatchFlarumUserMixin(FlarumUser):
 
             if interval:
                 time.sleep(interval)
+
 
 
 class WatchExtension(ExtensionMixin, WatchFlarumUserMixin):

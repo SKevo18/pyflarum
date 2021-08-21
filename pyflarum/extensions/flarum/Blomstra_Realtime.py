@@ -12,10 +12,9 @@ HARD_DEPENCENDIES = []
 
 
 
-class RealtimeDiscussionMixin:
-    # TODO: Does it actually come from this extension?
+class RealtimeDiscussionMixin(DiscussionFromBulk):
     @property
-    def canViewWhoTypes(self: DiscussionFromBulk) -> bool:
+    def canViewWhoTypes(self) -> bool:
         """
             Whether or not you can view who is typing in real time.
         """

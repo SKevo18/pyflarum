@@ -17,6 +17,7 @@ SOFT_DEPENDENCIES = []
 HARD_DEPENCENDIES = []
 
 
+
 class SuspendUserMixin(UserFromBulk):
     @property
     def canSuspend(self) -> bool:
@@ -30,19 +31,17 @@ class SuspendUserMixin(UserFromBulk):
         return flarum_to_datetime(raw)
 
 
-    def suspend(self, suspended_until: Optional[datetime]=None, suspended_for: Optional[timedelta]=None):
+    def suspend(self, suspended_until: Optional[datetime]=None, suspended_for: Optional[timedelta]=None) -> User:
         if suspended_until:
-            until = datetime_to_flarum(suspended_until)
+            until = suspended_until
 
         else:
             if suspended_for:
-                now = datetime.now()
-                raw_until = now + suspended_for
-
-                until = datetime_to_flarum(raw_until)
+                raw_until = datetime.now() + suspended_for
+                until = raw_until
 
             else:
-                until = datetime_to_flarum(datetime(2069, 2, 6))
+                until = datetime(6669, 2, 6)
 
 
         post_data = {
@@ -50,7 +49,7 @@ class SuspendUserMixin(UserFromBulk):
                 "type": "users",
                 "id": "3",
                 "attributes": {
-                    "suspendedUntil": until
+                    "suspendedUntil": datetime_to_flarum(until)
                 }
             }
         }
@@ -59,7 +58,6 @@ class SuspendUserMixin(UserFromBulk):
         json = parse_request(raw)
 
         return User(user=self.user, _fetched_data=json)
-
 
 
 

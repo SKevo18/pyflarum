@@ -1,5 +1,3 @@
-from typing import Type
-
 from .. import ExtensionMixin
 
 from ...error_handler import parse_request
@@ -14,8 +12,8 @@ SOFT_DEPENDENCIES = []
 HARD_DEPENCENDIES = []
 
 
-class StickyDiscussionFromNotificationMixin:
-    def __stick_or_unstick(self: DiscussionFromNotification, sticky: bool=True) -> Discussion:
+class StickyDiscussionFromNotificationMixin(DiscussionFromNotification):
+    def __stick_or_unstick(self, sticky: bool=True) -> Discussion:
         """
             A function to either stick or unstick the discussion, to prevent repetition.
 
@@ -52,13 +50,12 @@ class StickyDiscussionFromNotificationMixin:
         """
 
         return self.__stick_or_unstick(sticky=False)
-StickyDiscussionFromNotificationMixin: Type[DiscussionFromNotification]
 
 
 
-class StickyDiscussionFromBulkMixin:
+class StickyDiscussionFromBulkMixin(DiscussionFromBulk):
     @property
-    def isSticky(self: DiscussionFromBulk) -> bool:
+    def isSticky(self) -> bool:
         """
             Whether or not the discussion is stickied.
         """
@@ -67,13 +64,12 @@ class StickyDiscussionFromBulkMixin:
 
 
     @property
-    def canSticky(self: DiscussionFromBulk) -> bool:
+    def canSticky(self) -> bool:
         """
             Whether or not you are able to stick this discussion.
         """
 
         return self.attributes.get("canSticky", False)
-StickyDiscussionFromBulkMixin: Type[DiscussionFromBulk]
 
 
 

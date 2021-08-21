@@ -1,4 +1,6 @@
-from typing import Optional
+from typing import Iterator, Optional, TYPE_CHECKING
+if TYPE_CHECKING:
+    from ...session import FlarumUser
 
 from datetime import datetime
 
@@ -12,23 +14,14 @@ class Users(BaseFlarumBulkObject):
     """
 
 
-    def __iter__(self):
-        return iter(self.get_users())
+    def __init__(self, user: 'FlarumUser', _fetched_data: dict):
+        return super().__init__(user=user, _fetched_data=_fetched_data, _listclass=UserFromBulk, _required_type='users')
 
 
-    def get_users(self) -> list['UserFromBulk']:
-        """
-            All users from the `Users` object.
-        """
+    if TYPE_CHECKING:
+        def __getitem__(self, key: int) -> 'UserFromBulk': ...
+        def __iter__(self) -> Iterator['UserFromBulk']: ...
 
-        all_users = [] # type: list[UserFromBulk]
-
-        for raw_user in self.data:
-            if raw_user.get("type", None) == 'users':
-                user = UserFromBulk(user=self.user, _fetched_data=dict(data=raw_user, _parent_included=self.included))
-                all_users.append(user)
-
-        return all_users
 
 
 class UserFromNotification(BaseFlarumIndividualObject):

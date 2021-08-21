@@ -14,7 +14,7 @@ HARD_DEPENCENDIES = []
 
 class ModeratorWarningsUserFromBulkMixin:
     @property
-    def canViewWarnings(self: UserFromBulk) -> bool:
+    def canViewWarnings(self) -> bool:
         """
             Whether or not you can view the warnings of the user.
         """
@@ -23,7 +23,7 @@ class ModeratorWarningsUserFromBulkMixin:
 
 
     @property
-    def canManageWarnings(self: UserFromBulk) -> bool:
+    def canManageWarnings(self) -> bool:
         """
             Whether or not you are able to manage the user's warnings.
         """
@@ -32,7 +32,7 @@ class ModeratorWarningsUserFromBulkMixin:
 
 
     @property
-    def canDeleteWarnings(self: UserFromBulk) -> bool:
+    def canDeleteWarnings(self) -> bool:
         """
             Whether or not you can delete the user's warnings.
         """
@@ -41,7 +41,7 @@ class ModeratorWarningsUserFromBulkMixin:
 
 
     @property
-    def visibleWarningCount(self: UserFromBulk) -> int:
+    def visibleWarningCount(self) -> int:
         """
             The amount of warnings that you can see that belong to the user.
         """
