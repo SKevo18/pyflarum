@@ -1,8 +1,8 @@
 from typing import Generator, Optional, TYPE_CHECKING
 if TYPE_CHECKING:
     from ..flarum.core.notifications import Notifications
-    from ..flarum.core.discussions import Discussions
-    from ..flarum.core.posts import Posts
+    from ..flarum.core.discussions import Discussions, Discussion
+    from ..flarum.core.posts import Posts, Post
     from ..flarum.core.users import Users
 
 
@@ -125,6 +125,23 @@ class AbsolutelyAllFlarumUserMixin(FlarumUser):
 
             if not discussions.next_link:
                 break
+    
+
+    def get_all_posts_from_discussion(self, discussion: 'Discussion') -> Generator['Post', None, None]:
+        """
+            This makes additional API request for every individual post to fetch full post data from a long discussion.
+            Sadly, the reason why additional request is needed is because only post IDs are present in the relationship data of the discussion.
+
+            I recommend you to put a delay between `next()` to prevent "429  Rate Limited" error for forums that are protected from flooding.
+        """
+
+        raw_posts = discussion.relationships.get("posts", {}).get("data", []) # type: list[dict]
+
+        for raw_post in raw_posts:
+            post_id = raw_post.get("id", None) # type: Optional[int]
+
+            if post_id:
+                yield self.get_post_by_id(post_id)
 
 
 

@@ -12,7 +12,7 @@ HARD_DEPENCENDIES = []
 
 
 
-class ReplyTemplatesDiscussionFromBulkMixin:
+class ReplyTemplatesDiscussionFromBulkMixin(DiscussionFromBulk):
     @property
     def replyTemplate(self) -> str:
         """

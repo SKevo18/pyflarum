@@ -12,7 +12,7 @@ HARD_DEPENCENDIES = []
 
 
 
-class ModeratorWarningsUserFromBulkMixin:
+class ModeratorWarningsUserFromBulkMixin(UserFromBulk):
     @property
     def canViewWarnings(self) -> bool:
         """

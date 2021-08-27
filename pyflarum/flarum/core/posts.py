@@ -224,6 +224,8 @@ class PostFromNotification(PostFromDiscussion):
     def content(self) -> Optional[str]:
         """
             The post's content. Doesn't contain markdown, and is just plain-text.
+
+            Only available in `pyflarum.flarum.core.posts.PostFromNotification`.
         """
 
         return self.attributes.get("content", None)
@@ -326,7 +328,7 @@ class PostFromNotification(PostFromDiscussion):
             Obtains the post's author.
 
             Returns `pyflarum.flarum.core.users.UserFromBulk`, because its
-            JSON data matches.
+            JSON data is the same.
         """
 
         id = self.relationships.get("user", {}).get("data", {}).get("id", None)
@@ -357,13 +359,38 @@ class PostFromBulk(PostFromNotification):
         A post from `Posts`.
     """
 
-    pass
+    @property
+    def content(self) -> NotImplemented:
+        """
+            This property is only available for `pyflarum.flarum.core.posts.PostFromNotification`, but
+            was included here due to class inheritance.
+            
+            Using this will just raise `NotImplementedError`, so please do not use this.
+        """
+
+        raise NotImplementedError('The `content` property is only available for `PostFromNotification`.')
 
 
 
-class Post(PostFromBulk):
+class Post(PostFromNotification):
     """
         A Flarum post.
     """
 
-    pass
+    def get_author(self):
+        """
+            Obtains the post's author.
+
+            Returns `pyflarum.flarum.core.users.UserFromBulk`, because its
+            JSON data is the same.
+        """
+
+        id = self.relationships.get("user", {}).get("data", {}).get("id", None)
+        
+        for raw_user in self.included:
+            if raw_user.get("id", None) == id and raw_user.get("type", None) == 'users':
+                user = UserFromBulk(user=self.user, _fetched_data=dict(data=raw_user))
+
+                return user
+
+        return None

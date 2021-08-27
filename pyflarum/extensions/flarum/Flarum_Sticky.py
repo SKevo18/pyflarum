@@ -53,7 +53,7 @@ class StickyDiscussionFromNotificationMixin(DiscussionFromNotification):
 
 
 
-class StickyDiscussionFromBulkMixin(DiscussionFromBulk):
+class StickyDiscussionFromBulkMixin(DiscussionFromBulk, DiscussionFromNotification):
     @property
     def isSticky(self) -> bool:
         """

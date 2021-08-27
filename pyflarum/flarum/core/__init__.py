@@ -158,6 +158,19 @@ class BaseFlarumIndividualObject(BaseFlarumObject):
 
 
     @property
+    def included(self) -> list[dict]:
+        """
+            Returns raw list of JSON included data.
+
+            Learn more about included data [here](https://cwkevo.github.io/pyflarum/docs/#included-data).
+
+            Note: Not all "individual" objects have this property, usually the low-level ones (such as `PostFromX`, `DiscussionFromX`, etc...).
+        """
+
+        return self.get("included", {})
+
+
+    @property
     def _parent_included(self) -> list[dict]:
         """
             Raw data of the parent's included JSON data.

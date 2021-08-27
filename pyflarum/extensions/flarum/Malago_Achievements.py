@@ -1,10 +1,10 @@
-from pyflarum.flarum.core import BaseFlarumIndividualObject
 from typing import Optional
 
 from ...extensions import ExtensionMixin
 from ...extensions.admin import AdminExtension, AdminFlarumUserMixin
 
 from ...flarum.core.forum import Forum
+from ...flarum.core import BaseFlarumIndividualObject
 from ...error_handler import parse_request
 
 
