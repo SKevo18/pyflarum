@@ -1,15 +1,19 @@
 from typing import Generator, Optional, TYPE_CHECKING
 if TYPE_CHECKING:
     from ..flarum.core.notifications import Notifications
-    from ..flarum.core.discussions import Discussions, Discussion
-    from ..flarum.core.posts import Posts, Post
+    from ..flarum.core.discussions import Discussions
+    from ..flarum.core.posts import Posts
     from ..flarum.core.users import Users
+
+
+import warnings
 
 
 from . import ExtensionMixin
 from ..session import FlarumUser
 
 from ..flarum.core.filters import Filter
+from ..flarum.core.discussions import Discussion
 
 
 AUTHOR = 'skevo'
@@ -127,21 +131,38 @@ class AbsolutelyAllFlarumUserMixin(FlarumUser):
                 break
     
 
-    def get_all_posts_from_discussion(self, discussion: 'Discussion') -> Generator['Post', None, None]:
+    def get_all_posts_from_discussion(self, discussion: Discussion, at_once: int=50, force: bool=False) -> Generator['Posts', None, None]:
         """
-            This makes additional API request for every individual post to fetch full post data from a long discussion.
-            Sadly, the reason why additional request is needed is because only post IDs are present in the relationship data of the discussion.
+            This fetches all posts from a long discussion where only post IDs are present.
 
-            I recommend you to put a delay between `next()` to prevent "429  Rate Limited" error for forums that are protected from flooding.
+            First, a list of all IDs is created from the API response. Then, IDs are broken into chunks of size `at_once` and
+            yielded as `Posts`.
+
+            Use `force=True` to bypass `at_once` being capped at 50, if more than 50.
         """
+
+        if not isinstance(discussion, Discussion):
+            raise TypeError("`discussion` parameter must be an instance of `Discussion`.")
+
+
+        if at_once > 50 and not force:
+            at_once = 50
+            warnings.warn("`at_once` was capped at 50, because Flarum (by default/currently) doesn't support fetching more than 50 entires at once from API. Use `force=True` to bypass.")
+
 
         raw_posts = discussion.relationships.get("posts", {}).get("data", []) # type: list[dict]
+        post_ids = [] # type: list[int]
+
 
         for raw_post in raw_posts:
             post_id = raw_post.get("id", None) # type: Optional[int]
 
             if post_id:
-                yield self.get_post_by_id(post_id)
+                post_ids.append(post_id)
+
+
+        for id in range(0, len(post_ids), at_once): 
+            yield self.get_posts(filter=Filter(limit=50, ids=post_ids[id:id + at_once]))
 
 
 

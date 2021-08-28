@@ -17,5 +17,7 @@ USER = FlarumUser(
 if __name__ == "__main__":
     discussion = USER.get_discussion_by_id(7585)
 
-    for post in USER.get_all_posts_from_discussion(discussion):
-        print(post.number, '\n', post.contentHtml, '\n\n')
+    for posts in USER.get_all_posts_from_discussion(discussion):
+        for post in posts:
+            print(post.url)
+        print('-' * 20)

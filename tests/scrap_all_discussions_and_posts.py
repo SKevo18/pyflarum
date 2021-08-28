@@ -37,10 +37,11 @@ def scrap_all(file_name: 'str | bytes | Path'="scrapped.html"):
                         data = f"""<div id="d-{discussion.id}" style="margin: 2rem; background-color: lavender; border: 3px double skyblue; padding: 1rem; border-radius: 2rem;"><h1><a href="{discussion.url}">Discussion #{discussion.id}</a></h1><div id="d-{discussion.id}-posts">\n"""
                         scrap.write(data)
 
-                        for post in USER.get_all_posts_from_discussion(discussion):
-                            if post.contentHtml:
-                                data = f"""<div id="d-{discussion.id}-{post.number}"><h3><a href="{post.url}">Post #{post.number} in discussion #{discussion.id}</a></h3><p><i>By: {post.get_author().username} @ {post.createdAt}</i></p><div>{post.contentHtml}</div><hr/><br/></div>\n"""
-                                scrap.write(data)
+                        for posts in USER.get_all_posts_from_discussion(discussion):
+                            for post in posts:
+                                if post.contentHtml:
+                                    data = f"""<div id="d-{discussion.id}-{post.number}"><h3><a href="{post.url}">Post #{post.number} in discussion #{discussion.id}</a></h3><p><i>By: {post.get_author().username} @ {post.createdAt}</i></p><div>{post.contentHtml}</div><hr/><br/></div>\n"""
+                                    scrap.write(data)
 
                         scrap.write("""</div></div>""")
 
