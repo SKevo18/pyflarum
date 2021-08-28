@@ -8,6 +8,9 @@ from ...error_handler import parse_request
 from ..core import BaseFlarumBulkObject, BaseFlarumIndividualObject
 
 
+__all__ = ['PreparedGroup', 'Groups', 'Group']
+
+
 
 class PreparedGroup(BaseFlarumIndividualObject):
     def __init__(self, user: 'FlarumUser', nameSingular: str, namePlural: Optional[str]=None, color: Optional[str]=None, icon: Optional[str]=None, isHidden: bool=False):

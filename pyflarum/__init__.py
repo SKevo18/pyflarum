@@ -1,35 +1,27 @@
-from pathlib import Path
-
 from .session import FlarumUser
 from .error_handler import FlarumError
 
-from .flarum.core.discussions import Discussion
+from .flarum.core.discussions import PreparedDiscussion, Discussions, Discussion, DiscussionFromBulk, DiscussionFromNotification
+from .flarum.core.posts import PreparedPost, Posts, Post, PostFromBulk, PostFromNotification, PostFromDiscussion
+
+from .flarum.core.users import Users, User, UserFromBulk, UserFromNotification, MyUser
+from .flarum.core.groups import PreparedGroup, Groups, Group
 
 from .flarum.core.filters import Filter
+from .flarum.core.notifications import Notifications, Notification
+from .flarum.core.forum import Forum
 
 
-__all__ = ['FlarumUser', 'FlarumError', 'Discussion', 'Filter']
+__all__ = [
+    'FlarumUser', 'FlarumError',
 
+    'PreparedDiscussion', 'Discussions', 'Discussion', 'DiscussionFromBulk', 'DiscussionFromNotification',
+    'PreparedPost', 'Posts', 'Post', 'PostFromBulk', 'PostFromNotification', 'PostFromDiscussion',
 
-__description__ = "An unofficial Python package for manipulating with Flarum's API"
-__author__      = "SKevo"
-__copyright__   = "Copyright 2021, SKevo"
-__credits__     = ["SKevo"]
-__license__     = "GPLv3"
-__version__     = "v1.0.8-beta"
-__maintainer__  = "SKevo"
-__email__       = "me@kevo.link"
-__status__      = "4 - Beta"
+    'Users', 'User', 'UserFromBulk', 'UserFromNotification', 'MyUser',
+    'PreparedGroup', 'Groups', 'Group',
 
-# Default readme:
-__readme__ = "(c) SKevo"
-
-# Overwrite docstring, so pdoc can render it:
-try:
-    with open(f"{Path(__file__).parent.parent.absolute()}{Path('/README.md')}", 'r', encoding="UTF-8") as readme:
-        __readme__ = readme.read()
-
-except:
-    pass
-
-__doc__ = __readme__
+    'Filter',
+    'Notifications', 'Notification',
+    'Forum'
+]

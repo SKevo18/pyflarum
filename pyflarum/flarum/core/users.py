@@ -8,6 +8,10 @@ from ..core import BaseFlarumBulkObject, BaseFlarumIndividualObject
 from ...datetime_conversions import flarum_to_datetime
 
 
+__all__ = ['Users', 'User', 'UserFromBulk', 'UserFromNotification', 'MyUser']
+
+
+
 class Users(BaseFlarumBulkObject):
     """
         A data of multiple users fetched from the API.

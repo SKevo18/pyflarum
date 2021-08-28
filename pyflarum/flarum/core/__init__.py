@@ -4,6 +4,9 @@ if TYPE_CHECKING:
     from ...custom_types import AnyFlarumClass
 
 
+__all__ = ['BaseFlarumObject', 'BaseFlarumBulkObject', 'BaseFlarumIndividualObject']
+
+
 
 class BaseFlarumObject(dict):
     """

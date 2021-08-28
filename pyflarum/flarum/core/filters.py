@@ -1,6 +1,10 @@
 from typing import Literal, Optional
 
 
+__all__ = ['Filter']
+
+
+
 class Filter:
     """
         Represents a Flarum API filter as a `dict`.

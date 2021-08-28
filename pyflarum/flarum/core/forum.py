@@ -5,6 +5,8 @@ from ..core import BaseFlarumIndividualObject
 from ..core.groups import Group
 
 
+__all__ = ['Forum']
+
 
 class Forum(BaseFlarumIndividualObject):
     """

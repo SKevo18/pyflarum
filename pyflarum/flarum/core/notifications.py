@@ -13,6 +13,10 @@ from ...error_handler import parse_request
 from ...datetime_conversions import flarum_to_datetime
 
 
+__all__ = ['Notifications', 'Notification']
+
+
+
 class Notifications(BaseFlarumBulkObject):
     """
         A data of multiple notifications fetched from the API.
