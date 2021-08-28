@@ -27,5 +27,9 @@ __all__ = [
 ]
 
 
-with open("README.md", 'r', encoding="UTF-8") as readme:
-    __doc__ = readme.read() 
+try:
+    with open("README.md", 'r', encoding="UTF-8") as readme:
+        __doc__ = readme.read() 
+
+except:
+    __doc__ = "Failed to read README.md. For now, see the GitHub version, which is identical: https://github.com/cwkevo/pyflarum"
