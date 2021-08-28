@@ -19,7 +19,7 @@ __status__      = "4 - Beta"
 
 # Overwrite docstring, so pdoc can render it:
 try:
-    with open(f"{Path(__file__).parent.parent.absolute()}{Path('/README.md')}", 'r', encoding="UTF-8") as readme:
+    with open(f"{Path(__file__).parent.absolute()}{Path('/README.md')}", 'r', encoding="UTF-8") as readme:
         __readme__ = readme.read()
 
 except:

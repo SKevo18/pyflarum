@@ -25,7 +25,7 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ffd54ff1b598cb9abc6302085ea5fab8da4d32fd/pyflarum\extensions\admin.py#L0-L260" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum\extensions\admin.py#L0-L260" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">from typing import Literal, Optional, BinaryIO
 
@@ -360,7 +360,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ffd54ff1b598cb9abc6302085ea5fab8da4d32fd/pyflarum\extensions\admin.py#L247-L261" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum\extensions\admin.py#L247-L261" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class AdminExtension(ExtensionMixin, AdminFlarumUserMixin):
     def __init__(self):
@@ -437,7 +437,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ffd54ff1b598cb9abc6302085ea5fab8da4d32fd/pyflarum\extensions\admin.py#L253-L257" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum\extensions\admin.py#L253-L257" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_dependencies(self):
     return {
@@ -537,7 +537,7 @@ class ExampleExtension(ExtensionMixin):
 <div class="desc inherited"><p>Obtains all users from <code>/api/users</code>, optionally filtering results by using <code>filter</code>.</p></div>
 </dd>
 <dt id="pyflarum.extensions.admin.AdminExtension.mark_all_discussions_as_read"><code class="name flex">
-<span>def <span class="ident">mark_all_discussions_as_read</span></span>(<span>self, at: datetime.datetime = datetime.datetime(2021, 8, 28, 12, 36, 53, 498470)) ‑> Literal[True]</span>
+<span>def <span class="ident">mark_all_discussions_as_read</span></span>(<span>self, at: datetime.datetime = datetime.datetime(2021, 8, 28, 12, 44, 32, 430307)) ‑> Literal[True]</span>
 </code></dt>
 <dd>
 <p class="inheritance">
@@ -568,7 +568,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ffd54ff1b598cb9abc6302085ea5fab8da4d32fd/pyflarum\extensions\admin.py#L260-L261" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum\extensions\admin.py#L260-L261" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def mixin(self):
     super().mixin(self, FlarumUser, AdminFlarumUserMixin)</code></pre>
@@ -646,7 +646,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ffd54ff1b598cb9abc6302085ea5fab8da4d32fd/pyflarum\extensions\admin.py#L91-L243" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum\extensions\admin.py#L91-L243" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class AdminFlarumUserMixin(FlarumUser):
     def __enable_or_disable_extension(self, id: &#39;str | int&#39;, enabled: bool=True) -&gt; True:
@@ -855,7 +855,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ffd54ff1b598cb9abc6302085ea5fab8da4d32fd/pyflarum\extensions\admin.py#L107-L111" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum\extensions\admin.py#L107-L111" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def clear_cache(self) -&gt; True:
     raw = self.session.delete(f&#34;{self.api_urls[&#39;base&#39;]}/cache&#34;)
@@ -872,7 +872,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ffd54ff1b598cb9abc6302085ea5fab8da4d32fd/pyflarum\extensions\admin.py#L103-L104" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum\extensions\admin.py#L103-L104" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def disable_extension(self, id: &#39;str | int&#39;) -&gt; True:
     return self.__enable_or_disable_extension(id=id, enabled=False)</code></pre>
@@ -886,7 +886,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ffd54ff1b598cb9abc6302085ea5fab8da4d32fd/pyflarum\extensions\admin.py#L99-L100" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum\extensions\admin.py#L99-L100" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def enable_extension(self, id: &#39;str | int&#39;) -&gt; True:
     return self.__enable_or_disable_extension(id=id, enabled=True)</code></pre>
@@ -940,7 +940,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ffd54ff1b598cb9abc6302085ea5fab8da4d32fd/pyflarum\extensions\admin.py#L140-L144" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum\extensions\admin.py#L140-L144" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_mail_settings(self) -&gt; MailSettings:
     raw = self.session.get(f&#34;{self.api_urls[&#39;base&#39;]}/mail/settings&#34;)
@@ -1000,7 +1000,7 @@ class ExampleExtension(ExtensionMixin):
 <div class="desc inherited"><p>Obtains all users from <code>/api/users</code>, optionally filtering results by using <code>filter</code>.</p></div>
 </dd>
 <dt id="pyflarum.extensions.admin.AdminFlarumUserMixin.mark_all_discussions_as_read"><code class="name flex">
-<span>def <span class="ident">mark_all_discussions_as_read</span></span>(<span>self, at: datetime.datetime = datetime.datetime(2021, 8, 28, 12, 36, 53, 498470)) ‑> Literal[True]</span>
+<span>def <span class="ident">mark_all_discussions_as_read</span></span>(<span>self, at: datetime.datetime = datetime.datetime(2021, 8, 28, 12, 44, 32, 430307)) ‑> Literal[True]</span>
 </code></dt>
 <dd>
 <p class="inheritance">
@@ -1027,7 +1027,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ffd54ff1b598cb9abc6302085ea5fab8da4d32fd/pyflarum\extensions\admin.py#L220-L224" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum\extensions\admin.py#L220-L224" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def remove_favicon(self) -&gt; True:
     raw = self.session.delete(f&#34;{self.api_urls[&#39;base&#39;]}/favicon&#34;)
@@ -1044,7 +1044,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ffd54ff1b598cb9abc6302085ea5fab8da4d32fd/pyflarum\extensions\admin.py#L205-L209" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum\extensions\admin.py#L205-L209" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def remove_logo(self) -&gt; True:
     raw = self.session.delete(f&#34;{self.api_urls[&#39;base&#39;]}/logo&#34;)
@@ -1081,7 +1081,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ffd54ff1b598cb9abc6302085ea5fab8da4d32fd/pyflarum\extensions\admin.py#L167-L171" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum\extensions\admin.py#L167-L171" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def send_test_mail(self) -&gt; True:
     raw = self.session.post(f&#34;{self.api_urls[&#39;base&#39;]}/mail/test&#34;)
@@ -1098,7 +1098,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ffd54ff1b598cb9abc6302085ea5fab8da4d32fd/pyflarum\extensions\admin.py#L174-L194" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum\extensions\admin.py#L174-L194" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def update_appearance(self, theme_primary_color: Optional[str]=None, theme_secondary_color: Optional[str]=None, theme_dark_mode: Optional[bool]=None, theme_colored_header: bool=None) -&gt; True:
     post_data = {}
@@ -1131,7 +1131,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ffd54ff1b598cb9abc6302085ea5fab8da4d32fd/pyflarum\extensions\admin.py#L235-L236" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum\extensions\admin.py#L235-L236" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def update_custom_css(self, css: Optional[str]=None) -&gt; True:
     return self.__update_settings({ &#34;custom_header&#34;: css if css else &#34;&#34; })</code></pre>
@@ -1145,7 +1145,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ffd54ff1b598cb9abc6302085ea5fab8da4d32fd/pyflarum\extensions\admin.py#L231-L232" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum\extensions\admin.py#L231-L232" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def update_custom_footer(self, footer: Optional[str]=None) -&gt; True:
     return self.__update_settings({ &#34;custom_footer&#34;: footer if footer else &#34;&#34; })</code></pre>
@@ -1159,7 +1159,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ffd54ff1b598cb9abc6302085ea5fab8da4d32fd/pyflarum\extensions\admin.py#L227-L228" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum\extensions\admin.py#L227-L228" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def update_custom_header(self, header: Optional[str]=None) -&gt; True:
     return self.__update_settings({ &#34;custom_header&#34;: header if header else &#34;&#34; })</code></pre>
@@ -1173,7 +1173,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ffd54ff1b598cb9abc6302085ea5fab8da4d32fd/pyflarum\extensions\admin.py#L114-L137" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum\extensions\admin.py#L114-L137" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def update_forum_info(self, forum_title: Optional[str]=None, forum_description: Optional[str]=None, default_route: Optional[str]=None, welcome_title: Optional[str]=None, welcome_message: Optional[str]=None, user_slug_driver: Optional[Literal[&#34;&#34;, &#34;default&#34;, &#34;id&#34;]]=None) -&gt; True:
     post_data = {}
@@ -1209,7 +1209,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ffd54ff1b598cb9abc6302085ea5fab8da4d32fd/pyflarum\extensions\admin.py#L147-L164" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum\extensions\admin.py#L147-L164" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def update_mail_settings(self, mail_from: Optional[str]=None, mail_encryption: Optional[str]=None, mail_username: Optional[str]=None, mail_password: Optional[str]=None):
     post_data = {}
@@ -1259,7 +1259,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ffd54ff1b598cb9abc6302085ea5fab8da4d32fd/pyflarum\extensions\admin.py#L212-L217" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum\extensions\admin.py#L212-L217" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def upload_favicon(self, file: BinaryIO, file_name: str=&#34;favicon&#34;, file_type: Literal[&#39;image/png&#39;, &#39;image/jpeg&#39;, &#39;image/gif&#39;]=&#34;image/png&#34;) -&gt; True:
     raw = self.session.post(url=f&#34;{self.api_urls[&#39;base&#39;]}/favicon&#34;, files={ &#34;favicon&#34;: (file_name, file, file_type) })
@@ -1277,7 +1277,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ffd54ff1b598cb9abc6302085ea5fab8da4d32fd/pyflarum\extensions\admin.py#L197-L202" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum\extensions\admin.py#L197-L202" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def upload_logo(self, file: BinaryIO, file_name: str=&#34;logo&#34;, file_type: Literal[&#39;image/png&#39;, &#39;image/jpeg&#39;, &#39;image/gif&#39;]=&#34;image/png&#34;) -&gt; True:
     raw = self.session.post(url=f&#34;{self.api_urls[&#39;base&#39;]}/logo&#34;, files={ &#34;logo&#34;: (file_name, file, file_type) })
@@ -1319,7 +1319,7 @@ objects have these properties.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ffd54ff1b598cb9abc6302085ea5fab8da4d32fd/pyflarum\extensions\admin.py#L19-L87" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum\extensions\admin.py#L19-L87" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class MailSettings(BaseFlarumIndividualObject):
     @property
@@ -1421,7 +1421,7 @@ objects have these properties.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ffd54ff1b598cb9abc6302085ea5fab8da4d32fd/pyflarum\extensions\admin.py#L85-L87" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum\extensions\admin.py#L85-L87" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def errors(self) -&gt; list:
@@ -1434,7 +1434,7 @@ def errors(self) -&gt; list:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ffd54ff1b598cb9abc6302085ea5fab8da4d32fd/pyflarum\extensions\admin.py#L20-L22" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum\extensions\admin.py#L20-L22" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def fields(self) -&gt; dict:
@@ -1463,7 +1463,7 @@ def fields(self) -&gt; dict:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ffd54ff1b598cb9abc6302085ea5fab8da4d32fd/pyflarum\extensions\admin.py#L45-L47" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum\extensions\admin.py#L45-L47" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def log(self) -&gt; list:
@@ -1476,7 +1476,7 @@ def log(self) -&gt; list:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ffd54ff1b598cb9abc6302085ea5fab8da4d32fd/pyflarum\extensions\admin.py#L25-L27" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum\extensions\admin.py#L25-L27" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def mail(self) -&gt; list:
@@ -1489,7 +1489,7 @@ def mail(self) -&gt; list:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ffd54ff1b598cb9abc6302085ea5fab8da4d32fd/pyflarum\extensions\admin.py#L65-L67" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum\extensions\admin.py#L65-L67" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def mail_encryption(self) -&gt; Optional[str]:
@@ -1502,7 +1502,7 @@ def mail_encryption(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ffd54ff1b598cb9abc6302085ea5fab8da4d32fd/pyflarum\extensions\admin.py#L55-L57" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum\extensions\admin.py#L55-L57" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def mail_host(self) -&gt; Optional[str]:
@@ -1515,7 +1515,7 @@ def mail_host(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ffd54ff1b598cb9abc6302085ea5fab8da4d32fd/pyflarum\extensions\admin.py#L75-L77" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum\extensions\admin.py#L75-L77" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def mail_password(self) -&gt; Optional[str]:
@@ -1528,7 +1528,7 @@ def mail_password(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ffd54ff1b598cb9abc6302085ea5fab8da4d32fd/pyflarum\extensions\admin.py#L60-L62" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum\extensions\admin.py#L60-L62" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def mail_port(self) -&gt; Optional[str]:
@@ -1541,7 +1541,7 @@ def mail_port(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ffd54ff1b598cb9abc6302085ea5fab8da4d32fd/pyflarum\extensions\admin.py#L70-L72" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum\extensions\admin.py#L70-L72" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def mail_username(self) -&gt; Optional[str]:
@@ -1554,7 +1554,7 @@ def mail_username(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ffd54ff1b598cb9abc6302085ea5fab8da4d32fd/pyflarum\extensions\admin.py#L30-L32" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum\extensions\admin.py#L30-L32" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def mailgun(self) -&gt; dict:
@@ -1567,7 +1567,7 @@ def mailgun(self) -&gt; dict:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ffd54ff1b598cb9abc6302085ea5fab8da4d32fd/pyflarum\extensions\admin.py#L40-L42" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum\extensions\admin.py#L40-L42" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def mailgun_domain(self) -&gt; Optional[str]:
@@ -1580,7 +1580,7 @@ def mailgun_domain(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ffd54ff1b598cb9abc6302085ea5fab8da4d32fd/pyflarum\extensions\admin.py#L35-L37" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum\extensions\admin.py#L35-L37" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def mailgun_secret(self) -&gt; Optional[str]:
@@ -1602,7 +1602,7 @@ other objects …</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ffd54ff1b598cb9abc6302085ea5fab8da4d32fd/pyflarum\extensions\admin.py#L80-L82" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum\extensions\admin.py#L80-L82" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def sending(self) -&gt; bool:
@@ -1615,7 +1615,7 @@ def sending(self) -&gt; bool:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ffd54ff1b598cb9abc6302085ea5fab8da4d32fd/pyflarum\extensions\admin.py#L50-L52" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum\extensions\admin.py#L50-L52" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def smtp(self) -&gt; dict:
