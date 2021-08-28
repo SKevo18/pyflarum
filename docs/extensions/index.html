@@ -25,7 +25,7 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/__init__.py#L1-L107" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/__init__.py#L1-L105" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">from typing import Dict, List
 
@@ -36,7 +36,6 @@ class ExtensionMixin:
 
         ### Example extension code:
         ```python
-        from typing import Type
 
         from pyflarum.extensions import ExtensionMixin
         from pyflarum.extensions.admin import AdminExtension
@@ -56,7 +55,7 @@ class ExtensionMixin:
 
         # I recommend to use the following naming pattern: `&lt;YourExtensionName&gt;&lt;ClassToMixin&gt;Mixin`
         # Example:
-        class ExampleFlarumUserMixin:
+        class ExampleFlarumUserMixin(FlarumUser):
             @property
             def example(self):
                 &#39;&#39;&#39;
@@ -64,7 +63,6 @@ class ExtensionMixin:
                 &#39;&#39;&#39;
 
                 return &#34;Example&#34;
-        ExampleFlarumUserMixin: Type[FlarumUser] # mimick class inheritance, without inheriting at runtime, acts just as a type hint
 
 
         class ExampleExtension(ExtensionMixin):
@@ -178,8 +176,7 @@ class ExtensionMixin:
 <dd>
 <div class="desc"><p>A base class for mixing in custom classes (extensions) into another classes.</p>
 <h3 id="example-extension-code">Example extension code:</h3>
-<pre><code class="language-python">from typing import Type
-
+<pre><code class="language-python">
 from pyflarum.extensions import ExtensionMixin
 from pyflarum.extensions.admin import AdminExtension
 from pyflarum.session import FlarumUser
@@ -198,7 +195,7 @@ HARD_DEPENCENDIES = []
 
 # I recommend to use the following naming pattern: `&lt;YourExtensionName&gt;&lt;ClassToMixin&gt;Mixin`
 # Example:
-class ExampleFlarumUserMixin:
+class ExampleFlarumUserMixin(FlarumUser):
     @property
     def example(self):
         '''
@@ -206,7 +203,6 @@ class ExampleFlarumUserMixin:
         '''
 
         return &quot;Example&quot;
-ExampleFlarumUserMixin: Type[FlarumUser] # mimick class inheritance, without inheriting at runtime, acts just as a type hint
 
 
 class ExampleExtension(ExtensionMixin):
@@ -224,7 +220,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/__init__.py#L4-L107" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/__init__.py#L4-L105" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class ExtensionMixin:
     &#34;&#34;&#34;
@@ -232,7 +228,6 @@ class ExampleExtension(ExtensionMixin):
 
         ### Example extension code:
         ```python
-        from typing import Type
 
         from pyflarum.extensions import ExtensionMixin
         from pyflarum.extensions.admin import AdminExtension
@@ -252,7 +247,7 @@ class ExampleExtension(ExtensionMixin):
 
         # I recommend to use the following naming pattern: `&lt;YourExtensionName&gt;&lt;ClassToMixin&gt;Mixin`
         # Example:
-        class ExampleFlarumUserMixin:
+        class ExampleFlarumUserMixin(FlarumUser):
             @property
             def example(self):
                 &#39;&#39;&#39;
@@ -260,7 +255,6 @@ class ExampleExtension(ExtensionMixin):
                 &#39;&#39;&#39;
 
                 return &#34;Example&#34;
-        ExampleFlarumUserMixin: Type[FlarumUser] # mimick class inheritance, without inheriting at runtime, acts just as a type hint
 
 
         class ExampleExtension(ExtensionMixin):
@@ -386,7 +380,7 @@ to function without these.</li>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/__init__.py#L61-L85" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/__init__.py#L59-L83" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_dependencies(self) -&gt; Dict[str, List[object]]:
     &#34;&#34;&#34;
@@ -429,7 +423,7 @@ to function without these.</li>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/__init__.py#L88-L107" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/__init__.py#L86-L105" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def mixin(_, class_to_patch: object, class_to_mix_in: object, skip_protected: bool=True):
     &#34;&#34;&#34;

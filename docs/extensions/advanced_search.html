@@ -25,7 +25,7 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/advanced_search.py#L1-L49" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/advanced_search.py#L1-L51" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">from typing import Optional
 
@@ -47,6 +47,7 @@ SOFT_DEPENDENCIES = []
 HARD_DEPENCENDIES = []
 
 
+
 class AdvancedSearchFlarumUserMixin(FlarumUser):
     def get_user_by_username(self, username: str) -&gt; Optional[User]:
         filter = Filter(query=username, limit=1)
@@ -59,6 +60,7 @@ class AdvancedSearchFlarumUserMixin(FlarumUser):
                 return User(user=self, _fetched_data=dict(data=possible_user))
 
         return None
+
 
 
 class AdvancedSearchExtension(ExtensionMixin, AdvancedSearchFlarumUserMixin):
@@ -93,8 +95,7 @@ class AdvancedSearchExtension(ExtensionMixin, AdvancedSearchFlarumUserMixin):
 <dd>
 <div class="desc"><p>A base class for mixing in custom classes (extensions) into another classes.</p>
 <h3 id="example-extension-code">Example extension code:</h3>
-<pre><code class="language-python">from typing import Type
-
+<pre><code class="language-python">
 from pyflarum.extensions import ExtensionMixin
 from pyflarum.extensions.admin import AdminExtension
 from pyflarum.session import FlarumUser
@@ -113,7 +114,7 @@ HARD_DEPENCENDIES = []
 
 # I recommend to use the following naming pattern: `&lt;YourExtensionName&gt;&lt;ClassToMixin&gt;Mixin`
 # Example:
-class ExampleFlarumUserMixin:
+class ExampleFlarumUserMixin(FlarumUser):
     @property
     def example(self):
         '''
@@ -121,7 +122,6 @@ class ExampleFlarumUserMixin:
         '''
 
         return &quot;Example&quot;
-ExampleFlarumUserMixin: Type[FlarumUser] # mimick class inheritance, without inheriting at runtime, acts just as a type hint
 
 
 class ExampleExtension(ExtensionMixin):
@@ -150,7 +150,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/advanced_search.py#L35-L49" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/advanced_search.py#L37-L51" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class AdvancedSearchExtension(ExtensionMixin, AdvancedSearchFlarumUserMixin):
     def __init__(self):
@@ -227,7 +227,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/advanced_search.py#L41-L45" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/advanced_search.py#L43-L47" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_dependencies(self):
     return {
@@ -327,7 +327,7 @@ class ExampleExtension(ExtensionMixin):
 <div class="desc inherited"><p>Obtains all users from <code>/api/users</code>, optionally filtering results by using <code>filter</code>.</p></div>
 </dd>
 <dt id="pyflarum.extensions.advanced_search.AdvancedSearchExtension.mark_all_discussions_as_read"><code class="name flex">
-<span>def <span class="ident">mark_all_discussions_as_read</span></span>(<span>self, at: datetime.datetime = datetime.datetime(2021, 8, 24, 15, 35, 16, 440130)) ‑> Literal[True]</span>
+<span>def <span class="ident">mark_all_discussions_as_read</span></span>(<span>self, at: datetime.datetime = datetime.datetime(2021, 8, 28, 10, 41, 45, 272412)) ‑> Literal[True]</span>
 </code></dt>
 <dd>
 <p class="inheritance">
@@ -358,7 +358,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/advanced_search.py#L48-L49" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/advanced_search.py#L50-L51" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def mixin(self):
     super().mixin(self, FlarumUser, AdvancedSearchFlarumUserMixin)</code></pre>
@@ -436,7 +436,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/advanced_search.py#L21-L32" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/advanced_search.py#L22-L33" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class AdvancedSearchFlarumUserMixin(FlarumUser):
     def get_user_by_username(self, username: str) -&gt; Optional[User]:
@@ -583,7 +583,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/advanced_search.py#L22-L32" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/advanced_search.py#L23-L33" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_user_by_username(self, username: str) -&gt; Optional[User]:
     filter = Filter(query=username, limit=1)
@@ -609,7 +609,7 @@ class ExampleExtension(ExtensionMixin):
 <div class="desc inherited"><p>Obtains all users from <code>/api/users</code>, optionally filtering results by using <code>filter</code>.</p></div>
 </dd>
 <dt id="pyflarum.extensions.advanced_search.AdvancedSearchFlarumUserMixin.mark_all_discussions_as_read"><code class="name flex">
-<span>def <span class="ident">mark_all_discussions_as_read</span></span>(<span>self, at: datetime.datetime = datetime.datetime(2021, 8, 24, 15, 35, 16, 440130)) ‑> Literal[True]</span>
+<span>def <span class="ident">mark_all_discussions_as_read</span></span>(<span>self, at: datetime.datetime = datetime.datetime(2021, 8, 28, 10, 41, 45, 272412)) ‑> Literal[True]</span>
 </code></dt>
 <dd>
 <p class="inheritance">

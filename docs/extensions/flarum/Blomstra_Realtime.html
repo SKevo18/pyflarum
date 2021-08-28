@@ -25,7 +25,7 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/flarum/Blomstra_Realtime.py#L1-L40" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/flarum/Blomstra_Realtime.py#L1-L39" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">from .. import ExtensionMixin
 
@@ -41,10 +41,9 @@ HARD_DEPENCENDIES = []
 
 
 
-class RealtimeDiscussionMixin:
-    # TODO: Does it actually come from this extension?
+class RealtimeDiscussionMixin(DiscussionFromBulk):
     @property
-    def canViewWhoTypes(self: DiscussionFromBulk) -&gt; bool:
+    def canViewWhoTypes(self) -&gt; bool:
         &#34;&#34;&#34;
             Whether or not you can view who is typing in real time.
         &#34;&#34;&#34;
@@ -80,42 +79,319 @@ class RealtimeExtension(ExtensionMixin):
 <dl>
 <dt id="pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin"><code class="flex name class">
 <span>class <span class="ident">RealtimeDiscussionMixin</span></span>
+<span>(</span><span>user: FlarumUser, _fetched_data: dict)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>A discussion from <code>Discussions</code>.</p>
+<h3 id="parameters">Parameters:</h3>
+<ul>
+<li><code>user</code> - the <code><a title="pyflarum.session.FlarumUser" href="../../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code> object, required to make additional API calls.</li>
+<li><code>_fetched_data</code> - the JSON data that was fetched from the API.</li>
+</ul>
+<p>I strongly discourage from forging objects this way, unless you are creating an extension.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/flarum/Blomstra_Realtime.py#L15-L23" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/flarum/Blomstra_Realtime.py#L15-L22" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">class RealtimeDiscussionMixin:
-    # TODO: Does it actually come from this extension?
+<pre><code class="python">class RealtimeDiscussionMixin(DiscussionFromBulk):
     @property
-    def canViewWhoTypes(self: DiscussionFromBulk) -&gt; bool:
+    def canViewWhoTypes(self) -&gt; bool:
         &#34;&#34;&#34;
             Whether or not you can view who is typing in real time.
         &#34;&#34;&#34;
 
         return self.attributes.get(&#34;canViewWhoTypes&#34;, False)</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></li>
+<li><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromNotification">DiscussionFromNotification</a></li>
+<li><a title="pyflarum.flarum.core.BaseFlarumIndividualObject" href="../../flarum/core/index.html#pyflarum.flarum.core.BaseFlarumIndividualObject">BaseFlarumIndividualObject</a></li>
+<li><a title="pyflarum.flarum.core.BaseFlarumObject" href="../../flarum/core/index.html#pyflarum.flarum.core.BaseFlarumObject">BaseFlarumObject</a></li>
+<li>builtins.dict</li>
+</ul>
 <h3>Instance variables</h3>
 <dl>
+<dt id="pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.attributes"><code class="name">var <span class="ident">attributes</span> : dict</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.attributes" href="../../flarum/core/index.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.attributes">attributes</a></code>
+</p>
+<div class="desc inherited"><p>Raw <code>dict</code> of the object's attributes.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.canDelete"><code class="name">var <span class="ident">canDelete</span> : bool</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.canDelete" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.canDelete">canDelete</a></code>
+</p>
+<div class="desc inherited"><p>Whether or not you are able to delete the discussion.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.canHide"><code class="name">var <span class="ident">canHide</span> : bool</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.canHide" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.canHide">canHide</a></code>
+</p>
+<div class="desc inherited"><p>Whether or not you are able to hide the discussion.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.canRename"><code class="name">var <span class="ident">canRename</span> : bool</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.canRename" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.canRename">canRename</a></code>
+</p>
+<div class="desc inherited"><p>Whether or not you are able to rename the discussion.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.canReply"><code class="name">var <span class="ident">canReply</span> : bool</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.canReply" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.canReply">canReply</a></code>
+</p>
+<div class="desc inherited"><p>Whether or not you are able to create a post in the discussion.</p></div>
+</dd>
 <dt id="pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.canViewWhoTypes"><code class="name">var <span class="ident">canViewWhoTypes</span> : bool</code></dt>
 <dd>
 <div class="desc"><p>Whether or not you can view who is typing in real time.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/flarum/Blomstra_Realtime.py#L17-L23" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/flarum/Blomstra_Realtime.py#L16-L22" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
-def canViewWhoTypes(self: DiscussionFromBulk) -&gt; bool:
+def canViewWhoTypes(self) -&gt; bool:
     &#34;&#34;&#34;
         Whether or not you can view who is typing in real time.
     &#34;&#34;&#34;
 
     return self.attributes.get(&#34;canViewWhoTypes&#34;, False)</code></pre>
 </details>
+</dd>
+<dt id="pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.commentCount"><code class="name">var <span class="ident">commentCount</span> : Optional[str]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.commentCount" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.commentCount">commentCount</a></code>
+</p>
+<div class="desc inherited"><p>Obtains the comment count of the discussion …</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.createdAt"><code class="name">var <span class="ident">createdAt</span> : Optional[datetime.datetime]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.createdAt" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.createdAt">createdAt</a></code>
+</p>
+<div class="desc inherited"><p>The <code>datetime</code> of when this discussion was created at.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.data"><code class="name">var <span class="ident">data</span> : list[dict] | dict</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.data" href="../../flarum/core/index.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.data">data</a></code>
+</p>
+<div class="desc inherited"><p>A raw <code>dict</code> of the object's data.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.id"><code class="name">var <span class="ident">id</span> : Optional[int]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.id" href="../../flarum/core/index.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.id">id</a></code>
+</p>
+<div class="desc inherited"><p>The <code>int</code> ID of the object. This should always be unique for the object's type.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.included"><code class="name">var <span class="ident">included</span> : list</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.included" href="../../flarum/core/index.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.included">included</a></code>
+</p>
+<div class="desc inherited"><p>Returns raw list of JSON included data …</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.isHidden"><code class="name">var <span class="ident">isHidden</span> : bool</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.isHidden" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.isHidden">isHidden</a></code>
+</p>
+<div class="desc inherited"><p>Whether or not the discussion is hidden. This happens when
+you delete the discussion for the first time.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.lastPostNumber"><code class="name">var <span class="ident">lastPostNumber</span> : Optional[int]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.lastPostNumber" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.lastPostNumber">lastPostNumber</a></code>
+</p>
+<div class="desc inherited"><p>Returns the number of the newest post in the
+discussion.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.lastPostedAt"><code class="name">var <span class="ident">lastPostedAt</span> : Optional[datetime.datetime]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.lastPostedAt" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.lastPostedAt">lastPostedAt</a></code>
+</p>
+<div class="desc inherited"><p>The <code>datetime</code> of when the last post in this
+discussion was made, e. g. when was this
+discussion last updated at.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.lastReadAt"><code class="name">var <span class="ident">lastReadAt</span> : Optional[datetime.datetime]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.lastReadAt" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.lastReadAt">lastReadAt</a></code>
+</p>
+<div class="desc inherited"><p>The <code>datetime</code> when you last read that discussion.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.lastReadPostNumber"><code class="name">var <span class="ident">lastReadPostNumber</span> : Optional[int]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.lastReadPostNumber" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.lastReadPostNumber">lastReadPostNumber</a></code>
+</p>
+<div class="desc inherited"><p>Number of a post that you've last read in the discussion.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.participantCount"><code class="name">var <span class="ident">participantCount</span> : Optional[str]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.participantCount" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.participantCount">participantCount</a></code>
+</p>
+<div class="desc inherited"><p>The participant count of the discussion. This is
+the number of all users that have participated in a
+discussion by posting.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.relationships"><code class="name">var <span class="ident">relationships</span> : dict</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.relationships" href="../../flarum/core/index.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.relationships">relationships</a></code>
+</p>
+<div class="desc inherited"><p>Raw <code>dict</code> of the object's relationships with
+other objects …</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.slug"><code class="name">var <span class="ident">slug</span> : Optional[str]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.slug" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.slug">slug</a></code>
+</p>
+<div class="desc inherited"><p>Returns the discussion's slug
+(consists of ID and dash separated words from discussion's title,
+e. g. <code>123-some-title</code>).</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.title"><code class="name">var <span class="ident">title</span> : Optional[str]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.title" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.title">title</a></code>
+</p>
+<div class="desc inherited"><p>Returns the discussion's title.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.type"><code class="name">var <span class="ident">type</span> : Optional[str]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.type" href="../../flarum/core/index.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.type">type</a></code>
+</p>
+<div class="desc inherited"><p>The type of the object …</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.url"><code class="name">var <span class="ident">url</span></code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.url" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.url">url</a></code>
+</p>
+<div class="desc inherited"><p>Returns the discussion's URL (including slug, if it's available).</p></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.delete"><code class="name flex">
+<span>def <span class="ident">delete</span></span>(<span>self, force: bool = False) ‑> bool</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.delete" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.delete">delete</a></code>
+</p>
+<div class="desc inherited"><p>Scronches the discussion forever. This cannot be reverted …</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.get_author"><code class="name flex">
+<span>def <span class="ident">get_author</span></span>(<span>self) ‑> Optional[<a title="pyflarum.flarum.core.users.UserFromNotification" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromNotification">UserFromNotification</a>]</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.get_author" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.get_author">get_author</a></code>
+</p>
+<div class="desc inherited"><p>Obtains the author of the discussion …</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.get_first_post"><code class="name flex">
+<span>def <span class="ident">get_first_post</span></span>(<span>self) ‑> Optional[<a title="pyflarum.flarum.core.posts.PostFromDiscussion" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromDiscussion">PostFromDiscussion</a>]</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.get_first_post" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.get_first_post">get_first_post</a></code>
+</p>
+<div class="desc inherited"><p>Obtains the first post of the discussion. If no post is found,
+<code>None</code> is returned …</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.get_full_data"><code class="name flex">
+<span>def <span class="ident">get_full_data</span></span>(<span>self) ‑> <a title="pyflarum.flarum.core.discussions.Discussion" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.Discussion">Discussion</a></span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.get_full_data" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.get_full_data">get_full_data</a></code>
+</p>
+<div class="desc inherited"><p>Makes an additional API call to fetch the full data of the discussion, e. g.
+the top-level discussion class (<code>Discussion</code>) …</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.get_last_posted_user"><code class="name flex">
+<span>def <span class="ident">get_last_posted_user</span></span>(<span>self) ‑> Optional[<a title="pyflarum.flarum.core.users.UserFromNotification" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromNotification">UserFromNotification</a>]</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.get_last_posted_user" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.get_last_posted_user">get_last_posted_user</a></code>
+</p>
+<div class="desc inherited"><p>Obtains the user that posted the latest post in the discussion …</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.hide"><code class="name flex">
+<span>def <span class="ident">hide</span></span>(<span>self, force: bool = False)</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.hide" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.hide">hide</a></code>
+</p>
+<div class="desc inherited"><p>Hides the discussion from the sight of other unprivileged users
+that are not worthy to view such thread.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.restore"><code class="name flex">
+<span>def <span class="ident">restore</span></span>(<span>self, force: bool = False)</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.restore" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.restore">restore</a></code>
+</p>
+<div class="desc inherited"><p>Restores the discussion (unhides it), bringing it back to life.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.unhide"><code class="name flex">
+<span>def <span class="ident">unhide</span></span>(<span>self, force: bool = False)</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.unhide" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.unhide">unhide</a></code>
+</p>
+<div class="desc inherited"><p>Restores the discussion (unhides it), bringing it back to life.</p></div>
 </dd>
 </dl>
 </dd>
@@ -127,7 +403,7 @@ def canViewWhoTypes(self: DiscussionFromBulk) -&gt; bool:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/flarum/Blomstra_Realtime.py#L27-L40" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/flarum/Blomstra_Realtime.py#L26-L39" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class RealtimeExtension(ExtensionMixin):
     &#34;&#34;&#34;
@@ -167,7 +443,7 @@ def canViewWhoTypes(self: DiscussionFromBulk) -&gt; bool:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/flarum/Blomstra_Realtime.py#L32-L36" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/flarum/Blomstra_Realtime.py#L31-L35" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_dependencies(self):
     return {
@@ -188,7 +464,7 @@ def canViewWhoTypes(self: DiscussionFromBulk) -&gt; bool:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/flarum/Blomstra_Realtime.py#L39-L40" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/flarum/Blomstra_Realtime.py#L38-L39" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def mixin(self):
     super().mixin(self, DiscussionFromBulk, RealtimeDiscussionMixin)</code></pre>
@@ -261,7 +537,36 @@ setTimeout(() => input.focus(), 100);
 <li>
 <h4><code><a title="pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin" href="#pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin">RealtimeDiscussionMixin</a></code></h4>
 <ul class="">
+<li><code><a title="pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.attributes" href="../../flarum/core/index.html#pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.attributes">attributes</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.canDelete" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.canDelete">canDelete</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.canHide" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.canHide">canHide</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.canRename" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.canRename">canRename</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.canReply" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.canReply">canReply</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.canViewWhoTypes" href="#pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.canViewWhoTypes">canViewWhoTypes</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.commentCount" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.commentCount">commentCount</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.createdAt" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.createdAt">createdAt</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.data" href="../../flarum/core/index.html#pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.data">data</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.delete" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.delete">delete</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.get_author" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.get_author">get_author</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.get_first_post" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.get_first_post">get_first_post</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.get_full_data" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.get_full_data">get_full_data</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.get_last_posted_user" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.get_last_posted_user">get_last_posted_user</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.hide" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.hide">hide</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.id" href="../../flarum/core/index.html#pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.id">id</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.included" href="../../flarum/core/index.html#pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.included">included</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.isHidden" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.isHidden">isHidden</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.lastPostNumber" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.lastPostNumber">lastPostNumber</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.lastPostedAt" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.lastPostedAt">lastPostedAt</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.lastReadAt" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.lastReadAt">lastReadAt</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.lastReadPostNumber" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.lastReadPostNumber">lastReadPostNumber</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.participantCount" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.participantCount">participantCount</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.relationships" href="../../flarum/core/index.html#pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.relationships">relationships</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.restore" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.restore">restore</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.slug" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.slug">slug</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.title" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.title">title</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.type" href="../../flarum/core/index.html#pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.type">type</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.unhide" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.unhide">unhide</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.url" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin.url">url</a></code></li>
 </ul>
 </li>
 <li>

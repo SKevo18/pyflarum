@@ -25,9 +25,11 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/flarum/core/notifications.py#L1-L172" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/flarum/core/notifications.py#L1-L168" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">from typing import Optional
+<pre><code class="python">from typing import Iterator, Optional, TYPE_CHECKING
+if TYPE_CHECKING:
+    from ...session import FlarumUser
 
 from datetime import datetime
 
@@ -40,29 +42,18 @@ from ...error_handler import parse_request
 from ...datetime_conversions import flarum_to_datetime
 
 
+__all__ = [&#39;Notifications&#39;, &#39;Notification&#39;]
+
+
+
 class Notifications(BaseFlarumBulkObject):
     &#34;&#34;&#34;
         A data of multiple notifications fetched from the API.
     &#34;&#34;&#34;
 
 
-    def __iter__(self):
-        return iter(self.get_notifications())
-
-
-    def get_notifications(self) -&gt; list[&#39;Notification&#39;]:
-        &#34;&#34;&#34;
-            All notifications from the `Notifications` object.
-        &#34;&#34;&#34;
-
-        all_notifications = [] # type: list[Notification]
-
-        for raw_notification in self.data:
-            if raw_notification.get(&#34;type&#34;, None) == &#39;notifications&#39;:
-                notification = Notification(user=self.user, _fetched_data=dict(data=raw_notification, _parent_included=self.included))
-                all_notifications.append(notification)
-
-        return all_notifications
+    def __init__(self, user: &#39;FlarumUser&#39;, _fetched_data: dict):
+        return super().__init__(user=user, _fetched_data=_fetched_data, _listclass=Notification, _required_type=&#39;notifications&#39;)
 
 
     def mark_all_as_read(self) -&gt; True:
@@ -70,7 +61,12 @@ class Notifications(BaseFlarumBulkObject):
             Marks all notifications as read. Returns `True` when successful.
         &#34;&#34;&#34;
 
-        return super().user.mark_all_notifications_as_read()
+        return self.user.mark_all_notifications_as_read()
+
+
+    if TYPE_CHECKING:
+        def __getitem__(self, key: int) -&gt; &#39;Notification&#39;: ...
+        def __iter__(self) -&gt; Iterator[&#39;Notification&#39;]: ...
 
 
 
@@ -225,7 +221,7 @@ class Notification(BaseFlarumIndividualObject):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/flarum/core/notifications.py#L48-L172" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/flarum/core/notifications.py#L44-L168" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class Notification(BaseFlarumIndividualObject):
     &#34;&#34;&#34;
@@ -375,7 +371,7 @@ class Notification(BaseFlarumIndividualObject):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/flarum/core/notifications.py#L65-L71" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/flarum/core/notifications.py#L61-L67" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def content(self) -&gt; Optional[dict]:
@@ -393,7 +389,7 @@ def content(self) -&gt; Optional[dict]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/flarum/core/notifications.py#L54-L62" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/flarum/core/notifications.py#L50-L58" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def contentType(self) -&gt; Optional[str]:
@@ -412,7 +408,7 @@ def contentType(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/flarum/core/notifications.py#L102-L110" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/flarum/core/notifications.py#L98-L106" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def createdAt(self) -&gt; Optional[datetime]:
@@ -441,13 +437,21 @@ def createdAt(self) -&gt; Optional[datetime]:
 </p>
 <div class="desc inherited"><p>The <code>int</code> ID of the object. This should always be unique for the object's type.</p></div>
 </dd>
+<dt id="pyflarum.flarum.core.notifications.Notification.included"><code class="name">var <span class="ident">included</span> : list</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject" href="index.html#pyflarum.flarum.core.BaseFlarumIndividualObject">BaseFlarumIndividualObject</a></code>.<code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject.included" href="index.html#pyflarum.flarum.core.BaseFlarumIndividualObject.included">included</a></code>
+</p>
+<div class="desc inherited"><p>Returns raw list of JSON included data …</p></div>
+</dd>
 <dt id="pyflarum.flarum.core.notifications.Notification.isRead"><code class="name">var <span class="ident">isRead</span> : bool</code></dt>
 <dd>
 <div class="desc"><p>Whether or not the notification was read by you.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/flarum/core/notifications.py#L113-L119" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/flarum/core/notifications.py#L109-L115" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def isRead(self) -&gt; bool:
@@ -465,7 +469,7 @@ the notification.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/flarum/core/notifications.py#L74-L85" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/flarum/core/notifications.py#L70-L81" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def new_post_number(self) -&gt; Optional[int]:
@@ -497,7 +501,7 @@ the notification.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/flarum/core/notifications.py#L88-L99" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/flarum/core/notifications.py#L84-L95" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def reply_number(self) -&gt; Optional[int]:
@@ -533,7 +537,7 @@ def reply_number(self) -&gt; Optional[int]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/flarum/core/notifications.py#L122-L136" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/flarum/core/notifications.py#L118-L132" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def from_user(self) -&gt; Optional[UserFromNotification]:
     &#34;&#34;&#34;
@@ -562,7 +566,7 @@ def reply_number(self) -&gt; Optional[int]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/flarum/core/notifications.py#L139-L158" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/flarum/core/notifications.py#L135-L154" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_subject(self) -&gt; Optional[&#39;DiscussionFromNotification | PostFromNotification&#39;]:
     &#34;&#34;&#34;
@@ -595,7 +599,7 @@ def reply_number(self) -&gt; Optional[int]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/flarum/core/notifications.py#L161-L172" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/flarum/core/notifications.py#L157-L168" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def mark_as_read(self) -&gt; True:
     &#34;&#34;&#34;
@@ -618,17 +622,11 @@ def reply_number(self) -&gt; Optional[int]:
 <span>(</span><span>user: FlarumUser, _fetched_data: dict)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>A data of multiple notifications fetched from the API.</p>
-<h3 id="parameters">Parameters:</h3>
-<ul>
-<li><code>user</code> - the <code><a title="pyflarum.session.FlarumUser" href="../../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code> object, required to make additional API calls.</li>
-<li><code>_fetched_data</code> - the JSON data that was fetched from the API.</li>
-</ul>
-<p>I strongly discourage from forging objects this way, unless you are creating an extension.</p></div>
+<div class="desc"><p>A data of multiple notifications fetched from the API.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/flarum/core/notifications.py#L14-L44" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/flarum/core/notifications.py#L20-L40" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class Notifications(BaseFlarumBulkObject):
     &#34;&#34;&#34;
@@ -636,23 +634,8 @@ def reply_number(self) -&gt; Optional[int]:
     &#34;&#34;&#34;
 
 
-    def __iter__(self):
-        return iter(self.get_notifications())
-
-
-    def get_notifications(self) -&gt; list[&#39;Notification&#39;]:
-        &#34;&#34;&#34;
-            All notifications from the `Notifications` object.
-        &#34;&#34;&#34;
-
-        all_notifications = [] # type: list[Notification]
-
-        for raw_notification in self.data:
-            if raw_notification.get(&#34;type&#34;, None) == &#39;notifications&#39;:
-                notification = Notification(user=self.user, _fetched_data=dict(data=raw_notification, _parent_included=self.included))
-                all_notifications.append(notification)
-
-        return all_notifications
+    def __init__(self, user: &#39;FlarumUser&#39;, _fetched_data: dict):
+        return super().__init__(user=user, _fetched_data=_fetched_data, _listclass=Notification, _required_type=&#39;notifications&#39;)
 
 
     def mark_all_as_read(self) -&gt; True:
@@ -660,24 +643,20 @@ def reply_number(self) -&gt; Optional[int]:
             Marks all notifications as read. Returns `True` when successful.
         &#34;&#34;&#34;
 
-        return super().user.mark_all_notifications_as_read()</code></pre>
+        return self.user.mark_all_notifications_as_read()
+
+
+    if TYPE_CHECKING:
+        def __getitem__(self, key: int) -&gt; &#39;Notification&#39;: ...
+        def __iter__(self) -&gt; Iterator[&#39;Notification&#39;]: ...</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="pyflarum.flarum.core.BaseFlarumBulkObject" href="index.html#pyflarum.flarum.core.BaseFlarumBulkObject">BaseFlarumBulkObject</a></li>
-<li><a title="pyflarum.flarum.core.BaseFlarumObject" href="index.html#pyflarum.flarum.core.BaseFlarumObject">BaseFlarumObject</a></li>
-<li>builtins.dict</li>
+<li>builtins.list</li>
 </ul>
 <h3>Instance variables</h3>
 <dl>
-<dt id="pyflarum.flarum.core.notifications.Notifications.data"><code class="name">var <span class="ident">data</span> : list[dict] | dict</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.BaseFlarumBulkObject" href="index.html#pyflarum.flarum.core.BaseFlarumBulkObject">BaseFlarumBulkObject</a></code>.<code><a title="pyflarum.flarum.core.BaseFlarumBulkObject.data" href="index.html#pyflarum.flarum.core.BaseFlarumBulkObject.data">data</a></code>
-</p>
-<div class="desc inherited"><p>A raw <code>dict</code> of the object's data.</p></div>
-</dd>
 <dt id="pyflarum.flarum.core.notifications.Notifications.first_link"><code class="name">var <span class="ident">first_link</span> : Optional[str]</code></dt>
 <dd>
 <p class="inheritance">
@@ -685,22 +664,6 @@ def reply_number(self) -&gt; Optional[int]:
 <code><a title="pyflarum.flarum.core.BaseFlarumBulkObject" href="index.html#pyflarum.flarum.core.BaseFlarumBulkObject">BaseFlarumBulkObject</a></code>.<code><a title="pyflarum.flarum.core.BaseFlarumBulkObject.first_link" href="index.html#pyflarum.flarum.core.BaseFlarumBulkObject.first_link">first_link</a></code>
 </p>
 <div class="desc inherited"><p>First link in the API.</p></div>
-</dd>
-<dt id="pyflarum.flarum.core.notifications.Notifications.included"><code class="name">var <span class="ident">included</span> : list</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.BaseFlarumBulkObject" href="index.html#pyflarum.flarum.core.BaseFlarumBulkObject">BaseFlarumBulkObject</a></code>.<code><a title="pyflarum.flarum.core.BaseFlarumBulkObject.included" href="index.html#pyflarum.flarum.core.BaseFlarumBulkObject.included">included</a></code>
-</p>
-<div class="desc inherited"><p>Raw <code>dict</code> of the object's included data.</p></div>
-</dd>
-<dt id="pyflarum.flarum.core.notifications.Notifications.links"><code class="name">var <span class="ident">links</span> : dict</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.BaseFlarumBulkObject" href="index.html#pyflarum.flarum.core.BaseFlarumBulkObject">BaseFlarumBulkObject</a></code>.<code><a title="pyflarum.flarum.core.BaseFlarumBulkObject.links" href="index.html#pyflarum.flarum.core.BaseFlarumBulkObject.links">links</a></code>
-</p>
-<div class="desc inherited"><p>A raw <code>dict</code> of the object's API links.</p></div>
 </dd>
 <dt id="pyflarum.flarum.core.notifications.Notifications.next_link"><code class="name">var <span class="ident">next_link</span> : Optional[str]</code></dt>
 <dd>
@@ -721,31 +684,6 @@ def reply_number(self) -&gt; Optional[int]:
 </dl>
 <h3>Methods</h3>
 <dl>
-<dt id="pyflarum.flarum.core.notifications.Notifications.get_notifications"><code class="name flex">
-<span>def <span class="ident">get_notifications</span></span>(<span>self) ‑> list</span>
-</code></dt>
-<dd>
-<div class="desc"><p>All notifications from the <code><a title="pyflarum.flarum.core.notifications.Notifications" href="#pyflarum.flarum.core.notifications.Notifications">Notifications</a></code> object.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/flarum/core/notifications.py#L24-L36" class="git-link">Browse git</a>
-</summary>
-<pre><code class="python">def get_notifications(self) -&gt; list[&#39;Notification&#39;]:
-    &#34;&#34;&#34;
-        All notifications from the `Notifications` object.
-    &#34;&#34;&#34;
-
-    all_notifications = [] # type: list[Notification]
-
-    for raw_notification in self.data:
-        if raw_notification.get(&#34;type&#34;, None) == &#39;notifications&#39;:
-            notification = Notification(user=self.user, _fetched_data=dict(data=raw_notification, _parent_included=self.included))
-            all_notifications.append(notification)
-
-    return all_notifications</code></pre>
-</details>
-</dd>
 <dt id="pyflarum.flarum.core.notifications.Notifications.mark_all_as_read"><code class="name flex">
 <span>def <span class="ident">mark_all_as_read</span></span>(<span>self) ‑> True</span>
 </code></dt>
@@ -754,14 +692,14 @@ def reply_number(self) -&gt; Optional[int]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/flarum/core/notifications.py#L39-L44" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/flarum/core/notifications.py#L30-L35" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def mark_all_as_read(self) -&gt; True:
     &#34;&#34;&#34;
         Marks all notifications as read. Returns `True` when successful.
     &#34;&#34;&#34;
 
-    return super().user.mark_all_notifications_as_read()</code></pre>
+    return self.user.mark_all_notifications_as_read()</code></pre>
 </details>
 </dd>
 </dl>
@@ -839,6 +777,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="pyflarum.flarum.core.notifications.Notification.from_user" href="#pyflarum.flarum.core.notifications.Notification.from_user">from_user</a></code></li>
 <li><code><a title="pyflarum.flarum.core.notifications.Notification.get_subject" href="#pyflarum.flarum.core.notifications.Notification.get_subject">get_subject</a></code></li>
 <li><code><a title="pyflarum.flarum.core.notifications.Notification.id" href="index.html#pyflarum.flarum.core.notifications.Notification.id">id</a></code></li>
+<li><code><a title="pyflarum.flarum.core.notifications.Notification.included" href="index.html#pyflarum.flarum.core.notifications.Notification.included">included</a></code></li>
 <li><code><a title="pyflarum.flarum.core.notifications.Notification.isRead" href="#pyflarum.flarum.core.notifications.Notification.isRead">isRead</a></code></li>
 <li><code><a title="pyflarum.flarum.core.notifications.Notification.mark_as_read" href="#pyflarum.flarum.core.notifications.Notification.mark_as_read">mark_as_read</a></code></li>
 <li><code><a title="pyflarum.flarum.core.notifications.Notification.new_post_number" href="#pyflarum.flarum.core.notifications.Notification.new_post_number">new_post_number</a></code></li>
@@ -849,12 +788,8 @@ setTimeout(() => input.focus(), 100);
 </li>
 <li>
 <h4><code><a title="pyflarum.flarum.core.notifications.Notifications" href="#pyflarum.flarum.core.notifications.Notifications">Notifications</a></code></h4>
-<ul class="two-column">
-<li><code><a title="pyflarum.flarum.core.notifications.Notifications.data" href="index.html#pyflarum.flarum.core.notifications.Notifications.data">data</a></code></li>
+<ul class="">
 <li><code><a title="pyflarum.flarum.core.notifications.Notifications.first_link" href="index.html#pyflarum.flarum.core.notifications.Notifications.first_link">first_link</a></code></li>
-<li><code><a title="pyflarum.flarum.core.notifications.Notifications.get_notifications" href="#pyflarum.flarum.core.notifications.Notifications.get_notifications">get_notifications</a></code></li>
-<li><code><a title="pyflarum.flarum.core.notifications.Notifications.included" href="index.html#pyflarum.flarum.core.notifications.Notifications.included">included</a></code></li>
-<li><code><a title="pyflarum.flarum.core.notifications.Notifications.links" href="index.html#pyflarum.flarum.core.notifications.Notifications.links">links</a></code></li>
 <li><code><a title="pyflarum.flarum.core.notifications.Notifications.mark_all_as_read" href="#pyflarum.flarum.core.notifications.Notifications.mark_all_as_read">mark_all_as_read</a></code></li>
 <li><code><a title="pyflarum.flarum.core.notifications.Notifications.next_link" href="index.html#pyflarum.flarum.core.notifications.Notifications.next_link">next_link</a></code></li>
 <li><code><a title="pyflarum.flarum.core.notifications.Notifications.previous_link" href="index.html#pyflarum.flarum.core.notifications.Notifications.previous_link">previous_link</a></code></li>

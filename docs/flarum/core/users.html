@@ -25,14 +25,20 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/flarum/core/users.py#L1-L220" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/flarum/core/users.py#L1-L217" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">from typing import Optional
+<pre><code class="python">from typing import Iterator, Optional, TYPE_CHECKING
+if TYPE_CHECKING:
+    from ...session import FlarumUser
 
 from datetime import datetime
 
 from ..core import BaseFlarumBulkObject, BaseFlarumIndividualObject
 from ...datetime_conversions import flarum_to_datetime
+
+
+__all__ = [&#39;Users&#39;, &#39;User&#39;, &#39;UserFromBulk&#39;, &#39;UserFromNotification&#39;, &#39;MyUser&#39;]
+
 
 
 class Users(BaseFlarumBulkObject):
@@ -41,23 +47,14 @@ class Users(BaseFlarumBulkObject):
     &#34;&#34;&#34;
 
 
-    def __iter__(self):
-        return iter(self.get_users())
+    def __init__(self, user: &#39;FlarumUser&#39;, _fetched_data: dict):
+        return super().__init__(user=user, _fetched_data=_fetched_data, _listclass=UserFromBulk, _required_type=&#39;users&#39;)
 
 
-    def get_users(self) -&gt; list[&#39;UserFromBulk&#39;]:
-        &#34;&#34;&#34;
-            All users from the `Users` object.
-        &#34;&#34;&#34;
+    if TYPE_CHECKING:
+        def __getitem__(self, key: int) -&gt; &#39;UserFromBulk&#39;: ...
+        def __iter__(self) -&gt; Iterator[&#39;UserFromBulk&#39;]: ...
 
-        all_users = [] # type: list[UserFromBulk]
-
-        for raw_user in self.data:
-            if raw_user.get(&#34;type&#34;, None) == &#39;users&#39;:
-                user = UserFromBulk(user=self.user, _fetched_data=dict(data=raw_user, _parent_included=self.included))
-                all_users.append(user)
-
-        return all_users
 
 
 class UserFromNotification(BaseFlarumIndividualObject):
@@ -272,7 +269,7 @@ class MyUser(User):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/flarum/core/users.py#L179-L219" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/flarum/core/users.py#L176-L216" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class MyUser(User):
     &#34;&#34;&#34;
@@ -423,6 +420,14 @@ class MyUser(User):
 </p>
 <div class="desc inherited"><p>The <code>int</code> ID of the object. This should always be unique for the object's type.</p></div>
 </dd>
+<dt id="pyflarum.flarum.core.users.MyUser.included"><code class="name">var <span class="ident">included</span> : list</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.users.User" href="#pyflarum.flarum.core.users.User">User</a></code>.<code><a title="pyflarum.flarum.core.users.User.included" href="index.html#pyflarum.flarum.core.users.User.included">included</a></code>
+</p>
+<div class="desc inherited"><p>Returns raw list of JSON included data …</p></div>
+</dd>
 <dt id="pyflarum.flarum.core.users.MyUser.isEmailConfirmed"><code class="name">var <span class="ident">isEmailConfirmed</span> : bool</code></dt>
 <dd>
 <p class="inheritance">
@@ -445,7 +450,7 @@ class MyUser(User):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/flarum/core/users.py#L184-L192" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/flarum/core/users.py#L181-L189" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def markedAllAsReadAt(self) -&gt; Optional[datetime]:
@@ -464,7 +469,7 @@ def markedAllAsReadAt(self) -&gt; Optional[datetime]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/flarum/core/users.py#L204-L210" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/flarum/core/users.py#L201-L207" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def newNotificationCount(self) -&gt; Optional[int]:
@@ -481,7 +486,7 @@ def newNotificationCount(self) -&gt; Optional[int]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/flarum/core/users.py#L213-L219" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/flarum/core/users.py#L210-L216" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def preferences(self) -&gt; dict:
@@ -523,7 +528,7 @@ other objects …</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/flarum/core/users.py#L195-L201" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/flarum/core/users.py#L192-L198" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def unreadNotificationCount(self) -&gt; Optional[int]:
@@ -559,7 +564,7 @@ def unreadNotificationCount(self) -&gt; Optional[int]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/flarum/core/users.py#L170-L175" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/flarum/core/users.py#L167-L172" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class User(UserFromBulk):
     &#34;&#34;&#34;
@@ -578,7 +583,6 @@ def unreadNotificationCount(self) -&gt; Optional[int]:
 </ul>
 <h3>Subclasses</h3>
 <ul class="hlist">
-<li><a title="pyflarum.extensions.flarum.FoF_Spamblock.SpamblockUserMixin" href="../../extensions/flarum/FoF_Spamblock.html#pyflarum.extensions.flarum.FoF_Spamblock.SpamblockUserMixin">SpamblockUserMixin</a></li>
 <li><a title="pyflarum.flarum.core.users.MyUser" href="#pyflarum.flarum.core.users.MyUser">MyUser</a></li>
 </ul>
 <h3>Instance variables</h3>
@@ -679,6 +683,14 @@ def unreadNotificationCount(self) -&gt; Optional[int]:
 </p>
 <div class="desc inherited"><p>The <code>int</code> ID of the object. This should always be unique for the object's type.</p></div>
 </dd>
+<dt id="pyflarum.flarum.core.users.User.included"><code class="name">var <span class="ident">included</span> : list</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.included" href="index.html#pyflarum.flarum.core.users.UserFromBulk.included">included</a></code>
+</p>
+<div class="desc inherited"><p>Returns raw list of JSON included data …</p></div>
+</dd>
 <dt id="pyflarum.flarum.core.users.User.isEmailConfirmed"><code class="name">var <span class="ident">isEmailConfirmed</span> : bool</code></dt>
 <dd>
 <p class="inheritance">
@@ -745,7 +757,7 @@ other objects …</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/flarum/core/users.py#L98-L166" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/flarum/core/users.py#L95-L163" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class UserFromBulk(UserFromNotification):
     &#34;&#34;&#34;
@@ -826,6 +838,7 @@ other objects …</p></div>
 </ul>
 <h3>Subclasses</h3>
 <ul class="hlist">
+<li><a title="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin" href="../../extensions/flarum/Askvortsov_ModeratorWarnings.html#pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin">ModeratorWarningsUserFromBulkMixin</a></li>
 <li><a title="pyflarum.extensions.flarum.Flarum_Suspend.SuspendUserMixin" href="../../extensions/flarum/Flarum_Suspend.html#pyflarum.extensions.flarum.Flarum_Suspend.SuspendUserMixin">SuspendUserMixin</a></li>
 <li><a title="pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin" href="../../extensions/flarum/FoF_Byobu.html#pyflarum.extensions.flarum.FoF_Byobu.ByobuUserMixin">ByobuUserMixin</a></li>
 <li><a title="pyflarum.extensions.flarum.FoF_Spamblock.SpamblockUserMixin" href="../../extensions/flarum/FoF_Spamblock.html#pyflarum.extensions.flarum.FoF_Spamblock.SpamblockUserMixin">SpamblockUserMixin</a></li>
@@ -857,7 +870,7 @@ other objects …</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/flarum/core/users.py#L160-L166" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/flarum/core/users.py#L157-L163" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def canDelete(self) -&gt; bool:
@@ -874,7 +887,7 @@ def canDelete(self) -&gt; bool:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/flarum/core/users.py#L133-L139" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/flarum/core/users.py#L130-L136" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def canEdit(self) -&gt; bool:
@@ -891,7 +904,7 @@ def canEdit(self) -&gt; bool:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/flarum/core/users.py#L142-L148" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/flarum/core/users.py#L139-L145" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def canEditCredentials(self) -&gt; bool:
@@ -908,7 +921,7 @@ def canEditCredentials(self) -&gt; bool:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/flarum/core/users.py#L151-L157" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/flarum/core/users.py#L148-L154" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def canEditGroups(self) -&gt; bool:
@@ -925,7 +938,7 @@ def canEditGroups(self) -&gt; bool:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/flarum/core/users.py#L124-L130" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/flarum/core/users.py#L121-L127" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def commentCount(self) -&gt; Optional[int]:
@@ -950,7 +963,7 @@ def commentCount(self) -&gt; Optional[int]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/flarum/core/users.py#L115-L121" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/flarum/core/users.py#L112-L118" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def discussionCount(self) -&gt; Optional[int]:
@@ -985,6 +998,14 @@ def discussionCount(self) -&gt; Optional[int]:
 </p>
 <div class="desc inherited"><p>The <code>int</code> ID of the object. This should always be unique for the object's type.</p></div>
 </dd>
+<dt id="pyflarum.flarum.core.users.UserFromBulk.included"><code class="name">var <span class="ident">included</span> : list</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.users.UserFromNotification" href="#pyflarum.flarum.core.users.UserFromNotification">UserFromNotification</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromNotification.included" href="index.html#pyflarum.flarum.core.users.UserFromNotification.included">included</a></code>
+</p>
+<div class="desc inherited"><p>Returns raw list of JSON included data …</p></div>
+</dd>
 <dt id="pyflarum.flarum.core.users.UserFromBulk.isEmailConfirmed"><code class="name">var <span class="ident">isEmailConfirmed</span> : bool</code></dt>
 <dd>
 <p class="inheritance">
@@ -999,7 +1020,7 @@ def discussionCount(self) -&gt; Optional[int]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/flarum/core/users.py#L104-L112" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/flarum/core/users.py#L101-L109" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def joinTime(self) -&gt; Optional[datetime]:
@@ -1062,7 +1083,7 @@ other objects …</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/flarum/core/users.py#L34-L94" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/flarum/core/users.py#L31-L91" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class UserFromNotification(BaseFlarumIndividualObject):
     &#34;&#34;&#34;
@@ -1153,7 +1174,7 @@ other objects …</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/flarum/core/users.py#L79-L85" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/flarum/core/users.py#L76-L82" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def avatarUrl(self) -&gt; Optional[str]:
@@ -1178,7 +1199,7 @@ def avatarUrl(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/flarum/core/users.py#L70-L76" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/flarum/core/users.py#L67-L73" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def displayName(self) -&gt; Optional[str]:
@@ -1195,7 +1216,7 @@ def displayName(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/flarum/core/users.py#L49-L55" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/flarum/core/users.py#L46-L52" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def email(self) -&gt; Optional[str]:
@@ -1214,6 +1235,14 @@ def email(self) -&gt; Optional[str]:
 </p>
 <div class="desc inherited"><p>The <code>int</code> ID of the object. This should always be unique for the object's type.</p></div>
 </dd>
+<dt id="pyflarum.flarum.core.users.UserFromNotification.included"><code class="name">var <span class="ident">included</span> : list</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject" href="index.html#pyflarum.flarum.core.BaseFlarumIndividualObject">BaseFlarumIndividualObject</a></code>.<code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject.included" href="index.html#pyflarum.flarum.core.BaseFlarumIndividualObject.included">included</a></code>
+</p>
+<div class="desc inherited"><p>Returns raw list of JSON included data …</p></div>
+</dd>
 <dt id="pyflarum.flarum.core.users.UserFromNotification.isEmailConfirmed"><code class="name">var <span class="ident">isEmailConfirmed</span> : bool</code></dt>
 <dd>
 <div class="desc"><p>Whether or not this user confirmed their E-mail address.</p>
@@ -1222,7 +1251,7 @@ in order to know this too in the first place.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/flarum/core/users.py#L58-L67" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/flarum/core/users.py#L55-L64" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def isEmailConfirmed(self) -&gt; bool:
@@ -1251,7 +1280,7 @@ other objects …</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/flarum/core/users.py#L88-L94" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/flarum/core/users.py#L85-L91" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def slug(self) -&gt; Optional[str]:
@@ -1276,7 +1305,7 @@ def slug(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/flarum/core/users.py#L40-L46" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/flarum/core/users.py#L37-L43" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def username(self) -&gt; Optional[str]:
@@ -1294,17 +1323,11 @@ def username(self) -&gt; Optional[str]:
 <span>(</span><span>user: FlarumUser, _fetched_data: dict)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>A data of multiple users fetched from the API.</p>
-<h3 id="parameters">Parameters:</h3>
-<ul>
-<li><code>user</code> - the <code><a title="pyflarum.session.FlarumUser" href="../../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code> object, required to make additional API calls.</li>
-<li><code>_fetched_data</code> - the JSON data that was fetched from the API.</li>
-</ul>
-<p>I strongly discourage from forging objects this way, unless you are creating an extension.</p></div>
+<div class="desc"><p>A data of multiple users fetched from the API.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/flarum/core/users.py#L9-L31" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/flarum/core/users.py#L15-L27" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class Users(BaseFlarumBulkObject):
     &#34;&#34;&#34;
@@ -1312,40 +1335,21 @@ def username(self) -&gt; Optional[str]:
     &#34;&#34;&#34;
 
 
-    def __iter__(self):
-        return iter(self.get_users())
+    def __init__(self, user: &#39;FlarumUser&#39;, _fetched_data: dict):
+        return super().__init__(user=user, _fetched_data=_fetched_data, _listclass=UserFromBulk, _required_type=&#39;users&#39;)
 
 
-    def get_users(self) -&gt; list[&#39;UserFromBulk&#39;]:
-        &#34;&#34;&#34;
-            All users from the `Users` object.
-        &#34;&#34;&#34;
-
-        all_users = [] # type: list[UserFromBulk]
-
-        for raw_user in self.data:
-            if raw_user.get(&#34;type&#34;, None) == &#39;users&#39;:
-                user = UserFromBulk(user=self.user, _fetched_data=dict(data=raw_user, _parent_included=self.included))
-                all_users.append(user)
-
-        return all_users</code></pre>
+    if TYPE_CHECKING:
+        def __getitem__(self, key: int) -&gt; &#39;UserFromBulk&#39;: ...
+        def __iter__(self) -&gt; Iterator[&#39;UserFromBulk&#39;]: ...</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="pyflarum.flarum.core.BaseFlarumBulkObject" href="index.html#pyflarum.flarum.core.BaseFlarumBulkObject">BaseFlarumBulkObject</a></li>
-<li><a title="pyflarum.flarum.core.BaseFlarumObject" href="index.html#pyflarum.flarum.core.BaseFlarumObject">BaseFlarumObject</a></li>
-<li>builtins.dict</li>
+<li>builtins.list</li>
 </ul>
 <h3>Instance variables</h3>
 <dl>
-<dt id="pyflarum.flarum.core.users.Users.data"><code class="name">var <span class="ident">data</span> : list[dict] | dict</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.BaseFlarumBulkObject" href="index.html#pyflarum.flarum.core.BaseFlarumBulkObject">BaseFlarumBulkObject</a></code>.<code><a title="pyflarum.flarum.core.BaseFlarumBulkObject.data" href="index.html#pyflarum.flarum.core.BaseFlarumBulkObject.data">data</a></code>
-</p>
-<div class="desc inherited"><p>A raw <code>dict</code> of the object's data.</p></div>
-</dd>
 <dt id="pyflarum.flarum.core.users.Users.first_link"><code class="name">var <span class="ident">first_link</span> : Optional[str]</code></dt>
 <dd>
 <p class="inheritance">
@@ -1353,22 +1357,6 @@ def username(self) -&gt; Optional[str]:
 <code><a title="pyflarum.flarum.core.BaseFlarumBulkObject" href="index.html#pyflarum.flarum.core.BaseFlarumBulkObject">BaseFlarumBulkObject</a></code>.<code><a title="pyflarum.flarum.core.BaseFlarumBulkObject.first_link" href="index.html#pyflarum.flarum.core.BaseFlarumBulkObject.first_link">first_link</a></code>
 </p>
 <div class="desc inherited"><p>First link in the API.</p></div>
-</dd>
-<dt id="pyflarum.flarum.core.users.Users.included"><code class="name">var <span class="ident">included</span> : list</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.BaseFlarumBulkObject" href="index.html#pyflarum.flarum.core.BaseFlarumBulkObject">BaseFlarumBulkObject</a></code>.<code><a title="pyflarum.flarum.core.BaseFlarumBulkObject.included" href="index.html#pyflarum.flarum.core.BaseFlarumBulkObject.included">included</a></code>
-</p>
-<div class="desc inherited"><p>Raw <code>dict</code> of the object's included data.</p></div>
-</dd>
-<dt id="pyflarum.flarum.core.users.Users.links"><code class="name">var <span class="ident">links</span> : dict</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.BaseFlarumBulkObject" href="index.html#pyflarum.flarum.core.BaseFlarumBulkObject">BaseFlarumBulkObject</a></code>.<code><a title="pyflarum.flarum.core.BaseFlarumBulkObject.links" href="index.html#pyflarum.flarum.core.BaseFlarumBulkObject.links">links</a></code>
-</p>
-<div class="desc inherited"><p>A raw <code>dict</code> of the object's API links.</p></div>
 </dd>
 <dt id="pyflarum.flarum.core.users.Users.next_link"><code class="name">var <span class="ident">next_link</span> : Optional[str]</code></dt>
 <dd>
@@ -1385,34 +1373,6 @@ def username(self) -&gt; Optional[str]:
 <code><a title="pyflarum.flarum.core.BaseFlarumBulkObject" href="index.html#pyflarum.flarum.core.BaseFlarumBulkObject">BaseFlarumBulkObject</a></code>.<code><a title="pyflarum.flarum.core.BaseFlarumBulkObject.previous_link" href="index.html#pyflarum.flarum.core.BaseFlarumBulkObject.previous_link">previous_link</a></code>
 </p>
 <div class="desc inherited"><p>Previous link in the API.</p></div>
-</dd>
-</dl>
-<h3>Methods</h3>
-<dl>
-<dt id="pyflarum.flarum.core.users.Users.get_users"><code class="name flex">
-<span>def <span class="ident">get_users</span></span>(<span>self) ‑> list</span>
-</code></dt>
-<dd>
-<div class="desc"><p>All users from the <code><a title="pyflarum.flarum.core.users.Users" href="#pyflarum.flarum.core.users.Users">Users</a></code> object.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/flarum/core/users.py#L19-L31" class="git-link">Browse git</a>
-</summary>
-<pre><code class="python">def get_users(self) -&gt; list[&#39;UserFromBulk&#39;]:
-    &#34;&#34;&#34;
-        All users from the `Users` object.
-    &#34;&#34;&#34;
-
-    all_users = [] # type: list[UserFromBulk]
-
-    for raw_user in self.data:
-        if raw_user.get(&#34;type&#34;, None) == &#39;users&#39;:
-            user = UserFromBulk(user=self.user, _fetched_data=dict(data=raw_user, _parent_included=self.included))
-            all_users.append(user)
-
-    return all_users</code></pre>
-</details>
 </dd>
 </dl>
 </dd>
@@ -1493,6 +1453,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="pyflarum.flarum.core.users.MyUser.displayName" href="#pyflarum.flarum.core.users.MyUser.displayName">displayName</a></code></li>
 <li><code><a title="pyflarum.flarum.core.users.MyUser.email" href="#pyflarum.flarum.core.users.MyUser.email">email</a></code></li>
 <li><code><a title="pyflarum.flarum.core.users.MyUser.id" href="index.html#pyflarum.flarum.core.users.MyUser.id">id</a></code></li>
+<li><code><a title="pyflarum.flarum.core.users.MyUser.included" href="index.html#pyflarum.flarum.core.users.MyUser.included">included</a></code></li>
 <li><code><a title="pyflarum.flarum.core.users.MyUser.isEmailConfirmed" href="#pyflarum.flarum.core.users.MyUser.isEmailConfirmed">isEmailConfirmed</a></code></li>
 <li><code><a title="pyflarum.flarum.core.users.MyUser.joinTime" href="#pyflarum.flarum.core.users.MyUser.joinTime">joinTime</a></code></li>
 <li><code><a title="pyflarum.flarum.core.users.MyUser.markedAllAsReadAt" href="#pyflarum.flarum.core.users.MyUser.markedAllAsReadAt">markedAllAsReadAt</a></code></li>
@@ -1520,6 +1481,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="pyflarum.flarum.core.users.User.displayName" href="#pyflarum.flarum.core.users.User.displayName">displayName</a></code></li>
 <li><code><a title="pyflarum.flarum.core.users.User.email" href="#pyflarum.flarum.core.users.User.email">email</a></code></li>
 <li><code><a title="pyflarum.flarum.core.users.User.id" href="index.html#pyflarum.flarum.core.users.User.id">id</a></code></li>
+<li><code><a title="pyflarum.flarum.core.users.User.included" href="index.html#pyflarum.flarum.core.users.User.included">included</a></code></li>
 <li><code><a title="pyflarum.flarum.core.users.User.isEmailConfirmed" href="#pyflarum.flarum.core.users.User.isEmailConfirmed">isEmailConfirmed</a></code></li>
 <li><code><a title="pyflarum.flarum.core.users.User.joinTime" href="#pyflarum.flarum.core.users.User.joinTime">joinTime</a></code></li>
 <li><code><a title="pyflarum.flarum.core.users.User.relationships" href="index.html#pyflarum.flarum.core.users.User.relationships">relationships</a></code></li>
@@ -1543,6 +1505,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="pyflarum.flarum.core.users.UserFromBulk.displayName" href="#pyflarum.flarum.core.users.UserFromBulk.displayName">displayName</a></code></li>
 <li><code><a title="pyflarum.flarum.core.users.UserFromBulk.email" href="#pyflarum.flarum.core.users.UserFromBulk.email">email</a></code></li>
 <li><code><a title="pyflarum.flarum.core.users.UserFromBulk.id" href="index.html#pyflarum.flarum.core.users.UserFromBulk.id">id</a></code></li>
+<li><code><a title="pyflarum.flarum.core.users.UserFromBulk.included" href="index.html#pyflarum.flarum.core.users.UserFromBulk.included">included</a></code></li>
 <li><code><a title="pyflarum.flarum.core.users.UserFromBulk.isEmailConfirmed" href="#pyflarum.flarum.core.users.UserFromBulk.isEmailConfirmed">isEmailConfirmed</a></code></li>
 <li><code><a title="pyflarum.flarum.core.users.UserFromBulk.joinTime" href="#pyflarum.flarum.core.users.UserFromBulk.joinTime">joinTime</a></code></li>
 <li><code><a title="pyflarum.flarum.core.users.UserFromBulk.relationships" href="index.html#pyflarum.flarum.core.users.UserFromBulk.relationships">relationships</a></code></li>
@@ -1560,6 +1523,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="pyflarum.flarum.core.users.UserFromNotification.displayName" href="#pyflarum.flarum.core.users.UserFromNotification.displayName">displayName</a></code></li>
 <li><code><a title="pyflarum.flarum.core.users.UserFromNotification.email" href="#pyflarum.flarum.core.users.UserFromNotification.email">email</a></code></li>
 <li><code><a title="pyflarum.flarum.core.users.UserFromNotification.id" href="index.html#pyflarum.flarum.core.users.UserFromNotification.id">id</a></code></li>
+<li><code><a title="pyflarum.flarum.core.users.UserFromNotification.included" href="index.html#pyflarum.flarum.core.users.UserFromNotification.included">included</a></code></li>
 <li><code><a title="pyflarum.flarum.core.users.UserFromNotification.isEmailConfirmed" href="#pyflarum.flarum.core.users.UserFromNotification.isEmailConfirmed">isEmailConfirmed</a></code></li>
 <li><code><a title="pyflarum.flarum.core.users.UserFromNotification.relationships" href="index.html#pyflarum.flarum.core.users.UserFromNotification.relationships">relationships</a></code></li>
 <li><code><a title="pyflarum.flarum.core.users.UserFromNotification.slug" href="#pyflarum.flarum.core.users.UserFromNotification.slug">slug</a></code></li>
@@ -1569,12 +1533,8 @@ setTimeout(() => input.focus(), 100);
 </li>
 <li>
 <h4><code><a title="pyflarum.flarum.core.users.Users" href="#pyflarum.flarum.core.users.Users">Users</a></code></h4>
-<ul class="two-column">
-<li><code><a title="pyflarum.flarum.core.users.Users.data" href="index.html#pyflarum.flarum.core.users.Users.data">data</a></code></li>
+<ul class="">
 <li><code><a title="pyflarum.flarum.core.users.Users.first_link" href="index.html#pyflarum.flarum.core.users.Users.first_link">first_link</a></code></li>
-<li><code><a title="pyflarum.flarum.core.users.Users.get_users" href="#pyflarum.flarum.core.users.Users.get_users">get_users</a></code></li>
-<li><code><a title="pyflarum.flarum.core.users.Users.included" href="index.html#pyflarum.flarum.core.users.Users.included">included</a></code></li>
-<li><code><a title="pyflarum.flarum.core.users.Users.links" href="index.html#pyflarum.flarum.core.users.Users.links">links</a></code></li>
 <li><code><a title="pyflarum.flarum.core.users.Users.next_link" href="index.html#pyflarum.flarum.core.users.Users.next_link">next_link</a></code></li>
 <li><code><a title="pyflarum.flarum.core.users.Users.previous_link" href="index.html#pyflarum.flarum.core.users.Users.previous_link">previous_link</a></code></li>
 </ul>

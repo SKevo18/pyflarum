@@ -25,9 +25,14 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/flarum/core/filters.py#L1-L52" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/flarum/core/filters.py#L1-L76" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">from typing import Literal, Optional
+<pre><code class="python">from typing import Literal, Optional, Iterable
+import warnings
+
+
+__all__ = [&#39;Filter&#39;]
+
 
 
 class Filter:
@@ -37,9 +42,24 @@ class Filter:
         It allows you to filter discussions without having to manually specify URL parameters.
     &#34;&#34;&#34;
 
-    def __init__(self, order_by: Optional[Literal[&#39;commentCount&#39;, &#39;-commentCount&#39;, &#39;createdAt&#39;, &#39;-createdAt&#39;]]=None, query: Optional[str]=None, limit: int=20, page: Optional[int]=None, include: Optional[list[str]]=None, additional_data: Optional[dict]=None):
+    def __init__(self, order_by: Optional[Literal[&#39;commentCount&#39;, &#39;-commentCount&#39;, &#39;createdAt&#39;, &#39;-createdAt&#39;]]=None, query: Optional[str]=None, ids: Optional[Iterable[&#39;str | int&#39;]]=None, limit: int=20, page: Optional[int]=None, include: Optional[list[str]]=None, additional_data: Optional[dict]=None):
+        &#34;&#34;&#34;
+            - `order_by` - gets passed into `?sort=` parameter. Common values are `commentCount`, `createdAt` and their reverse/negated values (prefixed with `-`)
+            - `query` - the search query, passed into `?filter[q]=`. This can be a string. Flarum search bar uses this. Gambits such as `author:username` are supported.
+            - `ids` - fetches entries with specific ids, passed into `?filter[id]=`. This is a list, that is then converted into comma separated string.
+            - `limit` - limit of entires to fetch. Flarum (by default) allows a max. of 50 entries to be fetched at once. Passed into `?page[limit]=`
+            - `page` - fetch a specific page of entires. This is actually an offset - which is determined by multiplying `page` with `limit` (see above).
+            - `include` - include specific entries. See [included data](https://cwkevo.github.io/pyflarum/docs/#included-data). You will likely never use this.
+            - `additional_data` - this is a `dict` (`parameter: value`) of additional search parameters that you might want to use. This can be used to overwrite previous filters.
+        &#34;&#34;&#34;
+
+        if limit &gt; 50:
+            warnings.warn(f&#34;Maximum amount of entries fetchable by 1 bulk API request for Flarum is 50 by default, you specified {limit}. This is a Flarum limitation to prevent flooding, and I can&#39;t bypass it. Please, lower the value to be 50 or below.&#34;)
+
+
         self.order_by = order_by
         self.query = query
+        self.ids = ids
         self.limit = limit
         self.page = page
         self.include = include
@@ -52,9 +72,10 @@ class Filter:
     def to_dict(self) -&gt; dict:
         &#34;&#34;&#34;
             Converts the filter to a `dict`, so that
-            it can be sent to the API.
+            it can be sent to the API (`requests` module, see [&#34;Passing parameters in URLs&#34;](https://docs.python-requests.org/en/master/user/quickstart/#passing-parameters-in-urls)).
 
-            An extension might add additional data during runtime.
+            An extension might add additional filter data after the filter was initialized
+            (for example: `absolutely_all` needs to update page number to continuously yield results).
         &#34;&#34;&#34;
 
         __data = {}
@@ -64,6 +85,9 @@ class Filter:
 
         if self.query:
             __data[&#34;filter[q]&#34;] = self.query
+        
+        if self.ids:
+            __data[&#34;filter[id]&#34;] = &#39;,&#39;.join(map(str, self.ids))
 
         if self.limit:
             __data[&#34;page[limit]&#34;] = self.limit
@@ -92,15 +116,24 @@ class Filter:
 <dl>
 <dt id="pyflarum.flarum.core.filters.Filter"><code class="flex name class">
 <span>class <span class="ident">Filter</span></span>
-<span>(</span><span>order_by: Optional[Literal['commentCount', '-commentCount', 'createdAt', '-createdAt']] = None, query: Optional[str] = None, limit: int = 20, page: Optional[int] = None, include: Optional[list] = None, additional_data: Optional[dict] = None)</span>
+<span>(</span><span>order_by: Optional[Literal['commentCount', '-commentCount', 'createdAt', '-createdAt']] = None, query: Optional[str] = None, ids: Optional[Iterable[ForwardRef('str | int')]] = None, limit: int = 20, page: Optional[int] = None, include: Optional[list] = None, additional_data: Optional[dict] = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Represents a Flarum API filter as a <code>dict</code>.</p>
-<p>It allows you to filter discussions without having to manually specify URL parameters.</p></div>
+<p>It allows you to filter discussions without having to manually specify URL parameters.</p>
+<ul>
+<li><code>order_by</code> - gets passed into <code>?sort=</code> parameter. Common values are <code>commentCount</code>, <code>createdAt</code> and their reverse/negated values (prefixed with <code>-</code>)</li>
+<li><code>query</code> - the search query, passed into <code>?filter[q]=</code>. This can be a string. Flarum search bar uses this. Gambits such as <code>author:username</code> are supported.</li>
+<li><code>ids</code> - fetches entries with specific ids, passed into <code>?filter[id]=</code>. This is a list, that is then converted into comma separated string.</li>
+<li><code>limit</code> - limit of entires to fetch. Flarum (by default) allows a max. of 50 entries to be fetched at once. Passed into <code>?page[limit]=</code></li>
+<li><code>page</code> - fetch a specific page of entires. This is actually an offset - which is determined by multiplying <code>page</code> with <code>limit</code> (see above).</li>
+<li><code>include</code> - include specific entries. See <a href="https://cwkevo.github.io/pyflarum/docs/#included-data">included data</a>. You will likely never use this.</li>
+<li><code>additional_data</code> - this is a <code>dict</code> (<code>parameter: value</code>) of additional search parameters that you might want to use. This can be used to overwrite previous filters.</li>
+</ul></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/flarum/core/filters.py#L4-L52" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/flarum/core/filters.py#L9-L76" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class Filter:
     &#34;&#34;&#34;
@@ -109,9 +142,24 @@ class Filter:
         It allows you to filter discussions without having to manually specify URL parameters.
     &#34;&#34;&#34;
 
-    def __init__(self, order_by: Optional[Literal[&#39;commentCount&#39;, &#39;-commentCount&#39;, &#39;createdAt&#39;, &#39;-createdAt&#39;]]=None, query: Optional[str]=None, limit: int=20, page: Optional[int]=None, include: Optional[list[str]]=None, additional_data: Optional[dict]=None):
+    def __init__(self, order_by: Optional[Literal[&#39;commentCount&#39;, &#39;-commentCount&#39;, &#39;createdAt&#39;, &#39;-createdAt&#39;]]=None, query: Optional[str]=None, ids: Optional[Iterable[&#39;str | int&#39;]]=None, limit: int=20, page: Optional[int]=None, include: Optional[list[str]]=None, additional_data: Optional[dict]=None):
+        &#34;&#34;&#34;
+            - `order_by` - gets passed into `?sort=` parameter. Common values are `commentCount`, `createdAt` and their reverse/negated values (prefixed with `-`)
+            - `query` - the search query, passed into `?filter[q]=`. This can be a string. Flarum search bar uses this. Gambits such as `author:username` are supported.
+            - `ids` - fetches entries with specific ids, passed into `?filter[id]=`. This is a list, that is then converted into comma separated string.
+            - `limit` - limit of entires to fetch. Flarum (by default) allows a max. of 50 entries to be fetched at once. Passed into `?page[limit]=`
+            - `page` - fetch a specific page of entires. This is actually an offset - which is determined by multiplying `page` with `limit` (see above).
+            - `include` - include specific entries. See [included data](https://cwkevo.github.io/pyflarum/docs/#included-data). You will likely never use this.
+            - `additional_data` - this is a `dict` (`parameter: value`) of additional search parameters that you might want to use. This can be used to overwrite previous filters.
+        &#34;&#34;&#34;
+
+        if limit &gt; 50:
+            warnings.warn(f&#34;Maximum amount of entries fetchable by 1 bulk API request for Flarum is 50 by default, you specified {limit}. This is a Flarum limitation to prevent flooding, and I can&#39;t bypass it. Please, lower the value to be 50 or below.&#34;)
+
+
         self.order_by = order_by
         self.query = query
+        self.ids = ids
         self.limit = limit
         self.page = page
         self.include = include
@@ -124,9 +172,10 @@ class Filter:
     def to_dict(self) -&gt; dict:
         &#34;&#34;&#34;
             Converts the filter to a `dict`, so that
-            it can be sent to the API.
+            it can be sent to the API (`requests` module, see [&#34;Passing parameters in URLs&#34;](https://docs.python-requests.org/en/master/user/quickstart/#passing-parameters-in-urls)).
 
-            An extension might add additional data during runtime.
+            An extension might add additional filter data after the filter was initialized
+            (for example: `absolutely_all` needs to update page number to continuously yield results).
         &#34;&#34;&#34;
 
         __data = {}
@@ -136,6 +185,9 @@ class Filter:
 
         if self.query:
             __data[&#34;filter[q]&#34;] = self.query
+        
+        if self.ids:
+            __data[&#34;filter[id]&#34;] = &#39;,&#39;.join(map(str, self.ids))
 
         if self.limit:
             __data[&#34;page[limit]&#34;] = self.limit
@@ -157,20 +209,22 @@ class Filter:
 <dt id="pyflarum.flarum.core.filters.Filter.to_dict"><code class="name">var <span class="ident">to_dict</span> : dict</code></dt>
 <dd>
 <div class="desc"><p>Converts the filter to a <code>dict</code>, so that
-it can be sent to the API.</p>
-<p>An extension might add additional data during runtime.</p></div>
+it can be sent to the API (<code>requests</code> module, see <a href="https://docs.python-requests.org/en/master/user/quickstart/#passing-parameters-in-urls">"Passing parameters in URLs"</a>).</p>
+<p>An extension might add additional filter data after the filter was initialized
+(for example: <code>absolutely_all</code> needs to update page number to continuously yield results).</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/flarum/core/filters.py#L22-L52" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/flarum/core/filters.py#L42-L76" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def to_dict(self) -&gt; dict:
     &#34;&#34;&#34;
         Converts the filter to a `dict`, so that
-        it can be sent to the API.
+        it can be sent to the API (`requests` module, see [&#34;Passing parameters in URLs&#34;](https://docs.python-requests.org/en/master/user/quickstart/#passing-parameters-in-urls)).
 
-        An extension might add additional data during runtime.
+        An extension might add additional filter data after the filter was initialized
+        (for example: `absolutely_all` needs to update page number to continuously yield results).
     &#34;&#34;&#34;
 
     __data = {}
@@ -180,6 +234,9 @@ def to_dict(self) -&gt; dict:
 
     if self.query:
         __data[&#34;filter[q]&#34;] = self.query
+    
+    if self.ids:
+        __data[&#34;filter[id]&#34;] = &#39;,&#39;.join(map(str, self.ids))
 
     if self.limit:
         __data[&#34;page[limit]&#34;] = self.limit

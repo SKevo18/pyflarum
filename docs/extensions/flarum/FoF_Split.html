@@ -25,7 +25,7 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/flarum/FoF_Split.py#L1-L30" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/flarum/FoF_Split.py#L1-L31" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">from .. import ExtensionMixin
 
@@ -38,6 +38,7 @@ ID = f&#34;{AUTHOR}-{NAME}&#34;
 
 SOFT_DEPENDENCIES = []
 HARD_DEPENCENDIES = []
+
 
 
 class SplitDiscussionMixin(DiscussionFromBulk):
@@ -83,7 +84,7 @@ class SplitExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/flarum/FoF_Split.py#L14-L17" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/flarum/FoF_Split.py#L15-L18" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class SplitDiscussionMixin(DiscussionFromBulk):
     @property
@@ -146,7 +147,7 @@ class SplitExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/flarum/FoF_Split.py#L15-L17" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/flarum/FoF_Split.py#L16-L18" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def canSplit(self) -&gt; bool:
@@ -184,6 +185,14 @@ def canSplit(self) -&gt; bool:
 <code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.id" href="../../flarum/core/index.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.id">id</a></code>
 </p>
 <div class="desc inherited"><p>The <code>int</code> ID of the object. This should always be unique for the object's type.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_Split.SplitDiscussionMixin.included"><code class="name">var <span class="ident">included</span> : list</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.included" href="../../flarum/core/index.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.included">included</a></code>
+</p>
+<div class="desc inherited"><p>Returns raw list of JSON included data …</p></div>
 </dd>
 <dt id="pyflarum.extensions.flarum.FoF_Split.SplitDiscussionMixin.isHidden"><code class="name">var <span class="ident">isHidden</span> : bool</code></dt>
 <dd>
@@ -376,8 +385,7 @@ that are not worthy to view such thread.</p></div>
 <dd>
 <div class="desc"><p>A base class for mixing in custom classes (extensions) into another classes.</p>
 <h3 id="example-extension-code">Example extension code:</h3>
-<pre><code class="language-python">from typing import Type
-
+<pre><code class="language-python">
 from pyflarum.extensions import ExtensionMixin
 from pyflarum.extensions.admin import AdminExtension
 from pyflarum.session import FlarumUser
@@ -396,7 +404,7 @@ HARD_DEPENCENDIES = []
 
 # I recommend to use the following naming pattern: `&lt;YourExtensionName&gt;&lt;ClassToMixin&gt;Mixin`
 # Example:
-class ExampleFlarumUserMixin:
+class ExampleFlarumUserMixin(FlarumUser):
     @property
     def example(self):
         '''
@@ -404,7 +412,6 @@ class ExampleFlarumUserMixin:
         '''
 
         return &quot;Example&quot;
-ExampleFlarumUserMixin: Type[FlarumUser] # mimick class inheritance, without inheriting at runtime, acts just as a type hint
 
 
 class ExampleExtension(ExtensionMixin):
@@ -422,7 +429,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/flarum/FoF_Split.py#L21-L30" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/flarum/FoF_Split.py#L22-L31" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class SplitExtension(ExtensionMixin):
     def get_dependencies(self):
@@ -458,7 +465,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/flarum/FoF_Split.py#L22-L26" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/flarum/FoF_Split.py#L23-L27" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_dependencies(self):
     return {
@@ -479,7 +486,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/flarum/FoF_Split.py#L29-L30" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/flarum/FoF_Split.py#L30-L31" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def mixin(self):
     super().mixin(self, DiscussionFromBulk, SplitDiscussionMixin)</code></pre>
@@ -568,6 +575,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="pyflarum.extensions.flarum.FoF_Split.SplitDiscussionMixin.get_last_posted_user" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.FoF_Split.SplitDiscussionMixin.get_last_posted_user">get_last_posted_user</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.FoF_Split.SplitDiscussionMixin.hide" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.FoF_Split.SplitDiscussionMixin.hide">hide</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.FoF_Split.SplitDiscussionMixin.id" href="../../flarum/core/index.html#pyflarum.extensions.flarum.FoF_Split.SplitDiscussionMixin.id">id</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_Split.SplitDiscussionMixin.included" href="../../flarum/core/index.html#pyflarum.extensions.flarum.FoF_Split.SplitDiscussionMixin.included">included</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.FoF_Split.SplitDiscussionMixin.isHidden" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.FoF_Split.SplitDiscussionMixin.isHidden">isHidden</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.FoF_Split.SplitDiscussionMixin.lastPostNumber" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.FoF_Split.SplitDiscussionMixin.lastPostNumber">lastPostNumber</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.FoF_Split.SplitDiscussionMixin.lastPostedAt" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.FoF_Split.SplitDiscussionMixin.lastPostedAt">lastPostedAt</a></code></li>

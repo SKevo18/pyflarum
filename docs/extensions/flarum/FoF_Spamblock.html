@@ -25,11 +25,11 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/flarum/FoF_Spamblock.py#L1-L42" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/flarum/FoF_Spamblock.py#L1-L42" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">from .. import ExtensionMixin
 
-from ...flarum.core.users import User, UserFromBulk, UserFromNotification
+from ...flarum.core.users import UserFromBulk, UserFromNotification
 from ...error_handler import parse_request
 
 
@@ -51,7 +51,7 @@ class SpamblockUserFromNotificationMixin(UserFromNotification):
 
 
 
-class SpamblockUserMixin(User, UserFromBulk, SpamblockUserFromNotificationMixin):
+class SpamblockUserMixin(UserFromBulk, SpamblockUserFromNotificationMixin):
     @property
     def canSpamblock(self) -&gt; bool:
         return self.attributes.get(&#34;canSpamblock&#34;, False)
@@ -86,8 +86,7 @@ class SpamblockExtension(ExtensionMixin):
 <dd>
 <div class="desc"><p>A base class for mixing in custom classes (extensions) into another classes.</p>
 <h3 id="example-extension-code">Example extension code:</h3>
-<pre><code class="language-python">from typing import Type
-
+<pre><code class="language-python">
 from pyflarum.extensions import ExtensionMixin
 from pyflarum.extensions.admin import AdminExtension
 from pyflarum.session import FlarumUser
@@ -106,7 +105,7 @@ HARD_DEPENCENDIES = []
 
 # I recommend to use the following naming pattern: `&lt;YourExtensionName&gt;&lt;ClassToMixin&gt;Mixin`
 # Example:
-class ExampleFlarumUserMixin:
+class ExampleFlarumUserMixin(FlarumUser):
     @property
     def example(self):
         '''
@@ -114,7 +113,6 @@ class ExampleFlarumUserMixin:
         '''
 
         return &quot;Example&quot;
-ExampleFlarumUserMixin: Type[FlarumUser] # mimick class inheritance, without inheriting at runtime, acts just as a type hint
 
 
 class ExampleExtension(ExtensionMixin):
@@ -132,7 +130,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/flarum/FoF_Spamblock.py#L32-L42" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/flarum/FoF_Spamblock.py#L32-L42" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class SpamblockExtension(ExtensionMixin):
     def get_dependencies(self):
@@ -169,7 +167,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/flarum/FoF_Spamblock.py#L33-L37" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/flarum/FoF_Spamblock.py#L33-L37" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_dependencies(self):
     return {
@@ -190,7 +188,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/flarum/FoF_Spamblock.py#L40-L42" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/flarum/FoF_Spamblock.py#L40-L42" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def mixin(self):
     super().mixin(self, UserFromNotification, SpamblockUserFromNotificationMixin)
@@ -214,7 +212,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/flarum/FoF_Spamblock.py#L16-L21" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/flarum/FoF_Spamblock.py#L16-L21" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class SpamblockUserFromNotificationMixin(UserFromNotification):
     def spamblock(self) -&gt; bool:
@@ -284,6 +282,14 @@ class ExampleExtension(ExtensionMixin):
 </p>
 <div class="desc inherited"><p>The <code>int</code> ID of the object. This should always be unique for the object's type.</p></div>
 </dd>
+<dt id="pyflarum.extensions.flarum.FoF_Spamblock.SpamblockUserFromNotificationMixin.included"><code class="name">var <span class="ident">included</span> : list</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.users.UserFromNotification" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromNotification">UserFromNotification</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromNotification.included" href="../../flarum/core/index.html#pyflarum.flarum.core.users.UserFromNotification.included">included</a></code>
+</p>
+<div class="desc inherited"><p>Returns raw list of JSON included data …</p></div>
+</dd>
 <dt id="pyflarum.extensions.flarum.FoF_Spamblock.SpamblockUserFromNotificationMixin.isEmailConfirmed"><code class="name">var <span class="ident">isEmailConfirmed</span> : bool</code></dt>
 <dd>
 <p class="inheritance">
@@ -336,7 +342,7 @@ other objects …</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/flarum/FoF_Spamblock.py#L17-L21" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/flarum/FoF_Spamblock.py#L17-L21" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def spamblock(self) -&gt; bool:
     raw = self.user.session.post(f&#34;{self.user.api_urls[&#39;users&#39;]}/{self.id}/spamblock&#34;)
@@ -352,7 +358,7 @@ other objects …</p></div>
 <span>(</span><span>user: FlarumUser, _fetched_data: dict)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>An user that was fetched from the API.</p>
+<div class="desc"><p>An user from <code>Users</code>.</p>
 <h3 id="parameters">Parameters:</h3>
 <ul>
 <li><code>user</code> - the <code><a title="pyflarum.session.FlarumUser" href="../../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code> object, required to make additional API calls.</li>
@@ -362,16 +368,15 @@ other objects …</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/flarum/FoF_Spamblock.py#L25-L28" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/flarum/FoF_Spamblock.py#L25-L28" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">class SpamblockUserMixin(User, UserFromBulk, SpamblockUserFromNotificationMixin):
+<pre><code class="python">class SpamblockUserMixin(UserFromBulk, SpamblockUserFromNotificationMixin):
     @property
     def canSpamblock(self) -&gt; bool:
         return self.attributes.get(&#34;canSpamblock&#34;, False)</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li><a title="pyflarum.flarum.core.users.User" href="../../flarum/core/users.html#pyflarum.flarum.core.users.User">User</a></li>
 <li><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></li>
 <li><a title="pyflarum.extensions.flarum.FoF_Spamblock.SpamblockUserFromNotificationMixin" href="#pyflarum.extensions.flarum.FoF_Spamblock.SpamblockUserFromNotificationMixin">SpamblockUserFromNotificationMixin</a></li>
 <li><a title="pyflarum.flarum.core.users.UserFromNotification" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromNotification">UserFromNotification</a></li>
@@ -385,7 +390,7 @@ other objects …</p></div>
 <dd>
 <p class="inheritance">
 <em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.users.User" href="../../flarum/core/users.html#pyflarum.flarum.core.users.User">User</a></code>.<code><a title="pyflarum.flarum.core.users.User.attributes" href="../../flarum/core/index.html#pyflarum.flarum.core.users.User.attributes">attributes</a></code>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.attributes" href="../../flarum/core/index.html#pyflarum.flarum.core.users.UserFromBulk.attributes">attributes</a></code>
 </p>
 <div class="desc inherited"><p>Raw <code>dict</code> of the object's attributes.</p></div>
 </dd>
@@ -393,7 +398,7 @@ other objects …</p></div>
 <dd>
 <p class="inheritance">
 <em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.users.User" href="../../flarum/core/users.html#pyflarum.flarum.core.users.User">User</a></code>.<code><a title="pyflarum.flarum.core.users.User.avatarUrl" href="../../flarum/core/users.html#pyflarum.flarum.core.users.User.avatarUrl">avatarUrl</a></code>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.avatarUrl" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk.avatarUrl">avatarUrl</a></code>
 </p>
 <div class="desc inherited"><p>The user's avatar URL.</p></div>
 </dd>
@@ -401,7 +406,7 @@ other objects …</p></div>
 <dd>
 <p class="inheritance">
 <em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.users.User" href="../../flarum/core/users.html#pyflarum.flarum.core.users.User">User</a></code>.<code><a title="pyflarum.flarum.core.users.User.canDelete" href="../../flarum/core/users.html#pyflarum.flarum.core.users.User.canDelete">canDelete</a></code>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.canDelete" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk.canDelete">canDelete</a></code>
 </p>
 <div class="desc inherited"><p>Whether or not you are able to scronch this user forever.</p></div>
 </dd>
@@ -409,7 +414,7 @@ other objects …</p></div>
 <dd>
 <p class="inheritance">
 <em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.users.User" href="../../flarum/core/users.html#pyflarum.flarum.core.users.User">User</a></code>.<code><a title="pyflarum.flarum.core.users.User.canEdit" href="../../flarum/core/users.html#pyflarum.flarum.core.users.User.canEdit">canEdit</a></code>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.canEdit" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk.canEdit">canEdit</a></code>
 </p>
 <div class="desc inherited"><p>Whether or not you are able to edit this user.</p></div>
 </dd>
@@ -417,7 +422,7 @@ other objects …</p></div>
 <dd>
 <p class="inheritance">
 <em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.users.User" href="../../flarum/core/users.html#pyflarum.flarum.core.users.User">User</a></code>.<code><a title="pyflarum.flarum.core.users.User.canEditCredentials" href="../../flarum/core/users.html#pyflarum.flarum.core.users.User.canEditCredentials">canEditCredentials</a></code>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.canEditCredentials" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk.canEditCredentials">canEditCredentials</a></code>
 </p>
 <div class="desc inherited"><p>Whether or not you are able to edit this user's credentials.</p></div>
 </dd>
@@ -425,7 +430,7 @@ other objects …</p></div>
 <dd>
 <p class="inheritance">
 <em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.users.User" href="../../flarum/core/users.html#pyflarum.flarum.core.users.User">User</a></code>.<code><a title="pyflarum.flarum.core.users.User.canEditGroups" href="../../flarum/core/users.html#pyflarum.flarum.core.users.User.canEditGroups">canEditGroups</a></code>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.canEditGroups" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk.canEditGroups">canEditGroups</a></code>
 </p>
 <div class="desc inherited"><p>Whether or not you are able to edit this user's groups.</p></div>
 </dd>
@@ -435,7 +440,7 @@ other objects …</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/flarum/FoF_Spamblock.py#L26-L28" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/flarum/FoF_Spamblock.py#L26-L28" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def canSpamblock(self) -&gt; bool:
@@ -446,7 +451,7 @@ def canSpamblock(self) -&gt; bool:
 <dd>
 <p class="inheritance">
 <em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.users.User" href="../../flarum/core/users.html#pyflarum.flarum.core.users.User">User</a></code>.<code><a title="pyflarum.flarum.core.users.User.commentCount" href="../../flarum/core/users.html#pyflarum.flarum.core.users.User.commentCount">commentCount</a></code>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.commentCount" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk.commentCount">commentCount</a></code>
 </p>
 <div class="desc inherited"><p>The user's comment/post count.</p></div>
 </dd>
@@ -454,7 +459,7 @@ def canSpamblock(self) -&gt; bool:
 <dd>
 <p class="inheritance">
 <em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.users.User" href="../../flarum/core/users.html#pyflarum.flarum.core.users.User">User</a></code>.<code><a title="pyflarum.flarum.core.users.User.data" href="../../flarum/core/index.html#pyflarum.flarum.core.users.User.data">data</a></code>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.data" href="../../flarum/core/index.html#pyflarum.flarum.core.users.UserFromBulk.data">data</a></code>
 </p>
 <div class="desc inherited"><p>A raw <code>dict</code> of the object's data.</p></div>
 </dd>
@@ -462,7 +467,7 @@ def canSpamblock(self) -&gt; bool:
 <dd>
 <p class="inheritance">
 <em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.users.User" href="../../flarum/core/users.html#pyflarum.flarum.core.users.User">User</a></code>.<code><a title="pyflarum.flarum.core.users.User.discussionCount" href="../../flarum/core/users.html#pyflarum.flarum.core.users.User.discussionCount">discussionCount</a></code>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.discussionCount" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk.discussionCount">discussionCount</a></code>
 </p>
 <div class="desc inherited"><p>The user's discussion count.</p></div>
 </dd>
@@ -470,7 +475,7 @@ def canSpamblock(self) -&gt; bool:
 <dd>
 <p class="inheritance">
 <em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.users.User" href="../../flarum/core/users.html#pyflarum.flarum.core.users.User">User</a></code>.<code><a title="pyflarum.flarum.core.users.User.displayName" href="../../flarum/core/users.html#pyflarum.flarum.core.users.User.displayName">displayName</a></code>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.displayName" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk.displayName">displayName</a></code>
 </p>
 <div class="desc inherited"><p>The display name/nickname of the user.</p></div>
 </dd>
@@ -478,7 +483,7 @@ def canSpamblock(self) -&gt; bool:
 <dd>
 <p class="inheritance">
 <em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.users.User" href="../../flarum/core/users.html#pyflarum.flarum.core.users.User">User</a></code>.<code><a title="pyflarum.flarum.core.users.User.email" href="../../flarum/core/users.html#pyflarum.flarum.core.users.User.email">email</a></code>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.email" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk.email">email</a></code>
 </p>
 <div class="desc inherited"><p>The user's E-mail, if you have permission to view it.</p></div>
 </dd>
@@ -486,15 +491,23 @@ def canSpamblock(self) -&gt; bool:
 <dd>
 <p class="inheritance">
 <em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.users.User" href="../../flarum/core/users.html#pyflarum.flarum.core.users.User">User</a></code>.<code><a title="pyflarum.flarum.core.users.User.id" href="../../flarum/core/index.html#pyflarum.flarum.core.users.User.id">id</a></code>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.id" href="../../flarum/core/index.html#pyflarum.flarum.core.users.UserFromBulk.id">id</a></code>
 </p>
 <div class="desc inherited"><p>The <code>int</code> ID of the object. This should always be unique for the object's type.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_Spamblock.SpamblockUserMixin.included"><code class="name">var <span class="ident">included</span> : list</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.included" href="../../flarum/core/index.html#pyflarum.flarum.core.users.UserFromBulk.included">included</a></code>
+</p>
+<div class="desc inherited"><p>Returns raw list of JSON included data …</p></div>
 </dd>
 <dt id="pyflarum.extensions.flarum.FoF_Spamblock.SpamblockUserMixin.isEmailConfirmed"><code class="name">var <span class="ident">isEmailConfirmed</span> : bool</code></dt>
 <dd>
 <p class="inheritance">
 <em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.users.User" href="../../flarum/core/users.html#pyflarum.flarum.core.users.User">User</a></code>.<code><a title="pyflarum.flarum.core.users.User.isEmailConfirmed" href="../../flarum/core/users.html#pyflarum.flarum.core.users.User.isEmailConfirmed">isEmailConfirmed</a></code>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.isEmailConfirmed" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk.isEmailConfirmed">isEmailConfirmed</a></code>
 </p>
 <div class="desc inherited"><p>Whether or not this user confirmed their E-mail address …</p></div>
 </dd>
@@ -502,7 +515,7 @@ def canSpamblock(self) -&gt; bool:
 <dd>
 <p class="inheritance">
 <em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.users.User" href="../../flarum/core/users.html#pyflarum.flarum.core.users.User">User</a></code>.<code><a title="pyflarum.flarum.core.users.User.joinTime" href="../../flarum/core/users.html#pyflarum.flarum.core.users.User.joinTime">joinTime</a></code>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.joinTime" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk.joinTime">joinTime</a></code>
 </p>
 <div class="desc inherited"><p>The <code>datetime</code> of when the user had joined this forum.</p></div>
 </dd>
@@ -510,7 +523,7 @@ def canSpamblock(self) -&gt; bool:
 <dd>
 <p class="inheritance">
 <em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.users.User" href="../../flarum/core/users.html#pyflarum.flarum.core.users.User">User</a></code>.<code><a title="pyflarum.flarum.core.users.User.relationships" href="../../flarum/core/index.html#pyflarum.flarum.core.users.User.relationships">relationships</a></code>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.relationships" href="../../flarum/core/index.html#pyflarum.flarum.core.users.UserFromBulk.relationships">relationships</a></code>
 </p>
 <div class="desc inherited"><p>Raw <code>dict</code> of the object's relationships with
 other objects …</p></div>
@@ -519,7 +532,7 @@ other objects …</p></div>
 <dd>
 <p class="inheritance">
 <em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.users.User" href="../../flarum/core/users.html#pyflarum.flarum.core.users.User">User</a></code>.<code><a title="pyflarum.flarum.core.users.User.slug" href="../../flarum/core/users.html#pyflarum.flarum.core.users.User.slug">slug</a></code>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.slug" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk.slug">slug</a></code>
 </p>
 <div class="desc inherited"><p>The user's slug.</p></div>
 </dd>
@@ -527,7 +540,7 @@ other objects …</p></div>
 <dd>
 <p class="inheritance">
 <em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.users.User" href="../../flarum/core/users.html#pyflarum.flarum.core.users.User">User</a></code>.<code><a title="pyflarum.flarum.core.users.User.type" href="../../flarum/core/index.html#pyflarum.flarum.core.users.User.type">type</a></code>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.type" href="../../flarum/core/index.html#pyflarum.flarum.core.users.UserFromBulk.type">type</a></code>
 </p>
 <div class="desc inherited"><p>The type of the object …</p></div>
 </dd>
@@ -535,7 +548,7 @@ other objects …</p></div>
 <dd>
 <p class="inheritance">
 <em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.users.User" href="../../flarum/core/users.html#pyflarum.flarum.core.users.User">User</a></code>.<code><a title="pyflarum.flarum.core.users.User.username" href="../../flarum/core/users.html#pyflarum.flarum.core.users.User.username">username</a></code>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.username" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk.username">username</a></code>
 </p>
 <div class="desc inherited"><p>The user's username.</p></div>
 </dd>
@@ -619,6 +632,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="pyflarum.extensions.flarum.FoF_Spamblock.SpamblockUserFromNotificationMixin.displayName" href="../../flarum/core/users.html#pyflarum.extensions.flarum.FoF_Spamblock.SpamblockUserFromNotificationMixin.displayName">displayName</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.FoF_Spamblock.SpamblockUserFromNotificationMixin.email" href="../../flarum/core/users.html#pyflarum.extensions.flarum.FoF_Spamblock.SpamblockUserFromNotificationMixin.email">email</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.FoF_Spamblock.SpamblockUserFromNotificationMixin.id" href="../../flarum/core/index.html#pyflarum.extensions.flarum.FoF_Spamblock.SpamblockUserFromNotificationMixin.id">id</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_Spamblock.SpamblockUserFromNotificationMixin.included" href="../../flarum/core/index.html#pyflarum.extensions.flarum.FoF_Spamblock.SpamblockUserFromNotificationMixin.included">included</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.FoF_Spamblock.SpamblockUserFromNotificationMixin.isEmailConfirmed" href="../../flarum/core/users.html#pyflarum.extensions.flarum.FoF_Spamblock.SpamblockUserFromNotificationMixin.isEmailConfirmed">isEmailConfirmed</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.FoF_Spamblock.SpamblockUserFromNotificationMixin.relationships" href="../../flarum/core/index.html#pyflarum.extensions.flarum.FoF_Spamblock.SpamblockUserFromNotificationMixin.relationships">relationships</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.FoF_Spamblock.SpamblockUserFromNotificationMixin.slug" href="../../flarum/core/users.html#pyflarum.extensions.flarum.FoF_Spamblock.SpamblockUserFromNotificationMixin.slug">slug</a></code></li>
@@ -643,6 +657,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="pyflarum.extensions.flarum.FoF_Spamblock.SpamblockUserMixin.displayName" href="../../flarum/core/users.html#pyflarum.extensions.flarum.FoF_Spamblock.SpamblockUserMixin.displayName">displayName</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.FoF_Spamblock.SpamblockUserMixin.email" href="../../flarum/core/users.html#pyflarum.extensions.flarum.FoF_Spamblock.SpamblockUserMixin.email">email</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.FoF_Spamblock.SpamblockUserMixin.id" href="../../flarum/core/index.html#pyflarum.extensions.flarum.FoF_Spamblock.SpamblockUserMixin.id">id</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_Spamblock.SpamblockUserMixin.included" href="../../flarum/core/index.html#pyflarum.extensions.flarum.FoF_Spamblock.SpamblockUserMixin.included">included</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.FoF_Spamblock.SpamblockUserMixin.isEmailConfirmed" href="../../flarum/core/users.html#pyflarum.extensions.flarum.FoF_Spamblock.SpamblockUserMixin.isEmailConfirmed">isEmailConfirmed</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.FoF_Spamblock.SpamblockUserMixin.joinTime" href="../../flarum/core/users.html#pyflarum.extensions.flarum.FoF_Spamblock.SpamblockUserMixin.joinTime">joinTime</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.FoF_Spamblock.SpamblockUserMixin.relationships" href="../../flarum/core/index.html#pyflarum.extensions.flarum.FoF_Spamblock.SpamblockUserMixin.relationships">relationships</a></code></li>

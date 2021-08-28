@@ -25,7 +25,7 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/flarum/FoF_BestAnswer.py#L1-L50" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/flarum/FoF_BestAnswer.py#L1-L51" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">from typing import Optional
 
@@ -57,6 +57,7 @@ class BestAnswerDiscussionNotificationMixin(DiscussionFromNotification):
         raw = self.attributes.get(&#34;bestAnswerSetAt&#34;, None)
 
         return flarum_to_datetime(raw)
+
 
 
 class BestAnswerDiscussionMixin(DiscussionFromBulk):
@@ -103,7 +104,7 @@ class BestAnswerExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/flarum/FoF_BestAnswer.py#L33-L36" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/flarum/FoF_BestAnswer.py#L34-L37" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class BestAnswerDiscussionMixin(DiscussionFromBulk):
     @property
@@ -166,7 +167,7 @@ class BestAnswerExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/flarum/FoF_BestAnswer.py#L34-L36" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/flarum/FoF_BestAnswer.py#L35-L37" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def canSelectBestAnswer(self) -&gt; bool:
@@ -204,6 +205,14 @@ def canSelectBestAnswer(self) -&gt; bool:
 <code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.id" href="../../flarum/core/index.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.id">id</a></code>
 </p>
 <div class="desc inherited"><p>The <code>int</code> ID of the object. This should always be unique for the object's type.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_BestAnswer.BestAnswerDiscussionMixin.included"><code class="name">var <span class="ident">included</span> : list</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.included" href="../../flarum/core/index.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.included">included</a></code>
+</p>
+<div class="desc inherited"><p>Returns raw list of JSON included data …</p></div>
 </dd>
 <dt id="pyflarum.extensions.flarum.FoF_BestAnswer.BestAnswerDiscussionMixin.isHidden"><code class="name">var <span class="ident">isHidden</span> : bool</code></dt>
 <dd>
@@ -406,7 +415,7 @@ data from all of the discussion classes (see <a href="https://cwkevo.github.io/p
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/flarum/FoF_BestAnswer.py#L20-L30" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/flarum/FoF_BestAnswer.py#L20-L30" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class BestAnswerDiscussionNotificationMixin(DiscussionFromNotification):
     @property
@@ -443,7 +452,7 @@ data from all of the discussion classes (see <a href="https://cwkevo.github.io/p
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/flarum/FoF_BestAnswer.py#L26-L30" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/flarum/FoF_BestAnswer.py#L26-L30" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def bestAnswerSetAt(self) -&gt; Optional[datetime]:
@@ -466,7 +475,7 @@ def bestAnswerSetAt(self) -&gt; Optional[datetime]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/flarum/FoF_BestAnswer.py#L21-L23" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/flarum/FoF_BestAnswer.py#L21-L23" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def hasBestAnswer(self) -&gt; bool:
@@ -480,6 +489,14 @@ def hasBestAnswer(self) -&gt; bool:
 <code><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromNotification">DiscussionFromNotification</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification.id" href="../../flarum/core/index.html#pyflarum.flarum.core.discussions.DiscussionFromNotification.id">id</a></code>
 </p>
 <div class="desc inherited"><p>The <code>int</code> ID of the object. This should always be unique for the object's type.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_BestAnswer.BestAnswerDiscussionNotificationMixin.included"><code class="name">var <span class="ident">included</span> : list</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromNotification">DiscussionFromNotification</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification.included" href="../../flarum/core/index.html#pyflarum.flarum.core.discussions.DiscussionFromNotification.included">included</a></code>
+</p>
+<div class="desc inherited"><p>Returns raw list of JSON included data …</p></div>
 </dd>
 <dt id="pyflarum.extensions.flarum.FoF_BestAnswer.BestAnswerDiscussionNotificationMixin.relationships"><code class="name">var <span class="ident">relationships</span> : dict</code></dt>
 <dd>
@@ -582,8 +599,7 @@ Raises <code>FlarumError</code> if it failed, otherwise the new discussion is re
 <dd>
 <div class="desc"><p>A base class for mixing in custom classes (extensions) into another classes.</p>
 <h3 id="example-extension-code">Example extension code:</h3>
-<pre><code class="language-python">from typing import Type
-
+<pre><code class="language-python">
 from pyflarum.extensions import ExtensionMixin
 from pyflarum.extensions.admin import AdminExtension
 from pyflarum.session import FlarumUser
@@ -602,7 +618,7 @@ HARD_DEPENCENDIES = []
 
 # I recommend to use the following naming pattern: `&lt;YourExtensionName&gt;&lt;ClassToMixin&gt;Mixin`
 # Example:
-class ExampleFlarumUserMixin:
+class ExampleFlarumUserMixin(FlarumUser):
     @property
     def example(self):
         '''
@@ -610,7 +626,6 @@ class ExampleFlarumUserMixin:
         '''
 
         return &quot;Example&quot;
-ExampleFlarumUserMixin: Type[FlarumUser] # mimick class inheritance, without inheriting at runtime, acts just as a type hint
 
 
 class ExampleExtension(ExtensionMixin):
@@ -628,7 +643,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/flarum/FoF_BestAnswer.py#L40-L50" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/flarum/FoF_BestAnswer.py#L41-L51" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class BestAnswerExtension(ExtensionMixin):
     def get_dependencies(self):
@@ -665,7 +680,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/flarum/FoF_BestAnswer.py#L41-L45" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/flarum/FoF_BestAnswer.py#L42-L46" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_dependencies(self):
     return {
@@ -686,7 +701,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/flarum/FoF_BestAnswer.py#L48-L50" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/flarum/FoF_BestAnswer.py#L49-L51" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def mixin(self):
     super().mixin(self, DiscussionFromNotification, BestAnswerDiscussionNotificationMixin)
@@ -776,6 +791,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="pyflarum.extensions.flarum.FoF_BestAnswer.BestAnswerDiscussionMixin.get_last_posted_user" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.FoF_BestAnswer.BestAnswerDiscussionMixin.get_last_posted_user">get_last_posted_user</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.FoF_BestAnswer.BestAnswerDiscussionMixin.hide" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.FoF_BestAnswer.BestAnswerDiscussionMixin.hide">hide</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.FoF_BestAnswer.BestAnswerDiscussionMixin.id" href="../../flarum/core/index.html#pyflarum.extensions.flarum.FoF_BestAnswer.BestAnswerDiscussionMixin.id">id</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_BestAnswer.BestAnswerDiscussionMixin.included" href="../../flarum/core/index.html#pyflarum.extensions.flarum.FoF_BestAnswer.BestAnswerDiscussionMixin.included">included</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.FoF_BestAnswer.BestAnswerDiscussionMixin.isHidden" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.FoF_BestAnswer.BestAnswerDiscussionMixin.isHidden">isHidden</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.FoF_BestAnswer.BestAnswerDiscussionMixin.lastPostNumber" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.FoF_BestAnswer.BestAnswerDiscussionMixin.lastPostNumber">lastPostNumber</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.FoF_BestAnswer.BestAnswerDiscussionMixin.lastPostedAt" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.FoF_BestAnswer.BestAnswerDiscussionMixin.lastPostedAt">lastPostedAt</a></code></li>
@@ -802,6 +818,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="pyflarum.extensions.flarum.FoF_BestAnswer.BestAnswerDiscussionNotificationMixin.hasBestAnswer" href="#pyflarum.extensions.flarum.FoF_BestAnswer.BestAnswerDiscussionNotificationMixin.hasBestAnswer">hasBestAnswer</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.FoF_BestAnswer.BestAnswerDiscussionNotificationMixin.hide" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.FoF_BestAnswer.BestAnswerDiscussionNotificationMixin.hide">hide</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.FoF_BestAnswer.BestAnswerDiscussionNotificationMixin.id" href="../../flarum/core/index.html#pyflarum.extensions.flarum.FoF_BestAnswer.BestAnswerDiscussionNotificationMixin.id">id</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_BestAnswer.BestAnswerDiscussionNotificationMixin.included" href="../../flarum/core/index.html#pyflarum.extensions.flarum.FoF_BestAnswer.BestAnswerDiscussionNotificationMixin.included">included</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.FoF_BestAnswer.BestAnswerDiscussionNotificationMixin.relationships" href="../../flarum/core/index.html#pyflarum.extensions.flarum.FoF_BestAnswer.BestAnswerDiscussionNotificationMixin.relationships">relationships</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.FoF_BestAnswer.BestAnswerDiscussionNotificationMixin.restore" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.FoF_BestAnswer.BestAnswerDiscussionNotificationMixin.restore">restore</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.FoF_BestAnswer.BestAnswerDiscussionNotificationMixin.slug" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.FoF_BestAnswer.BestAnswerDiscussionNotificationMixin.slug">slug</a></code></li>

@@ -25,7 +25,7 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/flarum/Malago_Achievements.py#L1-L179" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/flarum/Malago_Achievements.py#L1-L162" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">from typing import Optional
 
@@ -33,7 +33,7 @@ from ...extensions import ExtensionMixin
 from ...extensions.admin import AdminExtension, AdminFlarumUserMixin
 
 from ...flarum.core.forum import Forum
-from ...session import FlarumUser
+from ...flarum.core import BaseFlarumIndividualObject
 from ...error_handler import parse_request
 
 
@@ -45,30 +45,11 @@ SOFT_DEPENDENCIES = [AdminExtension]
 HARD_DEPENCENDIES = []
 
 
-class Achievement(dict):
+
+class Achievement(BaseFlarumIndividualObject):
     &#34;&#34;&#34;
         An achievement (Malago&#39;s Achievements extension).
     &#34;&#34;&#34;
-
-    def __init__(self, user: &#39;FlarumUser&#39;, _fetched_data: dict):
-        self.user = user
-
-        super().__init__(_fetched_data)
-
-
-    @property
-    def data(self) -&gt; dict:
-        return self.get(&#34;data&#34;, {})
-
-
-    @property
-    def type(self) -&gt; Optional[str]:
-        return self.data.get(&#34;type&#34;, None)
-
-
-    @property
-    def attributes(self) -&gt; dict:
-        return self.data.get(&#34;attributes&#34;, {})
 
 
     @property
@@ -129,6 +110,7 @@ class Achievement(dict):
         return self.attributes.get(&#34;new&#34;, None)
 
 
+
 class AchievementsForumMixin(Forum):
     @property
     def show_achievements_in_post_footer(self) -&gt; bool:
@@ -138,6 +120,7 @@ class AchievementsForumMixin(Forum):
     @property
     def show_achievements_in_user_card(self) -&gt; bool:
         return self.attributes.get(&#34;malago-achievements.show-user-card&#34;, False)
+
 
 
 class AchievementsAdminFlarumUserMixin(AdminFlarumUserMixin):
@@ -185,7 +168,7 @@ class AchievementsAdminFlarumUserMixin(AdminFlarumUserMixin):
         raw = self.session.get(f&#34;{self.api_urls[&#39;base&#39;]}/achievements&#34;)
         json = parse_request(raw)
 
-        all_achievements = list() # type: list[Achievement]
+        all_achievements = list()
 
         for raw_achievement in json[&#39;data&#39;]:
             achievement = Achievement(user=self, _fetched_data=dict(data=raw_achievement))
@@ -222,36 +205,22 @@ class AchievementsExtension(ExtensionMixin):
 <span>(</span><span>user: FlarumUser, _fetched_data: dict)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>An achievement (Malago's Achievements extension).</p></div>
+<div class="desc"><p>An achievement (Malago's Achievements extension).</p>
+<h3 id="parameters">Parameters:</h3>
+<ul>
+<li><code>user</code> - the <code><a title="pyflarum.session.FlarumUser" href="../../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code> object, required to make additional API calls.</li>
+<li><code>_fetched_data</code> - the JSON data that was fetched from the API.</li>
+</ul>
+<p>I strongly discourage from forging objects this way, unless you are creating an extension.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/flarum/Malago_Achievements.py#L19-L100" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/flarum/Malago_Achievements.py#L20-L81" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">class Achievement(dict):
+<pre><code class="python">class Achievement(BaseFlarumIndividualObject):
     &#34;&#34;&#34;
         An achievement (Malago&#39;s Achievements extension).
     &#34;&#34;&#34;
-
-    def __init__(self, user: &#39;FlarumUser&#39;, _fetched_data: dict):
-        self.user = user
-
-        super().__init__(_fetched_data)
-
-
-    @property
-    def data(self) -&gt; dict:
-        return self.get(&#34;data&#34;, {})
-
-
-    @property
-    def type(self) -&gt; Optional[str]:
-        return self.data.get(&#34;type&#34;, None)
-
-
-    @property
-    def attributes(self) -&gt; dict:
-        return self.data.get(&#34;attributes&#34;, {})
 
 
     @property
@@ -313,6 +282,8 @@ class AchievementsExtension(ExtensionMixin):
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
+<li><a title="pyflarum.flarum.core.BaseFlarumIndividualObject" href="../../flarum/core/index.html#pyflarum.flarum.core.BaseFlarumIndividualObject">BaseFlarumIndividualObject</a></li>
+<li><a title="pyflarum.flarum.core.BaseFlarumObject" href="../../flarum/core/index.html#pyflarum.flarum.core.BaseFlarumObject">BaseFlarumObject</a></li>
 <li>builtins.dict</li>
 </ul>
 <h3>Instance variables</h3>
@@ -323,7 +294,7 @@ class AchievementsExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/flarum/Malago_Achievements.py#L82-L87" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/flarum/Malago_Achievements.py#L63-L68" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def active(self) -&gt; Optional[bool]:
@@ -335,16 +306,11 @@ def active(self) -&gt; Optional[bool]:
 </dd>
 <dt id="pyflarum.extensions.flarum.Malago_Achievements.Achievement.attributes"><code class="name">var <span class="ident">attributes</span> : dict</code></dt>
 <dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/flarum/Malago_Achievements.py#L40-L42" class="git-link">Browse git</a>
-</summary>
-<pre><code class="python">@property
-def attributes(self) -&gt; dict:
-    return self.data.get(&#34;attributes&#34;, {})</code></pre>
-</details>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject" href="../../flarum/core/index.html#pyflarum.flarum.core.BaseFlarumIndividualObject">BaseFlarumIndividualObject</a></code>.<code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject.attributes" href="../../flarum/core/index.html#pyflarum.flarum.core.BaseFlarumIndividualObject.attributes">attributes</a></code>
+</p>
+<div class="desc inherited"><p>Raw <code>dict</code> of the object's attributes.</p></div>
 </dd>
 <dt id="pyflarum.extensions.flarum.Malago_Achievements.Achievement.computation"><code class="name">var <span class="ident">computation</span> : Optional[str]</code></dt>
 <dd>
@@ -352,25 +318,20 @@ def attributes(self) -&gt; dict:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/flarum/Malago_Achievements.py#L55-L57" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/flarum/Malago_Achievements.py#L36-L38" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def computation(self) -&gt; Optional[str]:
     return self.attributes.get(&#34;computation&#34;, None)</code></pre>
 </details>
 </dd>
-<dt id="pyflarum.extensions.flarum.Malago_Achievements.Achievement.data"><code class="name">var <span class="ident">data</span> : dict</code></dt>
+<dt id="pyflarum.extensions.flarum.Malago_Achievements.Achievement.data"><code class="name">var <span class="ident">data</span> : list[dict] | dict</code></dt>
 <dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/flarum/Malago_Achievements.py#L30-L32" class="git-link">Browse git</a>
-</summary>
-<pre><code class="python">@property
-def data(self) -&gt; dict:
-    return self.get(&#34;data&#34;, {})</code></pre>
-</details>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject" href="../../flarum/core/index.html#pyflarum.flarum.core.BaseFlarumIndividualObject">BaseFlarumIndividualObject</a></code>.<code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject.data" href="../../flarum/core/index.html#pyflarum.flarum.core.BaseFlarumIndividualObject.data">data</a></code>
+</p>
+<div class="desc inherited"><p>A raw <code>dict</code> of the object's data.</p></div>
 </dd>
 <dt id="pyflarum.extensions.flarum.Malago_Achievements.Achievement.description"><code class="name">var <span class="ident">description</span> : Optional[str]</code></dt>
 <dd>
@@ -378,7 +339,7 @@ def data(self) -&gt; dict:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/flarum/Malago_Achievements.py#L50-L52" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/flarum/Malago_Achievements.py#L31-L33" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def description(self) -&gt; Optional[str]:
@@ -391,7 +352,7 @@ def description(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/flarum/Malago_Achievements.py#L90-L95" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/flarum/Malago_Achievements.py#L71-L76" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def hidden(self) -&gt; Optional[bool]:
@@ -407,12 +368,28 @@ def hidden(self) -&gt; Optional[bool]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/flarum/Malago_Achievements.py#L68-L70" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/flarum/Malago_Achievements.py#L49-L51" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def icon(self) -&gt; Optional[str]:
     return self.attributes.get(&#34;icon&#34;, None)</code></pre>
 </details>
+</dd>
+<dt id="pyflarum.extensions.flarum.Malago_Achievements.Achievement.id"><code class="name">var <span class="ident">id</span> : Optional[int]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject" href="../../flarum/core/index.html#pyflarum.flarum.core.BaseFlarumIndividualObject">BaseFlarumIndividualObject</a></code>.<code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject.id" href="../../flarum/core/index.html#pyflarum.flarum.core.BaseFlarumIndividualObject.id">id</a></code>
+</p>
+<div class="desc inherited"><p>The <code>int</code> ID of the object. This should always be unique for the object's type.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Malago_Achievements.Achievement.included"><code class="name">var <span class="ident">included</span> : list</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject" href="../../flarum/core/index.html#pyflarum.flarum.core.BaseFlarumIndividualObject">BaseFlarumIndividualObject</a></code>.<code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject.included" href="../../flarum/core/index.html#pyflarum.flarum.core.BaseFlarumIndividualObject.included">included</a></code>
+</p>
+<div class="desc inherited"><p>Returns raw list of JSON included data …</p></div>
 </dd>
 <dt id="pyflarum.extensions.flarum.Malago_Achievements.Achievement.name"><code class="name">var <span class="ident">name</span> : Optional[str]</code></dt>
 <dd>
@@ -420,7 +397,7 @@ def icon(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/flarum/Malago_Achievements.py#L45-L47" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/flarum/Malago_Achievements.py#L26-L28" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def name(self) -&gt; Optional[str]:
@@ -433,7 +410,7 @@ def name(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/flarum/Malago_Achievements.py#L98-L100" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/flarum/Malago_Achievements.py#L79-L81" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def new(self) -&gt; Optional[str]:
@@ -446,7 +423,7 @@ def new(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/flarum/Malago_Achievements.py#L60-L65" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/flarum/Malago_Achievements.py#L41-L46" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def points(self):
@@ -462,7 +439,7 @@ def points(self):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/flarum/Malago_Achievements.py#L73-L79" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/flarum/Malago_Achievements.py#L54-L60" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def rectangle(self) -&gt; Optional[str]:
@@ -473,18 +450,22 @@ def rectangle(self) -&gt; Optional[str]:
     return self.attributes.get(&#34;rectangle&#34;, None)</code></pre>
 </details>
 </dd>
+<dt id="pyflarum.extensions.flarum.Malago_Achievements.Achievement.relationships"><code class="name">var <span class="ident">relationships</span> : dict</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject" href="../../flarum/core/index.html#pyflarum.flarum.core.BaseFlarumIndividualObject">BaseFlarumIndividualObject</a></code>.<code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject.relationships" href="../../flarum/core/index.html#pyflarum.flarum.core.BaseFlarumIndividualObject.relationships">relationships</a></code>
+</p>
+<div class="desc inherited"><p>Raw <code>dict</code> of the object's relationships with
+other objects …</p></div>
+</dd>
 <dt id="pyflarum.extensions.flarum.Malago_Achievements.Achievement.type"><code class="name">var <span class="ident">type</span> : Optional[str]</code></dt>
 <dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/flarum/Malago_Achievements.py#L35-L37" class="git-link">Browse git</a>
-</summary>
-<pre><code class="python">@property
-def type(self) -&gt; Optional[str]:
-    return self.data.get(&#34;type&#34;, None)</code></pre>
-</details>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject" href="../../flarum/core/index.html#pyflarum.flarum.core.BaseFlarumIndividualObject">BaseFlarumIndividualObject</a></code>.<code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject.type" href="../../flarum/core/index.html#pyflarum.flarum.core.BaseFlarumIndividualObject.type">type</a></code>
+</p>
+<div class="desc inherited"><p>The type of the object …</p></div>
 </dd>
 </dl>
 </dd>
@@ -508,7 +489,7 @@ def type(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/flarum/Malago_Achievements.py#L114-L165" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/flarum/Malago_Achievements.py#L97-L148" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class AchievementsAdminFlarumUserMixin(AdminFlarumUserMixin):
     def update_settings(self, show_achievement_list_in_each_post_footer: Optional[bool]=None, show_achievement_list_in_user_badge: Optional[bool]=None) -&gt; True:
@@ -555,7 +536,7 @@ def type(self) -&gt; Optional[str]:
         raw = self.session.get(f&#34;{self.api_urls[&#39;base&#39;]}/achievements&#34;)
         json = parse_request(raw)
 
-        all_achievements = list() # type: list[Achievement]
+        all_achievements = list()
 
         for raw_achievement in json[&#39;data&#39;]:
             achievement = Achievement(user=self, _fetched_data=dict(data=raw_achievement))
@@ -612,7 +593,7 @@ def type(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/flarum/Malago_Achievements.py#L132-L152" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/flarum/Malago_Achievements.py#L115-L135" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def create_achievement(self, name: str, description: str, computation: str, points: int, image_url_or_fa_icon: str, active: &#39;bool | int&#39;=1, hidden: &#39;bool | int&#39;=0) -&gt; Achievement:
     post_data = {
@@ -645,13 +626,13 @@ def type(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/flarum/Malago_Achievements.py#L155-L165" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/flarum/Malago_Achievements.py#L138-L148" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_all_achievements(self) -&gt; list[Achievement]:
     raw = self.session.get(f&#34;{self.api_urls[&#39;base&#39;]}/achievements&#34;)
     json = parse_request(raw)
 
-    all_achievements = list() # type: list[Achievement]
+    all_achievements = list()
 
     for raw_achievement in json[&#39;data&#39;]:
         achievement = Achievement(user=self, _fetched_data=dict(data=raw_achievement))
@@ -751,7 +732,7 @@ def type(self) -&gt; Optional[str]:
 <div class="desc inherited"><p>Obtains all users from <code>/api/users</code>, optionally filtering results by using <code>filter</code>.</p></div>
 </dd>
 <dt id="pyflarum.extensions.flarum.Malago_Achievements.AchievementsAdminFlarumUserMixin.mark_all_discussions_as_read"><code class="name flex">
-<span>def <span class="ident">mark_all_discussions_as_read</span></span>(<span>self, at: datetime.datetime = datetime.datetime(2021, 8, 24, 15, 35, 16, 440130)) ‑> Literal[True]</span>
+<span>def <span class="ident">mark_all_discussions_as_read</span></span>(<span>self, at: datetime.datetime = datetime.datetime(2021, 8, 28, 10, 41, 45, 272412)) ‑> Literal[True]</span>
 </code></dt>
 <dd>
 <p class="inheritance">
@@ -808,7 +789,7 @@ def type(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/flarum/Malago_Achievements.py#L115-L129" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/flarum/Malago_Achievements.py#L98-L112" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def update_settings(self, show_achievement_list_in_each_post_footer: Optional[bool]=None, show_achievement_list_in_user_badge: Optional[bool]=None) -&gt; True:
     post_data = {}
@@ -855,8 +836,7 @@ def type(self) -&gt; Optional[str]:
 <dd>
 <div class="desc"><p>A base class for mixing in custom classes (extensions) into another classes.</p>
 <h3 id="example-extension-code">Example extension code:</h3>
-<pre><code class="language-python">from typing import Type
-
+<pre><code class="language-python">
 from pyflarum.extensions import ExtensionMixin
 from pyflarum.extensions.admin import AdminExtension
 from pyflarum.session import FlarumUser
@@ -875,7 +855,7 @@ HARD_DEPENCENDIES = []
 
 # I recommend to use the following naming pattern: `&lt;YourExtensionName&gt;&lt;ClassToMixin&gt;Mixin`
 # Example:
-class ExampleFlarumUserMixin:
+class ExampleFlarumUserMixin(FlarumUser):
     @property
     def example(self):
         '''
@@ -883,7 +863,6 @@ class ExampleFlarumUserMixin:
         '''
 
         return &quot;Example&quot;
-ExampleFlarumUserMixin: Type[FlarumUser] # mimick class inheritance, without inheriting at runtime, acts just as a type hint
 
 
 class ExampleExtension(ExtensionMixin):
@@ -901,7 +880,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/flarum/Malago_Achievements.py#L169-L179" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/flarum/Malago_Achievements.py#L152-L162" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class AchievementsExtension(ExtensionMixin):
     def get_dependencies(self):
@@ -938,7 +917,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/flarum/Malago_Achievements.py#L170-L174" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/flarum/Malago_Achievements.py#L153-L157" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_dependencies(self):
     return {
@@ -959,7 +938,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/flarum/Malago_Achievements.py#L177-L179" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/flarum/Malago_Achievements.py#L160-L162" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def mixin(self):
     super().mixin(self, AdminFlarumUserMixin, AchievementsAdminFlarumUserMixin)
@@ -983,7 +962,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/flarum/Malago_Achievements.py#L103-L111" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/flarum/Malago_Achievements.py#L85-L93" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class AchievementsForumMixin(Forum):
     @property
@@ -1146,7 +1125,7 @@ class ExampleExtension(ExtensionMixin):
 <em>Inherited from:</em>
 <code><a title="pyflarum.flarum.core.forum.Forum" href="../../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum">Forum</a></code>.<code><a title="pyflarum.flarum.core.forum.Forum.included" href="../../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum.included">included</a></code>
 </p>
-<div class="desc inherited"><p>Raw <code>list[dict]</code> of the forum's included objects.</p></div>
+<div class="desc inherited"><p>Returns raw list of JSON included data …</p></div>
 </dd>
 <dt id="pyflarum.extensions.flarum.Malago_Achievements.AchievementsForumMixin.logoUrl"><code class="name">var <span class="ident">logoUrl</span> : Optional[str]</code></dt>
 <dd>
@@ -1179,7 +1158,7 @@ other objects …</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/flarum/Malago_Achievements.py#L104-L106" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/flarum/Malago_Achievements.py#L86-L88" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def show_achievements_in_post_footer(self) -&gt; bool:
@@ -1192,7 +1171,7 @@ def show_achievements_in_post_footer(self) -&gt; bool:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/flarum/Malago_Achievements.py#L109-L111" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/flarum/Malago_Achievements.py#L91-L93" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def show_achievements_in_user_card(self) -&gt; bool:
@@ -1336,17 +1315,20 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="pyflarum.extensions.flarum.Malago_Achievements.Achievement" href="#pyflarum.extensions.flarum.Malago_Achievements.Achievement">Achievement</a></code></h4>
 <ul class="two-column">
 <li><code><a title="pyflarum.extensions.flarum.Malago_Achievements.Achievement.active" href="#pyflarum.extensions.flarum.Malago_Achievements.Achievement.active">active</a></code></li>
-<li><code><a title="pyflarum.extensions.flarum.Malago_Achievements.Achievement.attributes" href="#pyflarum.extensions.flarum.Malago_Achievements.Achievement.attributes">attributes</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Malago_Achievements.Achievement.attributes" href="../../flarum/core/index.html#pyflarum.extensions.flarum.Malago_Achievements.Achievement.attributes">attributes</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.Malago_Achievements.Achievement.computation" href="#pyflarum.extensions.flarum.Malago_Achievements.Achievement.computation">computation</a></code></li>
-<li><code><a title="pyflarum.extensions.flarum.Malago_Achievements.Achievement.data" href="#pyflarum.extensions.flarum.Malago_Achievements.Achievement.data">data</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Malago_Achievements.Achievement.data" href="../../flarum/core/index.html#pyflarum.extensions.flarum.Malago_Achievements.Achievement.data">data</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.Malago_Achievements.Achievement.description" href="#pyflarum.extensions.flarum.Malago_Achievements.Achievement.description">description</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.Malago_Achievements.Achievement.hidden" href="#pyflarum.extensions.flarum.Malago_Achievements.Achievement.hidden">hidden</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.Malago_Achievements.Achievement.icon" href="#pyflarum.extensions.flarum.Malago_Achievements.Achievement.icon">icon</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Malago_Achievements.Achievement.id" href="../../flarum/core/index.html#pyflarum.extensions.flarum.Malago_Achievements.Achievement.id">id</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Malago_Achievements.Achievement.included" href="../../flarum/core/index.html#pyflarum.extensions.flarum.Malago_Achievements.Achievement.included">included</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.Malago_Achievements.Achievement.name" href="#pyflarum.extensions.flarum.Malago_Achievements.Achievement.name">name</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.Malago_Achievements.Achievement.new" href="#pyflarum.extensions.flarum.Malago_Achievements.Achievement.new">new</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.Malago_Achievements.Achievement.points" href="#pyflarum.extensions.flarum.Malago_Achievements.Achievement.points">points</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.Malago_Achievements.Achievement.rectangle" href="#pyflarum.extensions.flarum.Malago_Achievements.Achievement.rectangle">rectangle</a></code></li>
-<li><code><a title="pyflarum.extensions.flarum.Malago_Achievements.Achievement.type" href="#pyflarum.extensions.flarum.Malago_Achievements.Achievement.type">type</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Malago_Achievements.Achievement.relationships" href="../../flarum/core/index.html#pyflarum.extensions.flarum.Malago_Achievements.Achievement.relationships">relationships</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Malago_Achievements.Achievement.type" href="../../flarum/core/index.html#pyflarum.extensions.flarum.Malago_Achievements.Achievement.type">type</a></code></li>
 </ul>
 </li>
 <li>

@@ -25,7 +25,7 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/flarum/Askvortsov_ModeratorWarnings.py#L1-L66" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/flarum/Askvortsov_ModeratorWarnings.py#L1-L66" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">from .. import ExtensionMixin
 
@@ -41,9 +41,9 @@ HARD_DEPENCENDIES = []
 
 
 
-class ModeratorWarningsUserFromBulkMixin:
+class ModeratorWarningsUserFromBulkMixin(UserFromBulk):
     @property
-    def canViewWarnings(self: UserFromBulk) -&gt; bool:
+    def canViewWarnings(self) -&gt; bool:
         &#34;&#34;&#34;
             Whether or not you can view the warnings of the user.
         &#34;&#34;&#34;
@@ -52,7 +52,7 @@ class ModeratorWarningsUserFromBulkMixin:
 
 
     @property
-    def canManageWarnings(self: UserFromBulk) -&gt; bool:
+    def canManageWarnings(self) -&gt; bool:
         &#34;&#34;&#34;
             Whether or not you are able to manage the user&#39;s warnings.
         &#34;&#34;&#34;
@@ -61,7 +61,7 @@ class ModeratorWarningsUserFromBulkMixin:
 
 
     @property
-    def canDeleteWarnings(self: UserFromBulk) -&gt; bool:
+    def canDeleteWarnings(self) -&gt; bool:
         &#34;&#34;&#34;
             Whether or not you can delete the user&#39;s warnings.
         &#34;&#34;&#34;
@@ -70,7 +70,7 @@ class ModeratorWarningsUserFromBulkMixin:
 
 
     @property
-    def visibleWarningCount(self: UserFromBulk) -&gt; int:
+    def visibleWarningCount(self) -&gt; int:
         &#34;&#34;&#34;
             The amount of warnings that you can see that belong to the user.
         &#34;&#34;&#34;
@@ -112,7 +112,7 @@ class ModeratorWarningsExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/flarum/Askvortsov_ModeratorWarnings.py#L53-L66" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/flarum/Askvortsov_ModeratorWarnings.py#L53-L66" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class ModeratorWarningsExtension(ExtensionMixin):
     &#34;&#34;&#34;
@@ -152,7 +152,7 @@ class ModeratorWarningsExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/flarum/Askvortsov_ModeratorWarnings.py#L58-L62" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/flarum/Askvortsov_ModeratorWarnings.py#L58-L62" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_dependencies(self):
     return {
@@ -173,7 +173,7 @@ class ModeratorWarningsExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/flarum/Askvortsov_ModeratorWarnings.py#L65-L66" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/flarum/Askvortsov_ModeratorWarnings.py#L65-L66" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def mixin(self):
     super().mixin(self, UserFromBulk, ModeratorWarningsUserFromBulkMixin)</code></pre>
@@ -183,17 +183,24 @@ class ModeratorWarningsExtension(ExtensionMixin):
 </dd>
 <dt id="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin"><code class="flex name class">
 <span>class <span class="ident">ModeratorWarningsUserFromBulkMixin</span></span>
+<span>(</span><span>user: FlarumUser, _fetched_data: dict)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>An user from <code>Users</code>.</p>
+<h3 id="parameters">Parameters:</h3>
+<ul>
+<li><code>user</code> - the <code><a title="pyflarum.session.FlarumUser" href="../../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code> object, required to make additional API calls.</li>
+<li><code>_fetched_data</code> - the JSON data that was fetched from the API.</li>
+</ul>
+<p>I strongly discourage from forging objects this way, unless you are creating an extension.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/flarum/Askvortsov_ModeratorWarnings.py#L15-L49" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/flarum/Askvortsov_ModeratorWarnings.py#L15-L49" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">class ModeratorWarningsUserFromBulkMixin:
+<pre><code class="python">class ModeratorWarningsUserFromBulkMixin(UserFromBulk):
     @property
-    def canViewWarnings(self: UserFromBulk) -&gt; bool:
+    def canViewWarnings(self) -&gt; bool:
         &#34;&#34;&#34;
             Whether or not you can view the warnings of the user.
         &#34;&#34;&#34;
@@ -202,7 +209,7 @@ class ModeratorWarningsExtension(ExtensionMixin):
 
 
     @property
-    def canManageWarnings(self: UserFromBulk) -&gt; bool:
+    def canManageWarnings(self) -&gt; bool:
         &#34;&#34;&#34;
             Whether or not you are able to manage the user&#39;s warnings.
         &#34;&#34;&#34;
@@ -211,7 +218,7 @@ class ModeratorWarningsExtension(ExtensionMixin):
 
 
     @property
-    def canDeleteWarnings(self: UserFromBulk) -&gt; bool:
+    def canDeleteWarnings(self) -&gt; bool:
         &#34;&#34;&#34;
             Whether or not you can delete the user&#39;s warnings.
         &#34;&#34;&#34;
@@ -220,25 +227,57 @@ class ModeratorWarningsExtension(ExtensionMixin):
 
 
     @property
-    def visibleWarningCount(self: UserFromBulk) -&gt; int:
+    def visibleWarningCount(self) -&gt; int:
         &#34;&#34;&#34;
             The amount of warnings that you can see that belong to the user.
         &#34;&#34;&#34;
 
         return self.attributes.get(&#34;visibleWarningCount&#34;, 0)</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></li>
+<li><a title="pyflarum.flarum.core.users.UserFromNotification" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromNotification">UserFromNotification</a></li>
+<li><a title="pyflarum.flarum.core.BaseFlarumIndividualObject" href="../../flarum/core/index.html#pyflarum.flarum.core.BaseFlarumIndividualObject">BaseFlarumIndividualObject</a></li>
+<li><a title="pyflarum.flarum.core.BaseFlarumObject" href="../../flarum/core/index.html#pyflarum.flarum.core.BaseFlarumObject">BaseFlarumObject</a></li>
+<li>builtins.dict</li>
+</ul>
 <h3>Instance variables</h3>
 <dl>
+<dt id="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.attributes"><code class="name">var <span class="ident">attributes</span> : dict</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.attributes" href="../../flarum/core/index.html#pyflarum.flarum.core.users.UserFromBulk.attributes">attributes</a></code>
+</p>
+<div class="desc inherited"><p>Raw <code>dict</code> of the object's attributes.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.avatarUrl"><code class="name">var <span class="ident">avatarUrl</span> : Optional[str]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.avatarUrl" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk.avatarUrl">avatarUrl</a></code>
+</p>
+<div class="desc inherited"><p>The user's avatar URL.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.canDelete"><code class="name">var <span class="ident">canDelete</span> : bool</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.canDelete" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk.canDelete">canDelete</a></code>
+</p>
+<div class="desc inherited"><p>Whether or not you are able to scronch this user forever.</p></div>
+</dd>
 <dt id="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.canDeleteWarnings"><code class="name">var <span class="ident">canDeleteWarnings</span> : bool</code></dt>
 <dd>
 <div class="desc"><p>Whether or not you can delete the user's warnings.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/flarum/Askvortsov_ModeratorWarnings.py#L34-L40" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/flarum/Askvortsov_ModeratorWarnings.py#L34-L40" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
-def canDeleteWarnings(self: UserFromBulk) -&gt; bool:
+def canDeleteWarnings(self) -&gt; bool:
     &#34;&#34;&#34;
         Whether or not you can delete the user&#39;s warnings.
     &#34;&#34;&#34;
@@ -246,16 +285,40 @@ def canDeleteWarnings(self: UserFromBulk) -&gt; bool:
     return self.attributes.get(&#34;canDeleteWarnings&#34;, False)</code></pre>
 </details>
 </dd>
+<dt id="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.canEdit"><code class="name">var <span class="ident">canEdit</span> : bool</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.canEdit" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk.canEdit">canEdit</a></code>
+</p>
+<div class="desc inherited"><p>Whether or not you are able to edit this user.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.canEditCredentials"><code class="name">var <span class="ident">canEditCredentials</span> : bool</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.canEditCredentials" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk.canEditCredentials">canEditCredentials</a></code>
+</p>
+<div class="desc inherited"><p>Whether or not you are able to edit this user's credentials.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.canEditGroups"><code class="name">var <span class="ident">canEditGroups</span> : bool</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.canEditGroups" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk.canEditGroups">canEditGroups</a></code>
+</p>
+<div class="desc inherited"><p>Whether or not you are able to edit this user's groups.</p></div>
+</dd>
 <dt id="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.canManageWarnings"><code class="name">var <span class="ident">canManageWarnings</span> : bool</code></dt>
 <dd>
 <div class="desc"><p>Whether or not you are able to manage the user's warnings.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/flarum/Askvortsov_ModeratorWarnings.py#L25-L31" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/flarum/Askvortsov_ModeratorWarnings.py#L25-L31" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
-def canManageWarnings(self: UserFromBulk) -&gt; bool:
+def canManageWarnings(self) -&gt; bool:
     &#34;&#34;&#34;
         Whether or not you are able to manage the user&#39;s warnings.
     &#34;&#34;&#34;
@@ -269,10 +332,10 @@ def canManageWarnings(self: UserFromBulk) -&gt; bool:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/flarum/Askvortsov_ModeratorWarnings.py#L16-L22" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/flarum/Askvortsov_ModeratorWarnings.py#L16-L22" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
-def canViewWarnings(self: UserFromBulk) -&gt; bool:
+def canViewWarnings(self) -&gt; bool:
     &#34;&#34;&#34;
         Whether or not you can view the warnings of the user.
     &#34;&#34;&#34;
@@ -280,16 +343,121 @@ def canViewWarnings(self: UserFromBulk) -&gt; bool:
     return self.attributes.get(&#34;canViewWarnings&#34;, False)</code></pre>
 </details>
 </dd>
+<dt id="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.commentCount"><code class="name">var <span class="ident">commentCount</span> : Optional[int]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.commentCount" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk.commentCount">commentCount</a></code>
+</p>
+<div class="desc inherited"><p>The user's comment/post count.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.data"><code class="name">var <span class="ident">data</span> : list[dict] | dict</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.data" href="../../flarum/core/index.html#pyflarum.flarum.core.users.UserFromBulk.data">data</a></code>
+</p>
+<div class="desc inherited"><p>A raw <code>dict</code> of the object's data.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.discussionCount"><code class="name">var <span class="ident">discussionCount</span> : Optional[int]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.discussionCount" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk.discussionCount">discussionCount</a></code>
+</p>
+<div class="desc inherited"><p>The user's discussion count.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.displayName"><code class="name">var <span class="ident">displayName</span> : Optional[str]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.displayName" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk.displayName">displayName</a></code>
+</p>
+<div class="desc inherited"><p>The display name/nickname of the user.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.email"><code class="name">var <span class="ident">email</span> : Optional[str]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.email" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk.email">email</a></code>
+</p>
+<div class="desc inherited"><p>The user's E-mail, if you have permission to view it.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.id"><code class="name">var <span class="ident">id</span> : Optional[int]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.id" href="../../flarum/core/index.html#pyflarum.flarum.core.users.UserFromBulk.id">id</a></code>
+</p>
+<div class="desc inherited"><p>The <code>int</code> ID of the object. This should always be unique for the object's type.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.included"><code class="name">var <span class="ident">included</span> : list</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.included" href="../../flarum/core/index.html#pyflarum.flarum.core.users.UserFromBulk.included">included</a></code>
+</p>
+<div class="desc inherited"><p>Returns raw list of JSON included data …</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.isEmailConfirmed"><code class="name">var <span class="ident">isEmailConfirmed</span> : bool</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.isEmailConfirmed" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk.isEmailConfirmed">isEmailConfirmed</a></code>
+</p>
+<div class="desc inherited"><p>Whether or not this user confirmed their E-mail address …</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.joinTime"><code class="name">var <span class="ident">joinTime</span> : Optional[datetime.datetime]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.joinTime" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk.joinTime">joinTime</a></code>
+</p>
+<div class="desc inherited"><p>The <code>datetime</code> of when the user had joined this forum.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.relationships"><code class="name">var <span class="ident">relationships</span> : dict</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.relationships" href="../../flarum/core/index.html#pyflarum.flarum.core.users.UserFromBulk.relationships">relationships</a></code>
+</p>
+<div class="desc inherited"><p>Raw <code>dict</code> of the object's relationships with
+other objects …</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.slug"><code class="name">var <span class="ident">slug</span> : Optional[str]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.slug" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk.slug">slug</a></code>
+</p>
+<div class="desc inherited"><p>The user's slug.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.type"><code class="name">var <span class="ident">type</span> : Optional[str]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.type" href="../../flarum/core/index.html#pyflarum.flarum.core.users.UserFromBulk.type">type</a></code>
+</p>
+<div class="desc inherited"><p>The type of the object …</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.username"><code class="name">var <span class="ident">username</span> : Optional[str]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.username" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk.username">username</a></code>
+</p>
+<div class="desc inherited"><p>The user's username.</p></div>
+</dd>
 <dt id="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.visibleWarningCount"><code class="name">var <span class="ident">visibleWarningCount</span> : int</code></dt>
 <dd>
 <div class="desc"><p>The amount of warnings that you can see that belong to the user.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/ee02ce2b13945e959d58aa2604d3db2f2f31de23/pyflarum/extensions/flarum/Askvortsov_ModeratorWarnings.py#L43-L49" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum/extensions/flarum/Askvortsov_ModeratorWarnings.py#L43-L49" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
-def visibleWarningCount(self: UserFromBulk) -&gt; int:
+def visibleWarningCount(self) -&gt; int:
     &#34;&#34;&#34;
         The amount of warnings that you can see that belong to the user.
     &#34;&#34;&#34;
@@ -370,10 +538,29 @@ setTimeout(() => input.focus(), 100);
 </li>
 <li>
 <h4><code><a title="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin" href="#pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin">ModeratorWarningsUserFromBulkMixin</a></code></h4>
-<ul class="">
+<ul class="two-column">
+<li><code><a title="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.attributes" href="../../flarum/core/index.html#pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.attributes">attributes</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.avatarUrl" href="../../flarum/core/users.html#pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.avatarUrl">avatarUrl</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.canDelete" href="../../flarum/core/users.html#pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.canDelete">canDelete</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.canDeleteWarnings" href="#pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.canDeleteWarnings">canDeleteWarnings</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.canEdit" href="../../flarum/core/users.html#pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.canEdit">canEdit</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.canEditCredentials" href="../../flarum/core/users.html#pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.canEditCredentials">canEditCredentials</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.canEditGroups" href="../../flarum/core/users.html#pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.canEditGroups">canEditGroups</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.canManageWarnings" href="#pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.canManageWarnings">canManageWarnings</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.canViewWarnings" href="#pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.canViewWarnings">canViewWarnings</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.commentCount" href="../../flarum/core/users.html#pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.commentCount">commentCount</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.data" href="../../flarum/core/index.html#pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.data">data</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.discussionCount" href="../../flarum/core/users.html#pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.discussionCount">discussionCount</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.displayName" href="../../flarum/core/users.html#pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.displayName">displayName</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.email" href="../../flarum/core/users.html#pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.email">email</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.id" href="../../flarum/core/index.html#pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.id">id</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.included" href="../../flarum/core/index.html#pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.included">included</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.isEmailConfirmed" href="../../flarum/core/users.html#pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.isEmailConfirmed">isEmailConfirmed</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.joinTime" href="../../flarum/core/users.html#pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.joinTime">joinTime</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.relationships" href="../../flarum/core/index.html#pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.relationships">relationships</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.slug" href="../../flarum/core/users.html#pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.slug">slug</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.type" href="../../flarum/core/index.html#pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.type">type</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.username" href="../../flarum/core/users.html#pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.username">username</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.visibleWarningCount" href="#pyflarum.extensions.flarum.Askvortsov_ModeratorWarnings.ModeratorWarningsUserFromBulkMixin.visibleWarningCount">visibleWarningCount</a></code></li>
 </ul>
 </li>
