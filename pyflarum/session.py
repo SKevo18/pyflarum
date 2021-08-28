@@ -4,8 +4,10 @@ if TYPE_CHECKING:
 
 
 import warnings
+
 from datetime import datetime
 from requests import Session
+from urllib.parse import urlparse
 
 
 from .flarum.core.forum import Forum
@@ -44,7 +46,12 @@ class FlarumSession:
             ```
         """
 
-        self.forum_url = forum_url
+        if not forum_url.startswith("http"):
+            raise TypeError(f'Invalid protocol used in `forum_url` ({forum_url}) - expected either "https://" or "http://"')
+
+        parsed_url = urlparse(forum_url, scheme="https")
+        self.forum_url = f"{parsed_url.scheme}://{parsed_url.hostname}"
+
         self.api_endpoint = api_endpoint
         self.username_or_email = username_or_email
         self.session = session_object
