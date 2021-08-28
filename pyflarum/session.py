@@ -37,7 +37,7 @@ class FlarumSession:
     def __init__(self, forum_url: str, username_or_email: Optional[str]=None, password: Optional[str]=None, api_endpoint: str="api", user_agent: str='pyflarum', session_object: 'Session | Any'=Session()):
         """
             ### Parameters:
-            - `forum_url` - the forum URL that you want the bot to fetch/update data from. This mustn't end with trailing slash (e. g.: https://domain.tld/ - wrong; https://domain.tld - correct).
+            - `forum_url` - the forum URL that you want the bot to fetch/update data from.
             - `username_or_email` - optional. The username or E-mail address to log into. If `None`, then the user isn't logged in.
             - `password` - optional. The user's password. If `None`, then the user isn't logged in.
             - `api_endpoint` - the API endpoint of the forum, without slashes. This can be specified in Flarum's `config.php` and normally forums don't need to change the default `'api'`

@@ -1,6 +1,6 @@
 # 🐍 pyFlarum
 
-![GitHub issues](https://img.shields.io/github/issues/CWKevo/pyflarum?color=forestgreen&label=Issues) ![GitHub](https://img.shields.io/github/license/CWKevo/pyFlarum?color=yellow&label=License)
+![PyPI version](https://badge.fury.io/py/pyFlarum.svg) ![GitHub issues](https://img.shields.io/github/issues/CWKevo/pyflarum?color=forestgreen&label=Issues) ![GitHub](https://img.shields.io/github/license/CWKevo/pyFlarum?color=yellow&label=License)
 
 
 Somewhere at the beginning of this year, I have started a concept to build a Python Flarum API client. The goal was to provide everyone an easy and extensible system to interact with Flarum's public API and perform user-related tasks.
@@ -71,8 +71,7 @@ The answer - luckily, it's actually quite easy:
 from pyflarum import FlarumUser
 
 # Here, we initialize our `FlarumUser` object. You can't do anything without this first:
-USER = FlarumUser(forum_url="https://discuss.flarum.org")
-# `forum_url` parameter mustn't end with a slash, or it chokes on API URLs!
+USER = FlarumUser(forum_url="https://discuss.flarum.org/")
 
 # Now, let's get the discussion:
 discussion = USER.get_discussion_by_id(28221)
