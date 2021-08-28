@@ -25,7 +25,7 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum\extensions\commands.py#L0-L66" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/a65fc09d5ae7d6cb04d63d7abe39aabe0cf03c52/pyflarum\extensions\commands.py#L0-L66" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">from . import ExtensionMixin
 from ..session import FlarumUser
@@ -166,7 +166,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum\extensions\commands.py#L53-L67" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/a65fc09d5ae7d6cb04d63d7abe39aabe0cf03c52/pyflarum\extensions\commands.py#L53-L67" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class CommandsExtension(ExtensionMixin, CommandsFlarumUserMixin):
     def __init__(self):
@@ -243,7 +243,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum\extensions\commands.py#L59-L63" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/a65fc09d5ae7d6cb04d63d7abe39aabe0cf03c52/pyflarum\extensions\commands.py#L59-L63" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_dependencies(self):
     return {
@@ -343,7 +343,7 @@ class ExampleExtension(ExtensionMixin):
 <div class="desc inherited"><p>Obtains all users from <code>/api/users</code>, optionally filtering results by using <code>filter</code>.</p></div>
 </dd>
 <dt id="pyflarum.extensions.commands.CommandsExtension.mark_all_discussions_as_read"><code class="name flex">
-<span>def <span class="ident">mark_all_discussions_as_read</span></span>(<span>self, at: datetime.datetime = datetime.datetime(2021, 8, 28, 12, 44, 32, 430307)) ‑> Literal[True]</span>
+<span>def <span class="ident">mark_all_discussions_as_read</span></span>(<span>self, at: datetime.datetime = datetime.datetime(2021, 8, 28, 13, 15, 16, 651943)) ‑> Literal[True]</span>
 </code></dt>
 <dd>
 <p class="inheritance">
@@ -374,7 +374,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum\extensions\commands.py#L66-L67" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/a65fc09d5ae7d6cb04d63d7abe39aabe0cf03c52/pyflarum\extensions\commands.py#L66-L67" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def mixin(self):
     super().mixin(self, FlarumUser, CommandsFlarumUserMixin)</code></pre>
@@ -462,7 +462,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum\extensions\commands.py#L17-L49" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/a65fc09d5ae7d6cb04d63d7abe39aabe0cf03c52/pyflarum\extensions\commands.py#L17-L49" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class CommandsFlarumUserMixin(FlarumUser):
     def is_mentioned_in(self, string: str) -&gt; bool:
@@ -640,7 +640,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum\extensions\commands.py#L18-L25" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/a65fc09d5ae7d6cb04d63d7abe39aabe0cf03c52/pyflarum\extensions\commands.py#L18-L25" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def is_mentioned_in(self, string: str) -&gt; bool:
     match = re.search(rf&#39;@&#34;({self.username})&#34;#[a-z0-9]+&#39;, string)
@@ -653,7 +653,7 @@ class ExampleExtension(ExtensionMixin):
 </details>
 </dd>
 <dt id="pyflarum.extensions.commands.CommandsFlarumUserMixin.mark_all_discussions_as_read"><code class="name flex">
-<span>def <span class="ident">mark_all_discussions_as_read</span></span>(<span>self, at: datetime.datetime = datetime.datetime(2021, 8, 28, 12, 44, 32, 430307)) ‑> Literal[True]</span>
+<span>def <span class="ident">mark_all_discussions_as_read</span></span>(<span>self, at: datetime.datetime = datetime.datetime(2021, 8, 28, 13, 15, 16, 651943)) ‑> Literal[True]</span>
 </code></dt>
 <dd>
 <p class="inheritance">
@@ -683,7 +683,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum\extensions\commands.py#L28-L49" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/a65fc09d5ae7d6cb04d63d7abe39aabe0cf03c52/pyflarum\extensions\commands.py#L28-L49" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def parse_as_command(self, string: str, is_mentioned: bool=True, split_at: str=&#39; &#39;) -&gt; list[str]:
     &#34;&#34;&#34;

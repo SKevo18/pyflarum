@@ -11,7 +11,7 @@ __author__      = "SKevo"
 __copyright__   = "Copyright 2021, SKevo"
 __credits__     = ["SKevo"]
 __license__     = "GPLv3"
-__version__     = "v1.0.9.1-beta"
+__version__     = "v1.0.9.2-beta"
 __maintainer__  = "SKevo"
 __email__       = "me@kevo.link"
 __status__      = "4 - Beta"
@@ -31,7 +31,7 @@ __doc__ = __readme__
 
 setuptools.setup(
     name = 'pyFlarum',
-    packages = setuptools.find_packages(),
+    packages = setuptools.find_packages(exclude=('tests',)),
 
     long_description=__readme__,
     long_description_content_type='text/markdown',

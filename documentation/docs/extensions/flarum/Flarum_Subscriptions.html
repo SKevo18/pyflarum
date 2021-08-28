@@ -25,7 +25,7 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum\extensions\flarum\Flarum_Subscriptions.py#L0-L92" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/a65fc09d5ae7d6cb04d63d7abe39aabe0cf03c52/pyflarum\extensions\flarum\Flarum_Subscriptions.py#L0-L92" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">from typing import Literal, Optional, Type
 
@@ -146,7 +146,7 @@ class SubscriptionsExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum\extensions\flarum\Flarum_Subscriptions.py#L72-L79" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/a65fc09d5ae7d6cb04d63d7abe39aabe0cf03c52/pyflarum\extensions\flarum\Flarum_Subscriptions.py#L72-L79" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class SubscriptionsDiscussionFromBulkMixin(DiscussionFromBulk, SubscriptionsDiscussionFromNotificationMixin):
     @property
@@ -327,7 +327,7 @@ e. g. <code>123-some-title</code>).</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum\extensions\flarum\Flarum_Subscriptions.py#L73-L79" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/a65fc09d5ae7d6cb04d63d7abe39aabe0cf03c52/pyflarum\extensions\flarum\Flarum_Subscriptions.py#L73-L79" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def subscription(self) -&gt; Optional[Literal[&#39;following&#39;, &#39;ignoring&#39;]]:
@@ -496,7 +496,7 @@ data from all of the discussion classes (see <a href="https://cwkevo.github.io/p
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum\extensions\flarum\Flarum_Subscriptions.py#L18-L68" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/a65fc09d5ae7d6cb04d63d7abe39aabe0cf03c52/pyflarum\extensions\flarum\Flarum_Subscriptions.py#L18-L68" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class SubscriptionsDiscussionFromNotificationMixin(DiscussionFromNotification):
     def __change_subscription_state(self, state: Optional[Literal[&#39;following&#39;, &#39;ignoring&#39;]]):
@@ -652,7 +652,7 @@ Returns <code>True</code> on success, <code>FlarumError</code> otherwise.</p></d
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum\extensions\flarum\Flarum_Subscriptions.py#L43-L48" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/a65fc09d5ae7d6cb04d63d7abe39aabe0cf03c52/pyflarum\extensions\flarum\Flarum_Subscriptions.py#L43-L48" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def follow(self):
     &#34;&#34;&#34;
@@ -696,7 +696,7 @@ Currently, the only ways to access ignored Flarum discussions that I am aware of
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum\extensions\flarum\Flarum_Subscriptions.py#L59-L68" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/a65fc09d5ae7d6cb04d63d7abe39aabe0cf03c52/pyflarum\extensions\flarum\Flarum_Subscriptions.py#L59-L68" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def ignore(self):
     &#34;&#34;&#34;
@@ -729,7 +729,7 @@ Raises <code>FlarumError</code> if it failed, otherwise the new discussion is re
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum\extensions\flarum\Flarum_Subscriptions.py#L51-L56" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/a65fc09d5ae7d6cb04d63d7abe39aabe0cf03c52/pyflarum\extensions\flarum\Flarum_Subscriptions.py#L51-L56" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def unfollow(self):
     &#34;&#34;&#34;
@@ -802,7 +802,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum\extensions\flarum\Flarum_Subscriptions.py#L83-L93" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/a65fc09d5ae7d6cb04d63d7abe39aabe0cf03c52/pyflarum\extensions\flarum\Flarum_Subscriptions.py#L83-L93" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class SubscriptionsExtension(ExtensionMixin):
     def get_dependencies(self):
@@ -839,7 +839,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum\extensions\flarum\Flarum_Subscriptions.py#L84-L88" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/a65fc09d5ae7d6cb04d63d7abe39aabe0cf03c52/pyflarum\extensions\flarum\Flarum_Subscriptions.py#L84-L88" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_dependencies(self):
     return {
@@ -860,7 +860,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/f6c78504275be4a46a3b66b6d714be4afff64ea6/pyflarum\extensions\flarum\Flarum_Subscriptions.py#L91-L93" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/a65fc09d5ae7d6cb04d63d7abe39aabe0cf03c52/pyflarum\extensions\flarum\Flarum_Subscriptions.py#L91-L93" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def mixin(self):
     super().mixin(self, DiscussionFromNotification, SubscriptionsDiscussionFromNotificationMixin)
