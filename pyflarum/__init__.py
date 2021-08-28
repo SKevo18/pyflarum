@@ -33,3 +33,7 @@ try:
 
 except:
     __doc__ = "Failed to read README.md. For now, see the GitHub version, which is identical: https://github.com/cwkevo/pyflarum"
+
+
+if __name__ == "__main__":
+    print(__doc__)
