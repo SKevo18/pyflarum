@@ -1781,12 +1781,12 @@ INDEX=[
 {
 "ref":"pyflarum.Filter",
 "url":0,
-"doc":"Represents a Flarum API filter as a  dict . It allows you to filter discussions without having to manually specify URL parameters."
+"doc":"Represents a Flarum API filter as a  dict . It allows you to filter discussions without having to manually specify URL parameters. -  order_by - gets passed into  ?sort= parameter. Common values are  commentCount ,  createdAt and their reverse/negated values (prefixed with  - ) -  query - the search query, passed into  ?filter[q]= . This can be a string. Flarum search bar uses this. Gambits such as  author:username are supported. -  ids - fetches entries with specific ids, passed into  ?filter[id]= . This is a list, that is then converted into comma separated string. -  limit - limit of entires to fetch. Flarum (by default) allows a max. of 50 entries to be fetched at once. Passed into  ?page[limit]= -  page - fetch a specific page of entires. This is actually an offset - which is determined by multiplying  page with  limit (see above). -  include - include specific entries. See [included data](https: cwkevo.github.io/pyflarum/docs/ included-data). You will likely never use this. -  additional_data - this is a  dict ( parameter: value ) of additional search parameters that you might want to use. This can be used to overwrite previous filters."
 },
 {
 "ref":"pyflarum.Filter.to_dict",
 "url":0,
-"doc":"Converts the filter to a  dict , so that it can be sent to the API. An extension might add additional data during runtime."
+"doc":"Converts the filter to a  dict , so that it can be sent to the API ( requests module, see [\"Passing parameters in URLs\"](https: docs.python-requests.org/en/master/user/quickstart/ passing-parameters-in-urls . An extension might add additional filter data after the filter was initialized (for example:  absolutely_all needs to update page number to continuously yield results)."
 },
 {
 "ref":"pyflarum.Notifications",
@@ -2166,7 +2166,7 @@ INDEX=[
 {
 "ref":"pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.get_all_posts_from_discussion",
 "url":10,
-"doc":"This makes additional API request for every individual post to fetch full post data from a long discussion. Sadly, the reason why additional request is needed is because only post IDs are present in the relationship data of the discussion. I recommend you to put a delay between  next() to prevent \"429 Rate Limited\" error for forums that are protected from flooding.",
+"doc":"This fetches all posts from a long discussion where only post IDs are present. First, a list of all IDs is created from the API response. Then, IDs are broken into chunks of size  at_once and yielded as  Posts . Use  force=True to bypass  at_once being capped at 50, if more than 50.",
 "func":1
 },
 {
@@ -9604,12 +9604,12 @@ INDEX=[
 {
 "ref":"pyflarum.flarum.core.filters.Filter",
 "url":39,
-"doc":"Represents a Flarum API filter as a  dict . It allows you to filter discussions without having to manually specify URL parameters."
+"doc":"Represents a Flarum API filter as a  dict . It allows you to filter discussions without having to manually specify URL parameters. -  order_by - gets passed into  ?sort= parameter. Common values are  commentCount ,  createdAt and their reverse/negated values (prefixed with  - ) -  query - the search query, passed into  ?filter[q]= . This can be a string. Flarum search bar uses this. Gambits such as  author:username are supported. -  ids - fetches entries with specific ids, passed into  ?filter[id]= . This is a list, that is then converted into comma separated string. -  limit - limit of entires to fetch. Flarum (by default) allows a max. of 50 entries to be fetched at once. Passed into  ?page[limit]= -  page - fetch a specific page of entires. This is actually an offset - which is determined by multiplying  page with  limit (see above). -  include - include specific entries. See [included data](https: cwkevo.github.io/pyflarum/docs/ included-data). You will likely never use this. -  additional_data - this is a  dict ( parameter: value ) of additional search parameters that you might want to use. This can be used to overwrite previous filters."
 },
 {
 "ref":"pyflarum.flarum.core.filters.Filter.to_dict",
 "url":39,
-"doc":"Converts the filter to a  dict , so that it can be sent to the API. An extension might add additional data during runtime."
+"doc":"Converts the filter to a  dict , so that it can be sent to the API ( requests module, see [\"Passing parameters in URLs\"](https: docs.python-requests.org/en/master/user/quickstart/ passing-parameters-in-urls . An extension might add additional filter data after the filter was initialized (for example:  absolutely_all needs to update page number to continuously yield results)."
 },
 {
 "ref":"pyflarum.flarum.core.forum",

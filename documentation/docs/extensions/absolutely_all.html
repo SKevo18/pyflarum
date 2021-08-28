@@ -25,20 +25,24 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\absolutely_all.py#L0-L168" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/ffd54ff1b598cb9abc6302085ea5fab8da4d32fd/pyflarum\extensions\absolutely_all.py#L0-L189" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">from typing import Generator, Optional, TYPE_CHECKING
 if TYPE_CHECKING:
     from ..flarum.core.notifications import Notifications
-    from ..flarum.core.discussions import Discussions, Discussion
-    from ..flarum.core.posts import Posts, Post
+    from ..flarum.core.discussions import Discussions
+    from ..flarum.core.posts import Posts
     from ..flarum.core.users import Users
+
+
+import warnings
 
 
 from . import ExtensionMixin
 from ..session import FlarumUser
 
 from ..flarum.core.filters import Filter
+from ..flarum.core.discussions import Discussion
 
 
 AUTHOR = &#39;skevo&#39;
@@ -156,21 +160,38 @@ class AbsolutelyAllFlarumUserMixin(FlarumUser):
                 break
     
 
-    def get_all_posts_from_discussion(self, discussion: &#39;Discussion&#39;) -&gt; Generator[&#39;Post&#39;, None, None]:
+    def get_all_posts_from_discussion(self, discussion: Discussion, at_once: int=50, force: bool=False) -&gt; Generator[&#39;Posts&#39;, None, None]:
         &#34;&#34;&#34;
-            This makes additional API request for every individual post to fetch full post data from a long discussion.
-            Sadly, the reason why additional request is needed is because only post IDs are present in the relationship data of the discussion.
+            This fetches all posts from a long discussion where only post IDs are present.
 
-            I recommend you to put a delay between `next()` to prevent &#34;429  Rate Limited&#34; error for forums that are protected from flooding.
+            First, a list of all IDs is created from the API response. Then, IDs are broken into chunks of size `at_once` and
+            yielded as `Posts`.
+
+            Use `force=True` to bypass `at_once` being capped at 50, if more than 50.
         &#34;&#34;&#34;
+
+        if not isinstance(discussion, Discussion):
+            raise TypeError(&#34;`discussion` parameter must be an instance of `Discussion`.&#34;)
+
+
+        if at_once &gt; 50 and not force:
+            at_once = 50
+            warnings.warn(&#34;`at_once` was capped at 50, because Flarum (by default/currently) doesn&#39;t support fetching more than 50 entires at once from API. Use `force=True` to bypass.&#34;)
+
 
         raw_posts = discussion.relationships.get(&#34;posts&#34;, {}).get(&#34;data&#34;, []) # type: list[dict]
+        post_ids = [] # type: list[int]
+
 
         for raw_post in raw_posts:
             post_id = raw_post.get(&#34;id&#34;, None) # type: Optional[int]
 
             if post_id:
-                yield self.get_post_by_id(post_id)
+                post_ids.append(post_id)
+
+
+        for id in range(0, len(post_ids), at_once): 
+            yield self.get_posts(filter=Filter(limit=50, ids=post_ids[id:id + at_once]))
 
 
 
@@ -216,7 +237,7 @@ class AbsolutelyAllExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\absolutely_all.py#L148-L169" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/ffd54ff1b598cb9abc6302085ea5fab8da4d32fd/pyflarum\extensions\absolutely_all.py#L169-L190" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class AbsolutelyAllExtension(ExtensionMixin):
     &#34;&#34;&#34;
@@ -264,7 +285,7 @@ class AbsolutelyAllExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\absolutely_all.py#L161-L165" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/ffd54ff1b598cb9abc6302085ea5fab8da4d32fd/pyflarum\extensions\absolutely_all.py#L182-L186" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_dependencies(self):
     return {
@@ -285,7 +306,7 @@ class AbsolutelyAllExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\absolutely_all.py#L168-L169" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/ffd54ff1b598cb9abc6302085ea5fab8da4d32fd/pyflarum\extensions\absolutely_all.py#L189-L190" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def mixin(self):
     super().mixin(self, FlarumUser, AbsolutelyAllFlarumUserMixin)</code></pre>
@@ -313,7 +334,7 @@ class AbsolutelyAllExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\absolutely_all.py#L25-L144" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/ffd54ff1b598cb9abc6302085ea5fab8da4d32fd/pyflarum\extensions\absolutely_all.py#L29-L165" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class AbsolutelyAllFlarumUserMixin(FlarumUser):
     def absolutely_all_users(self, filter: Optional[Filter]=None)  -&gt; Generator[&#39;Users&#39;, None, None]:
@@ -420,21 +441,38 @@ class AbsolutelyAllExtension(ExtensionMixin):
                 break
     
 
-    def get_all_posts_from_discussion(self, discussion: &#39;Discussion&#39;) -&gt; Generator[&#39;Post&#39;, None, None]:
+    def get_all_posts_from_discussion(self, discussion: Discussion, at_once: int=50, force: bool=False) -&gt; Generator[&#39;Posts&#39;, None, None]:
         &#34;&#34;&#34;
-            This makes additional API request for every individual post to fetch full post data from a long discussion.
-            Sadly, the reason why additional request is needed is because only post IDs are present in the relationship data of the discussion.
+            This fetches all posts from a long discussion where only post IDs are present.
 
-            I recommend you to put a delay between `next()` to prevent &#34;429  Rate Limited&#34; error for forums that are protected from flooding.
+            First, a list of all IDs is created from the API response. Then, IDs are broken into chunks of size `at_once` and
+            yielded as `Posts`.
+
+            Use `force=True` to bypass `at_once` being capped at 50, if more than 50.
         &#34;&#34;&#34;
+
+        if not isinstance(discussion, Discussion):
+            raise TypeError(&#34;`discussion` parameter must be an instance of `Discussion`.&#34;)
+
+
+        if at_once &gt; 50 and not force:
+            at_once = 50
+            warnings.warn(&#34;`at_once` was capped at 50, because Flarum (by default/currently) doesn&#39;t support fetching more than 50 entires at once from API. Use `force=True` to bypass.&#34;)
+
 
         raw_posts = discussion.relationships.get(&#34;posts&#34;, {}).get(&#34;data&#34;, []) # type: list[dict]
+        post_ids = [] # type: list[int]
+
 
         for raw_post in raw_posts:
             post_id = raw_post.get(&#34;id&#34;, None) # type: Optional[int]
 
             if post_id:
-                yield self.get_post_by_id(post_id)</code></pre>
+                post_ids.append(post_id)
+
+
+        for id in range(0, len(post_ids), at_once): 
+            yield self.get_posts(filter=Filter(limit=50, ids=post_ids[id:id + at_once]))</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -463,7 +501,7 @@ class AbsolutelyAllExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\absolutely_all.py#L78-L101" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/ffd54ff1b598cb9abc6302085ea5fab8da4d32fd/pyflarum\extensions\absolutely_all.py#L82-L105" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def absolutely_all_discussions(self, filter: Optional[Filter]=None) -&gt; Generator[&#39;Discussions&#39;, None, None]:
     &#34;&#34;&#34;
@@ -499,7 +537,7 @@ class AbsolutelyAllExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\absolutely_all.py#L104-L127" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/ffd54ff1b598cb9abc6302085ea5fab8da4d32fd/pyflarum\extensions\absolutely_all.py#L108-L131" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def absolutely_all_notifications(self, filter: Optional[Filter]=None) -&gt; Generator[&#39;Notifications&#39;, None, None]:
     &#34;&#34;&#34;
@@ -535,7 +573,7 @@ class AbsolutelyAllExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\absolutely_all.py#L52-L75" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/ffd54ff1b598cb9abc6302085ea5fab8da4d32fd/pyflarum\extensions\absolutely_all.py#L56-L79" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def absolutely_all_posts(self, filter: Optional[Filter]=None) -&gt; Generator[&#39;Posts&#39;, None, None]:
     &#34;&#34;&#34;
@@ -571,7 +609,7 @@ class AbsolutelyAllExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\absolutely_all.py#L26-L49" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/ffd54ff1b598cb9abc6302085ea5fab8da4d32fd/pyflarum\extensions\absolutely_all.py#L30-L53" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def absolutely_all_users(self, filter: Optional[Filter]=None)  -&gt; Generator[&#39;Users&#39;, None, None]:
     &#34;&#34;&#34;
@@ -621,33 +659,50 @@ class AbsolutelyAllExtension(ExtensionMixin):
 <div class="desc inherited"><p>Changes your E-mail. If <code>user</code> is specified, then that user's E-mail is changed …</p></div>
 </dd>
 <dt id="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.get_all_posts_from_discussion"><code class="name flex">
-<span>def <span class="ident">get_all_posts_from_discussion</span></span>(<span>self, discussion: Discussion) ‑> Generator[Post, NoneType, NoneType]</span>
+<span>def <span class="ident">get_all_posts_from_discussion</span></span>(<span>self, discussion: <a title="pyflarum.flarum.core.discussions.Discussion" href="../flarum/core/discussions.html#pyflarum.flarum.core.discussions.Discussion">Discussion</a>, at_once: int = 50, force: bool = False) ‑> Generator[Posts, NoneType, NoneType]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>This makes additional API request for every individual post to fetch full post data from a long discussion.
-Sadly, the reason why additional request is needed is because only post IDs are present in the relationship data of the discussion.</p>
-<p>I recommend you to put a delay between <code>next()</code> to prevent "429
-Rate Limited" error for forums that are protected from flooding.</p></div>
+<div class="desc"><p>This fetches all posts from a long discussion where only post IDs are present.</p>
+<p>First, a list of all IDs is created from the API response. Then, IDs are broken into chunks of size <code>at_once</code> and
+yielded as <code>Posts</code>.</p>
+<p>Use <code>force=True</code> to bypass <code>at_once</code> being capped at 50, if more than 50.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\absolutely_all.py#L130-L144" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/ffd54ff1b598cb9abc6302085ea5fab8da4d32fd/pyflarum\extensions\absolutely_all.py#L134-L165" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">def get_all_posts_from_discussion(self, discussion: &#39;Discussion&#39;) -&gt; Generator[&#39;Post&#39;, None, None]:
+<pre><code class="python">def get_all_posts_from_discussion(self, discussion: Discussion, at_once: int=50, force: bool=False) -&gt; Generator[&#39;Posts&#39;, None, None]:
     &#34;&#34;&#34;
-        This makes additional API request for every individual post to fetch full post data from a long discussion.
-        Sadly, the reason why additional request is needed is because only post IDs are present in the relationship data of the discussion.
+        This fetches all posts from a long discussion where only post IDs are present.
 
-        I recommend you to put a delay between `next()` to prevent &#34;429  Rate Limited&#34; error for forums that are protected from flooding.
+        First, a list of all IDs is created from the API response. Then, IDs are broken into chunks of size `at_once` and
+        yielded as `Posts`.
+
+        Use `force=True` to bypass `at_once` being capped at 50, if more than 50.
     &#34;&#34;&#34;
+
+    if not isinstance(discussion, Discussion):
+        raise TypeError(&#34;`discussion` parameter must be an instance of `Discussion`.&#34;)
+
+
+    if at_once &gt; 50 and not force:
+        at_once = 50
+        warnings.warn(&#34;`at_once` was capped at 50, because Flarum (by default/currently) doesn&#39;t support fetching more than 50 entires at once from API. Use `force=True` to bypass.&#34;)
+
 
     raw_posts = discussion.relationships.get(&#34;posts&#34;, {}).get(&#34;data&#34;, []) # type: list[dict]
+    post_ids = [] # type: list[int]
+
 
     for raw_post in raw_posts:
         post_id = raw_post.get(&#34;id&#34;, None) # type: Optional[int]
 
         if post_id:
-            yield self.get_post_by_id(post_id)</code></pre>
+            post_ids.append(post_id)
+
+
+    for id in range(0, len(post_ids), at_once): 
+        yield self.get_posts(filter=Filter(limit=50, ids=post_ids[id:id + at_once]))</code></pre>
 </details>
 </dd>
 <dt id="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.get_discussion_by_id"><code class="name flex">
@@ -741,7 +796,7 @@ Rate Limited" error for forums that are protected from flooding.</p></div>
 <div class="desc inherited"><p>Obtains all users from <code>/api/users</code>, optionally filtering results by using <code>filter</code>.</p></div>
 </dd>
 <dt id="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.mark_all_discussions_as_read"><code class="name flex">
-<span>def <span class="ident">mark_all_discussions_as_read</span></span>(<span>self, at: datetime.datetime = datetime.datetime(2021, 8, 28, 10, 58, 47, 198536)) ‑> Literal[True]</span>
+<span>def <span class="ident">mark_all_discussions_as_read</span></span>(<span>self, at: datetime.datetime = datetime.datetime(2021, 8, 28, 12, 36, 53, 498470)) ‑> Literal[True]</span>
 </code></dt>
 <dd>
 <p class="inheritance">
