@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="pdoc 7.4.0" />
-    <title>pyflarum API documentation</title>
+    <title>pyflarum.extensions.flarum.Flarum_Suspend API documentation</title>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2264%22%20height%3D%2264%22%20viewBox%3D%2244.5%202.5%2015%2015%22%3E%3Cpath%20d%3D%22M49.351%2021.041c-.233-.721-.546-2.408-.772-4.076-.042-.09-.067-.187-.046-.288-.166-1.347-.277-2.625-.241-3.351-1.378-1.008-2.271-2.586-2.271-4.362%200-.976.272-1.935.788-2.774.057-.094.122-.18.184-.268-.033-.167-.052-.339-.052-.516%200-1.477%201.202-2.679%202.679-2.679.791%200%201.496.352%201.987.9a6.3%206.3%200%200%201%201.001.029c.492-.564%201.207-.929%202.012-.929%201.477%200%202.679%201.202%202.679%202.679a2.65%202.65%200%200%201-.269%201.148c.383.747.595%201.572.595%202.41%200%202.311-1.507%204.29-3.635%205.107.037.699.147%202.27.423%203.294l.137.461c.156%202.136-4.612%205.166-5.199%203.215zm.127-4.919a4.78%204.78%200%200%200%20.775-.584c-.172-.115-.505-.254-.88-.378zm.331%202.302l.828-.502c-.202-.143-.576-.328-.984-.49zm.45%202.157l.701-.403c-.214-.115-.536-.249-.891-.376l.19.779zM49.13%204.141c0%20.152.123.276.276.276s.275-.124.275-.276-.123-.276-.276-.276-.275.124-.275.276zm.735-.389a1.15%201.15%200%200%201%20.314.783%201.16%201.16%200%200%201-1.162%201.162c-.457%200-.842-.27-1.032-.653-.026.117-.042.238-.042.362a1.68%201.68%200%200%200%201.679%201.679%201.68%201.68%200%200%200%201.679-1.679c0-.843-.626-1.535-1.436-1.654zm3.076%201.654a1.68%201.68%200%200%200%201.679%201.679%201.68%201.68%200%200%200%201.679-1.679c0-.037-.009-.072-.011-.109-.21.3-.541.508-.935.508a1.16%201.16%200%200%201-1.162-1.162%201.14%201.14%200%200%201%20.474-.912c-.015%200-.03-.005-.045-.005-.926.001-1.679.754-1.679%201.68zm1.861-1.265c0%20.152.123.276.276.276s.275-.124.275-.276-.123-.276-.276-.276-.275.124-.275.276zm1.823%204.823c0-.52-.103-1.035-.288-1.52-.466.394-1.06.64-1.717.64-1.144%200-2.116-.725-2.499-1.738-.383%201.012-1.355%201.738-2.499%201.738-.867%200-1.631-.421-2.121-1.062-.307.605-.478%201.267-.478%201.942%200%202.486%202.153%204.51%204.801%204.51s4.801-2.023%204.801-4.51zm-3.032%209.156l-.146-.492c-.276-1.02-.395-2.457-.444-3.268a6.11%206.11%200%200%201-1.18.115%206.01%206.01%200%200%201-2.536-.562l.006.175c.802.215%201.848.612%202.021%201.25.079.295-.021.601-.274.837l-.598.501c.667.304%201.243.698%201.311%201.179.02.144.022.507-.393.787l-.564.365c1.285.521%201.361.96%201.381%201.126.018.142.011.496-.427.746l-.854.489c.064-1.19%201.985-2.585%202.697-3.248zM49.34%209.925c0-.667%201-.667%201%200%200%20.653.818%201.205%201.787%201.205s1.787-.552%201.787-1.205c0-.667%201-.667%201%200%200%201.216-1.25%202.205-2.787%202.205s-2.787-.989-2.787-2.205zm-.887-7.633c-.093.077-.205.114-.317.114a.5.5%200%200%201-.318-.886L49.183.397a.5.5%200%200%201%20.703.068.5.5%200%200%201-.069.703zm7.661-.065c-.086%200-.173-.022-.253-.068l-1.523-.893c-.575-.337-.069-1.2.506-.863l1.523.892a.5.5%200%200%201%20.179.685c-.094.158-.261.247-.432.247z%22%20fill%3D%22%233bb300%22/%3E%3C/svg%3E"/>
 
 
@@ -16,64 +16,48 @@
             <label id="navtoggle" for="togglestate" class="pdoc-button"><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'><path stroke-linecap='round' stroke="currentColor" stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/></svg></label>
             <input id="togglestate" type="checkbox">
             <div>
-                        <a class="pdoc-button module-list-button" href="./">
+                        <a class="pdoc-button module-list-button" href="../flarum.html">
 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-left" viewBox="0 0 16 16">
   <path fill-rule="evenodd" d="M10 3.5a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-2a.5.5 0 0 1 1 0v2A1.5 1.5 0 0 1 9.5 14h-8A1.5 1.5 0 0 1 0 12.5v-9A1.5 1.5 0 0 1 1.5 2h8A1.5 1.5 0 0 1 11 3.5v2a.5.5 0 0 1-1 0v-2z"/>
   <path fill-rule="evenodd" d="M4.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H14.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"/>
-</svg>                            &nbsp;
-                            Module Index
-                        </a>
+</svg>                            &nbsp;pyflarum.extensions.flarum</a>
 
 
                         <input type="search" placeholder="Search..." role="searchbox" aria-label="search"
                                pattern=".+" required>
 
-                    <h2>Contents</h2>
-                    <ul>
-  <li><a href="#pyflarum">🐍 pyFlarum</a>
-  <ul>
-    <li><a href="#useful-links">🔗 Useful links:</a>
-    <ul>
-      <li><a href="#features">🐱‍🏍 Features:</a></li>
-    </ul></li>
-    <li><a href="#quickstart">🚀 Quickstart:</a>
-    <ul>
-      <li><a href="#installation">📀 Installation:</a></li>
-      <li><a href="#quickstart-example">📜 Quickstart Example:</a></li>
-      <li><a href="#whats-next">➡ What's next?</a></li>
-    </ul></li>
-    <li><a href="#examples">📜 Examples:</a></li>
-    <li><a href="#parameters">📡 Parameters</a>
-    <ul>
-      <li><a href="#authentication">🔐 Authentication</a></li>
-      <li><a href="#cached-sessions">📚 Cached sessions:</a></li>
-    </ul></li>
-    <li><a href="#extensions">🧩 Extensions</a>
-    <ul>
-      <li><a href="#dealing-with-type-hints">🐲 Dealing with type hints</a></li>
-    </ul></li>
-    <li><a href="#class-inheritance">⬆ Class Inheritance</a>
-    <ul>
-      <li><a href="#example">📜 Example:</a></li>
-      <li><a href="#included-data">👀 Included data</a></li>
-      <li><a href="#parent-included">📚 Parent included</a>
-      <ul>
-        <li><a href="#long-explanation-for-nerds-i-am-not-good-at-explaining">Long explanation for nerds (I am not good at explaining):</a></li>
-      </ul></li>
-    </ul></li>
-  </ul></li>
-</ul>
 
 
-                    <h2>Submodules</h2>
-                    <ul>
-                            <li><a href="pyflarum/custom_types.html">pyflarum.custom_types</a></li>
-                            <li><a href="pyflarum/datetime_conversions.html">pyflarum.datetime_conversions</a></li>
-                            <li><a href="pyflarum/error_handler.html">pyflarum.error_handler</a></li>
-                            <li><a href="pyflarum/extensions.html">pyflarum.extensions</a></li>
-                            <li><a href="pyflarum/flarum.html">pyflarum.flarum</a></li>
-                            <li><a href="pyflarum/session.html">pyflarum.session</a></li>
-                    </ul>
+                    <h2>API Documentation</h2>
+                        <ul class="memberlist">
+            <li>
+                    <a class="class" href="#SuspendUserMixin">SuspendUserMixin</a>
+                            <ul class="memberlist">
+                        <li>
+                                <a class="variable" href="#SuspendUserMixin.canSuspend">canSuspend</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#SuspendUserMixin.suspendedUntil">suspendedUntil</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#SuspendUserMixin.suspend">suspend</a>
+                        </li>
+                </ul>
+
+            </li>
+            <li>
+                    <a class="class" href="#SuspendExtension">SuspendExtension</a>
+                            <ul class="memberlist">
+                        <li>
+                                <a class="function" href="#SuspendExtension.get_dependencies">get_dependencies</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#SuspendExtension.mixin">mixin</a>
+                        </li>
+                </ul>
+
+            </li>
+    </ul>
 
 
 
@@ -87,386 +71,424 @@
     <main class="pdoc">
             <section>
                     <h1 class="modulename">
-pyflarum    </h1>
+<a href="./../../../pyflarum.html">pyflarum</a><wbr>.<a href="./../../extensions.html">extensions</a><wbr>.<a href="./../flarum.html">flarum</a><wbr>.Flarum_Suspend    </h1>
 
-                        <div class="docstring"><h1 id="pyflarum">🐍 pyFlarum</h1>
-
-<p><img src="https://badge.fury.io/py/pyFlarum.svg" alt="PyPI version" /> <img src="https://img.shields.io/github/issues/CWKevo/pyflarum?color=forestgreen&amp;label=Issues" alt="GitHub issues" /> <img src="https://img.shields.io/github/license/CWKevo/pyFlarum?color=yellow&amp;label=License" alt="GitHub" /></p>
-
-<p>Somewhere at the beginning of this year, I have started a concept to build a Python Flarum API client. The goal was to provide everyone an easy and extensible system to interact with Flarum's public API and perform user-related tasks.</p>
-
-<p>Later, I began to work on rebasing FreeFlarum's code, so this idea was left in the dust. But after that was done, I revisited this project and started over now that I had learned more about Python.</p>
-
-<p>Thus, I present to you my first (real) Python package - <a href="https://pypi.org/project/pyFlarum">pyFlarum</a>.</p>
-
-<h2 id="useful-links">🔗 Useful links:</h2>
-
-<ul>
-<li><a href="https://github.com/CWKevo/pyflarum/releases">❗ Changelog</a></li>
-<li><a href="https://discuss.flarum.org/d/28221">🗣 Discuss</a></li>
-<li><a href="https://cwkevo.github.io/pyflarum/docs/">📚 Documentation</a></li>
-<li><a href="https://github.com/CWKevo/pyflarum">👨‍💻 GitHub repository</a></li>
-<li><a href="https://pypi.org/project/pyFlarum">🐍 PyPi link</a></li>
-</ul>
-
-<h3 id="features">🐱‍🏍 Features:</h3>
-
-<ul>
-<li>Complete support for creating, retrieving, updating and deleting data.</li>
-<li>(Almost) everything is object-oriented, with docstrings (still needs to be done) and examples to help you code faster.</li>
-<li>Very extensible, thanks to custom extension &amp; dependency system. The most common Flarum extensions are included out of the box, and more are still on the way. Read more about the extension system <a href="https://cwkevo.github.io/pyflarum/docs/#extensions">here</a>.</li>
-<li>The data is fetched and stored as JSON, but the keys can be retrieved by using class properties, which also handles type conversions.
-<ul>
-<li>This means that instead of using <code>discussion['data']['attributes']['title']</code>, it is as simple as <code>discussion.title</code>.</li>
-</ul></li>
-<li>Flarum's JSON API works in saving mode. What I mean is that when you fetch a discussion from notification, not all of the discussion's data is present in the JSON. On the other hand, obtaining the discussion directly by it's ID results in a much detailed JSON.
-<ul>
-<li>To save you headaches, pyFlarum obviously handles this too and all of the objects have different hierarchy and inheritance. Example: <code>DiscussionFromNotification</code> is parent for <code>DiscussionFromBulk</code> and that's parent for <code>Discussion</code>, where <code>Discussion</code> object is discussion obtained directly from API, and therefore logically contains all properties of the previous objects (and JSON). This is all nicely rendered thanks to your editor's linting and type hints, so you won't make a mistake by accessing unexisting properties from parent objects. More about pyFlarum's inheritance system and it's flaws can be found <a href="https://cwkevo.github.io/pyflarum/docs/#class-inheritance">here</a>.</li>
-</ul></li>
-</ul>
-
-<h2 id="quickstart">🚀 Quickstart:</h2>
-
-<h3 id="installation">📀 Installation:</h3>
-
-<p>This package requires Python 3.6+ and the <a href="https://pypi.org/project/requests">requests</a> library to be installed. Yep, that's the only dependency. Should there be more over time, you can install them all at once by using this command (but I assume that you're already familiar with all of this, so feel free to skip this part):</p>
-
-<div class="codehilite"><pre><span></span><code>pip install -r requirements.txt
-<span class="c1"># or:</span>
-python -m pip install -r requirements.txt
-</code></pre></div>
-
-<p>Installing is easy with:</p>
-
-<div class="codehilite"><pre><span></span><code>pip install pyflarum -U
-<span class="c1"># or:</span>
-python -m pip install pyflarum -U
-</code></pre></div>
-
-<p>Updating:</p>
-
-<div class="codehilite"><pre><span></span><code>python -m pip install pyflarum -U --upgrade
-<span class="c1"># or:</span>
-pip install pyflarum --upgrade -U
-</code></pre></div>
-
-<p>Uninstalling:</p>
-
-<div class="codehilite"><pre><span></span><code>python -m pip uninstall pyflarum
-<span class="c1"># or:</span>
-pip uninstall pyflarum
-</code></pre></div>
-
-<h3 id="quickstart-example">📜 Quickstart Example:</h3>
-
-<p>How easy is it to fetch a specific discussion and print it's title?</p>
-
-<p>The answer - luckily, it's actually quite easy:</p>
-
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">pyflarum</span> <span class="kn">import</span> <span class="n">FlarumUser</span>
-
-<span class="c1"># Here, we initialize our `FlarumUser` object. You can&#39;t do anything without this first:</span>
-<span class="n">USER</span> <span class="o">=</span> <span class="n">FlarumUser</span><span class="p">(</span><span class="n">forum_url</span><span class="o">=</span><span class="s2">&quot;https://discuss.flarum.org/&quot;</span><span class="p">)</span>
-
-<span class="c1"># Now, let&#39;s get the discussion:</span>
-<span class="n">discussion</span> <span class="o">=</span> <span class="n">USER</span><span class="o">.</span><span class="n">get_discussion_by_id</span><span class="p">(</span><span class="mi">28221</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">discussion</span><span class="o">.</span><span class="n">title</span><span class="p">)</span>
-</code></pre></div>
-
-<p>That's just amazing 4 lines of code (without comments and newlines)!</p>
-
-<h3 id="whats-next">➡ What's next?</h3>
-
-<p>Check the <a href="https://cwkevo.github.io/pyflarum/docs/">documentation</a> to dive deep into the concepts of this project and learn more! </p>
-
-<p>I will now take a small break from maintaining this - I still want to do a bit more projects this summer now that I have some time. However, I am open for feature requests and bug reports at the <a href="https://github.com/CWKevo/pyflarum/issues">GitHub repository</a>.</p>
-
-<p>The documentation is still not finished yet, but that can wait for now until some people show some interest in this. My honest view is that I do not want to work on something that people will not enjoy, and I will likely require some motivation in order to keep this project alive. If no interest is shown, I will occassionaly push bugfixes and features for my personal use over time. I don't actually expect much people to use this, but I'd be surprised and happy if you would!</p>
-
-<h2 id="examples">📜 Examples:</h2>
-
-<p>I'll show you some more examples before we dive deep into the details at the <a href="https://cwkevo.github.io/pyflarum/docs/">documentation</a>. All of the following snippets assume that you already have your <code>USER</code> object initialized.</p>
-
-<p>Get all discussions from the front page (<code>/api/discussions</code>) and print the title &amp; URL:</p>
-
-<div class="codehilite"><pre><span></span><code><span class="k">for</span> <span class="n">discussion</span> <span class="ow">in</span> <span class="n">USER</span><span class="o">.</span><span class="n">all_discussions</span><span class="p">():</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">discussion</span><span class="o">.</span><span class="n">title</span><span class="p">,</span> <span class="n">discussion</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
-</code></pre></div>
-
-<p>Obtain some user:</p>
-
-<div class="codehilite"><pre><span></span><code><span class="n">user</span> <span class="o">=</span> <span class="n">USER</span><span class="o">.</span><span class="n">get_user_by_id</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">user</span><span class="o">.</span><span class="n">get_groups</span><span class="p">():</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">group</span><span class="o">.</span><span class="n">nameSingular</span><span class="p">)</span>
-</code></pre></div>
-
-<p>You can find more examples in the sections below, or browse the <a href="https://github.com/CWKevo/pyflarum/tree/main/tests">tests</a> directory of the source code for full examples of various tasks. These will be regularly updated, <a href="#➡-whats-next">should this stay maintained</a>, to ensure that old stuff works and new features behave correctly too.</p>
-
-<h2 id="parameters">📡 Parameters</h2>
-
-<p>By default, pyFlarum works by just knowing the forum's URL. But there are more options to choose from. Let's go through the basic ones:</p>
-
-<h3 id="authentication">🔐 Authentication</h3>
-
-<p>In order to perform user related actions, you must be logged in. This is easier done than said (pun unintended):</p>
-
-<div class="codehilite"><pre><span></span><code><span class="n">USER</span> <span class="o">=</span> <span class="n">FlarumUser</span><span class="p">(</span><span class="n">forum_url</span><span class="o">=</span><span class="s2">&quot;https://discuss.flarum.org&quot;</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="s2">&quot;yourusername&quot;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s2">&quot;#TopSecret123&quot;</span><span class="p">)</span>
-</code></pre></div>
-
-<p>...just like that! However, I <strong>strongly</strong> recommend you to store your user's credentials in a <code>.env</code> file and load it by using a library such as <a href="https://pypi.org/project/python-dotenv">python-dotenv</a>:</p>
-
-<p><em>.env:</em></p>
-
-<pre><code>username="foo"
-password="hahayouexpectedbarbutno"
-</code></pre>
-
-<p><em>script.py:</em></p>
-
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">os</span>
-
-<span class="kn">from</span> <span class="nn">dotenv</span> <span class="kn">import</span> <span class="n">load_dotenv</span>
-<span class="n">load_dotenv</span><span class="p">()</span>
-
-<span class="kn">from</span> <span class="nn">pyflarum</span> <span class="kn">import</span> <span class="n">FlarumUser</span>
-<span class="n">USER</span> <span class="o">=</span> <span class="n">FlarumUser</span><span class="p">(</span>
-    <span class="n">forum_url</span><span class="o">=</span><span class="s2">&quot;https://discuss.flarum.org&quot;</span><span class="p">,</span>
-    <span class="n">username</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;username&quot;</span><span class="p">],</span>
-    <span class="n">password</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;password&quot;</span><span class="p">]</span>
-<span class="p">)</span>
-</code></pre></div>
-
-<blockquote>
-  <p>Don't forget to exclude <code>.env</code> in your <code>.gitignore</code>, if you're using Git (in other words, don't be like me once)!</p>
-</blockquote>
-
-<h3 id="cached-sessions">📚 Cached sessions:</h3>
-
-<p>By default, pyFlarum uses the standard <code>Session</code> object from Python's <a href="https://pypi.org/project/requests">requests</a>. However, it is possible to pass your own <code>Session</code> object.</p>
-
-<p>A practical use case would be to use <a href="https://pypi.org/projects/requests_cache">requests_cache's</a> <code>CachedSession</code> object instead:</p>
-
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">requests_cache</span> <span class="kn">import</span> <span class="n">CachedSession</span>
-
-<span class="kn">from</span> <span class="nn">pyflarum</span> <span class="kn">import</span> <span class="n">FlarumUser</span>
-<span class="n">USER</span> <span class="o">=</span> <span class="n">FlarumUser</span><span class="p">(</span>
-    <span class="n">forum_url</span><span class="o">=</span><span class="s2">&quot;https://discuss.flarum.org&quot;</span><span class="p">,</span>
-    <span class="n">session_object</span><span class="o">=</span><span class="n">CachedSession</span><span class="p">()</span>
-<span class="p">)</span>
-</code></pre></div>
-
-<p>The cache really makes a difference and can speed requests by up to 10x! But I decided to make it optional, as it is not ideal for frequent API calls (e. g. watching for notifications/mentions to respond to user's commands - yes, that's possible with <a href="https://github.com/CWKevo/pyflarum/blob/main/tests/watch_for_commands.py">the commands and watch extensions</a>)</p>
-
-<h2 id="extensions">🧩 Extensions</h2>
-
-<p>Similarly to <a href="https://discuss.flarum.org/t/extensions">Flarum</a>, pyFlarum also works around the concept of <a href="https://cwkevo.github.io/pyflarum/docs/extensions/index.html">extensions</a>.</p>
-
-<p>These can be imported and included in your <code>FlarumUser</code> object as a list of extension classes:</p>
-
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">pyflarum</span> <span class="kn">import</span> <span class="n">FlarumUser</span>
-<span class="kn">from</span> <span class="nn"><a href="pyflarum/extensions/flarum.html#core">pyflarum.extensions.flarum.core</a></span> <span class="kn">import</span> <span class="n">Flarum_Likes</span>
-
-<span class="n">USER</span> <span class="o">=</span> <span class="n">FlarumUser</span><span class="p">(</span>
-    <span class="n">forum_url</span><span class="o">=</span><span class="s2">&quot;https://discuss.flarum.org&quot;</span>
-    <span class="n">extensions</span><span class="o">=</span><span class="p">[</span>
-      <span class="n">Flarum_Likes</span><span class="o">.</span><span class="n">LikesExtension</span>
-    <span class="p">]</span>
-<span class="p">)</span>
-
-<span class="c1"># ...</span>
-</code></pre></div>
-
-<h3 id="dealing-with-type-hints">🐲 Dealing with type hints</h3>
-
-<p>I really tried to make this work, but I couldn't. In case you haven't head about them, read <a href="https://docs.python.org/3/library/typing.html">this</a>. Basically, they help you read your code before it's run.</p>
-
-<p>The thing is, extensions work on principe of <a href="https://stackoverflow.com/questions/5626193/what-is-monkey-patching">monkey-patching</a>. When you create a <code>FlarumUser</code> object with extensions, the mixins (classes of properties and functions) of that extensions are copied to the main <code>FlarumUser</code> class (or others). And there is no way for your editor to handle this (or at least, I haven't found a way around this - if you do, that would be amazing).</p>
-
-<p>The only option for now is to type hint the mixins directly, to make your editor recognize also the functions and properties from the extension:</p>
-
-<p>Example:</p>
-
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">pyflarum</span> <span class="kn">import</span> <span class="n">FlarumUser</span>
-<span class="kn">from</span> <span class="nn"><a href="pyflarum/extensions/flarum.html#core">pyflarum.extensions.flarum.core</a></span> <span class="kn">import</span> <span class="n">Flarum_Approval</span>
-
-<span class="n">USER</span> <span class="o">=</span> <span class="n">FlarumUser</span><span class="p">(</span>
-    <span class="n">forum_url</span><span class="o">=</span><span class="s2">&quot;https://discuss.flarum.org&quot;</span>
-    <span class="n">extensions</span><span class="o">=</span><span class="p">[</span>
-      <span class="n">Flarum_Approval</span><span class="o">.</span><span class="n">ApprovalExtension</span>
-    <span class="p">]</span>
-<span class="p">)</span>
-
-<span class="n">discussion</span> <span class="o">=</span> <span class="n">USER</span><span class="o">.</span><span class="n">get_discussion_by_id</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">discussion</span><span class="o">.</span><span class="n">isApproved</span> <span class="c1"># &lt;- no syntax highlighting</span>
-</code></pre></div>
-
-<p>...but specifying that the <code>discussion</code> should contain also the properties from the <code>Flarum_Approval.ApprovalDiscussionFromNotificationMixin</code> works:</p>
-
-<div class="codehilite"><pre><span></span><code><span class="n">discussion</span> <span class="o">=</span> <span class="n">USER</span><span class="o">.</span><span class="n">get_discussion_by_id</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># type: Flarum_Approval.ApprovalDiscussionFromNotificationMixin</span>
-<span class="n">discussion</span><span class="o">.</span><span class="n">isApproved</span> <span class="c1"># &lt;- syntax highlighting works</span>
-</code></pre></div>
-
-<blockquote>
-  <p><strong>Note:</strong> The <code>Flarum_Approval</code> extension contains only one mixin for discussions: <code>Flarum_Approval.ApprovalDiscussionFromNotificationMixin</code>. Since this is a parent of <code>Discussion</code> because of the <a href="#⬆-class-inheritance">inheritance</a>, you can type-hint just that for it to work (no <code>Union</code> from <a href="https://docs.python.org/3/library/typing.html">typing</a> is required). You can check the <a href="https://cwkevo.github.io/pyflarum/docs/extensions">extensions documentation</a> for list of available mixins and extensions, or the <a href="https://github.com/CWKevo/pyflarum/tree/main/pyflarum/extensions">source code</a>.</p>
-</blockquote>
-
-<h2 id="class-inheritance">⬆ Class Inheritance</h2>
-
-<p>pyFlarum's inhertitance needed to be wrapped around Flarum's API, so that these two can work together. To understand this system, we need to first understand how Flarum's API works:</p>
-
-<p>Normally, there is an API route for multiple (bulk) object's data. You can further specify the ID to obtain the specific object's data. Let's say we want to fetch all discussions from the front page. We could do that by visiting <code>/api/discussions</code> of your favourite Flarum forum. Here, we see a bunch of JSON data of discussions. We can pick one, and then visit <code>/api/discussions/:discussion_id</code> to fetch specific discussion's JSON. By comparing the data from the bulk route (<code>/api/discussions</code>) and specific route (<code>/api/discussions/:discussion_id</code>), we can see that the specific route contains more detailed JSON information of the discussion. Specifically, this means that discussion from bulk contains just data for the first post, whereas the specific route contains all posts (for example).</p>
-
-<p>Usually, Flarum inherits the more detailed data's properties from the previous less detailed ones. This means that discussion from bulk might contain ID, type and a few attributes, such as the title of the discussion. So, the specific discussion contains all the data that discussion from bulk contains (ID, type, title...) + all the posts (which too only get referenced when there are many of them).</p>
-
-<p>Luckily, I have put my best efforts to make pyFlarum handle this for you. That's why there are multiple objects for each of Flarum's thingies. Here's an example inheritance structure for posts:</p>
-
-<pre><code>        (contains)                (is parent for)
-Posts       &gt;&gt;       PostFromBulk       -&gt;       Post
-</code></pre>
-
-<p>Or (more complicated) notifications:</p>
-
-<pre><code>                (contains)                  (contains)                        (inherits from)
-Notifications       &gt;&gt;       Notification       &gt;&gt;       PostFromNotification       &lt;-        PostFromDiscussion
-                                                                  |
-                                                                  \_       PostFromBulk       -&gt;       Post
-                                                            (is parent for)             (is parent for)
-</code></pre>
-
-<h3 id="example">📜 Example:</h3>
-
-<p>Fetch all discussions from the front page:</p>
-
-<div class="codehilite"><pre><span></span><code><span class="k">for</span> <span class="n">discussion</span> <span class="ow">in</span> <span class="n">USER</span><span class="o">.</span><span class="n">all_discussions</span><span class="p">():</span>
-    <span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">discussion</span><span class="p">))</span> <span class="c1"># &lt;class &#39;DiscussionFromBulk&#39;&gt;</span>
-</code></pre></div>
-
-<p>Note how the type is <code>DiscussionFromBulk</code> instead of <code>Discussion</code>? That's because <code>DiscussionFromBulk</code> doesn't contain full data like <code>Discussion</code> does.</p>
-
-<p>The data gets limited for Flarum's purposes. For example, you don't need all posts in order to render the discussions at the front page - so Flarum omits the posts from the data. You need to make additional API call to fetch the full data (with posts):</p>
-
-<div class="codehilite"><pre><span></span><code><span class="c1"># Wrong:</span>
-<span class="k">for</span> <span class="n">discussion</span> <span class="ow">in</span> <span class="n">USER</span><span class="o">.</span><span class="n">all_discussions</span><span class="p">():</span>
-    <span class="k">for</span> <span class="n">posts</span> <span class="ow">in</span> <span class="n">discussion</span><span class="o">.</span><span class="n">get_posts</span><span class="p">():</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">post</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
-</code></pre></div>
-
-<div class="codehilite"><pre><span></span><code><span class="c1"># Correct:</span>
-<span class="k">for</span> <span class="n">discussion</span> <span class="ow">in</span> <span class="n">USER</span><span class="o">.</span><span class="n">all_discussions</span><span class="p">():</span>
-    <span class="n">full_discussion</span> <span class="o">=</span> <span class="n">discussion</span><span class="o">.</span><span class="n">get_full_data</span><span class="p">()</span> <span class="c1"># makes an additional API call to fetch `/api/discussions/:discussion_id`</span>
-    <span class="k">for</span> <span class="n">posts</span> <span class="ow">in</span> <span class="n">full_discussion</span><span class="o">.</span><span class="n">get_posts</span><span class="p">():</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">post</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
-</code></pre></div>
-
-<h3 id="included-data">👀 Included data</h3>
-
-<p>That was the easy part of the inheritance system. It gets more complicated with the <code>included</code> things.</p>
-
-<p>Each API call might contain an <code>included</code> section with more detailed data for referenced objects.</p>
-
-<p>Let's examine a wild JSON spotted in the real world:</p>
-
-<div class="codehilite"><pre><span></span><code><span class="p">{</span>
-  <span class="nt">&quot;data&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="p">{</span>
-      <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;discussions&quot;</span><span class="p">,</span>
-      <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span>
-      <span class="nt">&quot;attributes&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="nt">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;An example title&quot;</span>
-      <span class="p">},</span>
-      <span class="nt">&quot;relationships&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="nt">&quot;firstPost&quot;</span><span class="p">:</span> <span class="p">{</span>
-          <span class="nt">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;posts&quot;</span><span class="p">,</span>
-            <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span>
-          <span class="p">}</span>
-        <span class="p">}</span>
-      <span class="p">}</span>
-    <span class="p">}</span>
-  <span class="p">],</span>
-  <span class="nt">&quot;included&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="p">{</span>
-      <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;posts&quot;</span><span class="p">,</span>
-      <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span>
-      <span class="nt">&quot;attributes&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="nt">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Bla bla bla&quot;</span>
-      <span class="p">}</span>
-    <span class="p">}</span>
-  <span class="p">]</span>
-<span class="p">}</span>
-</code></pre></div>
-
-<p>This is a simplified syntax of how might a JSON for <code>/api/discussions</code> look like. We can see a discussion with ID <code>1</code>, that has a special <code><a href="pyflarum/flarum/core/discussions.html#DiscussionFromBulk.relationships">pyflarum.flarum.core.discussions.DiscussionFromBulk.relationships</a></code> array (or dictionary, if you're a Pythonista). This array contains a reference for <code>firstPost</code> (unsurprisingly, that's the first post of the discussion). The full data is in the <code><a href="pyflarum/flarum/core/discussions.html#Discussions.included">pyflarum.flarum.core.discussions.Discussions.included</a></code> section of the JSON, where we indeed can see a post object with the corresponding ID of <code>1</code>.</p>
-
-<p>Again, I put together what I could to make this work for you instead of you working for it. Whenever pyFlarum makes an API call to a top-level route such as <code>/api/discussions</code>, obtaining a discussion from that will include the parent <code><a href="pyflarum/flarum/core/discussions.html#Discussions.included">pyflarum.flarum.core.discussions.Discussions.included</a></code> in that discussion as well. So now, whenever you would like to obtain a post from that discussion, the reference for that post is found in the <code>relationships</code> array and then it gets recursively matched to the resulting <code><a href="pyflarum/flarum/core/posts.html#PostFromDiscussion">pyflarum.flarum.core.posts.PostFromDiscussion</a></code> in the <code><a href="pyflarum/flarum/core/discussions.html#Discussions.included">pyflarum.flarum.core.discussions.Discussions.included</a></code> section. See <a href="https://cwkevo.github.io/pyflarum/docs/#parent-included">parent included</a> below.</p>
-
-<p>From Flarum's side, this was done to eliminate frequent API calls and to save on the JSON's size. Including the full data would possibly make the JSON contain duplicates, if for example, all posts were made by the same user. This way, the user is included only once in the <code><a href="pyflarum/flarum/core/discussions.html#Discussions.included">pyflarum.flarum.core.discussions.Discussions.included</a></code> section, and we saved some bytes to transfer. People using paid mobile networks will be grateful to save some cents.</p>
-
-<p>You might be asking, why keep tossing the parent <code>included</code> into every object? Well, from pyFlarum's side this was done to save on the amount of requests and to speed the package up. Of course, instead of looking things in <code>included</code>, you could make a direct API call to retrieve the full data of the object you want. But this would slow things down drastically, when you're operating with large amounts of data at the same time (e. g. fetching all discussions and posts - you'd need to make separate API call for every post in order to obtain the data - this way, everything's already in <code>included</code>).</p>
-
-<p>This is very complicated, and I can't explain things, so it might be worthy checking the source code, if you care to learn more about how pyFlarum handles this.</p>
-
-<h3 id="parent-included">📚 Parent included</h3>
-
-<p>It is a JSON data of the parent's included JSON data.</p>
-
-<blockquote>
-  <p>I put together what I could to make this work for you instead of you working for it. Whenever pyFlarum makes an API call to a top-level route such as <code>/api/discussions</code>, obtaining a discussion from that will include the parent <code><a href="pyflarum/flarum/core/discussions.html#Discussions.included">pyflarum.flarum.core.discussions.Discussions.included</a></code> in that discussion as well. So now, whenever you would like to obtain a post from that discussion, the reference for that post is found in the <code>relationships</code> array and then it gets recursively matched to the resulting <code><a href="pyflarum/flarum/core/posts.html#PostFromDiscussion">pyflarum.flarum.core.posts.PostFromDiscussion</a></code> in the <code><a href="pyflarum/flarum/core/discussions.html#Discussions.included">pyflarum.flarum.core.discussions.Discussions.included</a></code> section.</p>
-</blockquote>
-
-<h4 id="long-explanation-for-nerds-i-am-not-good-at-explaining">Long explanation for nerds (I am not good at explaining):</h4>
-
-<p>This is because of the way <a href="https://cwkevo.github.io/pyflarum/docs/#included-data">Flarum's includes</a> work.
-When you run a function such as <code><a href="pyflarum/flarum/core/discussions.html#DiscussionFromBulk.get_author">pyflarum.flarum.core.discussions.DiscussionFromBulk.get_author()</a></code>, the data for the author is not directly in the <code><a href="pyflarum/flarum/core/discussions.html#DiscussionFromBulk">pyflarum.flarum.core.discussions.DiscussionFromBulk</a></code>'s JSON.
-This means that pyFlarum would have to make a new API call everytime you run <code><a href="pyflarum/flarum/core/discussions.html#DiscussionFromBulk.get_author">pyflarum.flarum.core.discussions.DiscussionFromBulk.get_author()</a></code>, and you'd see 429 sooner than usual.
-Instead, the data is already in the parent's (<code><a href="pyflarum/flarum/core/discussions.html#Discussions.included">pyflarum.flarum.core.discussions.Discussions.included</a></code>) data. And since that gets passed to this object too, pyFlarum doesn't need to
-make any more API calls - instead, it just picks the right author from that data.</p>
-
-<p>You can think of this as a cache in a nutshell, if it's unclear for you. And if things are still confusing you, you just don't need to worry about this
-because pyFlarum handles everything for you in the background. Unless you are forging this object's JSON data by yourself,
-and you don't pass the parent's included - this would mean that all functions that rely on that will break. I have never spotted any weird stuff by normal
-usage of pyFlarum during testing, but there's perhaps a very tiny chance that this system can possibly bug out.</p>
-</div>
-
+                
                         <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">pyflarum.session</span> <span class="kn">import</span> <span class="n">FlarumUser</span>
-<span class="kn">from</span> <span class="nn">pyflarum.error_handler</span> <span class="kn">import</span> <span class="n">FlarumError</span>
+            <div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
 
-<span class="kn">from</span> <span class="nn">pyflarum.flarum.core.discussions</span> <span class="kn">import</span> <span class="n">PreparedDiscussion</span><span class="p">,</span> <span class="n">Discussions</span><span class="p">,</span> <span class="n">Discussion</span><span class="p">,</span> <span class="n">DiscussionFromBulk</span><span class="p">,</span> <span class="n">DiscussionFromNotification</span>
-<span class="kn">from</span> <span class="nn">pyflarum.flarum.core.posts</span> <span class="kn">import</span> <span class="n">PreparedPost</span><span class="p">,</span> <span class="n">Posts</span><span class="p">,</span> <span class="n">Post</span><span class="p">,</span> <span class="n">PostFromBulk</span><span class="p">,</span> <span class="n">PostFromNotification</span><span class="p">,</span> <span class="n">PostFromDiscussion</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
 
-<span class="kn">from</span> <span class="nn">pyflarum.flarum.core.users</span> <span class="kn">import</span> <span class="n">Users</span><span class="p">,</span> <span class="n">User</span><span class="p">,</span> <span class="n">UserFromBulk</span><span class="p">,</span> <span class="n">UserFromNotification</span><span class="p">,</span> <span class="n">MyUser</span>
-<span class="kn">from</span> <span class="nn">pyflarum.flarum.core.groups</span> <span class="kn">import</span> <span class="n">PreparedGroup</span><span class="p">,</span> <span class="n">Groups</span><span class="p">,</span> <span class="n">Group</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">ExtensionMixin</span>
 
-<span class="kn">from</span> <span class="nn">pyflarum.flarum.core.filters</span> <span class="kn">import</span> <span class="n">Filter</span>
-<span class="kn">from</span> <span class="nn">pyflarum.flarum.core.notifications</span> <span class="kn">import</span> <span class="n">Notifications</span><span class="p">,</span> <span class="n">Notification</span>
-<span class="kn">from</span> <span class="nn">pyflarum.flarum.core.forum</span> <span class="kn">import</span> <span class="n">Forum</span>
+<span class="kn">from</span> <span class="nn">...flarum.core.users</span> <span class="kn">import</span> <span class="n">User</span><span class="p">,</span> <span class="n">UserFromBulk</span>
+<span class="kn">from</span> <span class="nn">...error_handler</span> <span class="kn">import</span> <span class="n">parse_request</span>
+<span class="kn">from</span> <span class="nn">...datetime_conversions</span> <span class="kn">import</span> <span class="n">datetime_to_flarum</span><span class="p">,</span> <span class="n">flarum_to_datetime</span>
 
 
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="k">try</span><span class="p">:</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span><span class="si">}{</span><span class="n">Path</span><span class="p">(</span><span class="s1">&#39;/README.md&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;UTF-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">readme</span><span class="p">:</span>
-        <span class="vm">__doc__</span> <span class="o">=</span> <span class="n">readme</span><span class="o">.</span><span class="n">read</span><span class="p">()</span> 
+<span class="n">AUTHOR</span> <span class="o">=</span> <span class="s1">&#39;flarum&#39;</span>
+<span class="n">NAME</span> <span class="o">=</span> <span class="s1">&#39;suspend&#39;</span>
+<span class="n">ID</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">AUTHOR</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">NAME</span><span class="si">}</span><span class="s2">&quot;</span>
 
-<span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-    <span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;Failed to read README.md. For now, see the GitHub version, which is identical: https://github.com/cwkevo/pyflarum&quot;</span>
+<span class="n">SOFT_DEPENDENCIES</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">HARD_DEPENCENDIES</span> <span class="o">=</span> <span class="p">[]</span>
 
 
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-    <span class="n">_</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="n">FlarumUser</span><span class="p">,</span> <span class="n">FlarumError</span><span class="p">,</span>
-        <span class="n">PreparedDiscussion</span><span class="p">,</span> <span class="n">Discussions</span><span class="p">,</span> <span class="n">Discussion</span><span class="p">,</span> <span class="n">DiscussionFromBulk</span><span class="p">,</span> <span class="n">DiscussionFromNotification</span><span class="p">,</span>
-        <span class="n">PreparedPost</span><span class="p">,</span> <span class="n">Posts</span><span class="p">,</span> <span class="n">Post</span><span class="p">,</span> <span class="n">PostFromBulk</span><span class="p">,</span> <span class="n">PostFromNotification</span><span class="p">,</span> <span class="n">PostFromDiscussion</span><span class="p">,</span>
-        <span class="n">Users</span><span class="p">,</span> <span class="n">User</span><span class="p">,</span> <span class="n">UserFromBulk</span><span class="p">,</span> <span class="n">UserFromNotification</span><span class="p">,</span> <span class="n">MyUser</span><span class="p">,</span>
-        <span class="n">PreparedGroup</span><span class="p">,</span> <span class="n">Groups</span><span class="p">,</span> <span class="n">Group</span><span class="p">,</span>
-        <span class="n">Filter</span><span class="p">,</span> <span class="n">Notifications</span><span class="p">,</span> <span class="n">Notification</span><span class="p">,</span> <span class="n">Forum</span>
-    <span class="p">]</span>
+
+<span class="k">class</span> <span class="nc">SuspendUserMixin</span><span class="p">(</span><span class="n">UserFromBulk</span><span class="p">):</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">canSuspend</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;canSuspend&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">suspendedUntil</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">raw</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;suspendedUntil&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">flarum_to_datetime</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">suspend</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">suspended_until</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">datetime</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">suspended_for</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">timedelta</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">User</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">suspended_until</span><span class="p">:</span>
+            <span class="n">until</span> <span class="o">=</span> <span class="n">suspended_until</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">suspended_for</span><span class="p">:</span>
+                <span class="n">raw_until</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">+</span> <span class="n">suspended_for</span>
+                <span class="n">until</span> <span class="o">=</span> <span class="n">raw_until</span>
+
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">until</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">6669</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+
+
+        <span class="n">post_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;users&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;3&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;attributes&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;suspendedUntil&quot;</span><span class="p">:</span> <span class="n">datetime_to_flarum</span><span class="p">(</span><span class="n">until</span><span class="p">)</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="n">raw</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">api_urls</span><span class="p">[</span><span class="s1">&#39;users&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">post_data</span><span class="p">)</span>
+        <span class="n">json</span> <span class="o">=</span> <span class="n">parse_request</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">User</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">_fetched_data</span><span class="o">=</span><span class="n">json</span><span class="p">)</span>
+
+
+
+<span class="k">class</span> <span class="nc">SuspendExtension</span><span class="p">(</span><span class="n">ExtensionMixin</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">get_dependencies</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;soft&quot;</span><span class="p">:</span> <span class="n">SOFT_DEPENDENCIES</span><span class="p">,</span>
+            <span class="s2">&quot;hard&quot;</span><span class="p">:</span> <span class="n">HARD_DEPENCENDIES</span>
+        <span class="p">}</span>
+
+
+    <span class="k">def</span> <span class="nf">mixin</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">mixin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">UserFromBulk</span><span class="p">,</span> <span class="n">SuspendUserMixin</span><span class="p">)</span>
 </pre></div>
 
         </details>
 
             </section>
+                <section id="SuspendUserMixin">
+                                <div class="attr class">
+        <a class="headerlink" href="#SuspendUserMixin">#&nbsp;&nbsp</a>
+
+        
+        <span class="def">class</span>
+        <span class="name">SuspendUserMixin</span><wbr>(<span class="base"><a href="../../flarum/core/users.html#UserFromBulk">pyflarum.flarum.core.users.UserFromBulk</a></span>):
+    </div>
+
+                <details>
+            <summary>View Source</summary>
+            <div class="codehilite"><pre><span></span><span class="k">class</span> <span class="nc">SuspendUserMixin</span><span class="p">(</span><span class="n">UserFromBulk</span><span class="p">):</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">canSuspend</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;canSuspend&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">suspendedUntil</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">raw</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;suspendedUntil&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">flarum_to_datetime</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">suspend</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">suspended_until</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">datetime</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">suspended_for</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">timedelta</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">User</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">suspended_until</span><span class="p">:</span>
+            <span class="n">until</span> <span class="o">=</span> <span class="n">suspended_until</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">suspended_for</span><span class="p">:</span>
+                <span class="n">raw_until</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">+</span> <span class="n">suspended_for</span>
+                <span class="n">until</span> <span class="o">=</span> <span class="n">raw_until</span>
+
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">until</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">6669</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+
+
+        <span class="n">post_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;users&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;3&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;attributes&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;suspendedUntil&quot;</span><span class="p">:</span> <span class="n">datetime_to_flarum</span><span class="p">(</span><span class="n">until</span><span class="p">)</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="n">raw</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">api_urls</span><span class="p">[</span><span class="s1">&#39;users&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">post_data</span><span class="p">)</span>
+        <span class="n">json</span> <span class="o">=</span> <span class="n">parse_request</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">User</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">_fetched_data</span><span class="o">=</span><span class="n">json</span><span class="p">)</span>
+</pre></div>
+
+        </details>
+
+            <div class="docstring"><p>An user from <code>Users</code>.</p>
+</div>
+
+
+                            <div id="SuspendUserMixin.canSuspend" class="classattr">
+                                            <div class="attr variable"><a class="headerlink" href="#SuspendUserMixin.canSuspend">#&nbsp;&nbsp</a>
+
+        <span class="name">canSuspend</span><span class="annotation">: bool</span>
+    </div>
+
+    
+
+                            </div>
+                            <div id="SuspendUserMixin.suspendedUntil" class="classattr">
+                                            <div class="attr variable"><a class="headerlink" href="#SuspendUserMixin.suspendedUntil">#&nbsp;&nbsp</a>
+
+        <span class="name">suspendedUntil</span>
+    </div>
+
+    
+
+                            </div>
+                            <div id="SuspendUserMixin.suspend" class="classattr">
+                                        <div class="attr function"><a class="headerlink" href="#SuspendUserMixin.suspend">#&nbsp;&nbsp</a>
+
+        
+            <span class="def">def</span>
+            <span class="name">suspend</span><span class="signature">(
+    self,
+    suspended_until: Optional[datetime.datetime] = None,
+    suspended_for: Optional[datetime.timedelta] = None
+) -&gt; <a href="../../flarum/core/users.html#User">pyflarum.flarum.core.users.User</a></span>:
+    </div>
+
+                <details>
+            <summary>View Source</summary>
+            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">suspend</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">suspended_until</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">datetime</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">suspended_for</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">timedelta</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">User</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">suspended_until</span><span class="p">:</span>
+            <span class="n">until</span> <span class="o">=</span> <span class="n">suspended_until</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">suspended_for</span><span class="p">:</span>
+                <span class="n">raw_until</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">+</span> <span class="n">suspended_for</span>
+                <span class="n">until</span> <span class="o">=</span> <span class="n">raw_until</span>
+
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">until</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">6669</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+
+
+        <span class="n">post_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;users&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;3&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;attributes&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;suspendedUntil&quot;</span><span class="p">:</span> <span class="n">datetime_to_flarum</span><span class="p">(</span><span class="n">until</span><span class="p">)</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="n">raw</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">api_urls</span><span class="p">[</span><span class="s1">&#39;users&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">post_data</span><span class="p">)</span>
+        <span class="n">json</span> <span class="o">=</span> <span class="n">parse_request</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">User</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">_fetched_data</span><span class="o">=</span><span class="n">json</span><span class="p">)</span>
+</pre></div>
+
+        </details>
+
+    
+
+                            </div>
+                            <div class="inherited">
+                                <h5>Inherited Members</h5>
+                                <dl>
+                                    <div><dt><a href="../../flarum/core.html#BaseFlarumObject">pyflarum.flarum.core.BaseFlarumObject</a></dt>
+                                <dd id="SuspendUserMixin.__init__" class="function"><a href="../../flarum/core.html#BaseFlarumObject.__init__">BaseFlarumObject</a></dd>
+                <dd id="SuspendUserMixin.data" class="variable"><a href="../../flarum/core.html#BaseFlarumObject.data">data</a></dd>
+
+            </div>
+            <div><dt><a href="../../flarum/core/users.html#UserFromBulk">pyflarum.flarum.core.users.UserFromBulk</a></dt>
+                                <dd id="SuspendUserMixin.joinTime" class="variable"><a href="../../flarum/core/users.html#UserFromBulk.joinTime">joinTime</a></dd>
+                <dd id="SuspendUserMixin.discussionCount" class="variable"><a href="../../flarum/core/users.html#UserFromBulk.discussionCount">discussionCount</a></dd>
+                <dd id="SuspendUserMixin.commentCount" class="variable"><a href="../../flarum/core/users.html#UserFromBulk.commentCount">commentCount</a></dd>
+                <dd id="SuspendUserMixin.canEdit" class="variable"><a href="../../flarum/core/users.html#UserFromBulk.canEdit">canEdit</a></dd>
+                <dd id="SuspendUserMixin.canEditCredentials" class="variable"><a href="../../flarum/core/users.html#UserFromBulk.canEditCredentials">canEditCredentials</a></dd>
+                <dd id="SuspendUserMixin.canEditGroups" class="variable"><a href="../../flarum/core/users.html#UserFromBulk.canEditGroups">canEditGroups</a></dd>
+                <dd id="SuspendUserMixin.canDelete" class="variable"><a href="../../flarum/core/users.html#UserFromBulk.canDelete">canDelete</a></dd>
+
+            </div>
+            <div><dt><a href="../../flarum/core/users.html#UserFromNotification">pyflarum.flarum.core.users.UserFromNotification</a></dt>
+                                <dd id="SuspendUserMixin.username" class="variable"><a href="../../flarum/core/users.html#UserFromNotification.username">username</a></dd>
+                <dd id="SuspendUserMixin.email" class="variable"><a href="../../flarum/core/users.html#UserFromNotification.email">email</a></dd>
+                <dd id="SuspendUserMixin.isEmailConfirmed" class="variable"><a href="../../flarum/core/users.html#UserFromNotification.isEmailConfirmed">isEmailConfirmed</a></dd>
+                <dd id="SuspendUserMixin.displayName" class="variable"><a href="../../flarum/core/users.html#UserFromNotification.displayName">displayName</a></dd>
+                <dd id="SuspendUserMixin.avatarUrl" class="variable"><a href="../../flarum/core/users.html#UserFromNotification.avatarUrl">avatarUrl</a></dd>
+                <dd id="SuspendUserMixin.slug" class="variable"><a href="../../flarum/core/users.html#UserFromNotification.slug">slug</a></dd>
+
+            </div>
+            <div><dt><a href="../../flarum/core.html#BaseFlarumIndividualObject">pyflarum.flarum.core.BaseFlarumIndividualObject</a></dt>
+                                <dd id="SuspendUserMixin.type" class="variable"><a href="../../flarum/core.html#BaseFlarumIndividualObject.type">type</a></dd>
+                <dd id="SuspendUserMixin.id" class="variable"><a href="../../flarum/core.html#BaseFlarumIndividualObject.id">id</a></dd>
+                <dd id="SuspendUserMixin.attributes" class="variable"><a href="../../flarum/core.html#BaseFlarumIndividualObject.attributes">attributes</a></dd>
+                <dd id="SuspendUserMixin.relationships" class="variable"><a href="../../flarum/core.html#BaseFlarumIndividualObject.relationships">relationships</a></dd>
+                <dd id="SuspendUserMixin.included" class="variable"><a href="../../flarum/core.html#BaseFlarumIndividualObject.included">included</a></dd>
+
+            </div>
+            <div><dt>builtins.dict</dt>
+                                <dd id="SuspendUserMixin.get" class="function">get</dd>
+                <dd id="SuspendUserMixin.setdefault" class="function">setdefault</dd>
+                <dd id="SuspendUserMixin.pop" class="function">pop</dd>
+                <dd id="SuspendUserMixin.popitem" class="function">popitem</dd>
+                <dd id="SuspendUserMixin.keys" class="function">keys</dd>
+                <dd id="SuspendUserMixin.items" class="function">items</dd>
+                <dd id="SuspendUserMixin.values" class="function">values</dd>
+                <dd id="SuspendUserMixin.update" class="function">update</dd>
+                <dd id="SuspendUserMixin.fromkeys" class="function">fromkeys</dd>
+                <dd id="SuspendUserMixin.clear" class="function">clear</dd>
+                <dd id="SuspendUserMixin.copy" class="function">copy</dd>
+
+            </div>
+                                </dl>
+                            </div>
+                </section>
+                <section id="SuspendExtension">
+                                <div class="attr class">
+        <a class="headerlink" href="#SuspendExtension">#&nbsp;&nbsp</a>
+
+        
+        <span class="def">class</span>
+        <span class="name">SuspendExtension</span><wbr>(<span class="base"><a href="../../extensions.html#ExtensionMixin">pyflarum.extensions.ExtensionMixin</a></span>):
+    </div>
+
+                <details>
+            <summary>View Source</summary>
+            <div class="codehilite"><pre><span></span><span class="k">class</span> <span class="nc">SuspendExtension</span><span class="p">(</span><span class="n">ExtensionMixin</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">get_dependencies</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;soft&quot;</span><span class="p">:</span> <span class="n">SOFT_DEPENDENCIES</span><span class="p">,</span>
+            <span class="s2">&quot;hard&quot;</span><span class="p">:</span> <span class="n">HARD_DEPENCENDIES</span>
+        <span class="p">}</span>
+
+
+    <span class="k">def</span> <span class="nf">mixin</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">mixin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">UserFromBulk</span><span class="p">,</span> <span class="n">SuspendUserMixin</span><span class="p">)</span>
+</pre></div>
+
+        </details>
+
+            <div class="docstring"><p>A base class for mixing in custom classes (extensions) into another classes.</p>
+
+<h3 id="example-extension-code">Example extension code:</h3>
+
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn"><a href="../../extensions.html">pyflarum.extensions</a></span> <span class="kn">import</span> <span class="n">ExtensionMixin</span>
+<span class="kn">from</span> <span class="nn"><a href="../admin.html">pyflarum.extensions.admin</a></span> <span class="kn">import</span> <span class="n">AdminExtension</span>
+<span class="kn">from</span> <span class="nn"><a href="../../session.html">pyflarum.session</a></span> <span class="kn">import</span> <span class="n">FlarumUser</span>
+
+
+<span class="c1"># Lowecase:</span>
+<span class="n">AUTHOR</span> <span class="o">=</span> <span class="s2">&quot;yourname&quot;</span>
+<span class="n">NAME</span> <span class="o">=</span> <span class="s2">&quot;extensionname&quot;</span>
+<span class="n">ID</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">AUTHOR</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">NAME</span><span class="si">}</span><span class="s2">&quot;</span>
+
+<span class="c1"># List of dependencies:</span>
+<span class="n">SOFT_DEPENDENCIES</span> <span class="o">=</span> <span class="p">[</span><span class="n">AdminExtension</span><span class="p">]</span> <span class="c1"># uses methods from this extension, but can run without it</span>
+<span class="n">HARD_DEPENCENDIES</span> <span class="o">=</span> <span class="p">[]</span>
+
+
+
+<span class="c1"># I recommend to use the following naming pattern: `&lt;YourExtensionName&gt;&lt;ClassToMixin&gt;Mixin`</span>
+<span class="c1"># Example:</span>
+<span class="k">class</span> <span class="nc">ExampleFlarumUserMixin</span><span class="p">(</span><span class="n">FlarumUser</span><span class="p">):</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">example</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Calling `FlarumUser(&lt;...&gt;).example` would return this.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="k">return</span> <span class="s2">&quot;Example&quot;</span>
+
+
+<span class="k">class</span> <span class="nc">ExampleExtension</span><span class="p">(</span><span class="n">ExtensionMixin</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">get_dependencies</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;soft&quot;</span><span class="p">:</span> <span class="n">SOFT_DEPENDENCIES</span><span class="p">,</span>
+            <span class="s2">&quot;hard&quot;</span><span class="p">:</span> <span class="n">HARD_DEPENCENDIES</span>
+        <span class="p">}</span>
+
+
+    <span class="k">def</span> <span class="nf">mixin</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">mixin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">FlarumUser</span><span class="p">,</span> <span class="n">ExampleFlarumUserMixin</span><span class="p">)</span>
+</code></pre></div>
+</div>
+
+
+                            <div id="SuspendExtension.get_dependencies" class="classattr">
+                                        <div class="attr function"><a class="headerlink" href="#SuspendExtension.get_dependencies">#&nbsp;&nbsp</a>
+
+        
+            <span class="def">def</span>
+            <span class="name">get_dependencies</span><span class="signature">(self)</span>:
+    </div>
+
+                <details>
+            <summary>View Source</summary>
+            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">get_dependencies</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;soft&quot;</span><span class="p">:</span> <span class="n">SOFT_DEPENDENCIES</span><span class="p">,</span>
+            <span class="s2">&quot;hard&quot;</span><span class="p">:</span> <span class="n">HARD_DEPENCENDIES</span>
+        <span class="p">}</span>
+</pre></div>
+
+        </details>
+
+            <div class="docstring"><p>This should return the following <code>dict</code>:</p>
+
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+    <span class="s2">&quot;hard&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">class</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">class</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>
+    <span class="s2">&quot;soft&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">class</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">class</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>A dependency is anything that you can pass into <code>FlarumUser(extensions=[...])</code> (e. g. an extension class).</p>
+
+<h4 id="hard-dependencies">Hard-dependencies:</h4>
+
+<ul>
+<li>Will raise an error when they're not found in the initialized <code>FlarumUser</code> object. It is impossible for the extension
+to function without these.</li>
+</ul>
+
+<h4 id="soft-dependencies">Soft-dependencies:</h4>
+
+<ul>
+<li>Will raise just a warning. It is possible for the extension to function without these, although with limitations
+(such that some functions might be unavailable).</li>
+</ul>
+</div>
+
+
+                            </div>
+                            <div id="SuspendExtension.mixin" class="classattr">
+                                        <div class="attr function"><a class="headerlink" href="#SuspendExtension.mixin">#&nbsp;&nbsp</a>
+
+        
+            <span class="def">def</span>
+            <span class="name">mixin</span><span class="signature">(self)</span>:
+    </div>
+
+                <details>
+            <summary>View Source</summary>
+            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">mixin</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">mixin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">UserFromBulk</span><span class="p">,</span> <span class="n">SuspendUserMixin</span><span class="p">)</span>
+</pre></div>
+
+        </details>
+
+            <div class="docstring"><p>A function to mix-in/merge properties, methods, functions, etc... of one class into another.</p>
+
+<p>This skips all functions and properties starting with <code>__</code> (double underscore), unless <code>skip_protected</code> is False.</p>
+
+<p>This sets/overwrites attributes of <code>class_to_patch</code> to attributes of
+<code>class_to_mix_in</code> (monkey-patch).</p>
+
+<h3 id="example">Example:</h3>
+
+<div class="codehilite"><pre><span></span><code><span class="n">extension</span><span class="o">.</span><span class="n">mixin</span><span class="p">(</span><span class="n">myclass</span><span class="p">,</span> <span class="n">pyflarum_class</span><span class="p">)</span>
+</code></pre></div>
+</div>
+
+
+                            </div>
+                            <div class="inherited">
+                                <h5>Inherited Members</h5>
+                                <dl>
+                                    <div><dt><a href="../../extensions.html#ExtensionMixin">pyflarum.extensions.ExtensionMixin</a></dt>
+                                <dd id="SuspendExtension.__init__" class="function"><a href="../../extensions.html#ExtensionMixin.__init__">ExtensionMixin</a></dd>
+
+            </div>
+                                </dl>
+                            </div>
+                </section>
     </main>
 <script>/** elasticlunr - http://weixsong.github.io * Copyright (C) 2017 Oliver Nightingale * Copyright (C) 2017 Wei Song * MIT Licensed */!function(){function e(e){if(null===e||"object"!=typeof e)return e;var t=e.constructor();for(var n in e)e.hasOwnProperty(n)&&(t[n]=e[n]);return t}var t=function(e){var n=new t.Index;return n.pipeline.add(t.trimmer,t.stopWordFilter,t.stemmer),e&&e.call(n,n),n};t.version="0.9.5",lunr=t,t.utils={},t.utils.warn=function(e){return function(t){e.console&&console.warn&&console.warn(t)}}(this),t.utils.toString=function(e){return void 0===e||null===e?"":e.toString()},t.EventEmitter=function(){this.events={}},t.EventEmitter.prototype.addListener=function(){var e=Array.prototype.slice.call(arguments),t=e.pop(),n=e;if("function"!=typeof t)throw new TypeError("last argument must be a function");n.forEach(function(e){this.hasHandler(e)||(this.events[e]=[]),this.events[e].push(t)},this)},t.EventEmitter.prototype.removeListener=function(e,t){if(this.hasHandler(e)){var n=this.events[e].indexOf(t);-1!==n&&(this.events[e].splice(n,1),0==this.events[e].length&&delete this.events[e])}},t.EventEmitter.prototype.emit=function(e){if(this.hasHandler(e)){var t=Array.prototype.slice.call(arguments,1);this.events[e].forEach(function(e){e.apply(void 0,t)},this)}},t.EventEmitter.prototype.hasHandler=function(e){return e in this.events},t.tokenizer=function(e){if(!arguments.length||null===e||void 0===e)return[];if(Array.isArray(e)){var n=e.filter(function(e){return null===e||void 0===e?!1:!0});n=n.map(function(e){return t.utils.toString(e).toLowerCase()});var i=[];return n.forEach(function(e){var n=e.split(t.tokenizer.seperator);i=i.concat(n)},this),i}return e.toString().trim().toLowerCase().split(t.tokenizer.seperator)},t.tokenizer.defaultSeperator=/[\s\-]+/,t.tokenizer.seperator=t.tokenizer.defaultSeperator,t.tokenizer.setSeperator=function(e){null!==e&&void 0!==e&&"object"==typeof e&&(t.tokenizer.seperator=e)},t.tokenizer.resetSeperator=function(){t.tokenizer.seperator=t.tokenizer.defaultSeperator},t.tokenizer.getSeperator=function(){return t.tokenizer.seperator},t.Pipeline=function(){this._queue=[]},t.Pipeline.registeredFunctions={},t.Pipeline.registerFunction=function(e,n){n in t.Pipeline.registeredFunctions&&t.utils.warn("Overwriting existing registered function: "+n),e.label=n,t.Pipeline.registeredFunctions[n]=e},t.Pipeline.getRegisteredFunction=function(e){return e in t.Pipeline.registeredFunctions!=!0?null:t.Pipeline.registeredFunctions[e]},t.Pipeline.warnIfFunctionNotRegistered=function(e){var n=e.label&&e.label in this.registeredFunctions;n||t.utils.warn("Function is not registered with pipeline. This may cause problems when serialising the index.\n",e)},t.Pipeline.load=function(e){var n=new t.Pipeline;return e.forEach(function(e){var i=t.Pipeline.getRegisteredFunction(e);if(!i)throw new Error("Cannot load un-registered function: "+e);n.add(i)}),n},t.Pipeline.prototype.add=function(){var e=Array.prototype.slice.call(arguments);e.forEach(function(e){t.Pipeline.warnIfFunctionNotRegistered(e),this._queue.push(e)},this)},t.Pipeline.prototype.after=function(e,n){t.Pipeline.warnIfFunctionNotRegistered(n);var i=this._queue.indexOf(e);if(-1===i)throw new Error("Cannot find existingFn");this._queue.splice(i+1,0,n)},t.Pipeline.prototype.before=function(e,n){t.Pipeline.warnIfFunctionNotRegistered(n);var i=this._queue.indexOf(e);if(-1===i)throw new Error("Cannot find existingFn");this._queue.splice(i,0,n)},t.Pipeline.prototype.remove=function(e){var t=this._queue.indexOf(e);-1!==t&&this._queue.splice(t,1)},t.Pipeline.prototype.run=function(e){for(var t=[],n=e.length,i=this._queue.length,o=0;n>o;o++){for(var r=e[o],s=0;i>s&&(r=this._queue[s](r,o,e),void 0!==r&&null!==r);s++);void 0!==r&&null!==r&&t.push(r)}return t},t.Pipeline.prototype.reset=function(){this._queue=[]},t.Pipeline.prototype.get=function(){return this._queue},t.Pipeline.prototype.toJSON=function(){return this._queue.map(function(e){return t.Pipeline.warnIfFunctionNotRegistered(e),e.label})},t.Index=function(){this._fields=[],this._ref="id",this.pipeline=new t.Pipeline,this.documentStore=new t.DocumentStore,this.index={},this.eventEmitter=new t.EventEmitter,this._idfCache={},this.on("add","remove","update",function(){this._idfCache={}}.bind(this))},t.Index.prototype.on=function(){var e=Array.prototype.slice.call(arguments);return this.eventEmitter.addListener.apply(this.eventEmitter,e)},t.Index.prototype.off=function(e,t){return this.eventEmitter.removeListener(e,t)},t.Index.load=function(e){e.version!==t.version&&t.utils.warn("version mismatch: current "+t.version+" importing "+e.version);var n=new this;n._fields=e.fields,n._ref=e.ref,n.documentStore=t.DocumentStore.load(e.documentStore),n.pipeline=t.Pipeline.load(e.pipeline),n.index={};for(var i in e.index)n.index[i]=t.InvertedIndex.load(e.index[i]);return n},t.Index.prototype.addField=function(e){return this._fields.push(e),this.index[e]=new t.InvertedIndex,this},t.Index.prototype.setRef=function(e){return this._ref=e,this},t.Index.prototype.saveDocument=function(e){return this.documentStore=new t.DocumentStore(e),this},t.Index.prototype.addDoc=function(e,n){if(e){var n=void 0===n?!0:n,i=e[this._ref];this.documentStore.addDoc(i,e),this._fields.forEach(function(n){var o=this.pipeline.run(t.tokenizer(e[n]));this.documentStore.addFieldLength(i,n,o.length);var r={};o.forEach(function(e){e in r?r[e]+=1:r[e]=1},this);for(var s in r){var u=r[s];u=Math.sqrt(u),this.index[n].addToken(s,{ref:i,tf:u})}},this),n&&this.eventEmitter.emit("add",e,this)}},t.Index.prototype.removeDocByRef=function(e){if(e&&this.documentStore.isDocStored()!==!1&&this.documentStore.hasDoc(e)){var t=this.documentStore.getDoc(e);this.removeDoc(t,!1)}},t.Index.prototype.removeDoc=function(e,n){if(e){var n=void 0===n?!0:n,i=e[this._ref];this.documentStore.hasDoc(i)&&(this.documentStore.removeDoc(i),this._fields.forEach(function(n){var o=this.pipeline.run(t.tokenizer(e[n]));o.forEach(function(e){this.index[n].removeToken(e,i)},this)},this),n&&this.eventEmitter.emit("remove",e,this))}},t.Index.prototype.updateDoc=function(e,t){var t=void 0===t?!0:t;this.removeDocByRef(e[this._ref],!1),this.addDoc(e,!1),t&&this.eventEmitter.emit("update",e,this)},t.Index.prototype.idf=function(e,t){var n="@"+t+"/"+e;if(Object.prototype.hasOwnProperty.call(this._idfCache,n))return this._idfCache[n];var i=this.index[t].getDocFreq(e),o=1+Math.log(this.documentStore.length/(i+1));return this._idfCache[n]=o,o},t.Index.prototype.getFields=function(){return this._fields.slice()},t.Index.prototype.search=function(e,n){if(!e)return[];e="string"==typeof e?{any:e}:JSON.parse(JSON.stringify(e));var i=null;null!=n&&(i=JSON.stringify(n));for(var o=new t.Configuration(i,this.getFields()).get(),r={},s=Object.keys(e),u=0;u<s.length;u++){var a=s[u];r[a]=this.pipeline.run(t.tokenizer(e[a]))}var l={};for(var c in o){var d=r[c]||r.any;if(d){var f=this.fieldSearch(d,c,o),h=o[c].boost;for(var p in f)f[p]=f[p]*h;for(var p in f)p in l?l[p]+=f[p]:l[p]=f[p]}}var v,g=[];for(var p in l)v={ref:p,score:l[p]},this.documentStore.hasDoc(p)&&(v.doc=this.documentStore.getDoc(p)),g.push(v);return g.sort(function(e,t){return t.score-e.score}),g},t.Index.prototype.fieldSearch=function(e,t,n){var i=n[t].bool,o=n[t].expand,r=n[t].boost,s=null,u={};return 0!==r?(e.forEach(function(e){var n=[e];1==o&&(n=this.index[t].expandToken(e));var r={};n.forEach(function(n){var o=this.index[t].getDocs(n),a=this.idf(n,t);if(s&&"AND"==i){var l={};for(var c in s)c in o&&(l[c]=o[c]);o=l}n==e&&this.fieldSearchStats(u,n,o);for(var c in o){var d=this.index[t].getTermFrequency(n,c),f=this.documentStore.getFieldLength(c,t),h=1;0!=f&&(h=1/Math.sqrt(f));var p=1;n!=e&&(p=.15*(1-(n.length-e.length)/n.length));var v=d*a*h*p;c in r?r[c]+=v:r[c]=v}},this),s=this.mergeScores(s,r,i)},this),s=this.coordNorm(s,u,e.length)):void 0},t.Index.prototype.mergeScores=function(e,t,n){if(!e)return t;if("AND"==n){var i={};for(var o in t)o in e&&(i[o]=e[o]+t[o]);return i}for(var o in t)o in e?e[o]+=t[o]:e[o]=t[o];return e},t.Index.prototype.fieldSearchStats=function(e,t,n){for(var i in n)i in e?e[i].push(t):e[i]=[t]},t.Index.prototype.coordNorm=function(e,t,n){for(var i in e)if(i in t){var o=t[i].length;e[i]=e[i]*o/n}return e},t.Index.prototype.toJSON=function(){var e={};return this._fields.forEach(function(t){e[t]=this.index[t].toJSON()},this),{version:t.version,fields:this._fields,ref:this._ref,documentStore:this.documentStore.toJSON(),index:e,pipeline:this.pipeline.toJSON()}},t.Index.prototype.use=function(e){var t=Array.prototype.slice.call(arguments,1);t.unshift(this),e.apply(this,t)},t.DocumentStore=function(e){this._save=null===e||void 0===e?!0:e,this.docs={},this.docInfo={},this.length=0},t.DocumentStore.load=function(e){var t=new this;return t.length=e.length,t.docs=e.docs,t.docInfo=e.docInfo,t._save=e.save,t},t.DocumentStore.prototype.isDocStored=function(){return this._save},t.DocumentStore.prototype.addDoc=function(t,n){this.hasDoc(t)||this.length++,this.docs[t]=this._save===!0?e(n):null},t.DocumentStore.prototype.getDoc=function(e){return this.hasDoc(e)===!1?null:this.docs[e]},t.DocumentStore.prototype.hasDoc=function(e){return e in this.docs},t.DocumentStore.prototype.removeDoc=function(e){this.hasDoc(e)&&(delete this.docs[e],delete this.docInfo[e],this.length--)},t.DocumentStore.prototype.addFieldLength=function(e,t,n){null!==e&&void 0!==e&&0!=this.hasDoc(e)&&(this.docInfo[e]||(this.docInfo[e]={}),this.docInfo[e][t]=n)},t.DocumentStore.prototype.updateFieldLength=function(e,t,n){null!==e&&void 0!==e&&0!=this.hasDoc(e)&&this.addFieldLength(e,t,n)},t.DocumentStore.prototype.getFieldLength=function(e,t){return null===e||void 0===e?0:e in this.docs&&t in this.docInfo[e]?this.docInfo[e][t]:0},t.DocumentStore.prototype.toJSON=function(){return{docs:this.docs,docInfo:this.docInfo,length:this.length,save:this._save}},t.stemmer=function(){var e={ational:"ate",tional:"tion",enci:"ence",anci:"ance",izer:"ize",bli:"ble",alli:"al",entli:"ent",eli:"e",ousli:"ous",ization:"ize",ation:"ate",ator:"ate",alism:"al",iveness:"ive",fulness:"ful",ousness:"ous",aliti:"al",iviti:"ive",biliti:"ble",logi:"log"},t={icate:"ic",ative:"",alize:"al",iciti:"ic",ical:"ic",ful:"",ness:""},n="[^aeiou]",i="[aeiouy]",o=n+"[^aeiouy]*",r=i+"[aeiou]*",s="^("+o+")?"+r+o,u="^("+o+")?"+r+o+"("+r+")?$",a="^("+o+")?"+r+o+r+o,l="^("+o+")?"+i,c=new RegExp(s),d=new RegExp(a),f=new RegExp(u),h=new RegExp(l),p=/^(.+?)(ss|i)es$/,v=/^(.+?)([^s])s$/,g=/^(.+?)eed$/,m=/^(.+?)(ed|ing)$/,y=/.$/,S=/(at|bl|iz)$/,x=new RegExp("([^aeiouylsz])\\1$"),w=new RegExp("^"+o+i+"[^aeiouwxy]$"),I=/^(.+?[^aeiou])y$/,b=/^(.+?)(ational|tional|enci|anci|izer|bli|alli|entli|eli|ousli|ization|ation|ator|alism|iveness|fulness|ousness|aliti|iviti|biliti|logi)$/,E=/^(.+?)(icate|ative|alize|iciti|ical|ful|ness)$/,D=/^(.+?)(al|ance|ence|er|ic|able|ible|ant|ement|ment|ent|ou|ism|ate|iti|ous|ive|ize)$/,F=/^(.+?)(s|t)(ion)$/,_=/^(.+?)e$/,P=/ll$/,k=new RegExp("^"+o+i+"[^aeiouwxy]$"),z=function(n){var i,o,r,s,u,a,l;if(n.length<3)return n;if(r=n.substr(0,1),"y"==r&&(n=r.toUpperCase()+n.substr(1)),s=p,u=v,s.test(n)?n=n.replace(s,"$1$2"):u.test(n)&&(n=n.replace(u,"$1$2")),s=g,u=m,s.test(n)){var z=s.exec(n);s=c,s.test(z[1])&&(s=y,n=n.replace(s,""))}else if(u.test(n)){var z=u.exec(n);i=z[1],u=h,u.test(i)&&(n=i,u=S,a=x,l=w,u.test(n)?n+="e":a.test(n)?(s=y,n=n.replace(s,"")):l.test(n)&&(n+="e"))}if(s=I,s.test(n)){var z=s.exec(n);i=z[1],n=i+"i"}if(s=b,s.test(n)){var z=s.exec(n);i=z[1],o=z[2],s=c,s.test(i)&&(n=i+e[o])}if(s=E,s.test(n)){var z=s.exec(n);i=z[1],o=z[2],s=c,s.test(i)&&(n=i+t[o])}if(s=D,u=F,s.test(n)){var z=s.exec(n);i=z[1],s=d,s.test(i)&&(n=i)}else if(u.test(n)){var z=u.exec(n);i=z[1]+z[2],u=d,u.test(i)&&(n=i)}if(s=_,s.test(n)){var z=s.exec(n);i=z[1],s=d,u=f,a=k,(s.test(i)||u.test(i)&&!a.test(i))&&(n=i)}return s=P,u=d,s.test(n)&&u.test(n)&&(s=y,n=n.replace(s,"")),"y"==r&&(n=r.toLowerCase()+n.substr(1)),n};return z}(),t.Pipeline.registerFunction(t.stemmer,"stemmer"),t.stopWordFilter=function(e){return e&&t.stopWordFilter.stopWords[e]!==!0?e:void 0},t.clearStopWords=function(){t.stopWordFilter.stopWords={}},t.addStopWords=function(e){null!=e&&Array.isArray(e)!==!1&&e.forEach(function(e){t.stopWordFilter.stopWords[e]=!0},this)},t.resetStopWords=function(){t.stopWordFilter.stopWords=t.defaultStopWords},t.defaultStopWords={"":!0,a:!0,able:!0,about:!0,across:!0,after:!0,all:!0,almost:!0,also:!0,am:!0,among:!0,an:!0,and:!0,any:!0,are:!0,as:!0,at:!0,be:!0,because:!0,been:!0,but:!0,by:!0,can:!0,cannot:!0,could:!0,dear:!0,did:!0,"do":!0,does:!0,either:!0,"else":!0,ever:!0,every:!0,"for":!0,from:!0,get:!0,got:!0,had:!0,has:!0,have:!0,he:!0,her:!0,hers:!0,him:!0,his:!0,how:!0,however:!0,i:!0,"if":!0,"in":!0,into:!0,is:!0,it:!0,its:!0,just:!0,least:!0,let:!0,like:!0,likely:!0,may:!0,me:!0,might:!0,most:!0,must:!0,my:!0,neither:!0,no:!0,nor:!0,not:!0,of:!0,off:!0,often:!0,on:!0,only:!0,or:!0,other:!0,our:!0,own:!0,rather:!0,said:!0,say:!0,says:!0,she:!0,should:!0,since:!0,so:!0,some:!0,than:!0,that:!0,the:!0,their:!0,them:!0,then:!0,there:!0,these:!0,they:!0,"this":!0,tis:!0,to:!0,too:!0,twas:!0,us:!0,wants:!0,was:!0,we:!0,were:!0,what:!0,when:!0,where:!0,which:!0,"while":!0,who:!0,whom:!0,why:!0,will:!0,"with":!0,would:!0,yet:!0,you:!0,your:!0},t.stopWordFilter.stopWords=t.defaultStopWords,t.Pipeline.registerFunction(t.stopWordFilter,"stopWordFilter"),t.trimmer=function(e){if(null===e||void 0===e)throw new Error("token should not be undefined");return e.replace(/^\W+/,"").replace(/\W+$/,"")},t.Pipeline.registerFunction(t.trimmer,"trimmer"),t.InvertedIndex=function(){this.root={docs:{},df:0}},t.InvertedIndex.load=function(e){var t=new this;return t.root=e.root,t},t.InvertedIndex.prototype.addToken=function(e,t,n){for(var n=n||this.root,i=0;i<=e.length-1;){var o=e[i];o in n||(n[o]={docs:{},df:0}),i+=1,n=n[o]}var r=t.ref;n.docs[r]?n.docs[r]={tf:t.tf}:(n.docs[r]={tf:t.tf},n.df+=1)},t.InvertedIndex.prototype.hasToken=function(e){if(!e)return!1;for(var t=this.root,n=0;n<e.length;n++){if(!t[e[n]])return!1;t=t[e[n]]}return!0},t.InvertedIndex.prototype.getNode=function(e){if(!e)return null;for(var t=this.root,n=0;n<e.length;n++){if(!t[e[n]])return null;t=t[e[n]]}return t},t.InvertedIndex.prototype.getDocs=function(e){var t=this.getNode(e);return null==t?{}:t.docs},t.InvertedIndex.prototype.getTermFrequency=function(e,t){var n=this.getNode(e);return null==n?0:t in n.docs?n.docs[t].tf:0},t.InvertedIndex.prototype.getDocFreq=function(e){var t=this.getNode(e);return null==t?0:t.df},t.InvertedIndex.prototype.removeToken=function(e,t){if(e){var n=this.getNode(e);null!=n&&t in n.docs&&(delete n.docs[t],n.df-=1)}},t.InvertedIndex.prototype.expandToken=function(e,t,n){if(null==e||""==e)return[];var t=t||[];if(void 0==n&&(n=this.getNode(e),null==n))return t;n.df>0&&t.push(e);for(var i in n)"docs"!==i&&"df"!==i&&this.expandToken(e+i,t,n[i]);return t},t.InvertedIndex.prototype.toJSON=function(){return{root:this.root}},t.Configuration=function(e,n){var e=e||"";if(void 0==n||null==n)throw new Error("fields should not be null");this.config={};var i;try{i=JSON.parse(e),this.buildUserConfig(i,n)}catch(o){t.utils.warn("user configuration parse failed, will use default configuration"),this.buildDefaultConfig(n)}},t.Configuration.prototype.buildDefaultConfig=function(e){this.reset(),e.forEach(function(e){this.config[e]={boost:1,bool:"OR",expand:!1}},this)},t.Configuration.prototype.buildUserConfig=function(e,n){var i="OR",o=!1;if(this.reset(),"bool"in e&&(i=e.bool||i),"expand"in e&&(o=e.expand||o),"fields"in e)for(var r in e.fields)if(n.indexOf(r)>-1){var s=e.fields[r],u=o;void 0!=s.expand&&(u=s.expand),this.config[r]={boost:s.boost||0===s.boost?s.boost:1,bool:s.bool||i,expand:u}}else t.utils.warn("field name in user configuration not found in index instance fields");else this.addAllFields2UserConfig(i,o,n)},t.Configuration.prototype.addAllFields2UserConfig=function(e,t,n){n.forEach(function(n){this.config[n]={boost:1,bool:e,expand:t}},this)},t.Configuration.prototype.get=function(){return this.config},t.Configuration.prototype.reset=function(){this.config={}},lunr.SortedSet=function(){this.length=0,this.elements=[]},lunr.SortedSet.load=function(e){var t=new this;return t.elements=e,t.length=e.length,t},lunr.SortedSet.prototype.add=function(){var e,t;for(e=0;e<arguments.length;e++)t=arguments[e],~this.indexOf(t)||this.elements.splice(this.locationFor(t),0,t);this.length=this.elements.length},lunr.SortedSet.prototype.toArray=function(){return this.elements.slice()},lunr.SortedSet.prototype.map=function(e,t){return this.elements.map(e,t)},lunr.SortedSet.prototype.forEach=function(e,t){return this.elements.forEach(e,t)},lunr.SortedSet.prototype.indexOf=function(e){for(var t=0,n=this.elements.length,i=n-t,o=t+Math.floor(i/2),r=this.elements[o];i>1;){if(r===e)return o;e>r&&(t=o),r>e&&(n=o),i=n-t,o=t+Math.floor(i/2),r=this.elements[o]}return r===e?o:-1},lunr.SortedSet.prototype.locationFor=function(e){for(var t=0,n=this.elements.length,i=n-t,o=t+Math.floor(i/2),r=this.elements[o];i>1;)e>r&&(t=o),r>e&&(n=o),i=n-t,o=t+Math.floor(i/2),r=this.elements[o];return r>e?o:e>r?o+1:void 0},lunr.SortedSet.prototype.intersect=function(e){for(var t=new lunr.SortedSet,n=0,i=0,o=this.length,r=e.length,s=this.elements,u=e.elements;;){if(n>o-1||i>r-1)break;s[n]!==u[i]?s[n]<u[i]?n++:s[n]>u[i]&&i++:(t.add(s[n]),n++,i++)}return t},lunr.SortedSet.prototype.clone=function(){var e=new lunr.SortedSet;return e.elements=this.toArray(),e.length=e.elements.length,e},lunr.SortedSet.prototype.union=function(e){var t,n,i;this.length>=e.length?(t=this,n=e):(t=e,n=this),i=t.clone();for(var o=0,r=n.toArray();o<r.length;o++)i.add(r[o]);return i},lunr.SortedSet.prototype.toJSON=function(){return this.toArray()},function(e,t){"function"==typeof define&&define.amd?define(t):"object"==typeof exports?module.exports=t():e.elasticlunr=t()}(this,function(){return t})}();</script>
 <script>
@@ -516,7 +538,7 @@ usage of pyFlarum during testing, but there's perhaps a very tiny chance that th
     async function initialize() {
         let docs;
         try {
-            let resp = await fetch("search.json");
+            let resp = await fetch("../../../search.json");
             docs = await resp.json();
         } catch (e) {
             searchErr = "Cannot fetch search index.";
@@ -584,7 +606,7 @@ usage of pyFlarum during testing, but there's perhaps a very tiny chance that th
             }
             for (let result of results.slice(0, 10)) {
                 let doc = result.doc;
-                let url = `${doc.modulename.replaceAll(".", "/")}.html`;
+                let url = `../../../${doc.modulename.replaceAll(".", "/")}.html`;
                 if (doc.qualname) {
                     url += `#${doc.qualname}`;
                 }

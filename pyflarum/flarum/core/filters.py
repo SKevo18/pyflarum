@@ -2,9 +2,6 @@ from typing import Literal, Optional, Iterable
 import warnings
 
 
-__all__ = ['Filter']
-
-
 
 class Filter:
     """

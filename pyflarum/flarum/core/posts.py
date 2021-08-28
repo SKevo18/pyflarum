@@ -14,9 +14,6 @@ from ...error_handler import parse_request
 from ...datetime_conversions import flarum_to_datetime
 
 
-__all__ = ['PreparedPost', 'Posts', 'Post', 'PostFromBulk', 'PostFromNotification', 'PostFromDiscussion']
-
-
 
 class PreparedPost(BaseFlarumIndividualObject):
     """
@@ -225,11 +222,13 @@ class PostFromNotification(PostFromDiscussion):
     """
 
     @property
-    def content(self) -> Optional[str]:
+    def content(self) -> Optional['str | dict']:
         """
             The post's content. Doesn't contain markdown, and is just plain-text.
 
-            Only available in `pyflarum.flarum.core.posts.PostFromNotification`.
+            If not accessed from `pyflarum.flarum.core.posts.PostFromNotification`, then it can return a `dict` too
+            (messages that indicate whether the discussion was renamed, locked, etc. are treated as posts too - the content
+            becomes the metadata, if that's the case)
         """
 
         return self.attributes.get("content", None)
@@ -362,17 +361,7 @@ class PostFromBulk(PostFromNotification):
     """
         A post from `Posts`.
     """
-
-    @property
-    def content(self) -> NotImplemented:
-        """
-            This property is only available for `pyflarum.flarum.core.posts.PostFromNotification`, but
-            was included here due to class inheritance.
-            
-            Using this will just raise `NotImplementedError`, so please do not use this.
-        """
-
-        raise NotImplementedError('The `content` property is only available for `PostFromNotification`.')
+    pass
 
 
 

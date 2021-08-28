@@ -3,10 +3,6 @@ from typing import Optional
 from datetime import datetime
 
 
-__all__ = ['flarum_to_datetime', 'datetime_to_flarum']
-
-
-
 def flarum_to_datetime(flarum_dt: Optional['str | datetime']=None):
     """
         Converts Flarum's datetime string to Python's datetime object.

@@ -11,7 +11,7 @@ __author__      = "SKevo"
 __copyright__   = "Copyright 2021, SKevo"
 __credits__     = ["SKevo"]
 __license__     = "GPLv3"
-__version__     = "v1.0.9.2-beta"
+__version__     = "v1.0.9.3-beta"
 __maintainer__  = "SKevo"
 __email__       = "me@kevo.link"
 __status__      = "4 - Beta"
@@ -37,7 +37,7 @@ setuptools.setup(
     long_description_content_type='text/markdown',
 
     version = __version__,
-    license=__license__,
+    license = __license__,
     description = __description__,
     keywords = ['Flarum', 'forum software', 'api', 'Flarum api', 'bot', 'userbot', 'database', 'flarum database', 'server', 'client'],
 

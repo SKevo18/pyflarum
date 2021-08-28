@@ -1,6 +1,7 @@
 from typing import Dict, List
 
 
+
 class ExtensionMixin:
     """
         A base class for mixing in custom classes (extensions) into another classes.

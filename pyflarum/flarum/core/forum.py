@@ -5,9 +5,6 @@ from ..core import BaseFlarumIndividualObject
 from ..core.groups import Group
 
 
-__all__ = ['Forum']
-
-
 class Forum(BaseFlarumIndividualObject):
     """
         Entire forum, lives under the main `/api` route.

@@ -29,9 +29,6 @@ from .datetime_conversions import datetime_to_flarum
 from .extensions import ExtensionMixin
 
 
-__all__ = ['FlarumSession', 'FlarumUser']
-
-
 
 class FlarumSession:
     """
