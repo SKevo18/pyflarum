@@ -1,6 +1,7 @@
 name: Automatically build docs
 
 on:
+  workflow_dispatch
   release:
     types: [published]
 
