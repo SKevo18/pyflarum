@@ -25,3 +25,7 @@ __all__ = [
     'Notifications', 'Notification',
     'Forum'
 ]
+
+
+with open("README.md", 'r', encoding="UTF-8") as readme:
+    __doc__ = readme.read() 
