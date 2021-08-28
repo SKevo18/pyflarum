@@ -25,7 +25,7 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\watch.py#L0-L48" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\watch.py#L0-L50" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">from typing import Any, Callable, NoReturn, Optional
 
@@ -45,6 +45,7 @@ SOFT_DEPENDENCIES = []
 HARD_DEPENCENDIES = []
 
 
+
 class WatchFlarumUserMixin(FlarumUser):
     def watch_notifications(self, on_notification: Callable[[Notification], Any], interval: Optional[float]=10, auto_mark_as_read: bool=True, **kwargs) -&gt; NoReturn:
         while True:
@@ -59,6 +60,7 @@ class WatchFlarumUserMixin(FlarumUser):
 
             if interval:
                 time.sleep(interval)
+
 
 
 class WatchExtension(ExtensionMixin, WatchFlarumUserMixin):
@@ -93,8 +95,7 @@ class WatchExtension(ExtensionMixin, WatchFlarumUserMixin):
 <dd>
 <div class="desc"><p>A base class for mixing in custom classes (extensions) into another classes.</p>
 <h3 id="example-extension-code">Example extension code:</h3>
-<pre><code class="language-python">from typing import Type
-
+<pre><code class="language-python">
 from pyflarum.extensions import ExtensionMixin
 from pyflarum.extensions.admin import AdminExtension
 from pyflarum.session import FlarumUser
@@ -113,7 +114,7 @@ HARD_DEPENCENDIES = []
 
 # I recommend to use the following naming pattern: `&lt;YourExtensionName&gt;&lt;ClassToMixin&gt;Mixin`
 # Example:
-class ExampleFlarumUserMixin:
+class ExampleFlarumUserMixin(FlarumUser):
     @property
     def example(self):
         '''
@@ -121,7 +122,6 @@ class ExampleFlarumUserMixin:
         '''
 
         return &quot;Example&quot;
-ExampleFlarumUserMixin: Type[FlarumUser] # mimick class inheritance, without inheriting at runtime, acts just as a type hint
 
 
 class ExampleExtension(ExtensionMixin):
@@ -150,7 +150,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\watch.py#L35-L49" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\watch.py#L37-L51" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class WatchExtension(ExtensionMixin, WatchFlarumUserMixin):
     def __init__(self):
@@ -227,7 +227,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\watch.py#L41-L45" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\watch.py#L43-L47" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_dependencies(self):
     return {
@@ -247,7 +247,7 @@ class ExampleExtension(ExtensionMixin):
 <div class="desc inherited"><p>Obtains a discussion by specific ID.</p></div>
 </dd>
 <dt id="pyflarum.extensions.watch.WatchExtension.get_discussions"><code class="name flex">
-<span>def <span class="ident">get_discussions</span></span>(<span>self, filter: Optional[<a title="pyflarum.flarum.core.filters.Filter" href="../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a>] = None)</span>
+<span>def <span class="ident">get_discussions</span></span>(<span>self, filter: Optional[<a title="pyflarum.flarum.core.filters.Filter" href="../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a>] = None) ‑> <a title="pyflarum.flarum.core.discussions.Discussions" href="../flarum/core/discussions.html#pyflarum.flarum.core.discussions.Discussions">Discussions</a></span>
 </code></dt>
 <dd>
 <p class="inheritance">
@@ -327,7 +327,7 @@ class ExampleExtension(ExtensionMixin):
 <div class="desc inherited"><p>Obtains all users from <code>/api/users</code>, optionally filtering results by using <code>filter</code>.</p></div>
 </dd>
 <dt id="pyflarum.extensions.watch.WatchExtension.mark_all_discussions_as_read"><code class="name flex">
-<span>def <span class="ident">mark_all_discussions_as_read</span></span>(<span>self, at: datetime.datetime = datetime.datetime(2021, 8, 19, 8, 44, 1, 429940)) ‑> Literal[True]</span>
+<span>def <span class="ident">mark_all_discussions_as_read</span></span>(<span>self, at: datetime.datetime = datetime.datetime(2021, 8, 28, 10, 58, 47, 198536)) ‑> Literal[True]</span>
 </code></dt>
 <dd>
 <p class="inheritance">
@@ -358,7 +358,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\watch.py#L48-L49" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\watch.py#L50-L51" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def mixin(self):
     super().mixin(self, FlarumUser, WatchFlarumUserMixin)</code></pre>
@@ -436,7 +436,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\watch.py#L19-L32" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\watch.py#L20-L33" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class WatchFlarumUserMixin(FlarumUser):
     def watch_notifications(self, on_notification: Callable[[Notification], Any], interval: Optional[float]=10, auto_mark_as_read: bool=True, **kwargs) -&gt; NoReturn:
@@ -508,7 +508,7 @@ class ExampleExtension(ExtensionMixin):
 <div class="desc inherited"><p>Obtains a discussion by specific ID.</p></div>
 </dd>
 <dt id="pyflarum.extensions.watch.WatchFlarumUserMixin.get_discussions"><code class="name flex">
-<span>def <span class="ident">get_discussions</span></span>(<span>self, filter: Optional[<a title="pyflarum.flarum.core.filters.Filter" href="../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a>] = None)</span>
+<span>def <span class="ident">get_discussions</span></span>(<span>self, filter: Optional[<a title="pyflarum.flarum.core.filters.Filter" href="../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a>] = None) ‑> <a title="pyflarum.flarum.core.discussions.Discussions" href="../flarum/core/discussions.html#pyflarum.flarum.core.discussions.Discussions">Discussions</a></span>
 </code></dt>
 <dd>
 <p class="inheritance">
@@ -588,7 +588,7 @@ class ExampleExtension(ExtensionMixin):
 <div class="desc inherited"><p>Obtains all users from <code>/api/users</code>, optionally filtering results by using <code>filter</code>.</p></div>
 </dd>
 <dt id="pyflarum.extensions.watch.WatchFlarumUserMixin.mark_all_discussions_as_read"><code class="name flex">
-<span>def <span class="ident">mark_all_discussions_as_read</span></span>(<span>self, at: datetime.datetime = datetime.datetime(2021, 8, 19, 8, 44, 1, 429940)) ‑> Literal[True]</span>
+<span>def <span class="ident">mark_all_discussions_as_read</span></span>(<span>self, at: datetime.datetime = datetime.datetime(2021, 8, 28, 10, 58, 47, 198536)) ‑> Literal[True]</span>
 </code></dt>
 <dd>
 <p class="inheritance">
@@ -665,7 +665,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\watch.py#L20-L32" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\watch.py#L21-L33" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def watch_notifications(self, on_notification: Callable[[Notification], Any], interval: Optional[float]=10, auto_mark_as_read: bool=True, **kwargs) -&gt; NoReturn:
     while True:

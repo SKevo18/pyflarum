@@ -25,7 +25,7 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\FoF_UserBio.py#L0-L78" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\FoF_UserBio.py#L0-L78" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">from typing import Optional, TYPE_CHECKING
 if TYPE_CHECKING:
@@ -123,8 +123,7 @@ class UserBioExtension(ExtensionMixin):
 <dd>
 <div class="desc"><p>A base class for mixing in custom classes (extensions) into another classes.</p>
 <h3 id="example-extension-code">Example extension code:</h3>
-<pre><code class="language-python">from typing import Type
-
+<pre><code class="language-python">
 from pyflarum.extensions import ExtensionMixin
 from pyflarum.extensions.admin import AdminExtension
 from pyflarum.session import FlarumUser
@@ -143,7 +142,7 @@ HARD_DEPENCENDIES = []
 
 # I recommend to use the following naming pattern: `&lt;YourExtensionName&gt;&lt;ClassToMixin&gt;Mixin`
 # Example:
-class ExampleFlarumUserMixin:
+class ExampleFlarumUserMixin(FlarumUser):
     @property
     def example(self):
         '''
@@ -151,7 +150,6 @@ class ExampleFlarumUserMixin:
         '''
 
         return &quot;Example&quot;
-ExampleFlarumUserMixin: Type[FlarumUser] # mimick class inheritance, without inheriting at runtime, acts just as a type hint
 
 
 class ExampleExtension(ExtensionMixin):
@@ -169,7 +167,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\FoF_UserBio.py#L68-L79" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\FoF_UserBio.py#L68-L79" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class UserBioExtension(ExtensionMixin):
     def get_dependencies(self):
@@ -207,7 +205,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\FoF_UserBio.py#L69-L73" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\FoF_UserBio.py#L69-L73" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_dependencies(self):
     return {
@@ -228,7 +226,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\FoF_UserBio.py#L76-L79" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\FoF_UserBio.py#L76-L79" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def mixin(self):
     super().mixin(self, FlarumUser, UserBioFlarumUserMixin)
@@ -258,7 +256,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\FoF_UserBio.py#L30-L48" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\FoF_UserBio.py#L30-L48" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class UserBioFlarumUserMixin(FlarumUser):
     def update_user_bio(self, bio: Optional[str]=None, user: Optional[&#39;AnyUser&#39;]=None) -&gt; &#39;FlarumUser | User&#39;:
@@ -331,7 +329,7 @@ class ExampleExtension(ExtensionMixin):
 <div class="desc inherited"><p>Obtains a discussion by specific ID.</p></div>
 </dd>
 <dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.get_discussions"><code class="name flex">
-<span>def <span class="ident">get_discussions</span></span>(<span>self, filter: Optional[<a title="pyflarum.flarum.core.filters.Filter" href="../../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a>] = None)</span>
+<span>def <span class="ident">get_discussions</span></span>(<span>self, filter: Optional[<a title="pyflarum.flarum.core.filters.Filter" href="../../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a>] = None) ‑> <a title="pyflarum.flarum.core.discussions.Discussions" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.Discussions">Discussions</a></span>
 </code></dt>
 <dd>
 <p class="inheritance">
@@ -411,7 +409,7 @@ class ExampleExtension(ExtensionMixin):
 <div class="desc inherited"><p>Obtains all users from <code>/api/users</code>, optionally filtering results by using <code>filter</code>.</p></div>
 </dd>
 <dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioFlarumUserMixin.mark_all_discussions_as_read"><code class="name flex">
-<span>def <span class="ident">mark_all_discussions_as_read</span></span>(<span>self, at: datetime.datetime = datetime.datetime(2021, 8, 19, 8, 44, 1, 429940)) ‑> Literal[True]</span>
+<span>def <span class="ident">mark_all_discussions_as_read</span></span>(<span>self, at: datetime.datetime = datetime.datetime(2021, 8, 28, 10, 58, 47, 198536)) ‑> Literal[True]</span>
 </code></dt>
 <dd>
 <p class="inheritance">
@@ -468,7 +466,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\FoF_UserBio.py#L31-L48" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\FoF_UserBio.py#L31-L48" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def update_user_bio(self, bio: Optional[str]=None, user: Optional[&#39;AnyUser&#39;]=None) -&gt; &#39;FlarumUser | User&#39;:
     id = user.id if user else self.data.id
@@ -527,7 +525,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\FoF_UserBio.py#L23-L26" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\FoF_UserBio.py#L23-L26" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class UserBioForumMixin(Forum):
     @property
@@ -685,7 +683,7 @@ class ExampleExtension(ExtensionMixin):
 <em>Inherited from:</em>
 <code><a title="pyflarum.flarum.core.forum.Forum" href="../../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum">Forum</a></code>.<code><a title="pyflarum.flarum.core.forum.Forum.included" href="../../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum.included">included</a></code>
 </p>
-<div class="desc inherited"><p>Raw <code>list[dict]</code> of the forum's included objects.</p></div>
+<div class="desc inherited"><p>Returns raw list of JSON included data …</p></div>
 </dd>
 <dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioForumMixin.logoUrl"><code class="name">var <span class="ident">logoUrl</span> : Optional[str]</code></dt>
 <dd>
@@ -701,7 +699,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\FoF_UserBio.py#L24-L26" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\FoF_UserBio.py#L24-L26" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def max_bio_length(self) -&gt; bool:
@@ -811,7 +809,7 @@ other objects …</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\FoF_UserBio.py#L52-L65" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\FoF_UserBio.py#L52-L65" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class UserBioUserFromBulkMixin(UserFromBulk):
     @property
@@ -860,7 +858,7 @@ other objects …</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\FoF_UserBio.py#L53-L55" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\FoF_UserBio.py#L53-L55" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def bio(self) -&gt; Optional[str]:
@@ -889,7 +887,7 @@ def bio(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\FoF_UserBio.py#L63-L65" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\FoF_UserBio.py#L63-L65" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def canEditBio(self) -&gt; bool:
@@ -918,7 +916,7 @@ def canEditBio(self) -&gt; bool:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\FoF_UserBio.py#L58-L60" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\FoF_UserBio.py#L58-L60" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def canViewBio(self) -&gt; bool:
@@ -972,6 +970,14 @@ def canViewBio(self) -&gt; bool:
 <code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.id" href="../../flarum/core/index.html#pyflarum.flarum.core.users.UserFromBulk.id">id</a></code>
 </p>
 <div class="desc inherited"><p>The <code>int</code> ID of the object. This should always be unique for the object's type.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.included"><code class="name">var <span class="ident">included</span> : list</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.included" href="../../flarum/core/index.html#pyflarum.flarum.core.users.UserFromBulk.included">included</a></code>
+</p>
+<div class="desc inherited"><p>Returns raw list of JSON included data …</p></div>
 </dd>
 <dt id="pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.isEmailConfirmed"><code class="name">var <span class="ident">isEmailConfirmed</span> : bool</code></dt>
 <dd>
@@ -1171,6 +1177,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.displayName" href="../../flarum/core/users.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.displayName">displayName</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.email" href="../../flarum/core/users.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.email">email</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.id" href="../../flarum/core/index.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.id">id</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.included" href="../../flarum/core/index.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.included">included</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.isEmailConfirmed" href="../../flarum/core/users.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.isEmailConfirmed">isEmailConfirmed</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.joinTime" href="../../flarum/core/users.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.joinTime">joinTime</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.relationships" href="../../flarum/core/index.html#pyflarum.extensions.flarum.FoF_UserBio.UserBioUserFromBulkMixin.relationships">relationships</a></code></li>

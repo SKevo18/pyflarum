@@ -25,9 +25,9 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\discussions.py#L0-L555" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\flarum\core\discussions.py#L0-L549" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">from typing import Any, Literal, NoReturn, TYPE_CHECKING, Optional
+<pre><code class="python">from typing import Any, Iterator, Literal, NoReturn, TYPE_CHECKING, Optional
 
 # Avoid my greatest enemy in Python: circular import:
 if TYPE_CHECKING:
@@ -39,6 +39,9 @@ from ..core import BaseFlarumBulkObject, BaseFlarumIndividualObject
 from ..core.users import UserFromBulk, UserFromNotification
 from ...error_handler import FlarumError, parse_request
 from ...datetime_conversions import flarum_to_datetime
+
+
+__all__ = [&#39;PreparedDiscussion&#39;, &#39;Discussions&#39;, &#39;Discussion&#39;, &#39;DiscussionFromBulk&#39;, &#39;DiscussionFromNotification&#39;]
 
 
 
@@ -109,25 +112,14 @@ class Discussions(BaseFlarumBulkObject):
         A data of multiple discussions fetched from `/api/discussions`.
     &#34;&#34;&#34;
 
+    def __init__(self, user: &#39;FlarumUser&#39;, _fetched_data: dict):
+        return super().__init__(user=user, _fetched_data=_fetched_data, _listclass=DiscussionFromBulk, _required_type=&#39;discussions&#39;)
 
-    def __iter__(self):
-        return iter(self.get_discussions())
 
+    if TYPE_CHECKING:
+        def __getitem__(self, key: int) -&gt; &#39;DiscussionFromBulk&#39;: ...
+        def __iter__(self) -&gt; Iterator[&#39;DiscussionFromBulk&#39;]: ...
 
-    def get_discussions(self) -&gt; list[&#39;DiscussionFromBulk&#39;]:
-        &#34;&#34;&#34;
-            Obtains all discussions from the `Discussions` object as a `list`.
-            Returns a `list` of `DiscussionFromBulk`.
-        &#34;&#34;&#34;
-
-        all_discussions = [] # type: list[DiscussionFromBulk]
-
-        for raw_discussion in self.data:
-            if raw_discussion.get(&#34;type&#34;, None) == &#39;discussions&#39;:
-                discussion = DiscussionFromBulk(user=self.user, _fetched_data=dict(data=raw_discussion, _parent_included=self.included))
-                all_discussions.append(discussion)
-
-        return all_discussions
 
 
 class DiscussionFromNotification(BaseFlarumIndividualObject):
@@ -550,9 +542,11 @@ class Discussion(DiscussionFromBulk):
 
             It might seem strange why this doesn&#39;t return `pyflarum.flarum.core.posts.PostFromDiscussion` instead,
             but these posts are in fact identical to `pyflarum.flarum.core.posts.PostFromBulk`, that&#39;s why they are returned.
+
+            `pyflarum.flarum.core.posts.PostFromDiscussion` comes from `pyflarum.flarum.core.discussions.DiscussionFromBulk` instead.
         &#34;&#34;&#34;
 
-        all_posts = list() # type: list[PostFromBulk]
+        all_posts = list()
         raw_posts = self.relationships.get(&#34;posts&#34;, {}).get(&#34;data&#34;, [{}]) # type: list[dict]
 
         for raw_post in raw_posts:
@@ -612,7 +606,7 @@ inherits properties from all previous discussion-like objects.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\discussions.py#L467-L556" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\flarum\core\discussions.py#L459-L550" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class Discussion(DiscussionFromBulk):
     &#34;&#34;&#34;
@@ -671,9 +665,11 @@ inherits properties from all previous discussion-like objects.</p>
 
             It might seem strange why this doesn&#39;t return `pyflarum.flarum.core.posts.PostFromDiscussion` instead,
             but these posts are in fact identical to `pyflarum.flarum.core.posts.PostFromBulk`, that&#39;s why they are returned.
+
+            `pyflarum.flarum.core.posts.PostFromDiscussion` comes from `pyflarum.flarum.core.discussions.DiscussionFromBulk` instead.
         &#34;&#34;&#34;
 
-        all_posts = list() # type: list[PostFromBulk]
+        all_posts = list()
         raw_posts = self.relationships.get(&#34;posts&#34;, {}).get(&#34;data&#34;, [{}]) # type: list[dict]
 
         for raw_post in raw_posts:
@@ -794,7 +790,7 @@ inherits properties from all previous discussion-like objects.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\discussions.py#L478-L486" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\flarum\core\discussions.py#L470-L478" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def included(self) -&gt; list[dict]:
@@ -935,7 +931,7 @@ probably a good idea to also check if the number of the post is 1 - but then aga
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\discussions.py#L489-L515" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\flarum\core\discussions.py#L481-L507" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_author(self, mode: &#39;Any | Literal[&#34;first_number&#34;]&#39;=&#39;first_number&#39;) -&gt; UserFromBulk:
     &#34;&#34;&#34;
@@ -979,7 +975,7 @@ first_post = discussion.get_posts()[0]
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\discussions.py#L543-L556" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\flarum\core\discussions.py#L537-L550" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_first_post(self) -&gt; NoReturn:
     &#34;&#34;&#34;
@@ -1024,11 +1020,12 @@ the top-level discussion class (<code><a title="pyflarum.flarum.core.discussions
 <dd>
 <div class="desc"><p>Returns a list of <code><a title="pyflarum.flarum.core.posts.PostFromBulk" href="posts.html#pyflarum.flarum.core.posts.PostFromBulk">PostFromBulk</a></code> objects.</p>
 <p>It might seem strange why this doesn't return <code><a title="pyflarum.flarum.core.posts.PostFromDiscussion" href="posts.html#pyflarum.flarum.core.posts.PostFromDiscussion">PostFromDiscussion</a></code> instead,
-but these posts are in fact identical to <code><a title="pyflarum.flarum.core.posts.PostFromBulk" href="posts.html#pyflarum.flarum.core.posts.PostFromBulk">PostFromBulk</a></code>, that's why they are returned.</p></div>
+but these posts are in fact identical to <code><a title="pyflarum.flarum.core.posts.PostFromBulk" href="posts.html#pyflarum.flarum.core.posts.PostFromBulk">PostFromBulk</a></code>, that's why they are returned.</p>
+<p><code><a title="pyflarum.flarum.core.posts.PostFromDiscussion" href="posts.html#pyflarum.flarum.core.posts.PostFromDiscussion">PostFromDiscussion</a></code> comes from <code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code> instead.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\discussions.py#L518-L540" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\flarum\core\discussions.py#L510-L534" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_posts(self) -&gt; list[PostFromBulk]:
     &#34;&#34;&#34;
@@ -1036,9 +1033,11 @@ but these posts are in fact identical to <code><a title="pyflarum.flarum.core.po
 
         It might seem strange why this doesn&#39;t return `pyflarum.flarum.core.posts.PostFromDiscussion` instead,
         but these posts are in fact identical to `pyflarum.flarum.core.posts.PostFromBulk`, that&#39;s why they are returned.
+
+        `pyflarum.flarum.core.posts.PostFromDiscussion` comes from `pyflarum.flarum.core.discussions.DiscussionFromBulk` instead.
     &#34;&#34;&#34;
 
-    all_posts = list() # type: list[PostFromBulk]
+    all_posts = list()
     raw_posts = self.relationships.get(&#34;posts&#34;, {}).get(&#34;data&#34;, [{}]) # type: list[dict]
 
     for raw_post in raw_posts:
@@ -1103,7 +1102,7 @@ that are not worthy to view such thread.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\discussions.py#L205-L462" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\flarum\core\discussions.py#L197-L454" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class DiscussionFromBulk(DiscussionFromNotification):
     &#34;&#34;&#34;
@@ -1373,6 +1372,10 @@ that are not worthy to view such thread.</p></div>
 </ul>
 <h3>Subclasses</h3>
 <ul class="hlist">
+<li><a title="pyflarum.extensions.flarum.Askvortsov_ReplyTemplates.ReplyTemplatesDiscussionFromBulkMixin" href="../../extensions/flarum/Askvortsov_ReplyTemplates.html#pyflarum.extensions.flarum.Askvortsov_ReplyTemplates.ReplyTemplatesDiscussionFromBulkMixin">ReplyTemplatesDiscussionFromBulkMixin</a></li>
+<li><a title="pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin" href="../../extensions/flarum/Blomstra_Realtime.html#pyflarum.extensions.flarum.Blomstra_Realtime.RealtimeDiscussionMixin">RealtimeDiscussionMixin</a></li>
+<li><a title="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin" href="../../extensions/flarum/Flarum_Lock.html#pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin">LockDiscussionFromBulkMixin</a></li>
+<li><a title="pyflarum.extensions.flarum.Flarum_Sticky.StickyDiscussionFromBulkMixin" href="../../extensions/flarum/Flarum_Sticky.html#pyflarum.extensions.flarum.Flarum_Sticky.StickyDiscussionFromBulkMixin">StickyDiscussionFromBulkMixin</a></li>
 <li><a title="pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromBulkMixin" href="../../extensions/flarum/Flarum_Subscriptions.html#pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromBulkMixin">SubscriptionsDiscussionFromBulkMixin</a></li>
 <li><a title="pyflarum.extensions.flarum.Flarum_Tags.TagsDiscussionMixin" href="../../extensions/flarum/Flarum_Tags.html#pyflarum.extensions.flarum.Flarum_Tags.TagsDiscussionMixin">TagsDiscussionMixin</a></li>
 <li><a title="pyflarum.extensions.flarum.FoF_BestAnswer.BestAnswerDiscussionMixin" href="../../extensions/flarum/FoF_BestAnswer.html#pyflarum.extensions.flarum.FoF_BestAnswer.BestAnswerDiscussionMixin">BestAnswerDiscussionMixin</a></li>
@@ -1398,7 +1401,7 @@ that are not worthy to view such thread.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\discussions.py#L309-L315" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\flarum\core\discussions.py#L301-L307" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def canDelete(self) -&gt; bool:
@@ -1415,7 +1418,7 @@ def canDelete(self) -&gt; bool:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\discussions.py#L318-L324" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\flarum\core\discussions.py#L310-L316" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def canHide(self) -&gt; bool:
@@ -1432,7 +1435,7 @@ def canHide(self) -&gt; bool:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\discussions.py#L300-L306" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\flarum\core\discussions.py#L292-L298" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def canRename(self) -&gt; bool:
@@ -1449,7 +1452,7 @@ def canRename(self) -&gt; bool:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\discussions.py#L291-L297" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\flarum\core\discussions.py#L283-L289" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def canReply(self) -&gt; bool:
@@ -1467,7 +1470,7 @@ def canReply(self) -&gt; bool:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\discussions.py#L226-L234" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\flarum\core\discussions.py#L218-L226" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def commentCount(self) -&gt; Optional[str]:
@@ -1486,7 +1489,7 @@ def commentCount(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\discussions.py#L248-L256" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\flarum\core\discussions.py#L240-L248" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def createdAt(self) -&gt; Optional[datetime]:
@@ -1515,6 +1518,14 @@ def createdAt(self) -&gt; Optional[datetime]:
 </p>
 <div class="desc inherited"><p>The <code>int</code> ID of the object. This should always be unique for the object's type.</p></div>
 </dd>
+<dt id="pyflarum.flarum.core.discussions.DiscussionFromBulk.included"><code class="name">var <span class="ident">included</span> : list</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification" href="#pyflarum.flarum.core.discussions.DiscussionFromNotification">DiscussionFromNotification</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification.included" href="index.html#pyflarum.flarum.core.discussions.DiscussionFromNotification.included">included</a></code>
+</p>
+<div class="desc inherited"><p>Returns raw list of JSON included data …</p></div>
+</dd>
 <dt id="pyflarum.flarum.core.discussions.DiscussionFromBulk.isHidden"><code class="name">var <span class="ident">isHidden</span> : bool</code></dt>
 <dd>
 <div class="desc"><p>Whether or not the discussion is hidden. This happens when
@@ -1522,7 +1533,7 @@ you delete the discussion for the first time.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\discussions.py#L338-L345" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\flarum\core\discussions.py#L330-L337" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def isHidden(self) -&gt; bool:
@@ -1541,7 +1552,7 @@ discussion.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\discussions.py#L272-L279" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\flarum\core\discussions.py#L264-L271" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def lastPostNumber(self) -&gt; Optional[int]:
@@ -1561,7 +1572,7 @@ discussion last updated at.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\discussions.py#L259-L269" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\flarum\core\discussions.py#L251-L261" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def lastPostedAt(self) -&gt; Optional[datetime]:
@@ -1582,7 +1593,7 @@ def lastPostedAt(self) -&gt; Optional[datetime]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\discussions.py#L327-L335" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\flarum\core\discussions.py#L319-L327" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def lastReadAt(self) -&gt; Optional[datetime]:
@@ -1601,7 +1612,7 @@ def lastReadAt(self) -&gt; Optional[datetime]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\discussions.py#L282-L288" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\flarum\core\discussions.py#L274-L280" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def lastReadPostNumber(self) -&gt; Optional[int]:
@@ -1620,7 +1631,7 @@ discussion by posting.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\discussions.py#L237-L245" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\flarum\core\discussions.py#L229-L237" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def participantCount(self) -&gt; Optional[str]:
@@ -1674,7 +1685,7 @@ e. g. <code>123-some-title</code>).</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\discussions.py#L211-L223" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\flarum\core\discussions.py#L203-L215" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def url(self):
@@ -1703,7 +1714,7 @@ def url(self):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\discussions.py#L451-L462" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\flarum\core\discussions.py#L443-L454" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def delete(self, force: bool=False) -&gt; bool:
     &#34;&#34;&#34;
@@ -1731,7 +1742,7 @@ returned.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\discussions.py#L348-L367" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\flarum\core\discussions.py#L340-L359" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_author(self) -&gt; Optional[UserFromNotification]:
     &#34;&#34;&#34;
@@ -1765,7 +1776,7 @@ returned.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\discussions.py#L391-L407" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\flarum\core\discussions.py#L383-L399" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_first_post(self) -&gt; Optional[PostFromDiscussion]:
     &#34;&#34;&#34;
@@ -1808,7 +1819,7 @@ data matches the data of user from notification. If no user is found, <code>None
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\discussions.py#L370-L388" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\flarum\core\discussions.py#L362-L380" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_last_posted_user(self) -&gt; Optional[UserFromNotification]:
     &#34;&#34;&#34;
@@ -1840,7 +1851,7 @@ that are not worthy to view such thread.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\discussions.py#L433-L439" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\flarum\core\discussions.py#L425-L431" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def hide(self, force: bool=False):
     &#34;&#34;&#34;
@@ -1859,7 +1870,7 @@ that are not worthy to view such thread.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\discussions.py#L442-L447" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\flarum\core\discussions.py#L434-L439" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def restore(self, force: bool=False):
     &#34;&#34;&#34;
@@ -1877,7 +1888,7 @@ that are not worthy to view such thread.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\discussions.py#L442-L447" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\flarum\core\discussions.py#L434-L439" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def restore(self, force: bool=False):
     &#34;&#34;&#34;
@@ -1905,7 +1916,7 @@ data from all of the discussion classes (see <a href="https://cwkevo.github.io/p
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\discussions.py#L104-L199" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\flarum\core\discussions.py#L96-L191" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class DiscussionFromNotification(BaseFlarumIndividualObject):
     &#34;&#34;&#34;
@@ -2012,6 +2023,11 @@ data from all of the discussion classes (see <a href="https://cwkevo.github.io/p
 </ul>
 <h3>Subclasses</h3>
 <ul class="hlist">
+<li><a title="pyflarum.extensions.flarum.Flarum_Approval.ApprovalDiscussionFromNotificationMixin" href="../../extensions/flarum/Flarum_Approval.html#pyflarum.extensions.flarum.Flarum_Approval.ApprovalDiscussionFromNotificationMixin">ApprovalDiscussionFromNotificationMixin</a></li>
+<li><a title="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromNotificationMixin" href="../../extensions/flarum/Flarum_Lock.html#pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromNotificationMixin">LockDiscussionFromNotificationMixin</a></li>
+<li><a title="pyflarum.extensions.flarum.Flarum_Sticky.StickyDiscussionFromBulkMixin" href="../../extensions/flarum/Flarum_Sticky.html#pyflarum.extensions.flarum.Flarum_Sticky.StickyDiscussionFromBulkMixin">StickyDiscussionFromBulkMixin</a></li>
+<li><a title="pyflarum.extensions.flarum.Flarum_Sticky.StickyDiscussionFromNotificationMixin" href="../../extensions/flarum/Flarum_Sticky.html#pyflarum.extensions.flarum.Flarum_Sticky.StickyDiscussionFromNotificationMixin">StickyDiscussionFromNotificationMixin</a></li>
+<li><a title="pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromNotificationMixin" href="../../extensions/flarum/Flarum_Subscriptions.html#pyflarum.extensions.flarum.Flarum_Subscriptions.SubscriptionsDiscussionFromNotificationMixin">SubscriptionsDiscussionFromNotificationMixin</a></li>
 <li><a title="pyflarum.extensions.flarum.FoF_BestAnswer.BestAnswerDiscussionNotificationMixin" href="../../extensions/flarum/FoF_BestAnswer.html#pyflarum.extensions.flarum.FoF_BestAnswer.BestAnswerDiscussionNotificationMixin">BestAnswerDiscussionNotificationMixin</a></li>
 <li><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></li>
 </ul>
@@ -2041,6 +2057,14 @@ data from all of the discussion classes (see <a href="https://cwkevo.github.io/p
 </p>
 <div class="desc inherited"><p>The <code>int</code> ID of the object. This should always be unique for the object's type.</p></div>
 </dd>
+<dt id="pyflarum.flarum.core.discussions.DiscussionFromNotification.included"><code class="name">var <span class="ident">included</span> : list</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject" href="index.html#pyflarum.flarum.core.BaseFlarumIndividualObject">BaseFlarumIndividualObject</a></code>.<code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject.included" href="index.html#pyflarum.flarum.core.BaseFlarumIndividualObject.included">included</a></code>
+</p>
+<div class="desc inherited"><p>Returns raw list of JSON included data …</p></div>
+</dd>
 <dt id="pyflarum.flarum.core.discussions.DiscussionFromNotification.relationships"><code class="name">var <span class="ident">relationships</span> : dict</code></dt>
 <dd>
 <p class="inheritance">
@@ -2058,7 +2082,7 @@ e. g. <code>123-some-title</code>).</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\discussions.py#L134-L142" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\flarum\core\discussions.py#L126-L134" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def slug(self) -&gt; Optional[str]:
@@ -2077,7 +2101,7 @@ def slug(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\discussions.py#L125-L131" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\flarum\core\discussions.py#L117-L123" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def title(self) -&gt; Optional[str]:
@@ -2108,7 +2132,7 @@ Returns <code>True</code> on success, <code>FlarumError</code> otherwise.</p></d
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\discussions.py#L190-L199" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\flarum\core\discussions.py#L182-L191" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def delete(self) -&gt; &#39;Discussion&#39;:
     &#34;&#34;&#34;
@@ -2132,7 +2156,7 @@ the top-level discussion class (<code><a title="pyflarum.flarum.core.discussions
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\discussions.py#L111-L122" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\flarum\core\discussions.py#L103-L114" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_full_data(self) -&gt; &#39;Discussion&#39;:
     &#34;&#34;&#34;
@@ -2157,7 +2181,7 @@ Raises <code>FlarumError</code> if it failed, otherwise the new discussion is re
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\discussions.py#L169-L175" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\flarum\core\discussions.py#L161-L167" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def hide(self) -&gt; &#39;Discussion&#39;:
     &#34;&#34;&#34;
@@ -2178,7 +2202,7 @@ Raises <code>FlarumError</code> if it failed, otherwise the new discussion is re
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\discussions.py#L178-L186" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\flarum\core\discussions.py#L170-L178" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def restore(self) -&gt; &#39;Discussion&#39;:
     &#34;&#34;&#34;
@@ -2201,7 +2225,7 @@ Raises <code>FlarumError</code> if it failed, otherwise the new discussion is re
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\discussions.py#L178-L186" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\flarum\core\discussions.py#L170-L178" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def restore(self) -&gt; &#39;Discussion&#39;:
     &#34;&#34;&#34;
@@ -2221,59 +2245,32 @@ Raises <code>FlarumError</code> if it failed, otherwise the new discussion is re
 <span>(</span><span>user: FlarumUser, _fetched_data: dict)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>A data of multiple discussions fetched from <code>/api/discussions</code>.</p>
-<h3 id="parameters">Parameters:</h3>
-<ul>
-<li><code>user</code> - the <code><a title="pyflarum.session.FlarumUser" href="../../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code> object, required to make additional API calls.</li>
-<li><code>_fetched_data</code> - the JSON data that was fetched from the API.</li>
-</ul>
-<p>I strongly discourage from forging objects this way, unless you are creating an extension.</p></div>
+<div class="desc"><p>A data of multiple discussions fetched from <code>/api/discussions</code>.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\discussions.py#L78-L101" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\flarum\core\discussions.py#L81-L92" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class Discussions(BaseFlarumBulkObject):
     &#34;&#34;&#34;
         A data of multiple discussions fetched from `/api/discussions`.
     &#34;&#34;&#34;
 
+    def __init__(self, user: &#39;FlarumUser&#39;, _fetched_data: dict):
+        return super().__init__(user=user, _fetched_data=_fetched_data, _listclass=DiscussionFromBulk, _required_type=&#39;discussions&#39;)
 
-    def __iter__(self):
-        return iter(self.get_discussions())
 
-
-    def get_discussions(self) -&gt; list[&#39;DiscussionFromBulk&#39;]:
-        &#34;&#34;&#34;
-            Obtains all discussions from the `Discussions` object as a `list`.
-            Returns a `list` of `DiscussionFromBulk`.
-        &#34;&#34;&#34;
-
-        all_discussions = [] # type: list[DiscussionFromBulk]
-
-        for raw_discussion in self.data:
-            if raw_discussion.get(&#34;type&#34;, None) == &#39;discussions&#39;:
-                discussion = DiscussionFromBulk(user=self.user, _fetched_data=dict(data=raw_discussion, _parent_included=self.included))
-                all_discussions.append(discussion)
-
-        return all_discussions</code></pre>
+    if TYPE_CHECKING:
+        def __getitem__(self, key: int) -&gt; &#39;DiscussionFromBulk&#39;: ...
+        def __iter__(self) -&gt; Iterator[&#39;DiscussionFromBulk&#39;]: ...</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="pyflarum.flarum.core.BaseFlarumBulkObject" href="index.html#pyflarum.flarum.core.BaseFlarumBulkObject">BaseFlarumBulkObject</a></li>
-<li><a title="pyflarum.flarum.core.BaseFlarumObject" href="index.html#pyflarum.flarum.core.BaseFlarumObject">BaseFlarumObject</a></li>
-<li>builtins.dict</li>
+<li>builtins.list</li>
 </ul>
 <h3>Instance variables</h3>
 <dl>
-<dt id="pyflarum.flarum.core.discussions.Discussions.data"><code class="name">var <span class="ident">data</span> : list[dict] | dict</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.BaseFlarumBulkObject" href="index.html#pyflarum.flarum.core.BaseFlarumBulkObject">BaseFlarumBulkObject</a></code>.<code><a title="pyflarum.flarum.core.BaseFlarumBulkObject.data" href="index.html#pyflarum.flarum.core.BaseFlarumBulkObject.data">data</a></code>
-</p>
-<div class="desc inherited"><p>A raw <code>dict</code> of the object's data.</p></div>
-</dd>
 <dt id="pyflarum.flarum.core.discussions.Discussions.first_link"><code class="name">var <span class="ident">first_link</span> : Optional[str]</code></dt>
 <dd>
 <p class="inheritance">
@@ -2281,22 +2278,6 @@ Raises <code>FlarumError</code> if it failed, otherwise the new discussion is re
 <code><a title="pyflarum.flarum.core.BaseFlarumBulkObject" href="index.html#pyflarum.flarum.core.BaseFlarumBulkObject">BaseFlarumBulkObject</a></code>.<code><a title="pyflarum.flarum.core.BaseFlarumBulkObject.first_link" href="index.html#pyflarum.flarum.core.BaseFlarumBulkObject.first_link">first_link</a></code>
 </p>
 <div class="desc inherited"><p>First link in the API.</p></div>
-</dd>
-<dt id="pyflarum.flarum.core.discussions.Discussions.included"><code class="name">var <span class="ident">included</span> : list</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.BaseFlarumBulkObject" href="index.html#pyflarum.flarum.core.BaseFlarumBulkObject">BaseFlarumBulkObject</a></code>.<code><a title="pyflarum.flarum.core.BaseFlarumBulkObject.included" href="index.html#pyflarum.flarum.core.BaseFlarumBulkObject.included">included</a></code>
-</p>
-<div class="desc inherited"><p>Raw <code>dict</code> of the object's included data.</p></div>
-</dd>
-<dt id="pyflarum.flarum.core.discussions.Discussions.links"><code class="name">var <span class="ident">links</span> : dict</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="pyflarum.flarum.core.BaseFlarumBulkObject" href="index.html#pyflarum.flarum.core.BaseFlarumBulkObject">BaseFlarumBulkObject</a></code>.<code><a title="pyflarum.flarum.core.BaseFlarumBulkObject.links" href="index.html#pyflarum.flarum.core.BaseFlarumBulkObject.links">links</a></code>
-</p>
-<div class="desc inherited"><p>A raw <code>dict</code> of the object's API links.</p></div>
 </dd>
 <dt id="pyflarum.flarum.core.discussions.Discussions.next_link"><code class="name">var <span class="ident">next_link</span> : Optional[str]</code></dt>
 <dd>
@@ -2313,36 +2294,6 @@ Raises <code>FlarumError</code> if it failed, otherwise the new discussion is re
 <code><a title="pyflarum.flarum.core.BaseFlarumBulkObject" href="index.html#pyflarum.flarum.core.BaseFlarumBulkObject">BaseFlarumBulkObject</a></code>.<code><a title="pyflarum.flarum.core.BaseFlarumBulkObject.previous_link" href="index.html#pyflarum.flarum.core.BaseFlarumBulkObject.previous_link">previous_link</a></code>
 </p>
 <div class="desc inherited"><p>Previous link in the API.</p></div>
-</dd>
-</dl>
-<h3>Methods</h3>
-<dl>
-<dt id="pyflarum.flarum.core.discussions.Discussions.get_discussions"><code class="name flex">
-<span>def <span class="ident">get_discussions</span></span>(<span>self) ‑> list</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Obtains all discussions from the <code><a title="pyflarum.flarum.core.discussions.Discussions" href="#pyflarum.flarum.core.discussions.Discussions">Discussions</a></code> object as a <code>list</code>.
-Returns a <code>list</code> of <code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\discussions.py#L88-L101" class="git-link">Browse git</a>
-</summary>
-<pre><code class="python">def get_discussions(self) -&gt; list[&#39;DiscussionFromBulk&#39;]:
-    &#34;&#34;&#34;
-        Obtains all discussions from the `Discussions` object as a `list`.
-        Returns a `list` of `DiscussionFromBulk`.
-    &#34;&#34;&#34;
-
-    all_discussions = [] # type: list[DiscussionFromBulk]
-
-    for raw_discussion in self.data:
-        if raw_discussion.get(&#34;type&#34;, None) == &#39;discussions&#39;:
-            discussion = DiscussionFromBulk(user=self.user, _fetched_data=dict(data=raw_discussion, _parent_included=self.included))
-            all_discussions.append(discussion)
-
-    return all_discussions</code></pre>
-</details>
 </dd>
 </dl>
 </dd>
@@ -2362,7 +2313,7 @@ Returns a <code>list</code> of <code><a title="pyflarum.flarum.core.discussions.
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\discussions.py#L16-L74" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\flarum\core\discussions.py#L19-L77" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class PreparedDiscussion(BaseFlarumIndividualObject):
     &#34;&#34;&#34;
@@ -2456,6 +2407,14 @@ Returns a <code>list</code> of <code><a title="pyflarum.flarum.core.discussions.
 </p>
 <div class="desc inherited"><p>The <code>int</code> ID of the object. This should always be unique for the object's type.</p></div>
 </dd>
+<dt id="pyflarum.flarum.core.discussions.PreparedDiscussion.included"><code class="name">var <span class="ident">included</span> : list</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject" href="index.html#pyflarum.flarum.core.BaseFlarumIndividualObject">BaseFlarumIndividualObject</a></code>.<code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject.included" href="index.html#pyflarum.flarum.core.BaseFlarumIndividualObject.included">included</a></code>
+</p>
+<div class="desc inherited"><p>Returns raw list of JSON included data …</p></div>
+</dd>
 <dt id="pyflarum.flarum.core.discussions.PreparedDiscussion.relationships"><code class="name">var <span class="ident">relationships</span> : dict</code></dt>
 <dd>
 <p class="inheritance">
@@ -2474,7 +2433,7 @@ most basic template that Flarum requires when creating a discussion.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\discussions.py#L38-L58" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\flarum\core\discussions.py#L41-L61" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def to_dict(self) -&gt; dict:
@@ -2519,7 +2478,7 @@ This is the same as <code><a title="pyflarum.flarum.core.discussions.PreparedDis
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\discussions.py#L61-L73" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\flarum\core\discussions.py#L64-L76" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def post(self) -&gt; &#39;Discussion&#39;:
     &#34;&#34;&#34;
@@ -2545,7 +2504,7 @@ This is the same as <code><a title="pyflarum.flarum.core.discussions.PreparedDis
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\flarum\core\discussions.py#L61-L73" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\flarum\core\discussions.py#L64-L76" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def post(self) -&gt; &#39;Discussion&#39;:
     &#34;&#34;&#34;
@@ -2679,6 +2638,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.get_last_posted_user" href="#pyflarum.flarum.core.discussions.DiscussionFromBulk.get_last_posted_user">get_last_posted_user</a></code></li>
 <li><code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.hide" href="#pyflarum.flarum.core.discussions.DiscussionFromBulk.hide">hide</a></code></li>
 <li><code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.id" href="index.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.id">id</a></code></li>
+<li><code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.included" href="index.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.included">included</a></code></li>
 <li><code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.isHidden" href="#pyflarum.flarum.core.discussions.DiscussionFromBulk.isHidden">isHidden</a></code></li>
 <li><code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.lastPostNumber" href="#pyflarum.flarum.core.discussions.DiscussionFromBulk.lastPostNumber">lastPostNumber</a></code></li>
 <li><code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.lastPostedAt" href="#pyflarum.flarum.core.discussions.DiscussionFromBulk.lastPostedAt">lastPostedAt</a></code></li>
@@ -2703,6 +2663,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification.get_full_data" href="#pyflarum.flarum.core.discussions.DiscussionFromNotification.get_full_data">get_full_data</a></code></li>
 <li><code><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification.hide" href="#pyflarum.flarum.core.discussions.DiscussionFromNotification.hide">hide</a></code></li>
 <li><code><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification.id" href="index.html#pyflarum.flarum.core.discussions.DiscussionFromNotification.id">id</a></code></li>
+<li><code><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification.included" href="index.html#pyflarum.flarum.core.discussions.DiscussionFromNotification.included">included</a></code></li>
 <li><code><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification.relationships" href="index.html#pyflarum.flarum.core.discussions.DiscussionFromNotification.relationships">relationships</a></code></li>
 <li><code><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification.restore" href="#pyflarum.flarum.core.discussions.DiscussionFromNotification.restore">restore</a></code></li>
 <li><code><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification.slug" href="#pyflarum.flarum.core.discussions.DiscussionFromNotification.slug">slug</a></code></li>
@@ -2713,12 +2674,8 @@ setTimeout(() => input.focus(), 100);
 </li>
 <li>
 <h4><code><a title="pyflarum.flarum.core.discussions.Discussions" href="#pyflarum.flarum.core.discussions.Discussions">Discussions</a></code></h4>
-<ul class="two-column">
-<li><code><a title="pyflarum.flarum.core.discussions.Discussions.data" href="index.html#pyflarum.flarum.core.discussions.Discussions.data">data</a></code></li>
+<ul class="">
 <li><code><a title="pyflarum.flarum.core.discussions.Discussions.first_link" href="index.html#pyflarum.flarum.core.discussions.Discussions.first_link">first_link</a></code></li>
-<li><code><a title="pyflarum.flarum.core.discussions.Discussions.get_discussions" href="#pyflarum.flarum.core.discussions.Discussions.get_discussions">get_discussions</a></code></li>
-<li><code><a title="pyflarum.flarum.core.discussions.Discussions.included" href="index.html#pyflarum.flarum.core.discussions.Discussions.included">included</a></code></li>
-<li><code><a title="pyflarum.flarum.core.discussions.Discussions.links" href="index.html#pyflarum.flarum.core.discussions.Discussions.links">links</a></code></li>
 <li><code><a title="pyflarum.flarum.core.discussions.Discussions.next_link" href="index.html#pyflarum.flarum.core.discussions.Discussions.next_link">next_link</a></code></li>
 <li><code><a title="pyflarum.flarum.core.discussions.Discussions.previous_link" href="index.html#pyflarum.flarum.core.discussions.Discussions.previous_link">previous_link</a></code></li>
 </ul>
@@ -2730,6 +2687,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="pyflarum.flarum.core.discussions.PreparedDiscussion.create" href="#pyflarum.flarum.core.discussions.PreparedDiscussion.create">create</a></code></li>
 <li><code><a title="pyflarum.flarum.core.discussions.PreparedDiscussion.data" href="index.html#pyflarum.flarum.core.discussions.PreparedDiscussion.data">data</a></code></li>
 <li><code><a title="pyflarum.flarum.core.discussions.PreparedDiscussion.id" href="index.html#pyflarum.flarum.core.discussions.PreparedDiscussion.id">id</a></code></li>
+<li><code><a title="pyflarum.flarum.core.discussions.PreparedDiscussion.included" href="index.html#pyflarum.flarum.core.discussions.PreparedDiscussion.included">included</a></code></li>
 <li><code><a title="pyflarum.flarum.core.discussions.PreparedDiscussion.post" href="#pyflarum.flarum.core.discussions.PreparedDiscussion.post">post</a></code></li>
 <li><code><a title="pyflarum.flarum.core.discussions.PreparedDiscussion.relationships" href="index.html#pyflarum.flarum.core.discussions.PreparedDiscussion.relationships">relationships</a></code></li>
 <li><code><a title="pyflarum.flarum.core.discussions.PreparedDiscussion.to_dict" href="#pyflarum.flarum.core.discussions.PreparedDiscussion.to_dict">to_dict</a></code></li>

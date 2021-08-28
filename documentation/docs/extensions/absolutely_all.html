@@ -25,13 +25,13 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\absolutely_all.py#L0-L153" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\absolutely_all.py#L0-L168" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">from typing import Generator, Optional, TYPE_CHECKING
 if TYPE_CHECKING:
     from ..flarum.core.notifications import Notifications
-    from ..flarum.core.discussions import Discussions
-    from ..flarum.core.posts import Posts
+    from ..flarum.core.discussions import Discussions, Discussion
+    from ..flarum.core.posts import Posts, Post
     from ..flarum.core.users import Users
 
 
@@ -51,8 +51,8 @@ HARD_DEPENCENDIES = []
 
 
 
-class AbsolutelyAllFlarumUserMixin:
-    def absolutely_all_users(self: FlarumUser, filter: Optional[Filter]=None)  -&gt; Generator[&#39;Users&#39;, None, None]:
+class AbsolutelyAllFlarumUserMixin(FlarumUser):
+    def absolutely_all_users(self, filter: Optional[Filter]=None)  -&gt; Generator[&#39;Users&#39;, None, None]:
         &#34;&#34;&#34;
             A generator that yields `Users` from entire forum, until there are `None` left. `Filter` compatible.
         &#34;&#34;&#34;
@@ -78,7 +78,7 @@ class AbsolutelyAllFlarumUserMixin:
                 break
 
 
-    def absolutely_all_posts(self: FlarumUser, filter: Optional[Filter]=None) -&gt; Generator[&#39;Posts&#39;, None, None]:
+    def absolutely_all_posts(self, filter: Optional[Filter]=None) -&gt; Generator[&#39;Posts&#39;, None, None]:
         &#34;&#34;&#34;
             A generator that yields `Posts` from entire forum, until there are `None` left. `Filter` compatible.
         &#34;&#34;&#34;
@@ -104,7 +104,7 @@ class AbsolutelyAllFlarumUserMixin:
                 break
 
 
-    def absolutely_all_discussions(self: FlarumUser, filter: Optional[Filter]=None) -&gt; Generator[&#39;Discussions&#39;, None, None]:
+    def absolutely_all_discussions(self, filter: Optional[Filter]=None) -&gt; Generator[&#39;Discussions&#39;, None, None]:
         &#34;&#34;&#34;
             A generator that yields `Discussions` from entire forum, until there are `None` left. `Filter` compatible.
         &#34;&#34;&#34;
@@ -130,7 +130,7 @@ class AbsolutelyAllFlarumUserMixin:
                 break
 
 
-    def absolutely_all_notifications(self: FlarumUser, filter: Optional[Filter]=None) -&gt; Generator[&#39;Notifications&#39;, None, None]:
+    def absolutely_all_notifications(self, filter: Optional[Filter]=None) -&gt; Generator[&#39;Notifications&#39;, None, None]:
         &#34;&#34;&#34;
             A generator that yields all of your `Notifications`, until there are `None` left. `Filter` compatible.
         &#34;&#34;&#34;
@@ -154,8 +154,23 @@ class AbsolutelyAllFlarumUserMixin:
 
             if not discussions.next_link:
                 break
-# TODO: How to type hint inheritance? 
-# AbsolutelyAllFlarumUserMixin: Type[FlarumUser]
+    
+
+    def get_all_posts_from_discussion(self, discussion: &#39;Discussion&#39;) -&gt; Generator[&#39;Post&#39;, None, None]:
+        &#34;&#34;&#34;
+            This makes additional API request for every individual post to fetch full post data from a long discussion.
+            Sadly, the reason why additional request is needed is because only post IDs are present in the relationship data of the discussion.
+
+            I recommend you to put a delay between `next()` to prevent &#34;429  Rate Limited&#34; error for forums that are protected from flooding.
+        &#34;&#34;&#34;
+
+        raw_posts = discussion.relationships.get(&#34;posts&#34;, {}).get(&#34;data&#34;, []) # type: list[dict]
+
+        for raw_post in raw_posts:
+            post_id = raw_post.get(&#34;id&#34;, None) # type: Optional[int]
+
+            if post_id:
+                yield self.get_post_by_id(post_id)
 
 
 
@@ -201,7 +216,7 @@ class AbsolutelyAllExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\absolutely_all.py#L133-L154" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\absolutely_all.py#L148-L169" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class AbsolutelyAllExtension(ExtensionMixin):
     &#34;&#34;&#34;
@@ -249,7 +264,7 @@ class AbsolutelyAllExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\absolutely_all.py#L146-L150" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\absolutely_all.py#L161-L165" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_dependencies(self):
     return {
@@ -270,7 +285,7 @@ class AbsolutelyAllExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\absolutely_all.py#L153-L154" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\absolutely_all.py#L168-L169" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def mixin(self):
     super().mixin(self, FlarumUser, AbsolutelyAllFlarumUserMixin)</code></pre>
@@ -280,16 +295,28 @@ class AbsolutelyAllExtension(ExtensionMixin):
 </dd>
 <dt id="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin"><code class="flex name class">
 <span>class <span class="ident">AbsolutelyAllFlarumUserMixin</span></span>
+<span>(</span><span>extensions: Optional[list[<a title="pyflarum.extensions.ExtensionMixin" href="index.html#pyflarum.extensions.ExtensionMixin">ExtensionMixin</a>]] = None, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The main object that carries the Flarum session.</p>
+<h3 id="parameters">Parameters:</h3>
+<ul>
+<li><code>forum_url</code> - the forum URL that you want the bot to fetch/update data from. This mustn't end with trailing slash (e. g.: <a href="https://domain.tld/">https://domain.tld/</a> - wrong; <a href="https://domain.tld">https://domain.tld</a> - correct).</li>
+<li><code>username_or_email</code> - optional. The username or E-mail address to log into. If <code>None</code>, then the bot doesn't login.</li>
+<li><code>password</code> - optional. The user's password. If <code>None</code>, then the bot doesn't login.</li>
+<li><code>api_endpoint</code> - the API endpoint of the forum, without slashes. This can be specified in Flarum's <code>config.php</code> and normally forums don't need to change the default <code>'api'</code></li>
+<li><code>user_agent</code> - the user agent that will be used to make all requests. Defaults to <code>pyflarum &lt;version&gt;</code>.</li>
+<li><code>session_object</code> - the <code>Session</code> object to make requests with. You can pass any object that supports all operations from the <a href="https://pypi.org/project/requests/">requests</a> library, check <a href="https://pypi.org/project/requests-cache/">requests_cache</a> as an example.</li>
+<li><code>extensions</code> - a list of <code>ExtensionMixin</code> classes. These are monkey-patched on initialization. Learn more about <a href="https://cwkevo.github.io/pyflarum/docs/#extensions">extensions</a>.
+```</li>
+</ul></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\absolutely_all.py#L25-L127" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\absolutely_all.py#L25-L144" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">class AbsolutelyAllFlarumUserMixin:
-    def absolutely_all_users(self: FlarumUser, filter: Optional[Filter]=None)  -&gt; Generator[&#39;Users&#39;, None, None]:
+<pre><code class="python">class AbsolutelyAllFlarumUserMixin(FlarumUser):
+    def absolutely_all_users(self, filter: Optional[Filter]=None)  -&gt; Generator[&#39;Users&#39;, None, None]:
         &#34;&#34;&#34;
             A generator that yields `Users` from entire forum, until there are `None` left. `Filter` compatible.
         &#34;&#34;&#34;
@@ -315,7 +342,7 @@ class AbsolutelyAllExtension(ExtensionMixin):
                 break
 
 
-    def absolutely_all_posts(self: FlarumUser, filter: Optional[Filter]=None) -&gt; Generator[&#39;Posts&#39;, None, None]:
+    def absolutely_all_posts(self, filter: Optional[Filter]=None) -&gt; Generator[&#39;Posts&#39;, None, None]:
         &#34;&#34;&#34;
             A generator that yields `Posts` from entire forum, until there are `None` left. `Filter` compatible.
         &#34;&#34;&#34;
@@ -341,7 +368,7 @@ class AbsolutelyAllExtension(ExtensionMixin):
                 break
 
 
-    def absolutely_all_discussions(self: FlarumUser, filter: Optional[Filter]=None) -&gt; Generator[&#39;Discussions&#39;, None, None]:
+    def absolutely_all_discussions(self, filter: Optional[Filter]=None) -&gt; Generator[&#39;Discussions&#39;, None, None]:
         &#34;&#34;&#34;
             A generator that yields `Discussions` from entire forum, until there are `None` left. `Filter` compatible.
         &#34;&#34;&#34;
@@ -367,7 +394,7 @@ class AbsolutelyAllExtension(ExtensionMixin):
                 break
 
 
-    def absolutely_all_notifications(self: FlarumUser, filter: Optional[Filter]=None) -&gt; Generator[&#39;Notifications&#39;, None, None]:
+    def absolutely_all_notifications(self, filter: Optional[Filter]=None) -&gt; Generator[&#39;Notifications&#39;, None, None]:
         &#34;&#34;&#34;
             A generator that yields all of your `Notifications`, until there are `None` left. `Filter` compatible.
         &#34;&#34;&#34;
@@ -390,21 +417,55 @@ class AbsolutelyAllExtension(ExtensionMixin):
             _filter.page += 1
 
             if not discussions.next_link:
-                break</code></pre>
+                break
+    
+
+    def get_all_posts_from_discussion(self, discussion: &#39;Discussion&#39;) -&gt; Generator[&#39;Post&#39;, None, None]:
+        &#34;&#34;&#34;
+            This makes additional API request for every individual post to fetch full post data from a long discussion.
+            Sadly, the reason why additional request is needed is because only post IDs are present in the relationship data of the discussion.
+
+            I recommend you to put a delay between `next()` to prevent &#34;429  Rate Limited&#34; error for forums that are protected from flooding.
+        &#34;&#34;&#34;
+
+        raw_posts = discussion.relationships.get(&#34;posts&#34;, {}).get(&#34;data&#34;, []) # type: list[dict]
+
+        for raw_post in raw_posts:
+            post_id = raw_post.get(&#34;id&#34;, None) # type: Optional[int]
+
+            if post_id:
+                yield self.get_post_by_id(post_id)</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a></li>
+<li><a title="pyflarum.session.FlarumSession" href="../session.html#pyflarum.session.FlarumSession">FlarumSession</a></li>
+<li>builtins.dict</li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.api_urls"><code class="name">var <span class="ident">api_urls</span> : dict</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.api_urls" href="../session.html#pyflarum.session.FlarumUser.api_urls">api_urls</a></code>
+</p>
+<div class="desc inherited"><p>Simple, hardcoded <code>'key: value'</code> <code>dict</code> of Flarum's API routes for quick access …</p></div>
+</dd>
+</dl>
 <h3>Methods</h3>
 <dl>
 <dt id="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.absolutely_all_discussions"><code class="name flex">
-<span>def <span class="ident">absolutely_all_discussions</span></span>(<span>self: <a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a>, filter: Optional[<a title="pyflarum.flarum.core.filters.Filter" href="../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a>] = None) ‑> Generator[Discussions, NoneType, NoneType]</span>
+<span>def <span class="ident">absolutely_all_discussions</span></span>(<span>self, filter: Optional[<a title="pyflarum.flarum.core.filters.Filter" href="../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a>] = None) ‑> Generator[Discussions, NoneType, NoneType]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>A generator that yields <code>Discussions</code> from entire forum, until there are <code>None</code> left. <code>Filter</code> compatible.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\absolutely_all.py#L78-L101" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\absolutely_all.py#L78-L101" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">def absolutely_all_discussions(self: FlarumUser, filter: Optional[Filter]=None) -&gt; Generator[&#39;Discussions&#39;, None, None]:
+<pre><code class="python">def absolutely_all_discussions(self, filter: Optional[Filter]=None) -&gt; Generator[&#39;Discussions&#39;, None, None]:
     &#34;&#34;&#34;
         A generator that yields `Discussions` from entire forum, until there are `None` left. `Filter` compatible.
     &#34;&#34;&#34;
@@ -431,16 +492,16 @@ class AbsolutelyAllExtension(ExtensionMixin):
 </details>
 </dd>
 <dt id="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.absolutely_all_notifications"><code class="name flex">
-<span>def <span class="ident">absolutely_all_notifications</span></span>(<span>self: <a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a>, filter: Optional[<a title="pyflarum.flarum.core.filters.Filter" href="../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a>] = None) ‑> Generator[Notifications, NoneType, NoneType]</span>
+<span>def <span class="ident">absolutely_all_notifications</span></span>(<span>self, filter: Optional[<a title="pyflarum.flarum.core.filters.Filter" href="../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a>] = None) ‑> Generator[Notifications, NoneType, NoneType]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>A generator that yields all of your <code>Notifications</code>, until there are <code>None</code> left. <code>Filter</code> compatible.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\absolutely_all.py#L104-L127" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\absolutely_all.py#L104-L127" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">def absolutely_all_notifications(self: FlarumUser, filter: Optional[Filter]=None) -&gt; Generator[&#39;Notifications&#39;, None, None]:
+<pre><code class="python">def absolutely_all_notifications(self, filter: Optional[Filter]=None) -&gt; Generator[&#39;Notifications&#39;, None, None]:
     &#34;&#34;&#34;
         A generator that yields all of your `Notifications`, until there are `None` left. `Filter` compatible.
     &#34;&#34;&#34;
@@ -467,16 +528,16 @@ class AbsolutelyAllExtension(ExtensionMixin):
 </details>
 </dd>
 <dt id="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.absolutely_all_posts"><code class="name flex">
-<span>def <span class="ident">absolutely_all_posts</span></span>(<span>self: <a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a>, filter: Optional[<a title="pyflarum.flarum.core.filters.Filter" href="../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a>] = None) ‑> Generator[Posts, NoneType, NoneType]</span>
+<span>def <span class="ident">absolutely_all_posts</span></span>(<span>self, filter: Optional[<a title="pyflarum.flarum.core.filters.Filter" href="../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a>] = None) ‑> Generator[Posts, NoneType, NoneType]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>A generator that yields <code>Posts</code> from entire forum, until there are <code>None</code> left. <code>Filter</code> compatible.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\absolutely_all.py#L52-L75" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\absolutely_all.py#L52-L75" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">def absolutely_all_posts(self: FlarumUser, filter: Optional[Filter]=None) -&gt; Generator[&#39;Posts&#39;, None, None]:
+<pre><code class="python">def absolutely_all_posts(self, filter: Optional[Filter]=None) -&gt; Generator[&#39;Posts&#39;, None, None]:
     &#34;&#34;&#34;
         A generator that yields `Posts` from entire forum, until there are `None` left. `Filter` compatible.
     &#34;&#34;&#34;
@@ -503,16 +564,16 @@ class AbsolutelyAllExtension(ExtensionMixin):
 </details>
 </dd>
 <dt id="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.absolutely_all_users"><code class="name flex">
-<span>def <span class="ident">absolutely_all_users</span></span>(<span>self: <a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a>, filter: Optional[<a title="pyflarum.flarum.core.filters.Filter" href="../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a>] = None) ‑> Generator[Users, NoneType, NoneType]</span>
+<span>def <span class="ident">absolutely_all_users</span></span>(<span>self, filter: Optional[<a title="pyflarum.flarum.core.filters.Filter" href="../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a>] = None) ‑> Generator[Users, NoneType, NoneType]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>A generator that yields <code>Users</code> from entire forum, until there are <code>None</code> left. <code>Filter</code> compatible.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\absolutely_all.py#L26-L49" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\absolutely_all.py#L26-L49" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">def absolutely_all_users(self: FlarumUser, filter: Optional[Filter]=None)  -&gt; Generator[&#39;Users&#39;, None, None]:
+<pre><code class="python">def absolutely_all_users(self, filter: Optional[Filter]=None)  -&gt; Generator[&#39;Users&#39;, None, None]:
     &#34;&#34;&#34;
         A generator that yields `Users` from entire forum, until there are `None` left. `Filter` compatible.
     &#34;&#34;&#34;
@@ -537,6 +598,217 @@ class AbsolutelyAllExtension(ExtensionMixin):
         if not users.next_link:
             break</code></pre>
 </details>
+</dd>
+<dt id="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.authenticate"><code class="name flex">
+<span>def <span class="ident">authenticate</span></span>(<span>self, username_or_email: Optional[str] = None, password: Optional[str] = None) ‑> NoneType</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.authenticate" href="../session.html#pyflarum.session.FlarumUser.authenticate">authenticate</a></code>
+</p>
+<div class="desc inherited"><p>Authenticates your user. This can be run after <code>FlarumUser</code> was initialized, to switch to a different user. You can even change
+<code>FlarumUser.forum_url</code> …</p></div>
+</dd>
+<dt id="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.change_email"><code class="name flex">
+<span>def <span class="ident">change_email</span></span>(<span>self, new_email: str, password_confirmation: str, user: Optional[ForwardRef('AnyUser')] = None) ‑> <a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a> | User</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.change_email" href="../session.html#pyflarum.session.FlarumUser.change_email">change_email</a></code>
+</p>
+<div class="desc inherited"><p>Changes your E-mail. If <code>user</code> is specified, then that user's E-mail is changed …</p></div>
+</dd>
+<dt id="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.get_all_posts_from_discussion"><code class="name flex">
+<span>def <span class="ident">get_all_posts_from_discussion</span></span>(<span>self, discussion: Discussion) ‑> Generator[Post, NoneType, NoneType]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This makes additional API request for every individual post to fetch full post data from a long discussion.
+Sadly, the reason why additional request is needed is because only post IDs are present in the relationship data of the discussion.</p>
+<p>I recommend you to put a delay between <code>next()</code> to prevent "429
+Rate Limited" error for forums that are protected from flooding.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\absolutely_all.py#L130-L144" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def get_all_posts_from_discussion(self, discussion: &#39;Discussion&#39;) -&gt; Generator[&#39;Post&#39;, None, None]:
+    &#34;&#34;&#34;
+        This makes additional API request for every individual post to fetch full post data from a long discussion.
+        Sadly, the reason why additional request is needed is because only post IDs are present in the relationship data of the discussion.
+
+        I recommend you to put a delay between `next()` to prevent &#34;429  Rate Limited&#34; error for forums that are protected from flooding.
+    &#34;&#34;&#34;
+
+    raw_posts = discussion.relationships.get(&#34;posts&#34;, {}).get(&#34;data&#34;, []) # type: list[dict]
+
+    for raw_post in raw_posts:
+        post_id = raw_post.get(&#34;id&#34;, None) # type: Optional[int]
+
+        if post_id:
+            yield self.get_post_by_id(post_id)</code></pre>
+</details>
+</dd>
+<dt id="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.get_discussion_by_id"><code class="name flex">
+<span>def <span class="ident">get_discussion_by_id</span></span>(<span>self, id: int) ‑> <a title="pyflarum.flarum.core.discussions.Discussion" href="../flarum/core/discussions.html#pyflarum.flarum.core.discussions.Discussion">Discussion</a></span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.get_discussion_by_id" href="../session.html#pyflarum.session.FlarumUser.get_discussion_by_id">get_discussion_by_id</a></code>
+</p>
+<div class="desc inherited"><p>Obtains a discussion by specific ID.</p></div>
+</dd>
+<dt id="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.get_discussions"><code class="name flex">
+<span>def <span class="ident">get_discussions</span></span>(<span>self, filter: Optional[<a title="pyflarum.flarum.core.filters.Filter" href="../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a>] = None) ‑> <a title="pyflarum.flarum.core.discussions.Discussions" href="../flarum/core/discussions.html#pyflarum.flarum.core.discussions.Discussions">Discussions</a></span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.get_discussions" href="../session.html#pyflarum.session.FlarumUser.get_discussions">get_discussions</a></code>
+</p>
+<div class="desc inherited"><p>Obtains all discussions from <code>/api/discussions</code>, optionally filtering results by using <code>filter</code>.</p></div>
+</dd>
+<dt id="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.get_forum_data"><code class="name flex">
+<span>def <span class="ident">get_forum_data</span></span>(<span>self) ‑> <a title="pyflarum.flarum.core.forum.Forum" href="../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum">Forum</a></span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.get_forum_data" href="../session.html#pyflarum.session.FlarumUser.get_forum_data">get_forum_data</a></code>
+</p>
+<div class="desc inherited"><p>Obtains the forum data, returns <code>Forum</code> object.</p></div>
+</dd>
+<dt id="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.get_groups"><code class="name flex">
+<span>def <span class="ident">get_groups</span></span>(<span>self) ‑> <a title="pyflarum.flarum.core.groups.Groups" href="../flarum/core/groups.html#pyflarum.flarum.core.groups.Groups">Groups</a></span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.get_groups" href="../session.html#pyflarum.session.FlarumUser.get_groups">get_groups</a></code>
+</p>
+<div class="desc inherited"><p>Obtains all groups of a forum from <code>/api/groups</code>.</p></div>
+</dd>
+<dt id="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.get_notifications"><code class="name flex">
+<span>def <span class="ident">get_notifications</span></span>(<span>self, filter: Optional[<a title="pyflarum.flarum.core.filters.Filter" href="../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a>] = None) ‑> <a title="pyflarum.flarum.core.notifications.Notifications" href="../flarum/core/notifications.html#pyflarum.flarum.core.notifications.Notifications">Notifications</a></span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.get_notifications" href="../session.html#pyflarum.session.FlarumUser.get_notifications">get_notifications</a></code>
+</p>
+<div class="desc inherited"><p>Obtains all of your notifications from <code>/api/notifications</code>, optionally filtering results by using <code>filter</code>.</p></div>
+</dd>
+<dt id="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.get_post_by_id"><code class="name flex">
+<span>def <span class="ident">get_post_by_id</span></span>(<span>self, id: int) ‑> <a title="pyflarum.flarum.core.posts.Post" href="../flarum/core/posts.html#pyflarum.flarum.core.posts.Post">Post</a></span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.get_post_by_id" href="../session.html#pyflarum.session.FlarumUser.get_post_by_id">get_post_by_id</a></code>
+</p>
+<div class="desc inherited"><p>Obtains a post by specific ID.</p></div>
+</dd>
+<dt id="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.get_posts"><code class="name flex">
+<span>def <span class="ident">get_posts</span></span>(<span>self, filter: Optional[<a title="pyflarum.flarum.core.filters.Filter" href="../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a>] = None)</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.get_posts" href="../session.html#pyflarum.session.FlarumUser.get_posts">get_posts</a></code>
+</p>
+<div class="desc inherited"><p>Obtains all posts from <code>/api/posts</code>, optionally filtering results by using <code>filter</code>.</p></div>
+</dd>
+<dt id="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.get_user_by_id"><code class="name flex">
+<span>def <span class="ident">get_user_by_id</span></span>(<span>self, id: int) ‑> <a title="pyflarum.flarum.core.users.User" href="../flarum/core/users.html#pyflarum.flarum.core.users.User">User</a></span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.get_user_by_id" href="../session.html#pyflarum.session.FlarumUser.get_user_by_id">get_user_by_id</a></code>
+</p>
+<div class="desc inherited"><p>Obtains a user by specific ID.</p></div>
+</dd>
+<dt id="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.get_users"><code class="name flex">
+<span>def <span class="ident">get_users</span></span>(<span>self, filter: <a title="pyflarum.flarum.core.filters.Filter" href="../flarum/core/filters.html#pyflarum.flarum.core.filters.Filter">Filter</a> = None) ‑> <a title="pyflarum.flarum.core.users.Users" href="../flarum/core/users.html#pyflarum.flarum.core.users.Users">Users</a></span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.get_users" href="../session.html#pyflarum.session.FlarumUser.get_users">get_users</a></code>
+</p>
+<div class="desc inherited"><p>Obtains all users from <code>/api/users</code>, optionally filtering results by using <code>filter</code>.</p></div>
+</dd>
+<dt id="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.mark_all_discussions_as_read"><code class="name flex">
+<span>def <span class="ident">mark_all_discussions_as_read</span></span>(<span>self, at: datetime.datetime = datetime.datetime(2021, 8, 28, 10, 58, 47, 198536)) ‑> Literal[True]</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.mark_all_discussions_as_read" href="../session.html#pyflarum.session.FlarumUser.mark_all_discussions_as_read">mark_all_discussions_as_read</a></code>
+</p>
+<div class="desc inherited"><p>Marks all discussions as read …</p></div>
+</dd>
+<dt id="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.mark_all_notifications_as_read"><code class="name flex">
+<span>def <span class="ident">mark_all_notifications_as_read</span></span>(<span>self) ‑> Literal[True]</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.mark_all_notifications_as_read" href="../session.html#pyflarum.session.FlarumUser.mark_all_notifications_as_read">mark_all_notifications_as_read</a></code>
+</p>
+<div class="desc inherited"><p>Marks all notifications as read. Returns <code>True</code> when successful.</p></div>
+</dd>
+<dt id="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.remove_user_avatar"><code class="name flex">
+<span>def <span class="ident">remove_user_avatar</span></span>(<span>self, user: Optional[ForwardRef('AnyUser')] = None) ‑> <a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a> | User</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.remove_user_avatar" href="../session.html#pyflarum.session.FlarumUser.remove_user_avatar">remove_user_avatar</a></code>
+</p>
+<div class="desc inherited"><p>Removes your user's avatar. If <code>user</code> is specified, then avatar of that user is removed.</p></div>
+</dd>
+<dt id="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.send_password_reset_email"><code class="name flex">
+<span>def <span class="ident">send_password_reset_email</span></span>(<span>self) ‑> <a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a> | User</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.send_password_reset_email" href="../session.html#pyflarum.session.FlarumUser.send_password_reset_email">send_password_reset_email</a></code>
+</p>
+<div class="desc inherited"><p>Allows you to send yourself a password reset E-mail.</p></div>
+</dd>
+<dt id="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.update_preferences"><code class="name flex">
+<span>def <span class="ident">update_preferences</span></span>(<span>self, preferences: Iterable[tuple[str, Any]], user: Optional[ForwardRef('AnyUser')] = None) ‑> <a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a> | User</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.update_preferences" href="../session.html#pyflarum.session.FlarumUser.update_preferences">update_preferences</a></code>
+</p>
+<div class="desc inherited"><p>Updates an user's preferences …</p></div>
+</dd>
+<dt id="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.update_user_info"><code class="name flex">
+<span>def <span class="ident">update_user_info</span></span>(<span>self, user: Optional[ForwardRef('AnyUser')] = None, new_username: Optional[str] = None, groups: Optional[ForwardRef('list[str | int] | list[Group] | Groups')] = None) ‑> <a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a> | User</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.update_user_info" href="../session.html#pyflarum.session.FlarumUser.update_user_info">update_user_info</a></code>
+</p>
+<div class="desc inherited"><p>Updates the info of a user (this can be your user or someone else) …</p></div>
+</dd>
+<dt id="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.upload_user_avatar"><code class="name flex">
+<span>def <span class="ident">upload_user_avatar</span></span>(<span>self, file: <class 'BinaryIO'>, user: Optional[ForwardRef('AnyUser')] = None, file_name: str = 'avatar', file_type: Literal['image/png', 'image/jpeg', 'image/gif'] = 'image/png') ‑> <a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a> | User</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.session.FlarumUser" href="../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code>.<code><a title="pyflarum.session.FlarumUser.upload_user_avatar" href="../session.html#pyflarum.session.FlarumUser.upload_user_avatar">upload_user_avatar</a></code>
+</p>
+<div class="desc inherited"><p>Uploads an avatar for yourself. If <code>user</code> is specified, then avatar of that user is changed.</p></div>
 </dd>
 </dl>
 </dd>
@@ -616,6 +888,26 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.absolutely_all_notifications" href="#pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.absolutely_all_notifications">absolutely_all_notifications</a></code></li>
 <li><code><a title="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.absolutely_all_posts" href="#pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.absolutely_all_posts">absolutely_all_posts</a></code></li>
 <li><code><a title="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.absolutely_all_users" href="#pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.absolutely_all_users">absolutely_all_users</a></code></li>
+<li><code><a title="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.api_urls" href="../session.html#pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.api_urls">api_urls</a></code></li>
+<li><code><a title="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.authenticate" href="../session.html#pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.authenticate">authenticate</a></code></li>
+<li><code><a title="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.change_email" href="../session.html#pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.change_email">change_email</a></code></li>
+<li><code><a title="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.get_all_posts_from_discussion" href="#pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.get_all_posts_from_discussion">get_all_posts_from_discussion</a></code></li>
+<li><code><a title="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.get_discussion_by_id" href="../session.html#pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.get_discussion_by_id">get_discussion_by_id</a></code></li>
+<li><code><a title="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.get_discussions" href="../session.html#pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.get_discussions">get_discussions</a></code></li>
+<li><code><a title="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.get_forum_data" href="../session.html#pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.get_forum_data">get_forum_data</a></code></li>
+<li><code><a title="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.get_groups" href="../session.html#pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.get_groups">get_groups</a></code></li>
+<li><code><a title="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.get_notifications" href="../session.html#pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.get_notifications">get_notifications</a></code></li>
+<li><code><a title="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.get_post_by_id" href="../session.html#pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.get_post_by_id">get_post_by_id</a></code></li>
+<li><code><a title="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.get_posts" href="../session.html#pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.get_posts">get_posts</a></code></li>
+<li><code><a title="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.get_user_by_id" href="../session.html#pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.get_user_by_id">get_user_by_id</a></code></li>
+<li><code><a title="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.get_users" href="../session.html#pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.get_users">get_users</a></code></li>
+<li><code><a title="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.mark_all_discussions_as_read" href="../session.html#pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.mark_all_discussions_as_read">mark_all_discussions_as_read</a></code></li>
+<li><code><a title="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.mark_all_notifications_as_read" href="../session.html#pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.mark_all_notifications_as_read">mark_all_notifications_as_read</a></code></li>
+<li><code><a title="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.remove_user_avatar" href="../session.html#pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.remove_user_avatar">remove_user_avatar</a></code></li>
+<li><code><a title="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.send_password_reset_email" href="../session.html#pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.send_password_reset_email">send_password_reset_email</a></code></li>
+<li><code><a title="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.update_preferences" href="../session.html#pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.update_preferences">update_preferences</a></code></li>
+<li><code><a title="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.update_user_info" href="../session.html#pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.update_user_info">update_user_info</a></code></li>
+<li><code><a title="pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.upload_user_avatar" href="../session.html#pyflarum.extensions.absolutely_all.AbsolutelyAllFlarumUserMixin.upload_user_avatar">upload_user_avatar</a></code></li>
 </ul>
 </li>
 </ul>

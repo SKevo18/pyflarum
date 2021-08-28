@@ -25,14 +25,14 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Tags.py#L0-L264" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\Flarum_Tags.py#L0-L240" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">from typing import Optional
+<pre><code class="python">from pyflarum.flarum.core import BaseFlarumIndividualObject
+from typing import Optional
 
 from datetime import datetime
 
 from .. import ExtensionMixin
-from ...session import FlarumUser
 
 from ...flarum.core.forum import Forum
 from ...flarum.core.discussions import DiscussionFromBulk
@@ -49,34 +49,10 @@ HARD_DEPENCENDIES = []
 
 
 
-class Tag(dict):
+class Tag(BaseFlarumIndividualObject):
     &#34;&#34;&#34;
         A Flarum tag.
     &#34;&#34;&#34;
-
-    def __init__(self, user: &#39;FlarumUser&#39;, _fetched_data: dict):
-        self.user = user
-        super().__init__(_fetched_data)
-
-
-    @property
-    def data(self) -&gt; dict:
-        return self.get(&#34;data&#34;, {})
-
-
-    @property
-    def type(self) -&gt; Optional[str]:
-        return self.data.get(&#34;type&#34;, None)
-
-
-    @property
-    def id(self) -&gt; Optional[int]:
-        return self.data.get(&#34;id&#34;, None)
-
-
-    @property
-    def attributes(self) -&gt; dict:
-        return self.data.get(&#34;attributes&#34;, {})
 
 
     @property
@@ -308,40 +284,22 @@ class TagsExtension(ExtensionMixin):
 <span>(</span><span>user: FlarumUser, _fetched_data: dict)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>A Flarum tag.</p></div>
+<div class="desc"><p>A Flarum tag.</p>
+<h3 id="parameters">Parameters:</h3>
+<ul>
+<li><code>user</code> - the <code><a title="pyflarum.session.FlarumUser" href="../../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code> object, required to make additional API calls.</li>
+<li><code>_fetched_data</code> - the JSON data that was fetched from the API.</li>
+</ul>
+<p>I strongly discourage from forging objects this way, unless you are creating an extension.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Tags.py#L23-L186" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\Flarum_Tags.py#L23-L162" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">class Tag(dict):
+<pre><code class="python">class Tag(BaseFlarumIndividualObject):
     &#34;&#34;&#34;
         A Flarum tag.
     &#34;&#34;&#34;
-
-    def __init__(self, user: &#39;FlarumUser&#39;, _fetched_data: dict):
-        self.user = user
-        super().__init__(_fetched_data)
-
-
-    @property
-    def data(self) -&gt; dict:
-        return self.get(&#34;data&#34;, {})
-
-
-    @property
-    def type(self) -&gt; Optional[str]:
-        return self.data.get(&#34;type&#34;, None)
-
-
-    @property
-    def id(self) -&gt; Optional[int]:
-        return self.data.get(&#34;id&#34;, None)
-
-
-    @property
-    def attributes(self) -&gt; dict:
-        return self.data.get(&#34;attributes&#34;, {})
 
 
     @property
@@ -481,22 +439,19 @@ class TagsExtension(ExtensionMixin):
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
+<li><a title="pyflarum.flarum.core.BaseFlarumIndividualObject" href="../../flarum/core/index.html#pyflarum.flarum.core.BaseFlarumIndividualObject">BaseFlarumIndividualObject</a></li>
+<li><a title="pyflarum.flarum.core.BaseFlarumObject" href="../../flarum/core/index.html#pyflarum.flarum.core.BaseFlarumObject">BaseFlarumObject</a></li>
 <li>builtins.dict</li>
 </ul>
 <h3>Instance variables</h3>
 <dl>
 <dt id="pyflarum.extensions.flarum.Flarum_Tags.Tag.attributes"><code class="name">var <span class="ident">attributes</span> : dict</code></dt>
 <dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Tags.py#L48-L50" class="git-link">Browse git</a>
-</summary>
-<pre><code class="python">@property
-def attributes(self) -&gt; dict:
-    return self.data.get(&#34;attributes&#34;, {})</code></pre>
-</details>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject" href="../../flarum/core/index.html#pyflarum.flarum.core.BaseFlarumIndividualObject">BaseFlarumIndividualObject</a></code>.<code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject.attributes" href="../../flarum/core/index.html#pyflarum.flarum.core.BaseFlarumIndividualObject.attributes">attributes</a></code>
+</p>
+<div class="desc inherited"><p>Raw <code>dict</code> of the object's attributes.</p></div>
 </dd>
 <dt id="pyflarum.extensions.flarum.Flarum_Tags.Tag.backgroundMode"><code class="name">var <span class="ident">backgroundMode</span> : Optional[str]</code></dt>
 <dd>
@@ -504,7 +459,7 @@ def attributes(self) -&gt; dict:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Tags.py#L78-L80" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\Flarum_Tags.py#L54-L56" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def backgroundMode(self) -&gt; Optional[str]:
@@ -517,7 +472,7 @@ def backgroundMode(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Tags.py#L73-L75" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\Flarum_Tags.py#L49-L51" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def backgroundUrl(self) -&gt; Optional[str]:
@@ -530,7 +485,7 @@ def backgroundUrl(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Tags.py#L129-L131" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\Flarum_Tags.py#L105-L107" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def canAddToDiscussion(self) -&gt; bool:
@@ -543,7 +498,7 @@ def canAddToDiscussion(self) -&gt; bool:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Tags.py#L124-L126" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\Flarum_Tags.py#L100-L102" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def canStartDiscussion(self) -&gt; bool:
@@ -556,25 +511,20 @@ def canStartDiscussion(self) -&gt; bool:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Tags.py#L68-L70" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\Flarum_Tags.py#L44-L46" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def color(self) -&gt; str:
     return self.attributes.get(&#34;color&#34;, &#34;&#34;)</code></pre>
 </details>
 </dd>
-<dt id="pyflarum.extensions.flarum.Flarum_Tags.Tag.data"><code class="name">var <span class="ident">data</span> : dict</code></dt>
+<dt id="pyflarum.extensions.flarum.Flarum_Tags.Tag.data"><code class="name">var <span class="ident">data</span> : list[dict] | dict</code></dt>
 <dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Tags.py#L33-L35" class="git-link">Browse git</a>
-</summary>
-<pre><code class="python">@property
-def data(self) -&gt; dict:
-    return self.get(&#34;data&#34;, {})</code></pre>
-</details>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject" href="../../flarum/core/index.html#pyflarum.flarum.core.BaseFlarumIndividualObject">BaseFlarumIndividualObject</a></code>.<code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject.data" href="../../flarum/core/index.html#pyflarum.flarum.core.BaseFlarumIndividualObject.data">data</a></code>
+</p>
+<div class="desc inherited"><p>A raw <code>dict</code> of the object's data.</p></div>
 </dd>
 <dt id="pyflarum.extensions.flarum.Flarum_Tags.Tag.defaultSort"><code class="name">var <span class="ident">defaultSort</span> : Optional[str]</code></dt>
 <dd>
@@ -582,7 +532,7 @@ def data(self) -&gt; dict:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Tags.py#L103-L105" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\Flarum_Tags.py#L79-L81" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def defaultSort(self) -&gt; Optional[str]:
@@ -595,7 +545,7 @@ def defaultSort(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Tags.py#L58-L60" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\Flarum_Tags.py#L34-L36" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def description(self) -&gt; Optional[str]:
@@ -608,7 +558,7 @@ def description(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Tags.py#L93-L95" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\Flarum_Tags.py#L69-L71" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def discussionCount(self) -&gt; Optional[int]:
@@ -621,7 +571,7 @@ def discussionCount(self) -&gt; Optional[int]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Tags.py#L83-L85" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\Flarum_Tags.py#L59-L61" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def icon(self) -&gt; Optional[str]:
@@ -630,16 +580,19 @@ def icon(self) -&gt; Optional[str]:
 </dd>
 <dt id="pyflarum.extensions.flarum.Flarum_Tags.Tag.id"><code class="name">var <span class="ident">id</span> : Optional[int]</code></dt>
 <dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Tags.py#L43-L45" class="git-link">Browse git</a>
-</summary>
-<pre><code class="python">@property
-def id(self) -&gt; Optional[int]:
-    return self.data.get(&#34;id&#34;, None)</code></pre>
-</details>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject" href="../../flarum/core/index.html#pyflarum.flarum.core.BaseFlarumIndividualObject">BaseFlarumIndividualObject</a></code>.<code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject.id" href="../../flarum/core/index.html#pyflarum.flarum.core.BaseFlarumIndividualObject.id">id</a></code>
+</p>
+<div class="desc inherited"><p>The <code>int</code> ID of the object. This should always be unique for the object's type.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Flarum_Tags.Tag.included"><code class="name">var <span class="ident">included</span> : list</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject" href="../../flarum/core/index.html#pyflarum.flarum.core.BaseFlarumIndividualObject">BaseFlarumIndividualObject</a></code>.<code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject.included" href="../../flarum/core/index.html#pyflarum.flarum.core.BaseFlarumIndividualObject.included">included</a></code>
+</p>
+<div class="desc inherited"><p>Returns raw list of JSON included data …</p></div>
 </dd>
 <dt id="pyflarum.extensions.flarum.Flarum_Tags.Tag.isChild"><code class="name">var <span class="ident">isChild</span> : bool</code></dt>
 <dd>
@@ -647,7 +600,7 @@ def id(self) -&gt; Optional[int]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Tags.py#L108-L110" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\Flarum_Tags.py#L84-L86" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def isChild(self) -&gt; bool:
@@ -660,7 +613,7 @@ def isChild(self) -&gt; bool:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Tags.py#L113-L115" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\Flarum_Tags.py#L89-L91" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def isHidden(self) -&gt; bool:
@@ -673,7 +626,7 @@ def isHidden(self) -&gt; bool:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Tags.py#L118-L121" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\Flarum_Tags.py#L94-L97" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def lastPostedAt(self) -&gt; Optional[datetime]:
@@ -687,7 +640,7 @@ def lastPostedAt(self) -&gt; Optional[datetime]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Tags.py#L53-L55" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\Flarum_Tags.py#L29-L31" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def name(self) -&gt; Optional[str]:
@@ -700,7 +653,7 @@ def name(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Tags.py#L98-L100" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\Flarum_Tags.py#L74-L76" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def position(self) -&gt; Optional[int]:
@@ -709,11 +662,16 @@ def position(self) -&gt; Optional[int]:
 </dd>
 <dt id="pyflarum.extensions.flarum.Flarum_Tags.Tag.relationships"><code class="name">var <span class="ident">relationships</span> : dict</code></dt>
 <dd>
-<div class="desc"></div>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject" href="../../flarum/core/index.html#pyflarum.flarum.core.BaseFlarumIndividualObject">BaseFlarumIndividualObject</a></code>.<code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject.relationships" href="../../flarum/core/index.html#pyflarum.flarum.core.BaseFlarumIndividualObject.relationships">relationships</a></code>
+</p>
+<div class="desc inherited"><p>Raw <code>dict</code> of the object's relationships with
+other objects …</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Tags.py#L144-L146" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\Flarum_Tags.py#L120-L122" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def relationships(self) -&gt; dict:
@@ -726,7 +684,7 @@ def relationships(self) -&gt; dict:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Tags.py#L63-L65" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\Flarum_Tags.py#L39-L41" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def slug(self) -&gt; Optional[str]:
@@ -739,7 +697,7 @@ def slug(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Tags.py#L134-L136" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\Flarum_Tags.py#L110-L112" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def subscription(self) -&gt; Optional[str]:
@@ -752,7 +710,7 @@ def subscription(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Tags.py#L139-L141" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\Flarum_Tags.py#L115-L117" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def template(self) -&gt; str:
@@ -761,16 +719,11 @@ def template(self) -&gt; str:
 </dd>
 <dt id="pyflarum.extensions.flarum.Flarum_Tags.Tag.type"><code class="name">var <span class="ident">type</span> : Optional[str]</code></dt>
 <dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Tags.py#L38-L40" class="git-link">Browse git</a>
-</summary>
-<pre><code class="python">@property
-def type(self) -&gt; Optional[str]:
-    return self.data.get(&#34;type&#34;, None)</code></pre>
-</details>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject" href="../../flarum/core/index.html#pyflarum.flarum.core.BaseFlarumIndividualObject">BaseFlarumIndividualObject</a></code>.<code><a title="pyflarum.flarum.core.BaseFlarumIndividualObject.type" href="../../flarum/core/index.html#pyflarum.flarum.core.BaseFlarumIndividualObject.type">type</a></code>
+</p>
+<div class="desc inherited"><p>The type of the object …</p></div>
 </dd>
 </dl>
 <h3>Methods</h3>
@@ -783,7 +736,7 @@ def type(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Tags.py#L149-L161" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\Flarum_Tags.py#L125-L137" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_parent_tag(self, force: bool=False):
     if not self.isChild and not force:
@@ -808,7 +761,7 @@ def type(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Tags.py#L181-L182" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\Flarum_Tags.py#L157-L158" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def restrict_permissions(self):
     return self.__restrict_or_unrestrict_permissions(restrict=True)</code></pre>
@@ -822,7 +775,7 @@ def type(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Tags.py#L185-L186" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\Flarum_Tags.py#L161-L162" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def unrestrict_permissions(self):
     return self.__restrict_or_unrestrict_permissions(restrict=False)</code></pre>
@@ -845,7 +798,7 @@ def type(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Tags.py#L229-L251" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\Flarum_Tags.py#L205-L227" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class TagsDiscussionMixin(DiscussionFromBulk):
     @property
@@ -927,7 +880,7 @@ def type(self) -&gt; Optional[str]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Tags.py#L230-L232" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\Flarum_Tags.py#L206-L208" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def canTag(self) -&gt; bool:
@@ -965,6 +918,14 @@ def canTag(self) -&gt; bool:
 <code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.id" href="../../flarum/core/index.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.id">id</a></code>
 </p>
 <div class="desc inherited"><p>The <code>int</code> ID of the object. This should always be unique for the object's type.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Flarum_Tags.TagsDiscussionMixin.included"><code class="name">var <span class="ident">included</span> : list</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.included" href="../../flarum/core/index.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.included">included</a></code>
+</p>
+<div class="desc inherited"><p>Returns raw list of JSON included data …</p></div>
 </dd>
 <dt id="pyflarum.extensions.flarum.Flarum_Tags.TagsDiscussionMixin.isHidden"><code class="name">var <span class="ident">isHidden</span> : bool</code></dt>
 <dd>
@@ -1126,7 +1087,7 @@ the top-level discussion class (<code>Discussion</code>) …</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Tags.py#L235-L251" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\Flarum_Tags.py#L211-L227" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_tags(self) -&gt; list[Tag]:
     all_tags = [] # type: list[Tag]
@@ -1186,8 +1147,7 @@ that are not worthy to view such thread.</p></div>
 <dd>
 <div class="desc"><p>A base class for mixing in custom classes (extensions) into another classes.</p>
 <h3 id="example-extension-code">Example extension code:</h3>
-<pre><code class="language-python">from typing import Type
-
+<pre><code class="language-python">
 from pyflarum.extensions import ExtensionMixin
 from pyflarum.extensions.admin import AdminExtension
 from pyflarum.session import FlarumUser
@@ -1206,7 +1166,7 @@ HARD_DEPENCENDIES = []
 
 # I recommend to use the following naming pattern: `&lt;YourExtensionName&gt;&lt;ClassToMixin&gt;Mixin`
 # Example:
-class ExampleFlarumUserMixin:
+class ExampleFlarumUserMixin(FlarumUser):
     @property
     def example(self):
         '''
@@ -1214,7 +1174,6 @@ class ExampleFlarumUserMixin:
         '''
 
         return &quot;Example&quot;
-ExampleFlarumUserMixin: Type[FlarumUser] # mimick class inheritance, without inheriting at runtime, acts just as a type hint
 
 
 class ExampleExtension(ExtensionMixin):
@@ -1232,7 +1191,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Tags.py#L255-L265" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\Flarum_Tags.py#L231-L241" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class TagsExtension(ExtensionMixin):
     def get_dependencies(self):
@@ -1269,7 +1228,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Tags.py#L256-L260" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\Flarum_Tags.py#L232-L236" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_dependencies(self):
     return {
@@ -1290,7 +1249,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Tags.py#L263-L265" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\Flarum_Tags.py#L239-L241" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def mixin(self):
     super().mixin(self, Forum, TagsForumMixin)
@@ -1314,7 +1273,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Tags.py#L190-L225" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\Flarum_Tags.py#L166-L201" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class TagsForumMixin(Forum):
     @property
@@ -1416,7 +1375,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Tags.py#L191-L193" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\Flarum_Tags.py#L167-L169" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def canBypassTagCounts(self) -&gt; bool:
@@ -1517,7 +1476,7 @@ def canBypassTagCounts(self) -&gt; bool:
 <em>Inherited from:</em>
 <code><a title="pyflarum.flarum.core.forum.Forum" href="../../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum">Forum</a></code>.<code><a title="pyflarum.flarum.core.forum.Forum.included" href="../../flarum/core/forum.html#pyflarum.flarum.core.forum.Forum.included">included</a></code>
 </p>
-<div class="desc inherited"><p>Raw <code>list[dict]</code> of the forum's included objects.</p></div>
+<div class="desc inherited"><p>Returns raw list of JSON included data …</p></div>
 </dd>
 <dt id="pyflarum.extensions.flarum.Flarum_Tags.TagsForumMixin.logoUrl"><code class="name">var <span class="ident">logoUrl</span> : Optional[str]</code></dt>
 <dd>
@@ -1533,7 +1492,7 @@ def canBypassTagCounts(self) -&gt; bool:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Tags.py#L204-L209" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\Flarum_Tags.py#L180-L185" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def maxPrimaryTags(self) -&gt; Optional[int]:
@@ -1549,7 +1508,7 @@ def maxPrimaryTags(self) -&gt; Optional[int]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Tags.py#L220-L225" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\Flarum_Tags.py#L196-L201" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def maxSecondaryTags(self) -&gt; Optional[int]:
@@ -1565,7 +1524,7 @@ def maxSecondaryTags(self) -&gt; Optional[int]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Tags.py#L196-L201" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\Flarum_Tags.py#L172-L177" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def minPrimaryTags(self) -&gt; Optional[int]:
@@ -1581,7 +1540,7 @@ def minPrimaryTags(self) -&gt; Optional[int]:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Tags.py#L212-L217" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\Flarum_Tags.py#L188-L193" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def minSecondaryTags(self) -&gt; Optional[int]:
@@ -1744,19 +1703,20 @@ setTimeout(() => input.focus(), 100);
 <li>
 <h4><code><a title="pyflarum.extensions.flarum.Flarum_Tags.Tag" href="#pyflarum.extensions.flarum.Flarum_Tags.Tag">Tag</a></code></h4>
 <ul class="">
-<li><code><a title="pyflarum.extensions.flarum.Flarum_Tags.Tag.attributes" href="#pyflarum.extensions.flarum.Flarum_Tags.Tag.attributes">attributes</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Flarum_Tags.Tag.attributes" href="../../flarum/core/index.html#pyflarum.extensions.flarum.Flarum_Tags.Tag.attributes">attributes</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.Flarum_Tags.Tag.backgroundMode" href="#pyflarum.extensions.flarum.Flarum_Tags.Tag.backgroundMode">backgroundMode</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.Flarum_Tags.Tag.backgroundUrl" href="#pyflarum.extensions.flarum.Flarum_Tags.Tag.backgroundUrl">backgroundUrl</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.Flarum_Tags.Tag.canAddToDiscussion" href="#pyflarum.extensions.flarum.Flarum_Tags.Tag.canAddToDiscussion">canAddToDiscussion</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.Flarum_Tags.Tag.canStartDiscussion" href="#pyflarum.extensions.flarum.Flarum_Tags.Tag.canStartDiscussion">canStartDiscussion</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.Flarum_Tags.Tag.color" href="#pyflarum.extensions.flarum.Flarum_Tags.Tag.color">color</a></code></li>
-<li><code><a title="pyflarum.extensions.flarum.Flarum_Tags.Tag.data" href="#pyflarum.extensions.flarum.Flarum_Tags.Tag.data">data</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Flarum_Tags.Tag.data" href="../../flarum/core/index.html#pyflarum.extensions.flarum.Flarum_Tags.Tag.data">data</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.Flarum_Tags.Tag.defaultSort" href="#pyflarum.extensions.flarum.Flarum_Tags.Tag.defaultSort">defaultSort</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.Flarum_Tags.Tag.description" href="#pyflarum.extensions.flarum.Flarum_Tags.Tag.description">description</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.Flarum_Tags.Tag.discussionCount" href="#pyflarum.extensions.flarum.Flarum_Tags.Tag.discussionCount">discussionCount</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.Flarum_Tags.Tag.get_parent_tag" href="#pyflarum.extensions.flarum.Flarum_Tags.Tag.get_parent_tag">get_parent_tag</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.Flarum_Tags.Tag.icon" href="#pyflarum.extensions.flarum.Flarum_Tags.Tag.icon">icon</a></code></li>
-<li><code><a title="pyflarum.extensions.flarum.Flarum_Tags.Tag.id" href="#pyflarum.extensions.flarum.Flarum_Tags.Tag.id">id</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Flarum_Tags.Tag.id" href="../../flarum/core/index.html#pyflarum.extensions.flarum.Flarum_Tags.Tag.id">id</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Flarum_Tags.Tag.included" href="../../flarum/core/index.html#pyflarum.extensions.flarum.Flarum_Tags.Tag.included">included</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.Flarum_Tags.Tag.isChild" href="#pyflarum.extensions.flarum.Flarum_Tags.Tag.isChild">isChild</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.Flarum_Tags.Tag.isHidden" href="#pyflarum.extensions.flarum.Flarum_Tags.Tag.isHidden">isHidden</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.Flarum_Tags.Tag.lastPostedAt" href="#pyflarum.extensions.flarum.Flarum_Tags.Tag.lastPostedAt">lastPostedAt</a></code></li>
@@ -1767,7 +1727,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="pyflarum.extensions.flarum.Flarum_Tags.Tag.slug" href="#pyflarum.extensions.flarum.Flarum_Tags.Tag.slug">slug</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.Flarum_Tags.Tag.subscription" href="#pyflarum.extensions.flarum.Flarum_Tags.Tag.subscription">subscription</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.Flarum_Tags.Tag.template" href="#pyflarum.extensions.flarum.Flarum_Tags.Tag.template">template</a></code></li>
-<li><code><a title="pyflarum.extensions.flarum.Flarum_Tags.Tag.type" href="#pyflarum.extensions.flarum.Flarum_Tags.Tag.type">type</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Flarum_Tags.Tag.type" href="../../flarum/core/index.html#pyflarum.extensions.flarum.Flarum_Tags.Tag.type">type</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.Flarum_Tags.Tag.unrestrict_permissions" href="#pyflarum.extensions.flarum.Flarum_Tags.Tag.unrestrict_permissions">unrestrict_permissions</a></code></li>
 </ul>
 </li>
@@ -1791,6 +1751,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="pyflarum.extensions.flarum.Flarum_Tags.TagsDiscussionMixin.get_tags" href="#pyflarum.extensions.flarum.Flarum_Tags.TagsDiscussionMixin.get_tags">get_tags</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.Flarum_Tags.TagsDiscussionMixin.hide" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Flarum_Tags.TagsDiscussionMixin.hide">hide</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.Flarum_Tags.TagsDiscussionMixin.id" href="../../flarum/core/index.html#pyflarum.extensions.flarum.Flarum_Tags.TagsDiscussionMixin.id">id</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Flarum_Tags.TagsDiscussionMixin.included" href="../../flarum/core/index.html#pyflarum.extensions.flarum.Flarum_Tags.TagsDiscussionMixin.included">included</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.Flarum_Tags.TagsDiscussionMixin.isHidden" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Flarum_Tags.TagsDiscussionMixin.isHidden">isHidden</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.Flarum_Tags.TagsDiscussionMixin.lastPostNumber" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Flarum_Tags.TagsDiscussionMixin.lastPostNumber">lastPostNumber</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.Flarum_Tags.TagsDiscussionMixin.lastPostedAt" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Flarum_Tags.TagsDiscussionMixin.lastPostedAt">lastPostedAt</a></code></li>

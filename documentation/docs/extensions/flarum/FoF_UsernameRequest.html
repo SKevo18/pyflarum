@@ -25,7 +25,7 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\FoF_UsernameRequest.py#L0-L44" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\FoF_UsernameRequest.py#L0-L46" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">from typing import Optional
 
@@ -44,6 +44,7 @@ SOFT_DEPENDENCIES = []
 HARD_DEPENCENDIES = []
 
 
+
 class UsernameRequestUserMixin(UserFromBulk):
     @property
     def usernameHistory(self) -&gt; Optional[list[dict[str, datetime]]]:
@@ -60,6 +61,7 @@ class UsernameRequestUserMixin(UserFromBulk):
             return formatted_list
 
         return None
+
 
 
 class UsernameRequestExtension(ExtensionMixin):
@@ -89,8 +91,7 @@ class UsernameRequestExtension(ExtensionMixin):
 <dd>
 <div class="desc"><p>A base class for mixing in custom classes (extensions) into another classes.</p>
 <h3 id="example-extension-code">Example extension code:</h3>
-<pre><code class="language-python">from typing import Type
-
+<pre><code class="language-python">
 from pyflarum.extensions import ExtensionMixin
 from pyflarum.extensions.admin import AdminExtension
 from pyflarum.session import FlarumUser
@@ -109,7 +110,7 @@ HARD_DEPENCENDIES = []
 
 # I recommend to use the following naming pattern: `&lt;YourExtensionName&gt;&lt;ClassToMixin&gt;Mixin`
 # Example:
-class ExampleFlarumUserMixin:
+class ExampleFlarumUserMixin(FlarumUser):
     @property
     def example(self):
         '''
@@ -117,7 +118,6 @@ class ExampleFlarumUserMixin:
         '''
 
         return &quot;Example&quot;
-ExampleFlarumUserMixin: Type[FlarumUser] # mimick class inheritance, without inheriting at runtime, acts just as a type hint
 
 
 class ExampleExtension(ExtensionMixin):
@@ -135,7 +135,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\FoF_UsernameRequest.py#L36-L45" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\FoF_UsernameRequest.py#L38-L47" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class UsernameRequestExtension(ExtensionMixin):
     def get_dependencies(self):
@@ -171,7 +171,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\FoF_UsernameRequest.py#L37-L41" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\FoF_UsernameRequest.py#L39-L43" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_dependencies(self):
     return {
@@ -192,7 +192,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\FoF_UsernameRequest.py#L44-L45" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\FoF_UsernameRequest.py#L46-L47" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def mixin(self):
     super().mixin(self, UserFromBulk, UsernameRequestUserMixin)</code></pre>
@@ -215,7 +215,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\FoF_UsernameRequest.py#L18-L33" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\FoF_UsernameRequest.py#L19-L34" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class UsernameRequestUserMixin(UserFromBulk):
     @property
@@ -340,6 +340,14 @@ class ExampleExtension(ExtensionMixin):
 </p>
 <div class="desc inherited"><p>The <code>int</code> ID of the object. This should always be unique for the object's type.</p></div>
 </dd>
+<dt id="pyflarum.extensions.flarum.FoF_UsernameRequest.UsernameRequestUserMixin.included"><code class="name">var <span class="ident">included</span> : list</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.included" href="../../flarum/core/index.html#pyflarum.flarum.core.users.UserFromBulk.included">included</a></code>
+</p>
+<div class="desc inherited"><p>Returns raw list of JSON included data …</p></div>
+</dd>
 <dt id="pyflarum.extensions.flarum.FoF_UsernameRequest.UsernameRequestUserMixin.isEmailConfirmed"><code class="name">var <span class="ident">isEmailConfirmed</span> : bool</code></dt>
 <dd>
 <p class="inheritance">
@@ -395,7 +403,7 @@ other objects …</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\FoF_UsernameRequest.py#L19-L33" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\FoF_UsernameRequest.py#L20-L34" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def usernameHistory(self) -&gt; Optional[list[dict[str, datetime]]]:
@@ -500,6 +508,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="pyflarum.extensions.flarum.FoF_UsernameRequest.UsernameRequestUserMixin.displayName" href="../../flarum/core/users.html#pyflarum.extensions.flarum.FoF_UsernameRequest.UsernameRequestUserMixin.displayName">displayName</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.FoF_UsernameRequest.UsernameRequestUserMixin.email" href="../../flarum/core/users.html#pyflarum.extensions.flarum.FoF_UsernameRequest.UsernameRequestUserMixin.email">email</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.FoF_UsernameRequest.UsernameRequestUserMixin.id" href="../../flarum/core/index.html#pyflarum.extensions.flarum.FoF_UsernameRequest.UsernameRequestUserMixin.id">id</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.FoF_UsernameRequest.UsernameRequestUserMixin.included" href="../../flarum/core/index.html#pyflarum.extensions.flarum.FoF_UsernameRequest.UsernameRequestUserMixin.included">included</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.FoF_UsernameRequest.UsernameRequestUserMixin.isEmailConfirmed" href="../../flarum/core/users.html#pyflarum.extensions.flarum.FoF_UsernameRequest.UsernameRequestUserMixin.isEmailConfirmed">isEmailConfirmed</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.FoF_UsernameRequest.UsernameRequestUserMixin.joinTime" href="../../flarum/core/users.html#pyflarum.extensions.flarum.FoF_UsernameRequest.UsernameRequestUserMixin.joinTime">joinTime</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.FoF_UsernameRequest.UsernameRequestUserMixin.relationships" href="../../flarum/core/index.html#pyflarum.extensions.flarum.FoF_UsernameRequest.UsernameRequestUserMixin.relationships">relationships</a></code></li>

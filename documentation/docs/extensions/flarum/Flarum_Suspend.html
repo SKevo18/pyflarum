@@ -25,7 +25,7 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Suspend.py#L0-L74" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\Flarum_Suspend.py#L0-L72" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">from typing import Optional
 
@@ -46,6 +46,7 @@ SOFT_DEPENDENCIES = []
 HARD_DEPENCENDIES = []
 
 
+
 class SuspendUserMixin(UserFromBulk):
     @property
     def canSuspend(self) -&gt; bool:
@@ -59,19 +60,17 @@ class SuspendUserMixin(UserFromBulk):
         return flarum_to_datetime(raw)
 
 
-    def suspend(self, suspended_until: Optional[datetime]=None, suspended_for: Optional[timedelta]=None):
+    def suspend(self, suspended_until: Optional[datetime]=None, suspended_for: Optional[timedelta]=None) -&gt; User:
         if suspended_until:
-            until = datetime_to_flarum(suspended_until)
+            until = suspended_until
 
         else:
             if suspended_for:
-                now = datetime.now()
-                raw_until = now + suspended_for
-
-                until = datetime_to_flarum(raw_until)
+                raw_until = datetime.now() + suspended_for
+                until = raw_until
 
             else:
-                until = datetime_to_flarum(datetime(2069, 2, 6))
+                until = datetime(6669, 2, 6)
 
 
         post_data = {
@@ -79,7 +78,7 @@ class SuspendUserMixin(UserFromBulk):
                 &#34;type&#34;: &#34;users&#34;,
                 &#34;id&#34;: &#34;3&#34;,
                 &#34;attributes&#34;: {
-                    &#34;suspendedUntil&#34;: until
+                    &#34;suspendedUntil&#34;: datetime_to_flarum(until)
                 }
             }
         }
@@ -88,7 +87,6 @@ class SuspendUserMixin(UserFromBulk):
         json = parse_request(raw)
 
         return User(user=self.user, _fetched_data=json)
-
 
 
 
@@ -119,8 +117,7 @@ class SuspendExtension(ExtensionMixin):
 <dd>
 <div class="desc"><p>A base class for mixing in custom classes (extensions) into another classes.</p>
 <h3 id="example-extension-code">Example extension code:</h3>
-<pre><code class="language-python">from typing import Type
-
+<pre><code class="language-python">
 from pyflarum.extensions import ExtensionMixin
 from pyflarum.extensions.admin import AdminExtension
 from pyflarum.session import FlarumUser
@@ -139,7 +136,7 @@ HARD_DEPENCENDIES = []
 
 # I recommend to use the following naming pattern: `&lt;YourExtensionName&gt;&lt;ClassToMixin&gt;Mixin`
 # Example:
-class ExampleFlarumUserMixin:
+class ExampleFlarumUserMixin(FlarumUser):
     @property
     def example(self):
         '''
@@ -147,7 +144,6 @@ class ExampleFlarumUserMixin:
         '''
 
         return &quot;Example&quot;
-ExampleFlarumUserMixin: Type[FlarumUser] # mimick class inheritance, without inheriting at runtime, acts just as a type hint
 
 
 class ExampleExtension(ExtensionMixin):
@@ -165,7 +161,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Suspend.py#L66-L75" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\Flarum_Suspend.py#L64-L73" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class SuspendExtension(ExtensionMixin):
     def get_dependencies(self):
@@ -201,7 +197,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Suspend.py#L67-L71" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\Flarum_Suspend.py#L65-L69" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_dependencies(self):
     return {
@@ -222,7 +218,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Suspend.py#L74-L75" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\Flarum_Suspend.py#L72-L73" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def mixin(self):
     super().mixin(self, UserFromBulk, SuspendUserMixin)</code></pre>
@@ -245,7 +241,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Suspend.py#L20-L61" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\Flarum_Suspend.py#L21-L60" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class SuspendUserMixin(UserFromBulk):
     @property
@@ -260,19 +256,17 @@ class ExampleExtension(ExtensionMixin):
         return flarum_to_datetime(raw)
 
 
-    def suspend(self, suspended_until: Optional[datetime]=None, suspended_for: Optional[timedelta]=None):
+    def suspend(self, suspended_until: Optional[datetime]=None, suspended_for: Optional[timedelta]=None) -&gt; User:
         if suspended_until:
-            until = datetime_to_flarum(suspended_until)
+            until = suspended_until
 
         else:
             if suspended_for:
-                now = datetime.now()
-                raw_until = now + suspended_for
-
-                until = datetime_to_flarum(raw_until)
+                raw_until = datetime.now() + suspended_for
+                until = raw_until
 
             else:
-                until = datetime_to_flarum(datetime(2069, 2, 6))
+                until = datetime(6669, 2, 6)
 
 
         post_data = {
@@ -280,7 +274,7 @@ class ExampleExtension(ExtensionMixin):
                 &#34;type&#34;: &#34;users&#34;,
                 &#34;id&#34;: &#34;3&#34;,
                 &#34;attributes&#34;: {
-                    &#34;suspendedUntil&#34;: until
+                    &#34;suspendedUntil&#34;: datetime_to_flarum(until)
                 }
             }
         }
@@ -354,7 +348,7 @@ class ExampleExtension(ExtensionMixin):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Suspend.py#L21-L23" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\Flarum_Suspend.py#L22-L24" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def canSuspend(self) -&gt; bool:
@@ -409,6 +403,14 @@ def canSuspend(self) -&gt; bool:
 </p>
 <div class="desc inherited"><p>The <code>int</code> ID of the object. This should always be unique for the object's type.</p></div>
 </dd>
+<dt id="pyflarum.extensions.flarum.Flarum_Suspend.SuspendUserMixin.included"><code class="name">var <span class="ident">included</span> : list</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.users.UserFromBulk" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromBulk">UserFromBulk</a></code>.<code><a title="pyflarum.flarum.core.users.UserFromBulk.included" href="../../flarum/core/index.html#pyflarum.flarum.core.users.UserFromBulk.included">included</a></code>
+</p>
+<div class="desc inherited"><p>Returns raw list of JSON included data …</p></div>
+</dd>
 <dt id="pyflarum.extensions.flarum.Flarum_Suspend.SuspendUserMixin.isEmailConfirmed"><code class="name">var <span class="ident">isEmailConfirmed</span> : bool</code></dt>
 <dd>
 <p class="inheritance">
@@ -448,7 +450,7 @@ other objects …</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Suspend.py#L26-L30" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\Flarum_Suspend.py#L27-L31" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def suspendedUntil(self):
@@ -477,28 +479,26 @@ def suspendedUntil(self):
 <h3>Methods</h3>
 <dl>
 <dt id="pyflarum.extensions.flarum.Flarum_Suspend.SuspendUserMixin.suspend"><code class="name flex">
-<span>def <span class="ident">suspend</span></span>(<span>self, suspended_until: Optional[datetime.datetime] = None, suspended_for: Optional[datetime.timedelta] = None)</span>
+<span>def <span class="ident">suspend</span></span>(<span>self, suspended_until: Optional[datetime.datetime] = None, suspended_for: Optional[datetime.timedelta] = None) ‑> <a title="pyflarum.flarum.core.users.User" href="../../flarum/core/users.html#pyflarum.flarum.core.users.User">User</a></span>
 </code></dt>
 <dd>
 <div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Suspend.py#L33-L61" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\Flarum_Suspend.py#L34-L60" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">def suspend(self, suspended_until: Optional[datetime]=None, suspended_for: Optional[timedelta]=None):
+<pre><code class="python">def suspend(self, suspended_until: Optional[datetime]=None, suspended_for: Optional[timedelta]=None) -&gt; User:
     if suspended_until:
-        until = datetime_to_flarum(suspended_until)
+        until = suspended_until
 
     else:
         if suspended_for:
-            now = datetime.now()
-            raw_until = now + suspended_for
-
-            until = datetime_to_flarum(raw_until)
+            raw_until = datetime.now() + suspended_for
+            until = raw_until
 
         else:
-            until = datetime_to_flarum(datetime(2069, 2, 6))
+            until = datetime(6669, 2, 6)
 
 
     post_data = {
@@ -506,7 +506,7 @@ def suspendedUntil(self):
             &#34;type&#34;: &#34;users&#34;,
             &#34;id&#34;: &#34;3&#34;,
             &#34;attributes&#34;: {
-                &#34;suspendedUntil&#34;: until
+                &#34;suspendedUntil&#34;: datetime_to_flarum(until)
             }
         }
     }
@@ -604,6 +604,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="pyflarum.extensions.flarum.Flarum_Suspend.SuspendUserMixin.displayName" href="../../flarum/core/users.html#pyflarum.extensions.flarum.Flarum_Suspend.SuspendUserMixin.displayName">displayName</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.Flarum_Suspend.SuspendUserMixin.email" href="../../flarum/core/users.html#pyflarum.extensions.flarum.Flarum_Suspend.SuspendUserMixin.email">email</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.Flarum_Suspend.SuspendUserMixin.id" href="../../flarum/core/index.html#pyflarum.extensions.flarum.Flarum_Suspend.SuspendUserMixin.id">id</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Flarum_Suspend.SuspendUserMixin.included" href="../../flarum/core/index.html#pyflarum.extensions.flarum.Flarum_Suspend.SuspendUserMixin.included">included</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.Flarum_Suspend.SuspendUserMixin.isEmailConfirmed" href="../../flarum/core/users.html#pyflarum.extensions.flarum.Flarum_Suspend.SuspendUserMixin.isEmailConfirmed">isEmailConfirmed</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.Flarum_Suspend.SuspendUserMixin.joinTime" href="../../flarum/core/users.html#pyflarum.extensions.flarum.Flarum_Suspend.SuspendUserMixin.joinTime">joinTime</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.Flarum_Suspend.SuspendUserMixin.relationships" href="../../flarum/core/index.html#pyflarum.extensions.flarum.Flarum_Suspend.SuspendUserMixin.relationships">relationships</a></code></li>

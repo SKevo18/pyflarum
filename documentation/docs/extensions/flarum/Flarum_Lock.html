@@ -25,11 +25,9 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Lock.py#L0-L94" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\Flarum_Lock.py#L0-L90" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">from typing import Type
-
-from .. import ExtensionMixin
+<pre><code class="python">from .. import ExtensionMixin
 
 from ...error_handler import parse_request
 from ...flarum.core.discussions import Discussion, DiscussionFromBulk, DiscussionFromNotification
@@ -44,8 +42,8 @@ HARD_DEPENCENDIES = []
 
 
 
-class LockDiscussionFromNotificationMixin:
-    def __lock_or_unlock(self: DiscussionFromNotification, locked: bool=True) -&gt; Discussion:
+class LockDiscussionFromNotificationMixin(DiscussionFromNotification):
+    def __lock_or_unlock(self, locked: bool=True) -&gt; Discussion:
         &#34;&#34;&#34;
             A function to either lock or unlock the post, to prevent repetition.
 
@@ -82,13 +80,12 @@ class LockDiscussionFromNotificationMixin:
         &#34;&#34;&#34;
 
         return self.__lock_or_unlock(locked=False)
-LockDiscussionFromNotificationMixin: Type[DiscussionFromNotification]
 
 
 
-class LockDiscussionFromBulkMixin:
+class LockDiscussionFromBulkMixin(DiscussionFromBulk, LockDiscussionFromNotificationMixin):
     @property
-    def isLocked(self: DiscussionFromBulk) -&gt; bool:
+    def isLocked(self) -&gt; bool:
         &#34;&#34;&#34;
             Whether or not the discussion is locked.
         &#34;&#34;&#34;
@@ -97,13 +94,12 @@ class LockDiscussionFromBulkMixin:
 
 
     @property
-    def canLock(self: DiscussionFromBulk) -&gt; bool:
+    def canLock(self) -&gt; bool:
         &#34;&#34;&#34;
             Whether or not you are able to lock the discussion.
         &#34;&#34;&#34;
 
         return self.attributes.get(&#34;canLock&#34;, False)
-LockDiscussionFromBulkMixin: Type[LockDiscussionFromNotificationMixin]
 
 
 
@@ -135,17 +131,24 @@ class LockExtension(ExtensionMixin):
 <dl>
 <dt id="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin"><code class="flex name class">
 <span>class <span class="ident">LockDiscussionFromBulkMixin</span></span>
+<span>(</span><span>user: FlarumUser, _fetched_data: dict)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>A discussion from <code>Discussions</code>.</p>
+<h3 id="parameters">Parameters:</h3>
+<ul>
+<li><code>user</code> - the <code><a title="pyflarum.session.FlarumUser" href="../../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code> object, required to make additional API calls.</li>
+<li><code>_fetched_data</code> - the JSON data that was fetched from the API.</li>
+</ul>
+<p>I strongly discourage from forging objects this way, unless you are creating an extension.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Lock.py#L60-L76" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\Flarum_Lock.py#L57-L73" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">class LockDiscussionFromBulkMixin:
+<pre><code class="python">class LockDiscussionFromBulkMixin(DiscussionFromBulk, LockDiscussionFromNotificationMixin):
     @property
-    def isLocked(self: DiscussionFromBulk) -&gt; bool:
+    def isLocked(self) -&gt; bool:
         &#34;&#34;&#34;
             Whether or not the discussion is locked.
         &#34;&#34;&#34;
@@ -154,25 +157,58 @@ class LockExtension(ExtensionMixin):
 
 
     @property
-    def canLock(self: DiscussionFromBulk) -&gt; bool:
+    def canLock(self) -&gt; bool:
         &#34;&#34;&#34;
             Whether or not you are able to lock the discussion.
         &#34;&#34;&#34;
 
         return self.attributes.get(&#34;canLock&#34;, False)</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></li>
+<li><a title="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromNotificationMixin" href="#pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromNotificationMixin">LockDiscussionFromNotificationMixin</a></li>
+<li><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromNotification">DiscussionFromNotification</a></li>
+<li><a title="pyflarum.flarum.core.BaseFlarumIndividualObject" href="../../flarum/core/index.html#pyflarum.flarum.core.BaseFlarumIndividualObject">BaseFlarumIndividualObject</a></li>
+<li><a title="pyflarum.flarum.core.BaseFlarumObject" href="../../flarum/core/index.html#pyflarum.flarum.core.BaseFlarumObject">BaseFlarumObject</a></li>
+<li>builtins.dict</li>
+</ul>
 <h3>Instance variables</h3>
 <dl>
+<dt id="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.attributes"><code class="name">var <span class="ident">attributes</span> : dict</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.attributes" href="../../flarum/core/index.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.attributes">attributes</a></code>
+</p>
+<div class="desc inherited"><p>Raw <code>dict</code> of the object's attributes.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.canDelete"><code class="name">var <span class="ident">canDelete</span> : bool</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.canDelete" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.canDelete">canDelete</a></code>
+</p>
+<div class="desc inherited"><p>Whether or not you are able to delete the discussion.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.canHide"><code class="name">var <span class="ident">canHide</span> : bool</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.canHide" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.canHide">canHide</a></code>
+</p>
+<div class="desc inherited"><p>Whether or not you are able to hide the discussion.</p></div>
+</dd>
 <dt id="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.canLock"><code class="name">var <span class="ident">canLock</span> : bool</code></dt>
 <dd>
 <div class="desc"><p>Whether or not you are able to lock the discussion.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Lock.py#L70-L76" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\Flarum_Lock.py#L67-L73" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
-def canLock(self: DiscussionFromBulk) -&gt; bool:
+def canLock(self) -&gt; bool:
     &#34;&#34;&#34;
         Whether or not you are able to lock the discussion.
     &#34;&#34;&#34;
@@ -180,16 +216,81 @@ def canLock(self: DiscussionFromBulk) -&gt; bool:
     return self.attributes.get(&#34;canLock&#34;, False)</code></pre>
 </details>
 </dd>
+<dt id="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.canRename"><code class="name">var <span class="ident">canRename</span> : bool</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.canRename" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.canRename">canRename</a></code>
+</p>
+<div class="desc inherited"><p>Whether or not you are able to rename the discussion.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.canReply"><code class="name">var <span class="ident">canReply</span> : bool</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.canReply" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.canReply">canReply</a></code>
+</p>
+<div class="desc inherited"><p>Whether or not you are able to create a post in the discussion.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.commentCount"><code class="name">var <span class="ident">commentCount</span> : Optional[str]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.commentCount" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.commentCount">commentCount</a></code>
+</p>
+<div class="desc inherited"><p>Obtains the comment count of the discussion …</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.createdAt"><code class="name">var <span class="ident">createdAt</span> : Optional[datetime.datetime]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.createdAt" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.createdAt">createdAt</a></code>
+</p>
+<div class="desc inherited"><p>The <code>datetime</code> of when this discussion was created at.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.data"><code class="name">var <span class="ident">data</span> : list[dict] | dict</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.data" href="../../flarum/core/index.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.data">data</a></code>
+</p>
+<div class="desc inherited"><p>A raw <code>dict</code> of the object's data.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.id"><code class="name">var <span class="ident">id</span> : Optional[int]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.id" href="../../flarum/core/index.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.id">id</a></code>
+</p>
+<div class="desc inherited"><p>The <code>int</code> ID of the object. This should always be unique for the object's type.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.included"><code class="name">var <span class="ident">included</span> : list</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.included" href="../../flarum/core/index.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.included">included</a></code>
+</p>
+<div class="desc inherited"><p>Returns raw list of JSON included data …</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.isHidden"><code class="name">var <span class="ident">isHidden</span> : bool</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.isHidden" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.isHidden">isHidden</a></code>
+</p>
+<div class="desc inherited"><p>Whether or not the discussion is hidden. This happens when
+you delete the discussion for the first time.</p></div>
+</dd>
 <dt id="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.isLocked"><code class="name">var <span class="ident">isLocked</span> : bool</code></dt>
 <dd>
 <div class="desc"><p>Whether or not the discussion is locked.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Lock.py#L61-L67" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\Flarum_Lock.py#L58-L64" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
-def isLocked(self: DiscussionFromBulk) -&gt; bool:
+def isLocked(self) -&gt; bool:
     &#34;&#34;&#34;
         Whether or not the discussion is locked.
     &#34;&#34;&#34;
@@ -197,20 +298,222 @@ def isLocked(self: DiscussionFromBulk) -&gt; bool:
     return self.attributes.get(&#34;isLocked&#34;, False)</code></pre>
 </details>
 </dd>
+<dt id="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.lastPostNumber"><code class="name">var <span class="ident">lastPostNumber</span> : Optional[int]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.lastPostNumber" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.lastPostNumber">lastPostNumber</a></code>
+</p>
+<div class="desc inherited"><p>Returns the number of the newest post in the
+discussion.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.lastPostedAt"><code class="name">var <span class="ident">lastPostedAt</span> : Optional[datetime.datetime]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.lastPostedAt" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.lastPostedAt">lastPostedAt</a></code>
+</p>
+<div class="desc inherited"><p>The <code>datetime</code> of when the last post in this
+discussion was made, e. g. when was this
+discussion last updated at.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.lastReadAt"><code class="name">var <span class="ident">lastReadAt</span> : Optional[datetime.datetime]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.lastReadAt" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.lastReadAt">lastReadAt</a></code>
+</p>
+<div class="desc inherited"><p>The <code>datetime</code> when you last read that discussion.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.lastReadPostNumber"><code class="name">var <span class="ident">lastReadPostNumber</span> : Optional[int]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.lastReadPostNumber" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.lastReadPostNumber">lastReadPostNumber</a></code>
+</p>
+<div class="desc inherited"><p>Number of a post that you've last read in the discussion.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.participantCount"><code class="name">var <span class="ident">participantCount</span> : Optional[str]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.participantCount" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.participantCount">participantCount</a></code>
+</p>
+<div class="desc inherited"><p>The participant count of the discussion. This is
+the number of all users that have participated in a
+discussion by posting.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.relationships"><code class="name">var <span class="ident">relationships</span> : dict</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.relationships" href="../../flarum/core/index.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.relationships">relationships</a></code>
+</p>
+<div class="desc inherited"><p>Raw <code>dict</code> of the object's relationships with
+other objects …</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.slug"><code class="name">var <span class="ident">slug</span> : Optional[str]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.slug" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.slug">slug</a></code>
+</p>
+<div class="desc inherited"><p>Returns the discussion's slug
+(consists of ID and dash separated words from discussion's title,
+e. g. <code>123-some-title</code>).</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.title"><code class="name">var <span class="ident">title</span> : Optional[str]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.title" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.title">title</a></code>
+</p>
+<div class="desc inherited"><p>Returns the discussion's title.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.type"><code class="name">var <span class="ident">type</span> : Optional[str]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.type" href="../../flarum/core/index.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.type">type</a></code>
+</p>
+<div class="desc inherited"><p>The type of the object …</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.url"><code class="name">var <span class="ident">url</span></code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.url" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.url">url</a></code>
+</p>
+<div class="desc inherited"><p>Returns the discussion's URL (including slug, if it's available).</p></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.delete"><code class="name flex">
+<span>def <span class="ident">delete</span></span>(<span>self, force: bool = False) ‑> bool</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.delete" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.delete">delete</a></code>
+</p>
+<div class="desc inherited"><p>Scronches the discussion forever. This cannot be reverted …</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.get_author"><code class="name flex">
+<span>def <span class="ident">get_author</span></span>(<span>self) ‑> Optional[<a title="pyflarum.flarum.core.users.UserFromNotification" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromNotification">UserFromNotification</a>]</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.get_author" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.get_author">get_author</a></code>
+</p>
+<div class="desc inherited"><p>Obtains the author of the discussion …</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.get_first_post"><code class="name flex">
+<span>def <span class="ident">get_first_post</span></span>(<span>self) ‑> Optional[<a title="pyflarum.flarum.core.posts.PostFromDiscussion" href="../../flarum/core/posts.html#pyflarum.flarum.core.posts.PostFromDiscussion">PostFromDiscussion</a>]</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.get_first_post" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.get_first_post">get_first_post</a></code>
+</p>
+<div class="desc inherited"><p>Obtains the first post of the discussion. If no post is found,
+<code>None</code> is returned …</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.get_full_data"><code class="name flex">
+<span>def <span class="ident">get_full_data</span></span>(<span>self) ‑> <a title="pyflarum.flarum.core.discussions.Discussion" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.Discussion">Discussion</a></span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.get_full_data" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.get_full_data">get_full_data</a></code>
+</p>
+<div class="desc inherited"><p>Makes an additional API call to fetch the full data of the discussion, e. g.
+the top-level discussion class (<code>Discussion</code>) …</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.get_last_posted_user"><code class="name flex">
+<span>def <span class="ident">get_last_posted_user</span></span>(<span>self) ‑> Optional[<a title="pyflarum.flarum.core.users.UserFromNotification" href="../../flarum/core/users.html#pyflarum.flarum.core.users.UserFromNotification">UserFromNotification</a>]</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.get_last_posted_user" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.get_last_posted_user">get_last_posted_user</a></code>
+</p>
+<div class="desc inherited"><p>Obtains the user that posted the latest post in the discussion …</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.hide"><code class="name flex">
+<span>def <span class="ident">hide</span></span>(<span>self, force: bool = False)</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.hide" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.hide">hide</a></code>
+</p>
+<div class="desc inherited"><p>Hides the discussion from the sight of other unprivileged users
+that are not worthy to view such thread.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.lock"><code class="name flex">
+<span>def <span class="ident">lock</span></span>(<span>self) ‑> <a title="pyflarum.flarum.core.discussions.Discussion" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.Discussion">Discussion</a></span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromNotificationMixin" href="#pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromNotificationMixin">LockDiscussionFromNotificationMixin</a></code>.<code><a title="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromNotificationMixin.lock" href="#pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromNotificationMixin.lock">lock</a></code>
+</p>
+<div class="desc inherited"><p>Locks the discussion.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.restore"><code class="name flex">
+<span>def <span class="ident">restore</span></span>(<span>self, force: bool = False)</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.restore" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.restore">restore</a></code>
+</p>
+<div class="desc inherited"><p>Restores the discussion (unhides it), bringing it back to life.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.unhide"><code class="name flex">
+<span>def <span class="ident">unhide</span></span>(<span>self, force: bool = False)</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk">DiscussionFromBulk</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromBulk.unhide" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromBulk.unhide">unhide</a></code>
+</p>
+<div class="desc inherited"><p>Restores the discussion (unhides it), bringing it back to life.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.unlock"><code class="name flex">
+<span>def <span class="ident">unlock</span></span>(<span>self) ‑> <a title="pyflarum.flarum.core.discussions.Discussion" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.Discussion">Discussion</a></span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromNotificationMixin" href="#pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromNotificationMixin">LockDiscussionFromNotificationMixin</a></code>.<code><a title="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromNotificationMixin.unlock" href="#pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromNotificationMixin.unlock">unlock</a></code>
+</p>
+<div class="desc inherited"><p>Unlocks the discussion.</p></div>
+</dd>
 </dl>
 </dd>
 <dt id="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromNotificationMixin"><code class="flex name class">
 <span>class <span class="ident">LockDiscussionFromNotificationMixin</span></span>
+<span>(</span><span>user: FlarumUser, _fetched_data: dict)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>A discussion from <code>Notification</code>. Contains the least
+data from all of the discussion classes (see <a href="https://cwkevo.github.io/pyflarum/docs/#class-inheritance">inheritance</a>).</p>
+<h3 id="parameters">Parameters:</h3>
+<ul>
+<li><code>user</code> - the <code><a title="pyflarum.session.FlarumUser" href="../../session.html#pyflarum.session.FlarumUser">FlarumUser</a></code> object, required to make additional API calls.</li>
+<li><code>_fetched_data</code> - the JSON data that was fetched from the API.</li>
+</ul>
+<p>I strongly discourage from forging objects this way, unless you are creating an extension.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Lock.py#L18-L55" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\Flarum_Lock.py#L16-L53" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">class LockDiscussionFromNotificationMixin:
-    def __lock_or_unlock(self: DiscussionFromNotification, locked: bool=True) -&gt; Discussion:
+<pre><code class="python">class LockDiscussionFromNotificationMixin(DiscussionFromNotification):
+    def __lock_or_unlock(self, locked: bool=True) -&gt; Discussion:
         &#34;&#34;&#34;
             A function to either lock or unlock the post, to prevent repetition.
 
@@ -248,8 +551,122 @@ def isLocked(self: DiscussionFromBulk) -&gt; bool:
 
         return self.__lock_or_unlock(locked=False)</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromNotification">DiscussionFromNotification</a></li>
+<li><a title="pyflarum.flarum.core.BaseFlarumIndividualObject" href="../../flarum/core/index.html#pyflarum.flarum.core.BaseFlarumIndividualObject">BaseFlarumIndividualObject</a></li>
+<li><a title="pyflarum.flarum.core.BaseFlarumObject" href="../../flarum/core/index.html#pyflarum.flarum.core.BaseFlarumObject">BaseFlarumObject</a></li>
+<li>builtins.dict</li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin" href="#pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin">LockDiscussionFromBulkMixin</a></li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromNotificationMixin.attributes"><code class="name">var <span class="ident">attributes</span> : dict</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromNotification">DiscussionFromNotification</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification.attributes" href="../../flarum/core/index.html#pyflarum.flarum.core.discussions.DiscussionFromNotification.attributes">attributes</a></code>
+</p>
+<div class="desc inherited"><p>Raw <code>dict</code> of the object's attributes.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromNotificationMixin.data"><code class="name">var <span class="ident">data</span> : list[dict] | dict</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromNotification">DiscussionFromNotification</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification.data" href="../../flarum/core/index.html#pyflarum.flarum.core.discussions.DiscussionFromNotification.data">data</a></code>
+</p>
+<div class="desc inherited"><p>A raw <code>dict</code> of the object's data.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromNotificationMixin.id"><code class="name">var <span class="ident">id</span> : Optional[int]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromNotification">DiscussionFromNotification</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification.id" href="../../flarum/core/index.html#pyflarum.flarum.core.discussions.DiscussionFromNotification.id">id</a></code>
+</p>
+<div class="desc inherited"><p>The <code>int</code> ID of the object. This should always be unique for the object's type.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromNotificationMixin.included"><code class="name">var <span class="ident">included</span> : list</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromNotification">DiscussionFromNotification</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification.included" href="../../flarum/core/index.html#pyflarum.flarum.core.discussions.DiscussionFromNotification.included">included</a></code>
+</p>
+<div class="desc inherited"><p>Returns raw list of JSON included data …</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromNotificationMixin.relationships"><code class="name">var <span class="ident">relationships</span> : dict</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromNotification">DiscussionFromNotification</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification.relationships" href="../../flarum/core/index.html#pyflarum.flarum.core.discussions.DiscussionFromNotification.relationships">relationships</a></code>
+</p>
+<div class="desc inherited"><p>Raw <code>dict</code> of the object's relationships with
+other objects …</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromNotificationMixin.slug"><code class="name">var <span class="ident">slug</span> : Optional[str]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromNotification">DiscussionFromNotification</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification.slug" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromNotification.slug">slug</a></code>
+</p>
+<div class="desc inherited"><p>Returns the discussion's slug
+(consists of ID and dash separated words from discussion's title,
+e. g. <code>123-some-title</code>).</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromNotificationMixin.title"><code class="name">var <span class="ident">title</span> : Optional[str]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromNotification">DiscussionFromNotification</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification.title" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromNotification.title">title</a></code>
+</p>
+<div class="desc inherited"><p>Returns the discussion's title.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromNotificationMixin.type"><code class="name">var <span class="ident">type</span> : Optional[str]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromNotification">DiscussionFromNotification</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification.type" href="../../flarum/core/index.html#pyflarum.flarum.core.discussions.DiscussionFromNotification.type">type</a></code>
+</p>
+<div class="desc inherited"><p>The type of the object …</p></div>
+</dd>
+</dl>
 <h3>Methods</h3>
 <dl>
+<dt id="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromNotificationMixin.delete"><code class="name flex">
+<span>def <span class="ident">delete</span></span>(<span>self) ‑> <a title="pyflarum.flarum.core.discussions.Discussion" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.Discussion">Discussion</a></span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromNotification">DiscussionFromNotification</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification.delete" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromNotification.delete">delete</a></code>
+</p>
+<div class="desc inherited"><p>Deletes a discussion forever - this action is irreversible!
+Returns <code>True</code> on success, <code>FlarumError</code> otherwise.</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromNotificationMixin.get_full_data"><code class="name flex">
+<span>def <span class="ident">get_full_data</span></span>(<span>self) ‑> <a title="pyflarum.flarum.core.discussions.Discussion" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.Discussion">Discussion</a></span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromNotification">DiscussionFromNotification</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification.get_full_data" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromNotification.get_full_data">get_full_data</a></code>
+</p>
+<div class="desc inherited"><p>Makes an additional API call to fetch the full data of the discussion, e. g.
+the top-level discussion class (<code>Discussion</code>) …</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromNotificationMixin.hide"><code class="name flex">
+<span>def <span class="ident">hide</span></span>(<span>self) ‑> <a title="pyflarum.flarum.core.discussions.Discussion" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.Discussion">Discussion</a></span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromNotification">DiscussionFromNotification</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification.hide" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromNotification.hide">hide</a></code>
+</p>
+<div class="desc inherited"><p>Hides the discussion.
+Raises <code>FlarumError</code> if it failed, otherwise the new discussion is returned.</p></div>
+</dd>
 <dt id="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromNotificationMixin.lock"><code class="name flex">
 <span>def <span class="ident">lock</span></span>(<span>self) ‑> <a title="pyflarum.flarum.core.discussions.Discussion" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.Discussion">Discussion</a></span>
 </code></dt>
@@ -258,7 +675,7 @@ def isLocked(self: DiscussionFromBulk) -&gt; bool:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Lock.py#L42-L47" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\Flarum_Lock.py#L40-L45" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def lock(self) -&gt; Discussion:
     &#34;&#34;&#34;
@@ -268,6 +685,28 @@ def isLocked(self: DiscussionFromBulk) -&gt; bool:
     return self.__lock_or_unlock(locked=True)</code></pre>
 </details>
 </dd>
+<dt id="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromNotificationMixin.restore"><code class="name flex">
+<span>def <span class="ident">restore</span></span>(<span>self) ‑> <a title="pyflarum.flarum.core.discussions.Discussion" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.Discussion">Discussion</a></span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromNotification">DiscussionFromNotification</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification.restore" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromNotification.restore">restore</a></code>
+</p>
+<div class="desc inherited"><p>Restores the discussion (unhides).
+Raises <code>FlarumError</code> if it failed, otherwise the new discussion is returned …</p></div>
+</dd>
+<dt id="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromNotificationMixin.unhide"><code class="name flex">
+<span>def <span class="ident">unhide</span></span>(<span>self) ‑> <a title="pyflarum.flarum.core.discussions.Discussion" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.Discussion">Discussion</a></span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromNotification">DiscussionFromNotification</a></code>.<code><a title="pyflarum.flarum.core.discussions.DiscussionFromNotification.unhide" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.DiscussionFromNotification.unhide">unhide</a></code>
+</p>
+<div class="desc inherited"><p>Restores the discussion (unhides).
+Raises <code>FlarumError</code> if it failed, otherwise the new discussion is returned …</p></div>
+</dd>
 <dt id="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromNotificationMixin.unlock"><code class="name flex">
 <span>def <span class="ident">unlock</span></span>(<span>self) ‑> <a title="pyflarum.flarum.core.discussions.Discussion" href="../../flarum/core/discussions.html#pyflarum.flarum.core.discussions.Discussion">Discussion</a></span>
 </code></dt>
@@ -276,7 +715,7 @@ def isLocked(self: DiscussionFromBulk) -&gt; bool:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Lock.py#L50-L55" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\Flarum_Lock.py#L48-L53" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def unlock(self) -&gt; Discussion:
     &#34;&#34;&#34;
@@ -296,7 +735,7 @@ def isLocked(self: DiscussionFromBulk) -&gt; bool:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Lock.py#L81-L95" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\Flarum_Lock.py#L77-L91" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class LockExtension(ExtensionMixin):
     &#34;&#34;&#34;
@@ -337,7 +776,7 @@ def isLocked(self: DiscussionFromBulk) -&gt; bool:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Lock.py#L86-L90" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\Flarum_Lock.py#L82-L86" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def get_dependencies(self):
     return {
@@ -358,7 +797,7 @@ def isLocked(self: DiscussionFromBulk) -&gt; bool:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/CWKevo/pyFlarum/blob/6f95d7d5a9703ab740f9732a04bfbbe55b5b6a1a/pyflarum\extensions\flarum\Flarum_Lock.py#L93-L95" class="git-link">Browse git</a>
+<a href="https://github.com/CWKevo/pyFlarum/blob/b5df73101658158750be1ef61ac02ad360ab0821/pyflarum\extensions\flarum\Flarum_Lock.py#L89-L91" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def mixin(self):
     super().mixin(self, DiscussionFromNotification, LockDiscussionFromNotificationMixin)
@@ -432,14 +871,58 @@ setTimeout(() => input.focus(), 100);
 <li>
 <h4><code><a title="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin" href="#pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin">LockDiscussionFromBulkMixin</a></code></h4>
 <ul class="">
+<li><code><a title="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.attributes" href="../../flarum/core/index.html#pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.attributes">attributes</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.canDelete" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.canDelete">canDelete</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.canHide" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.canHide">canHide</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.canLock" href="#pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.canLock">canLock</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.canRename" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.canRename">canRename</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.canReply" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.canReply">canReply</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.commentCount" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.commentCount">commentCount</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.createdAt" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.createdAt">createdAt</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.data" href="../../flarum/core/index.html#pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.data">data</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.delete" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.delete">delete</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.get_author" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.get_author">get_author</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.get_first_post" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.get_first_post">get_first_post</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.get_full_data" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.get_full_data">get_full_data</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.get_last_posted_user" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.get_last_posted_user">get_last_posted_user</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.hide" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.hide">hide</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.id" href="../../flarum/core/index.html#pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.id">id</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.included" href="../../flarum/core/index.html#pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.included">included</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.isHidden" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.isHidden">isHidden</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.isLocked" href="#pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.isLocked">isLocked</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.lastPostNumber" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.lastPostNumber">lastPostNumber</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.lastPostedAt" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.lastPostedAt">lastPostedAt</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.lastReadAt" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.lastReadAt">lastReadAt</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.lastReadPostNumber" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.lastReadPostNumber">lastReadPostNumber</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.lock" href="#pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.lock">lock</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.participantCount" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.participantCount">participantCount</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.relationships" href="../../flarum/core/index.html#pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.relationships">relationships</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.restore" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.restore">restore</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.slug" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.slug">slug</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.title" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.title">title</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.type" href="../../flarum/core/index.html#pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.type">type</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.unhide" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.unhide">unhide</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.unlock" href="#pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.unlock">unlock</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.url" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromBulkMixin.url">url</a></code></li>
 </ul>
 </li>
 <li>
 <h4><code><a title="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromNotificationMixin" href="#pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromNotificationMixin">LockDiscussionFromNotificationMixin</a></code></h4>
-<ul class="">
+<ul class="two-column">
+<li><code><a title="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromNotificationMixin.attributes" href="../../flarum/core/index.html#pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromNotificationMixin.attributes">attributes</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromNotificationMixin.data" href="../../flarum/core/index.html#pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromNotificationMixin.data">data</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromNotificationMixin.delete" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromNotificationMixin.delete">delete</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromNotificationMixin.get_full_data" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromNotificationMixin.get_full_data">get_full_data</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromNotificationMixin.hide" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromNotificationMixin.hide">hide</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromNotificationMixin.id" href="../../flarum/core/index.html#pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromNotificationMixin.id">id</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromNotificationMixin.included" href="../../flarum/core/index.html#pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromNotificationMixin.included">included</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromNotificationMixin.lock" href="#pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromNotificationMixin.lock">lock</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromNotificationMixin.relationships" href="../../flarum/core/index.html#pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromNotificationMixin.relationships">relationships</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromNotificationMixin.restore" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromNotificationMixin.restore">restore</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromNotificationMixin.slug" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromNotificationMixin.slug">slug</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromNotificationMixin.title" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromNotificationMixin.title">title</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromNotificationMixin.type" href="../../flarum/core/index.html#pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromNotificationMixin.type">type</a></code></li>
+<li><code><a title="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromNotificationMixin.unhide" href="../../flarum/core/discussions.html#pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromNotificationMixin.unhide">unhide</a></code></li>
 <li><code><a title="pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromNotificationMixin.unlock" href="#pyflarum.extensions.flarum.Flarum_Lock.LockDiscussionFromNotificationMixin.unlock">unlock</a></code></li>
 </ul>
 </li>
