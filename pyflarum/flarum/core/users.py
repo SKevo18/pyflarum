@@ -1,5 +1,5 @@
-from typing import Iterator, Optional, TYPE_CHECKING
-if TYPE_CHECKING:
+import typing as t
+if t.TYPE_CHECKING:
     from ...session import FlarumUser
 
 from datetime import datetime
@@ -18,9 +18,9 @@ class Users(BaseFlarumBulkObject):
         return super().__init__(user=user, _fetched_data=_fetched_data, _listclass=UserFromBulk, _required_type='users')
 
 
-    if TYPE_CHECKING:
+    if t.TYPE_CHECKING:
         def __getitem__(self, key: int) -> 'UserFromBulk': ...
-        def __iter__(self) -> Iterator['UserFromBulk']: ...
+        def __iter__(self) -> t.Iterator['UserFromBulk']: ...
 
 
 
@@ -31,7 +31,7 @@ class UserFromNotification(BaseFlarumIndividualObject):
 
 
     @property
-    def username(self) -> Optional[str]:
+    def username(self) -> t.Optional[str]:
         """
             The user's username.
         """
@@ -40,7 +40,7 @@ class UserFromNotification(BaseFlarumIndividualObject):
 
 
     @property
-    def email(self) -> Optional[str]:
+    def email(self) -> t.Optional[str]:
         """
             The user's E-mail, if you have permission to view it.
         """
@@ -61,7 +61,7 @@ class UserFromNotification(BaseFlarumIndividualObject):
 
 
     @property
-    def displayName(self) -> Optional[str]:
+    def displayName(self) -> t.Optional[str]:
         """
             The display name/nickname of the user.
         """
@@ -70,7 +70,7 @@ class UserFromNotification(BaseFlarumIndividualObject):
 
 
     @property
-    def avatarUrl(self) -> Optional[str]:
+    def avatarUrl(self) -> t.Optional[str]:
         """
             The user's avatar URL.
         """
@@ -79,7 +79,7 @@ class UserFromNotification(BaseFlarumIndividualObject):
 
 
     @property
-    def slug(self) -> Optional[str]:
+    def slug(self) -> t.Optional[str]:
         """
             The user's slug.
         """
@@ -95,7 +95,7 @@ class UserFromBulk(UserFromNotification):
 
 
     @property
-    def joinTime(self) -> Optional[datetime]:
+    def joinTime(self) -> t.Optional[datetime]:
         """
             The `datetime` of when the user had joined this forum.
         """
@@ -106,7 +106,7 @@ class UserFromBulk(UserFromNotification):
 
 
     @property
-    def discussionCount(self) -> Optional[int]:
+    def discussionCount(self) -> t.Optional[int]:
         """
             The user's discussion count.
         """
@@ -115,7 +115,7 @@ class UserFromBulk(UserFromNotification):
 
 
     @property
-    def commentCount(self) -> Optional[int]:
+    def commentCount(self) -> t.Optional[int]:
         """
             The user's comment/post count.
         """
@@ -175,7 +175,7 @@ class MyUser(User):
     """
 
     @property
-    def markedAllAsReadAt(self) -> Optional[datetime]:
+    def markedAllAsReadAt(self) -> t.Optional[datetime]:
         """
             When did you mark all discussions as read.
         """
@@ -186,7 +186,7 @@ class MyUser(User):
     
 
     @property
-    def unreadNotificationCount(self) -> Optional[int]:
+    def unreadNotificationCount(self) -> t.Optional[int]:
         """
             Amount of your unread notifications.
         """
@@ -195,7 +195,7 @@ class MyUser(User):
 
 
     @property
-    def newNotificationCount(self) -> Optional[int]:
+    def newNotificationCount(self) -> t.Optional[int]:
         """
             Amount of your new notifications.
         """
@@ -204,7 +204,7 @@ class MyUser(User):
 
 
     @property
-    def preferences(self) -> dict:
+    def preferences(self) -> t.Dict[str, t.Any]:
         """
             A raw `dict` of your preferences (for notifications).
         """

@@ -166,9 +166,9 @@
                 
                         <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">Optional</span>
+            <div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">typing</span> <span class="k">as</span> <span class="nn">t</span>
 
-<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+<span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">TYPE_CHECKING</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">...session</span> <span class="kn">import</span> <span class="n">FlarumUser</span>
     <span class="kn">from</span> <span class="nn">...custom_types</span> <span class="kn">import</span> <span class="n">AnyDiscussion</span>
 
@@ -188,7 +188,7 @@
 <span class="sd">        A prepared post that can be sent to the API.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="s1">&#39;FlarumUser&#39;</span><span class="p">,</span> <span class="n">discussion</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;AnyDiscussion&#39;</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">content</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="s1">&#39;FlarumUser&#39;</span><span class="p">,</span> <span class="n">discussion</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;AnyDiscussion&#39;</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">content</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            ### Parameters:</span>
 <span class="sd">            - `user` - the `pyflarum.session.FlarumUser` object that will create the post</span>
@@ -235,7 +235,7 @@
         <span class="k">return</span> <span class="n">data</span>
 
 
-    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;Post&#39;</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Posts/creates the post. Raises `FlarumError` on error, otherwise it returns the created `Post`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -257,9 +257,9 @@
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span> <span class="n">_fetched_data</span><span class="o">=</span><span class="n">_fetched_data</span><span class="p">,</span> <span class="n">_listclass</span><span class="o">=</span><span class="n">PostFromBulk</span><span class="p">,</span> <span class="n">_required_type</span><span class="o">=</span><span class="s1">&#39;posts&#39;</span><span class="p">)</span>
 
 
-    <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">TYPE_CHECKING</span><span class="p">:</span>
         <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;PostFromBulk&#39;</span><span class="p">:</span> <span class="o">...</span>
-        <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="s1">&#39;PostFromBulk&#39;</span><span class="p">]:</span> <span class="o">...</span>
+        <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Iterator</span><span class="p">[</span><span class="s1">&#39;PostFromBulk&#39;</span><span class="p">]:</span> <span class="o">...</span>
 
 
 
@@ -269,7 +269,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">number</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">number</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            The post&#39;s number/order in the discussion.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -278,7 +278,7 @@
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">createdAt</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">datetime</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">createdAt</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">datetime</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            The `datetime` of when was this post created.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -289,7 +289,7 @@
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">contentType</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">contentType</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Post&#39;s content type. This is usually a `comment` for user-made posts,</span>
 <span class="sd">            but this can differ if it&#39;s actually a message that a post&#39;s tags changed, or</span>
@@ -308,7 +308,7 @@
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">contentHtml</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">contentHtml</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            The HTML content of the post.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -357,7 +357,7 @@
     <span class="n">unhide</span> <span class="o">=</span> <span class="n">restore</span>
 
 
-    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;t.Literal[True]&#39;</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Removes the post forever.</span>
 
@@ -390,7 +390,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">content</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;str | dict&#39;</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">content</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            The post&#39;s content. Doesn&#39;t contain markdown, and is just plain-text.</span>
 
@@ -403,7 +403,7 @@
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">ipAddress</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">ipAddress</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            The post&#39;s IP address.</span>
 
@@ -415,7 +415,7 @@
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">editedAt</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">datetime</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">editedAt</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">datetime</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            The `datetime` when was this post edited at.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -453,7 +453,7 @@
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">url</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            The post&#39;s URL.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -464,7 +464,7 @@
             <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">forum_url</span><span class="si">}</span><span class="s2">/d/</span><span class="si">{</span><span class="n">discussion_id</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">number</span><span class="si">}</span><span class="s2">&quot;</span>
 
 
-    <span class="k">def</span> <span class="nf">get_discussion</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">get_discussion</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">DiscussionFromNotification</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Obtains the discussion of the post.</span>
 
@@ -483,7 +483,7 @@
         <span class="k">return</span> <span class="kc">None</span>
 
 
-    <span class="k">def</span> <span class="nf">reply_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">post</span><span class="p">:</span> <span class="n">PreparedPost</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">reply_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">post</span><span class="p">:</span> <span class="n">PreparedPost</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;Post&#39;</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Replies to this `Post` with another `PreparedPost`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -494,7 +494,7 @@
         <span class="k">return</span> <span class="n">post</span><span class="o">.</span><span class="n">post</span><span class="p">()</span>
 
 
-    <span class="k">def</span> <span class="nf">get_author</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">get_author</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">UserFromBulk</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Obtains the post&#39;s author.</span>
 
@@ -513,7 +513,7 @@
         <span class="k">return</span> <span class="kc">None</span>
 
 
-    <span class="k">def</span> <span class="nf">edit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_data</span><span class="p">:</span> <span class="n">PreparedPost</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">edit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_data</span><span class="p">:</span> <span class="n">PreparedPost</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;Post&#39;</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Edits the post. The new post should be a `PreparedPost` object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -538,7 +538,7 @@
 <span class="sd">        A Flarum post.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">get_author</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">get_author</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">UserFromBulk</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Obtains the post&#39;s author.</span>
 
@@ -576,7 +576,7 @@
 <span class="sd">        A prepared post that can be sent to the API.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="s1">&#39;FlarumUser&#39;</span><span class="p">,</span> <span class="n">discussion</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;AnyDiscussion&#39;</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">content</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="s1">&#39;FlarumUser&#39;</span><span class="p">,</span> <span class="n">discussion</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;AnyDiscussion&#39;</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">content</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            ### Parameters:</span>
 <span class="sd">            - `user` - the `pyflarum.session.FlarumUser` object that will create the post</span>
@@ -623,7 +623,7 @@
         <span class="k">return</span> <span class="n">data</span>
 
 
-    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;Post&#39;</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Posts/creates the post. Raises `FlarumError` on error, otherwise it returns the created `Post`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -646,7 +646,7 @@
 
         
             <span class="name">PreparedPost</span><span class="signature">(
-    user: <a href="../../session.html#FlarumUser">pyflarum.session.FlarumUser</a>,
+    user: &#39;FlarumUser&#39;,
     discussion: Optional[ForwardRef(&#39;AnyDiscussion&#39;)] = None,
     content: Optional[str] = None
 )</span>
@@ -654,7 +654,7 @@
 
                 <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="s1">&#39;FlarumUser&#39;</span><span class="p">,</span> <span class="n">discussion</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;AnyDiscussion&#39;</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">content</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="s1">&#39;FlarumUser&#39;</span><span class="p">,</span> <span class="n">discussion</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;AnyDiscussion&#39;</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">content</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            ### Parameters:</span>
 <span class="sd">            - `user` - the `pyflarum.session.FlarumUser` object that will create the post</span>
@@ -705,12 +705,12 @@ most basic template that Flarum requires when creating a post.</p>
 
         
             <span class="def">def</span>
-            <span class="name">post</span><span class="signature">(self)</span>:
+            <span class="name">post</span><span class="signature">(self) -&gt; <a href="#Post">pyflarum.flarum.core.posts.Post</a></span>:
     </div>
 
                 <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;Post&#39;</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Posts/creates the post. Raises `FlarumError` on error, otherwise it returns the created `Post`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -733,12 +733,12 @@ most basic template that Flarum requires when creating a post.</p>
 
         
             <span class="def">def</span>
-            <span class="name">create</span><span class="signature">(self)</span>:
+            <span class="name">create</span><span class="signature">(self) -&gt; <a href="#Post">pyflarum.flarum.core.posts.Post</a></span>:
     </div>
 
                 <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;Post&#39;</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Posts/creates the post. Raises `FlarumError` on error, otherwise it returns the created `Post`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -808,9 +808,9 @@ most basic template that Flarum requires when creating a post.</p>
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span> <span class="n">_fetched_data</span><span class="o">=</span><span class="n">_fetched_data</span><span class="p">,</span> <span class="n">_listclass</span><span class="o">=</span><span class="n">PostFromBulk</span><span class="p">,</span> <span class="n">_required_type</span><span class="o">=</span><span class="s1">&#39;posts&#39;</span><span class="p">)</span>
 
 
-    <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">TYPE_CHECKING</span><span class="p">:</span>
         <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;PostFromBulk&#39;</span><span class="p">:</span> <span class="o">...</span>
-        <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="s1">&#39;PostFromBulk&#39;</span><span class="p">]:</span> <span class="o">...</span>
+        <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Iterator</span><span class="p">[</span><span class="s1">&#39;PostFromBulk&#39;</span><span class="p">]:</span> <span class="o">...</span>
 </pre></div>
 
         </details>
@@ -823,7 +823,7 @@ most basic template that Flarum requires when creating a post.</p>
                                         <div class="attr function"><a class="headerlink" href="#Posts.__init__">#&nbsp;&nbsp</a>
 
         
-            <span class="name">Posts</span><span class="signature">(user: <a href="../../session.html#FlarumUser">pyflarum.session.FlarumUser</a>, _fetched_data: dict)</span>
+            <span class="name">Posts</span><span class="signature">(user: &#39;FlarumUser&#39;, _fetched_data: dict)</span>
     </div>
 
                 <details>
@@ -880,7 +880,7 @@ most basic template that Flarum requires when creating a post.</p>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">number</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">number</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            The post&#39;s number/order in the discussion.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -889,7 +889,7 @@ most basic template that Flarum requires when creating a post.</p>
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">createdAt</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">datetime</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">createdAt</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">datetime</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            The `datetime` of when was this post created.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -900,7 +900,7 @@ most basic template that Flarum requires when creating a post.</p>
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">contentType</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">contentType</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Post&#39;s content type. This is usually a `comment` for user-made posts,</span>
 <span class="sd">            but this can differ if it&#39;s actually a message that a post&#39;s tags changed, or</span>
@@ -919,7 +919,7 @@ most basic template that Flarum requires when creating a post.</p>
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">contentHtml</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">contentHtml</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            The HTML content of the post.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -968,7 +968,7 @@ most basic template that Flarum requires when creating a post.</p>
     <span class="n">unhide</span> <span class="o">=</span> <span class="n">restore</span>
 
 
-    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;t.Literal[True]&#39;</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Removes the post forever.</span>
 
@@ -1151,12 +1151,12 @@ the discussion got moved elsewhere (these messages are treated as posts too by F
 
         
             <span class="def">def</span>
-            <span class="name">delete</span><span class="signature">(self) -&gt; True</span>:
+            <span class="name">delete</span><span class="signature">(self) -&gt; Literal[True]</span>:
     </div>
 
                 <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">True</span><span class="p">:</span>
+            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;t.Literal[True]&#39;</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Removes the post forever.</span>
 
@@ -1263,7 +1263,7 @@ the discussion got moved elsewhere (these messages are treated as posts too by F
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">content</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;str | dict&#39;</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">content</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            The post&#39;s content. Doesn&#39;t contain markdown, and is just plain-text.</span>
 
@@ -1276,7 +1276,7 @@ the discussion got moved elsewhere (these messages are treated as posts too by F
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">ipAddress</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">ipAddress</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            The post&#39;s IP address.</span>
 
@@ -1288,7 +1288,7 @@ the discussion got moved elsewhere (these messages are treated as posts too by F
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">editedAt</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">datetime</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">editedAt</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">datetime</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            The `datetime` when was this post edited at.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1326,7 +1326,7 @@ the discussion got moved elsewhere (these messages are treated as posts too by F
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">url</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            The post&#39;s URL.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1337,7 +1337,7 @@ the discussion got moved elsewhere (these messages are treated as posts too by F
             <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">forum_url</span><span class="si">}</span><span class="s2">/d/</span><span class="si">{</span><span class="n">discussion_id</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">number</span><span class="si">}</span><span class="s2">&quot;</span>
 
 
-    <span class="k">def</span> <span class="nf">get_discussion</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">get_discussion</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">DiscussionFromNotification</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Obtains the discussion of the post.</span>
 
@@ -1356,7 +1356,7 @@ the discussion got moved elsewhere (these messages are treated as posts too by F
         <span class="k">return</span> <span class="kc">None</span>
 
 
-    <span class="k">def</span> <span class="nf">reply_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">post</span><span class="p">:</span> <span class="n">PreparedPost</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">reply_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">post</span><span class="p">:</span> <span class="n">PreparedPost</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;Post&#39;</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Replies to this `Post` with another `PreparedPost`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1367,7 +1367,7 @@ the discussion got moved elsewhere (these messages are treated as posts too by F
         <span class="k">return</span> <span class="n">post</span><span class="o">.</span><span class="n">post</span><span class="p">()</span>
 
 
-    <span class="k">def</span> <span class="nf">get_author</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">get_author</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">UserFromBulk</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Obtains the post&#39;s author.</span>
 
@@ -1386,7 +1386,7 @@ the discussion got moved elsewhere (these messages are treated as posts too by F
         <span class="k">return</span> <span class="kc">None</span>
 
 
-    <span class="k">def</span> <span class="nf">edit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_data</span><span class="p">:</span> <span class="n">PreparedPost</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">edit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_data</span><span class="p">:</span> <span class="n">PreparedPost</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;Post&#39;</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Edits the post. The new post should be a `PreparedPost` object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1406,7 +1406,7 @@ the discussion got moved elsewhere (these messages are treated as posts too by F
                             <div id="PostFromNotification.content" class="classattr">
                                             <div class="attr variable"><a class="headerlink" href="#PostFromNotification.content">#&nbsp;&nbsp</a>
 
-        <span class="name">content</span><span class="annotation">: Optional[ForwardRef(&#39;str | dict&#39;)]</span>
+        <span class="name">content</span><span class="annotation">: Union[str, dict, NoneType]</span>
     </div>
 
             <div class="docstring"><p>The post's content. Doesn't contain markdown, and is just plain-text.</p>
@@ -1479,7 +1479,7 @@ of the post.</p>
                             <div id="PostFromNotification.url" class="classattr">
                                             <div class="attr variable"><a class="headerlink" href="#PostFromNotification.url">#&nbsp;&nbsp</a>
 
-        <span class="name">url</span>
+        <span class="name">url</span><span class="annotation">: Optional[str]</span>
     </div>
 
             <div class="docstring"><p>The post's URL.</p>
@@ -1492,12 +1492,14 @@ of the post.</p>
 
         
             <span class="def">def</span>
-            <span class="name">get_discussion</span><span class="signature">(self)</span>:
+            <span class="name">get_discussion</span><span class="signature">(
+    self
+) -&gt; Optional[<a href="discussions.html#DiscussionFromNotification">pyflarum.flarum.core.discussions.DiscussionFromNotification</a>]</span>:
     </div>
 
                 <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">get_discussion</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">get_discussion</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">DiscussionFromNotification</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Obtains the discussion of the post.</span>
 
@@ -1531,12 +1533,15 @@ JSON data matches.</p>
 
         
             <span class="def">def</span>
-            <span class="name">reply_to</span><span class="signature">(self, post: <a href="#PreparedPost">pyflarum.flarum.core.posts.PreparedPost</a>)</span>:
+            <span class="name">reply_to</span><span class="signature">(
+    self,
+    post: <a href="#PreparedPost">pyflarum.flarum.core.posts.PreparedPost</a>
+) -&gt; <a href="#Post">pyflarum.flarum.core.posts.Post</a></span>:
     </div>
 
                 <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">reply_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">post</span><span class="p">:</span> <span class="n">PreparedPost</span><span class="p">):</span>
+            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">reply_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">post</span><span class="p">:</span> <span class="n">PreparedPost</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;Post&#39;</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Replies to this `Post` with another `PreparedPost`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1559,12 +1564,12 @@ JSON data matches.</p>
 
         
             <span class="def">def</span>
-            <span class="name">get_author</span><span class="signature">(self)</span>:
+            <span class="name">get_author</span><span class="signature">(self) -&gt; Optional[<a href="users.html#UserFromBulk">pyflarum.flarum.core.users.UserFromBulk</a>]</span>:
     </div>
 
                 <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">get_author</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">get_author</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">UserFromBulk</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Obtains the post&#39;s author.</span>
 
@@ -1598,12 +1603,15 @@ JSON data is the same.</p>
 
         
             <span class="def">def</span>
-            <span class="name">edit</span><span class="signature">(self, new_data: <a href="#PreparedPost">pyflarum.flarum.core.posts.PreparedPost</a>)</span>:
+            <span class="name">edit</span><span class="signature">(
+    self,
+    new_data: <a href="#PreparedPost">pyflarum.flarum.core.posts.PreparedPost</a>
+) -&gt; <a href="#Post">pyflarum.flarum.core.posts.Post</a></span>:
     </div>
 
                 <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">edit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_data</span><span class="p">:</span> <span class="n">PreparedPost</span><span class="p">):</span>
+            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">edit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_data</span><span class="p">:</span> <span class="n">PreparedPost</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;Post&#39;</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Edits the post. The new post should be a `PreparedPost` object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1765,7 +1773,7 @@ JSON data is the same.</p>
 <span class="sd">        A Flarum post.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">get_author</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">get_author</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">UserFromBulk</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Obtains the post&#39;s author.</span>
 
@@ -1795,12 +1803,12 @@ JSON data is the same.</p>
 
         
             <span class="def">def</span>
-            <span class="name">get_author</span><span class="signature">(self)</span>:
+            <span class="name">get_author</span><span class="signature">(self) -&gt; Optional[<a href="users.html#UserFromBulk">pyflarum.flarum.core.users.UserFromBulk</a>]</span>:
     </div>
 
                 <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">get_author</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">get_author</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">UserFromBulk</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Obtains the post&#39;s author.</span>
 

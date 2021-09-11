@@ -1,4 +1,4 @@
-from typing import Optional
+import typing as t
 
 from . import ExtensionMixin
 from ..session import FlarumUser
@@ -20,7 +20,7 @@ HARD_DEPENCENDIES = []
 
 
 class AdvancedSearchFlarumUserMixin(FlarumUser):
-    def get_user_by_username(self, username: str) -> Optional[User]:
+    def get_user_by_username(self, username: str) -> t.Optional[User]:
         filter = Filter(query=username, limit=1)
 
         raw = self.session.get(f"{self.api_urls['users']}", params=filter.to_dict)

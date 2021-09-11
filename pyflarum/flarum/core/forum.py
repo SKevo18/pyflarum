@@ -1,4 +1,4 @@
-from typing import Optional
+import typing as t
 
 
 from ..core import BaseFlarumIndividualObject
@@ -12,7 +12,7 @@ class Forum(BaseFlarumIndividualObject):
 
 
     @property
-    def title(self) -> Optional[str]:
+    def title(self) -> t.Optional[str]:
         """
             The forum's title.
         """
@@ -21,7 +21,7 @@ class Forum(BaseFlarumIndividualObject):
 
 
     @property
-    def description(self) -> Optional[str]:
+    def description(self) -> t.Optional[str]:
         """
             The description of the forum.
         """
@@ -39,7 +39,7 @@ class Forum(BaseFlarumIndividualObject):
 
 
     @property
-    def baseUrl(self) -> Optional[str]:
+    def baseUrl(self) -> t.Optional[str]:
         """
             Base URL of the forum/where the forum is located at.
         """
@@ -48,7 +48,7 @@ class Forum(BaseFlarumIndividualObject):
 
 
     @property
-    def basePath(self) -> Optional[str]:
+    def basePath(self) -> t.Optional[str]:
         """
             Base path to the forum.
         """
@@ -66,7 +66,7 @@ class Forum(BaseFlarumIndividualObject):
 
 
     @property
-    def apiUrl(self) -> Optional[str]:
+    def apiUrl(self) -> t.Optional[str]:
         """
             The API URL of the forum.
         """
@@ -75,7 +75,7 @@ class Forum(BaseFlarumIndividualObject):
 
 
     @property
-    def welcomeTitle(self) -> Optional[str]:
+    def welcomeTitle(self) -> t.Optional[str]:
         """
             The title of the welcome message box of the forum.
         """
@@ -84,7 +84,7 @@ class Forum(BaseFlarumIndividualObject):
 
 
     @property
-    def welcomeMessage(self) -> Optional[str]:
+    def welcomeMessage(self) -> t.Optional[str]:
         """
             The welcome message of the forum (shown in the welcome box).
         """
@@ -93,7 +93,7 @@ class Forum(BaseFlarumIndividualObject):
 
 
     @property
-    def themePrimaryColor(self) -> Optional[str]:
+    def themePrimaryColor(self) -> t.Optional[str]:
         """
             Forum's primary color in HEX format.
         """
@@ -102,7 +102,7 @@ class Forum(BaseFlarumIndividualObject):
 
 
     @property
-    def themeSecondaryColor(self) -> Optional[str]:
+    def themeSecondaryColor(self) -> t.Optional[str]:
         """
             Forum's secondary color in HEX format.
         """
@@ -111,7 +111,7 @@ class Forum(BaseFlarumIndividualObject):
 
 
     @property
-    def logoUrl(self) -> Optional[str]:
+    def logoUrl(self) -> t.Optional[str]:
         """
             URL to forum's logo.
         """
@@ -120,7 +120,7 @@ class Forum(BaseFlarumIndividualObject):
 
 
     @property
-    def faviconUrl(self) -> Optional[str]:
+    def faviconUrl(self) -> t.Optional[str]:
         """
             URL to forum's favicon.
         """
@@ -129,7 +129,7 @@ class Forum(BaseFlarumIndividualObject):
 
 
     @property
-    def headerHtml(self) -> Optional[str]:
+    def headerHtml(self) -> t.Optional[str]:
         """
             The header HTML of the forum.
         """
@@ -138,7 +138,7 @@ class Forum(BaseFlarumIndividualObject):
 
 
     @property
-    def footerHtml(self) -> Optional[str]:
+    def footerHtml(self) -> t.Optional[str]:
         """
             The footer HTML of the forum.
         """
@@ -156,7 +156,7 @@ class Forum(BaseFlarumIndividualObject):
 
 
     @property
-    def defaultRoute(self) -> Optional[str]:
+    def defaultRoute(self) -> t.Optional[str]:
         """
             The homepage of the forum (default route)
         """
@@ -192,7 +192,7 @@ class Forum(BaseFlarumIndividualObject):
 
 
     @property
-    def adminUrl(self) -> Optional[str]:
+    def adminUrl(self) -> t.Optional[str]:
         """
             The administration panel URL of the forum.
         """
@@ -201,7 +201,7 @@ class Forum(BaseFlarumIndividualObject):
 
 
     @property
-    def version(self) -> Optional[str]:
+    def version(self) -> t.Optional[str]:
         """
             The Flarum version this forum is running on.
         """
@@ -214,7 +214,7 @@ class Forum(BaseFlarumIndividualObject):
         return self.attributes.get("allowUsernameMentionFormat", False)
 
 
-    def get_groups(self) -> list[Group]:
+    def get_groups(self) -> t.List[Group]:
         """
             Obtains the forum groups.
 
@@ -234,7 +234,7 @@ class Forum(BaseFlarumIndividualObject):
 
     # Required: `Forum` is not a standard bulk route, so we can't inherit from that.
     @property
-    def included(self) -> list[dict]:
+    def included(self) -> t.List[dict]:
         """
             Returns raw list of JSON included data.
 

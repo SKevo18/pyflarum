@@ -1,3 +1,5 @@
+import typing as t
+
 from .. import ExtensionMixin
 
 from ...error_handler import parse_request
@@ -65,7 +67,7 @@ class LikesPostFromNotificationMixin(PostFromNotification, LikesPostFromDiscussi
 
 
 class LikesPostFromBulkMixin(PostFromBulk):
-    def get_liked_by(self) -> list[UserFromBulk]:
+    def get_liked_by(self) -> t.List[UserFromBulk]:
         """
             Obtain the list of users that liked the post.
         """

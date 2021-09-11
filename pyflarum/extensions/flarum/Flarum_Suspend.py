@@ -1,4 +1,4 @@
-from typing import Optional
+import typing as t
 
 from datetime import datetime, timedelta
 
@@ -31,7 +31,7 @@ class SuspendUserMixin(UserFromBulk):
         return flarum_to_datetime(raw)
 
 
-    def suspend(self, suspended_until: Optional[datetime]=None, suspended_for: Optional[timedelta]=None) -> User:
+    def suspend(self, suspended_until: t.Optional[datetime]=None, suspended_for: t.Optional[timedelta]=None) -> User:
         if suspended_until:
             until = suspended_until
 

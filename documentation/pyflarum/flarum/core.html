@@ -110,8 +110,8 @@
                 
                         <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">TYPE_CHECKING</span>
-<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+            <div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">typing</span> <span class="k">as</span> <span class="nn">t</span>
+<span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">TYPE_CHECKING</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">...session</span> <span class="kn">import</span> <span class="n">FlarumUser</span>
     <span class="kn">from</span> <span class="nn">...custom_types</span> <span class="kn">import</span> <span class="n">AnyFlarumClass</span>
 
@@ -136,7 +136,7 @@
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;list[dict] | dict&#39;</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">],</span> <span class="nb">dict</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            A raw `dict` of the object&#39;s data.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -159,7 +159,7 @@
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="s1">&#39;FlarumUser&#39;</span><span class="p">,</span> <span class="n">_fetched_data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">_listclass</span><span class="p">:</span> <span class="s1">&#39;AnyFlarumClass&#39;</span><span class="p">,</span> <span class="n">_required_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">links</span> <span class="o">=</span> <span class="n">_fetched_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;links&quot;</span><span class="p">,</span> <span class="p">{})</span> <span class="c1"># type: dict</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">included</span> <span class="o">=</span> <span class="n">_fetched_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;included&quot;</span><span class="p">,</span> <span class="p">[{}])</span> <span class="c1"># type: list[dict]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">included</span> <span class="o">=</span> <span class="n">_fetched_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;included&quot;</span><span class="p">,</span> <span class="p">[{}])</span> <span class="c1"># type: t.List[dict]</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">user</span>
         <span class="n">converted</span> <span class="o">=</span> <span class="p">[</span><span class="n">_listclass</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span> <span class="n">_fetched_data</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">_parent_included</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">included</span><span class="p">))</span> <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">_fetched_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="p">[])</span> <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="n">_required_type</span><span class="p">)</span> <span class="o">==</span> <span class="n">_required_type</span><span class="p">]</span>
@@ -167,7 +167,7 @@
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">first_link</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">first_link</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            First link in the API.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -176,7 +176,7 @@
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">previous_link</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">previous_link</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Previous link in the API.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -185,7 +185,7 @@
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">next_link</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">next_link</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Next link in the API.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -193,9 +193,9 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;next&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
 
-    <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">TYPE_CHECKING</span><span class="p">:</span>
         <span class="nd">@property</span>
-        <span class="k">def</span> <span class="nf">included</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+        <span class="k">def</span> <span class="nf">included</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
             <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">                Returns raw list of JSON included data.</span>
 
@@ -225,7 +225,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            The type of the object.</span>
 <span class="sd">            </span>
@@ -236,7 +236,7 @@
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            The `int` ID of the object. This should always be unique for the object&#39;s type.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -270,7 +270,7 @@
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">included</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">included</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Returns raw list of JSON included data.</span>
 
@@ -283,7 +283,7 @@
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">_parent_included</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">_parent_included</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Raw data of the parent&#39;s included JSON data.</span>
 
@@ -328,7 +328,7 @@
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;list[dict] | dict&#39;</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">],</span> <span class="nb">dict</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            A raw `dict` of the object&#39;s data.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -346,7 +346,7 @@
                                         <div class="attr function"><a class="headerlink" href="#BaseFlarumObject.__init__">#&nbsp;&nbsp</a>
 
         
-            <span class="name">BaseFlarumObject</span><span class="signature">(user: <a href="../session.html#FlarumUser">pyflarum.session.FlarumUser</a>, _fetched_data: dict)</span>
+            <span class="name">BaseFlarumObject</span><span class="signature">(user: &#39;FlarumUser&#39;, _fetched_data: dict)</span>
     </div>
 
                 <details>
@@ -381,7 +381,7 @@
                             <div id="BaseFlarumObject.data" class="classattr">
                                             <div class="attr variable"><a class="headerlink" href="#BaseFlarumObject.data">#&nbsp;&nbsp</a>
 
-        <span class="name">data</span><span class="annotation">: &#39;list[dict] | dict&#39;</span>
+        <span class="name">data</span><span class="annotation">: Union[List[dict], dict]</span>
     </div>
 
             <div class="docstring"><p>A raw <code>dict</code> of the object's data.</p>
@@ -434,7 +434,7 @@
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="s1">&#39;FlarumUser&#39;</span><span class="p">,</span> <span class="n">_fetched_data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">_listclass</span><span class="p">:</span> <span class="s1">&#39;AnyFlarumClass&#39;</span><span class="p">,</span> <span class="n">_required_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">links</span> <span class="o">=</span> <span class="n">_fetched_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;links&quot;</span><span class="p">,</span> <span class="p">{})</span> <span class="c1"># type: dict</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">included</span> <span class="o">=</span> <span class="n">_fetched_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;included&quot;</span><span class="p">,</span> <span class="p">[{}])</span> <span class="c1"># type: list[dict]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">included</span> <span class="o">=</span> <span class="n">_fetched_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;included&quot;</span><span class="p">,</span> <span class="p">[{}])</span> <span class="c1"># type: t.List[dict]</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">user</span>
         <span class="n">converted</span> <span class="o">=</span> <span class="p">[</span><span class="n">_listclass</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span> <span class="n">_fetched_data</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">_parent_included</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">included</span><span class="p">))</span> <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">_fetched_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="p">[])</span> <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="n">_required_type</span><span class="p">)</span> <span class="o">==</span> <span class="n">_required_type</span><span class="p">]</span>
@@ -442,7 +442,7 @@
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">first_link</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">first_link</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            First link in the API.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -451,7 +451,7 @@
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">previous_link</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">previous_link</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Previous link in the API.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -460,7 +460,7 @@
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">next_link</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">next_link</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Next link in the API.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -468,9 +468,9 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;next&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
 
-    <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">TYPE_CHECKING</span><span class="p">:</span>
         <span class="nd">@property</span>
-        <span class="k">def</span> <span class="nf">included</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+        <span class="k">def</span> <span class="nf">included</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
             <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">                Returns raw list of JSON included data.</span>
 
@@ -507,7 +507,7 @@ that contain other objects have these properties.</p>
 
         
             <span class="name">BaseFlarumBulkObject</span><span class="signature">(
-    user: <a href="../session.html#FlarumUser">pyflarum.session.FlarumUser</a>,
+    user: &#39;FlarumUser&#39;,
     _fetched_data: dict,
     _listclass: &#39;AnyFlarumClass&#39;,
     _required_type: str
@@ -518,7 +518,7 @@ that contain other objects have these properties.</p>
             <summary>View Source</summary>
             <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="s1">&#39;FlarumUser&#39;</span><span class="p">,</span> <span class="n">_fetched_data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">_listclass</span><span class="p">:</span> <span class="s1">&#39;AnyFlarumClass&#39;</span><span class="p">,</span> <span class="n">_required_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">links</span> <span class="o">=</span> <span class="n">_fetched_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;links&quot;</span><span class="p">,</span> <span class="p">{})</span> <span class="c1"># type: dict</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">included</span> <span class="o">=</span> <span class="n">_fetched_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;included&quot;</span><span class="p">,</span> <span class="p">[{}])</span> <span class="c1"># type: list[dict]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">included</span> <span class="o">=</span> <span class="n">_fetched_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;included&quot;</span><span class="p">,</span> <span class="p">[{}])</span> <span class="c1"># type: t.List[dict]</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">user</span>
         <span class="n">converted</span> <span class="o">=</span> <span class="p">[</span><span class="n">_listclass</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span> <span class="n">_fetched_data</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">_parent_included</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">included</span><span class="p">))</span> <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">_fetched_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="p">[])</span> <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="n">_required_type</span><span class="p">)</span> <span class="o">==</span> <span class="n">_required_type</span><span class="p">]</span>
@@ -606,7 +606,7 @@ that contain other objects have these properties.</p>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            The type of the object.</span>
 <span class="sd">            </span>
@@ -617,7 +617,7 @@ that contain other objects have these properties.</p>
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            The `int` ID of the object. This should always be unique for the object&#39;s type.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -651,7 +651,7 @@ that contain other objects have these properties.</p>
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">included</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">included</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Returns raw list of JSON included data.</span>
 
@@ -664,7 +664,7 @@ that contain other objects have these properties.</p>
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">_parent_included</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">_parent_included</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Raw data of the parent&#39;s included JSON data.</span>
 
@@ -744,7 +744,7 @@ Read more about <a href="https://cwkevo.github.io/pyflarum/docs/#included-data">
                             <div id="BaseFlarumIndividualObject.included" class="classattr">
                                             <div class="attr variable"><a class="headerlink" href="#BaseFlarumIndividualObject.included">#&nbsp;&nbsp</a>
 
-        <span class="name">included</span><span class="annotation">: list[dict]</span>
+        <span class="name">included</span><span class="annotation">: List[dict]</span>
     </div>
 
             <div class="docstring"><p>Returns raw list of JSON included data.</p>

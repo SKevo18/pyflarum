@@ -1,4 +1,4 @@
-from typing import Any, Callable, NoReturn, Optional
+import typing as t
 
 import time
 
@@ -18,7 +18,7 @@ HARD_DEPENCENDIES = []
 
 
 class WatchFlarumUserMixin(FlarumUser):
-    def watch_notifications(self, on_notification: Callable[[Notification], Any], interval: Optional[float]=10, auto_mark_as_read: bool=True, **kwargs) -> NoReturn:
+    def watch_notifications(self, on_notification: t.Callable[[Notification], t.Any], interval: t.Optional[float]=10, auto_mark_as_read: bool=True, **kwargs) -> t.NoReturn:
         while True:
             all_notifications = self.get_notifications(**kwargs)
 

@@ -1,5 +1,5 @@
-from typing import Optional, TYPE_CHECKING
-if TYPE_CHECKING:
+import typing as t
+if t.TYPE_CHECKING:
     from ...session import FlarumUser
     from ...custom_types import AnyFlarumClass
 
@@ -24,7 +24,7 @@ class BaseFlarumObject(dict):
 
 
     @property
-    def data(self) -> 'list[dict] | dict':
+    def data(self) -> t.Union[t.List[dict], dict]:
         """
             A raw `dict` of the object's data.
         """
@@ -47,7 +47,7 @@ class BaseFlarumBulkObject(list):
 
     def __init__(self, user: 'FlarumUser', _fetched_data: dict, _listclass: 'AnyFlarumClass', _required_type: str):
         self.links = _fetched_data.get("links", {}) # type: dict
-        self.included = _fetched_data.get("included", [{}]) # type: list[dict]
+        self.included = _fetched_data.get("included", [{}]) # type: t.List[dict]
 
         self.user = user
         converted = [_listclass(user=user, _fetched_data=dict(data=data, _parent_included=self.included)) for data in _fetched_data.get("data", []) if data.get("type", _required_type) == _required_type]
@@ -55,7 +55,7 @@ class BaseFlarumBulkObject(list):
 
 
     @property
-    def first_link(self) -> Optional[str]:
+    def first_link(self) -> t.Optional[str]:
         """
             First link in the API.
         """
@@ -64,7 +64,7 @@ class BaseFlarumBulkObject(list):
 
 
     @property
-    def previous_link(self) -> Optional[str]:
+    def previous_link(self) -> t.Optional[str]:
         """
             Previous link in the API.
         """
@@ -73,7 +73,7 @@ class BaseFlarumBulkObject(list):
 
 
     @property
-    def next_link(self) -> Optional[str]:
+    def next_link(self) -> t.Optional[str]:
         """
             Next link in the API.
         """
@@ -81,9 +81,9 @@ class BaseFlarumBulkObject(list):
         return self.links.get("next", None)
 
 
-    if TYPE_CHECKING:
+    if t.TYPE_CHECKING:
         @property
-        def included(self) -> list[dict]:
+        def included(self) -> t.List[dict]:
             """
                 Returns raw list of JSON included data.
 
@@ -113,7 +113,7 @@ class BaseFlarumIndividualObject(BaseFlarumObject):
     """
 
     @property
-    def type(self) -> Optional[str]:
+    def type(self) -> t.Optional[str]:
         """
             The type of the object.
             
@@ -124,7 +124,7 @@ class BaseFlarumIndividualObject(BaseFlarumObject):
 
 
     @property
-    def id(self) -> Optional[int]:
+    def id(self) -> t.Optional[int]:
         """
             The `int` ID of the object. This should always be unique for the object's type.
         """
@@ -158,7 +158,7 @@ class BaseFlarumIndividualObject(BaseFlarumObject):
 
 
     @property
-    def included(self) -> list[dict]:
+    def included(self) -> t.List[dict]:
         """
             Returns raw list of JSON included data.
 
@@ -171,7 +171,7 @@ class BaseFlarumIndividualObject(BaseFlarumObject):
 
 
     @property
-    def _parent_included(self) -> list[dict]:
+    def _parent_included(self) -> t.List[dict]:
         """
             Raw data of the parent's included JSON data.
 

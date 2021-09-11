@@ -1,7 +1,7 @@
-from typing import Any, Iterator, Literal, NoReturn, TYPE_CHECKING, Optional
+import typing as t
 
 # Avoid my greatest enemy in Python: circular import:
-if TYPE_CHECKING:
+if t.TYPE_CHECKING:
     from ...session import FlarumUser
 
 from datetime import datetime
@@ -18,7 +18,7 @@ class PreparedDiscussion(BaseFlarumIndividualObject):
         A prepared discussion that can be sent to the API.
     """
 
-    def __init__(self, user: 'FlarumUser', title: Optional[str]=None, content: Optional[str]=None):
+    def __init__(self, user: 'FlarumUser', title: t.Optional[str]=None, content: t.Optional[str]=None):
         """
             ### Parameters:
             - `user` - the `pyflarum.session.FlarumUser` object that will create the discussion
@@ -84,9 +84,9 @@ class Discussions(BaseFlarumBulkObject):
         return super().__init__(user=user, _fetched_data=_fetched_data, _listclass=DiscussionFromBulk, _required_type='discussions')
 
 
-    if TYPE_CHECKING:
+    if t.TYPE_CHECKING:
         def __getitem__(self, key: int) -> 'DiscussionFromBulk': ...
-        def __iter__(self) -> Iterator['DiscussionFromBulk']: ...
+        def __iter__(self) -> t.Iterator['DiscussionFromBulk']: ...
 
 
 
@@ -112,7 +112,7 @@ class DiscussionFromNotification(BaseFlarumIndividualObject):
 
 
     @property
-    def title(self) -> Optional[str]:
+    def title(self) -> t.Optional[str]:
         """
             Returns the discussion's title.
         """
@@ -121,7 +121,7 @@ class DiscussionFromNotification(BaseFlarumIndividualObject):
 
 
     @property
-    def slug(self) -> Optional[str]:
+    def slug(self) -> t.Optional[str]:
         """
             Returns the discussion's slug
             (consists of ID and dash separated words from discussion's title,
@@ -213,7 +213,7 @@ class DiscussionFromBulk(DiscussionFromNotification):
 
 
     @property
-    def commentCount(self) -> Optional[str]:
+    def commentCount(self) -> t.Optional[str]:
         """
             Obtains the comment count of the discussion.
 
@@ -224,7 +224,7 @@ class DiscussionFromBulk(DiscussionFromNotification):
 
 
     @property
-    def participantCount(self) -> Optional[str]:
+    def participantCount(self) -> t.Optional[str]:
         """
             The participant count of the discussion. This is
             the number of all users that have participated in a
@@ -235,7 +235,7 @@ class DiscussionFromBulk(DiscussionFromNotification):
 
 
     @property
-    def createdAt(self) -> Optional[datetime]:
+    def createdAt(self) -> t.Optional[datetime]:
         """
             The `datetime` of when this discussion was created at.
         """
@@ -246,7 +246,7 @@ class DiscussionFromBulk(DiscussionFromNotification):
 
 
     @property
-    def lastPostedAt(self) -> Optional[datetime]:
+    def lastPostedAt(self) -> t.Optional[datetime]:
         """
             The `datetime` of when the last post in this
             discussion was made, e. g. when was this
@@ -259,7 +259,7 @@ class DiscussionFromBulk(DiscussionFromNotification):
 
 
     @property
-    def lastPostNumber(self) -> Optional[int]:
+    def lastPostNumber(self) -> t.Optional[int]:
         """
             Returns the number of the newest post in the
             discussion.
@@ -269,7 +269,7 @@ class DiscussionFromBulk(DiscussionFromNotification):
 
 
     @property
-    def lastReadPostNumber(self) -> Optional[int]:
+    def lastReadPostNumber(self) -> t.Optional[int]:
         """
             Number of a post that you've last read in the discussion.
         """
@@ -314,7 +314,7 @@ class DiscussionFromBulk(DiscussionFromNotification):
 
 
     @property
-    def lastReadAt(self) -> Optional[datetime]:
+    def lastReadAt(self) -> t.Optional[datetime]:
         """
             The `datetime` when you last read that discussion.
         """
@@ -334,7 +334,7 @@ class DiscussionFromBulk(DiscussionFromNotification):
         return self.attributes.get("isHidden", False)
 
 
-    def get_author(self) -> Optional[UserFromNotification]:
+    def get_author(self) -> t.Optional[UserFromNotification]:
         """
             Obtains the author of the discussion.
 
@@ -356,7 +356,7 @@ class DiscussionFromBulk(DiscussionFromNotification):
         return None
 
 
-    def get_last_posted_user(self) -> Optional[UserFromNotification]:
+    def get_last_posted_user(self) -> t.Optional[UserFromNotification]:
         """
             Obtains the user that posted the latest post in the discussion.
 
@@ -377,7 +377,7 @@ class DiscussionFromBulk(DiscussionFromNotification):
         return None
 
 
-    def get_first_post(self) -> Optional[PostFromDiscussion]:
+    def get_first_post(self) -> t.Optional[PostFromDiscussion]:
         """
             Obtains the first post of the discussion. If no post is found,
             `None` is returned.
@@ -465,7 +465,7 @@ class Discussion(DiscussionFromBulk):
 
 
     @property
-    def included(self) -> list[dict]:
+    def included(self) -> t.List[dict]:
         """
             Returns raw list of JSON included data.
 
@@ -475,7 +475,7 @@ class Discussion(DiscussionFromBulk):
         return self.get("included", [{}])
 
 
-    def get_author(self, mode: 'Any | Literal["first_number"]'='first_number') -> UserFromBulk:
+    def get_author(self, mode: t.Union[t.Any, 't.Literal["first_number"]']='first_number') -> UserFromBulk:
         """
             Obtains the discussion's author, AKA. the author
             of the post with number 1 in a discussion.
@@ -504,7 +504,7 @@ class Discussion(DiscussionFromBulk):
         return None
 
 
-    def get_posts(self) -> list[PostFromBulk]:
+    def get_posts(self) -> t.List[PostFromBulk]:
         """
             Returns a list of `pyflarum.flarum.core.posts.PostFromBulk` objects.
 
@@ -515,7 +515,7 @@ class Discussion(DiscussionFromBulk):
         """
 
         all_posts = list()
-        raw_posts = self.relationships.get("posts", {}).get("data", [{}]) # type: list[dict]
+        raw_posts = self.relationships.get("posts", {}).get("data", [{}]) # type: t.List[dict]
 
         for raw_post in raw_posts:
             if raw_post.get("type", None) == 'posts':
@@ -531,7 +531,7 @@ class Discussion(DiscussionFromBulk):
         return all_posts
 
 
-    def get_first_post(self) -> NoReturn:
+    def get_first_post(self) -> t.NoReturn:
         """
             The `Discussion` object does not have the first post's JSON data in it's own JSON. Because of Python's subclass inheritance, this
             function was included in `Discussion`, but it does not work!

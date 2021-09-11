@@ -1,4 +1,4 @@
-from typing import Optional
+import typing as t
 
 from .. import ExtensionMixin
 
@@ -26,7 +26,7 @@ class FlagsForumMixin(Forum):
 
 
     @property
-    def flagCount(self) -> Optional[int]:
+    def flagCount(self) -> t.Optional[int]:
         """
             The total flagged post/discussion count (forum-wide).
         """
@@ -35,7 +35,7 @@ class FlagsForumMixin(Forum):
 
 
     @property
-    def guidelinesUrl(self) -> Optional[str]:
+    def guidelinesUrl(self) -> t.Optional[str]:
         """
             The URL of the forum's guidelines, if specified by the admin.
         """

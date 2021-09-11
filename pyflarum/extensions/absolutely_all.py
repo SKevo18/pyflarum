@@ -1,5 +1,5 @@
-from typing import Generator, Optional, TYPE_CHECKING
-if TYPE_CHECKING:
+import typing as t
+if t.TYPE_CHECKING:
     from ..flarum.core.notifications import Notifications
     from ..flarum.core.discussions import Discussions
     from ..flarum.core.posts import Posts
@@ -27,7 +27,7 @@ HARD_DEPENCENDIES = []
 
 
 class AbsolutelyAllFlarumUserMixin(FlarumUser):
-    def absolutely_all_users(self, filter: Optional[Filter]=None)  -> Generator['Users', None, None]:
+    def absolutely_all_users(self, filter: t.Optional[Filter]=None)  -> t.Generator['Users', None, None]:
         """
             A generator that yields `Users` from entire forum, until there are `None` left. `Filter` compatible.
         """
@@ -53,7 +53,7 @@ class AbsolutelyAllFlarumUserMixin(FlarumUser):
                 break
 
 
-    def absolutely_all_posts(self, filter: Optional[Filter]=None) -> Generator['Posts', None, None]:
+    def absolutely_all_posts(self, filter: t.Optional[Filter]=None) -> t.Generator['Posts', None, None]:
         """
             A generator that yields `Posts` from entire forum, until there are `None` left. `Filter` compatible.
         """
@@ -79,7 +79,7 @@ class AbsolutelyAllFlarumUserMixin(FlarumUser):
                 break
 
 
-    def absolutely_all_discussions(self, filter: Optional[Filter]=None) -> Generator['Discussions', None, None]:
+    def absolutely_all_discussions(self, filter: t.Optional[Filter]=None) -> t.Generator['Discussions', None, None]:
         """
             A generator that yields `Discussions` from entire forum, until there are `None` left. `Filter` compatible.
         """
@@ -105,7 +105,7 @@ class AbsolutelyAllFlarumUserMixin(FlarumUser):
                 break
 
 
-    def absolutely_all_notifications(self, filter: Optional[Filter]=None) -> Generator['Notifications', None, None]:
+    def absolutely_all_notifications(self, filter: t.Optional[Filter]=None) -> t.Generator['Notifications', None, None]:
         """
             A generator that yields all of your `Notifications`, until there are `None` left. `Filter` compatible.
         """
@@ -131,7 +131,7 @@ class AbsolutelyAllFlarumUserMixin(FlarumUser):
                 break
     
 
-    def get_all_posts_from_discussion(self, discussion: Discussion, at_once: int=50, force: bool=False) -> Generator['Posts', None, None]:
+    def get_all_posts_from_discussion(self, discussion: Discussion, at_once: int=50, force: bool=False) -> t.Generator['Posts', None, None]:
         """
             This fetches all posts from a long discussion where only post IDs are present.
 
@@ -150,12 +150,12 @@ class AbsolutelyAllFlarumUserMixin(FlarumUser):
             warnings.warn("`at_once` was capped at 50, because Flarum (by default/currently) doesn't support fetching more than 50 entires at once from API. Use `force=True` to bypass.")
 
 
-        raw_posts = discussion.relationships.get("posts", {}).get("data", []) # type: list[dict]
-        post_ids = [] # type: list[int]
+        raw_posts = discussion.relationships.get("posts", {}).get("data", []) # type: t.List[dict]
+        post_ids = [] # type: t.List[int]
 
 
         for raw_post in raw_posts:
-            post_id = raw_post.get("id", None) # type: Optional[int]
+            post_id = raw_post.get("id", None) # type: t.Optional[int]
 
             if post_id:
                 post_ids.append(post_id)

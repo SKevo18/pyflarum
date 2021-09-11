@@ -8,10 +8,10 @@ import setuptools
 
 __description__ = "An unofficial Python package for manipulating with Flarum's API"
 __author__      = "SKevo"
-__copyright__   = "Copyright 2021, SKevo"
+__copyright__   = "Copyright (c) 2021, SKevo"
 __credits__     = ["SKevo"]
 __license__     = "GPLv3"
-__version__     = "v1.0.9.3-beta"
+__version__     = "v1.0.10-beta"
 __maintainer__  = "SKevo"
 __email__       = "me@kevo.link"
 __status__      = "4 - Beta"

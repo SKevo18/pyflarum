@@ -1,3 +1,5 @@
+import typing as t
+
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -18,7 +20,7 @@ EXTENSIONS = [
 ]
 
 
-def scrap_all(file_name: 'str | bytes | Path'="scrapped.html"):
+def scrap_all(file_name: t.Union[str, bytes, Path]="scrapped.html"):
     USER = FlarumUser(forum_url=os.environ['forum_url'], extensions=EXTENSIONS, session_object=CachedSession()) # type: absolutely_all.AbsolutelyAllFlarumUserMixin
 
     with open(file_name, 'w', encoding='UTF-8') as scrap:

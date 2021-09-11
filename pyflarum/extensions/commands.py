@@ -25,7 +25,7 @@ class CommandsFlarumUserMixin(FlarumUser):
             return False
 
 
-    def parse_as_command(self, string: str, is_mentioned: bool=True, split_at: str=' ') -> list[str]:
+    def parse_as_command(self, string: str, is_mentioned: bool=True, split_at: str=' ') -> t.List[str]:
         """
             Parses a command from a string (e. g.: post's content). The result is list of arguments.
 
@@ -42,7 +42,7 @@ class CommandsFlarumUserMixin(FlarumUser):
                 group = match.group(1)
 
                 if group:
-                    parsed = group.split(sep=split_at) # type: list[str]
+                    parsed = group.split(sep=split_at) # type: t.List[str]
 
                     return parsed
 

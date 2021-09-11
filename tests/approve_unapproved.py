@@ -22,7 +22,6 @@ user = FlarumUser(forum_url=os.environ['forum_url'], username_or_email='test', p
 if __name__ == "__main__":
     for discussions in user.absolutely_all_discussions():
         for discussion in discussions:
-            time.sleep(5) # prevent 429
             full_discussion = discussion.get_full_data()
 
             for post in full_discussion.get_posts():
@@ -31,6 +30,7 @@ if __name__ == "__main__":
                 if not post.isApproved:
                     post.approve()
                     print(f"Approved {post.url}")
+                    time.sleep(3) # prevent 429
 
                 else:
                     print(f"{post.url} is already approved.")

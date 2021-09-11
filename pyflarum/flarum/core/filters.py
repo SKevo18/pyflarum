@@ -1,4 +1,5 @@
-from typing import Literal, Optional, Iterable
+import typing as t
+
 import warnings
 
 
@@ -10,7 +11,7 @@ class Filter:
         It allows you to filter discussions without having to manually specify URL parameters.
     """
 
-    def __init__(self, order_by: Optional[Literal['commentCount', '-commentCount', 'createdAt', '-createdAt']]=None, query: Optional[str]=None, ids: Optional[Iterable['str | int']]=None, limit: int=20, page: Optional[int]=None, include: Optional[list[str]]=None, additional_data: Optional[dict]=None):
+    def __init__(self, order_by: t.Optional['t.Literal["commentCount", "-commentCount", "createdAt", "-createdAt"]']=None, query: t.Optional[str]=None, ids: t.Optional[t.Iterable['str | int']]=None, limit: int=20, page: t.Optional[int]=None, include: t.Optional[t.List[str]]=None, additional_data: t.Optional[dict]=None):
         """
             - `order_by` - gets passed into `?sort=` parameter. Common values are `commentCount`, `createdAt` and their reverse/negated values (prefixed with `-`)
             - `query` - the search query, passed into `?filter[q]=`. This can be a string. Flarum search bar uses this. Gambits such as `author:username` are supported.

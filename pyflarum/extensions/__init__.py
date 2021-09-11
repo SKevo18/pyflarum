@@ -1,4 +1,4 @@
-from typing import Dict, List
+import typing as t
 
 
 
@@ -57,7 +57,7 @@ class ExtensionMixin:
         self.id = "N/A"
 
 
-    def get_dependencies(self) -> Dict[str, List[object]]:
+    def get_dependencies(self) -> t.Dict[str, t.List[object]]:
         """
             This should return the following `dict`:
             ```python

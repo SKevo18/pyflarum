@@ -7,8 +7,8 @@
     - `AnyPost` - `Post` | `PostFromBulk` | `PostFromNotification`
 """
 
-from typing import TYPE_CHECKING
-if TYPE_CHECKING:
+import typing as t
+if t.TYPE_CHECKING:
     from .session import FlarumUser
 
     from .flarum.core import BaseFlarumIndividualObject

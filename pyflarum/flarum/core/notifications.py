@@ -1,5 +1,5 @@
-from typing import Iterator, Optional, TYPE_CHECKING
-if TYPE_CHECKING:
+import typing as t
+if t.TYPE_CHECKING:
     from ...session import FlarumUser
 
 from datetime import datetime
@@ -24,7 +24,7 @@ class Notifications(BaseFlarumBulkObject):
         return super().__init__(user=user, _fetched_data=_fetched_data, _listclass=Notification, _required_type='notifications')
 
 
-    def mark_all_as_read(self) -> True:
+    def mark_all_as_read(self) -> 't.Literal[True]':
         """
             Marks all notifications as read. Returns `True` when successful.
         """
@@ -32,9 +32,9 @@ class Notifications(BaseFlarumBulkObject):
         return self.user.mark_all_notifications_as_read()
 
 
-    if TYPE_CHECKING:
+    if t.TYPE_CHECKING:
         def __getitem__(self, key: int) -> 'Notification': ...
-        def __iter__(self) -> Iterator['Notification']: ...
+        def __iter__(self) -> t.Iterator['Notification']: ...
 
 
 
@@ -45,7 +45,7 @@ class Notification(BaseFlarumIndividualObject):
 
 
     @property
-    def contentType(self) -> Optional[str]:
+    def contentType(self) -> t.Optional[str]:
         """
             The content type of the notification.
 
@@ -56,7 +56,7 @@ class Notification(BaseFlarumIndividualObject):
 
 
     @property
-    def content(self) -> Optional[dict]:
+    def content(self) -> t.Optional[dict]:
         """
             The `dict` of the notification's content.
         """
@@ -65,7 +65,7 @@ class Notification(BaseFlarumIndividualObject):
 
 
     @property
-    def new_post_number(self) -> Optional[int]:
+    def new_post_number(self) -> t.Optional[int]:
         """
             The new number of the potential post that triggered
             the notification.
@@ -79,7 +79,7 @@ class Notification(BaseFlarumIndividualObject):
 
 
     @property
-    def reply_number(self) -> Optional[int]:
+    def reply_number(self) -> t.Optional[int]:
         """
             The number of the reply post that possibly triggered
             the notification.
@@ -93,7 +93,7 @@ class Notification(BaseFlarumIndividualObject):
 
 
     @property
-    def createdAt(self) -> Optional[datetime]:
+    def createdAt(self) -> t.Optional[datetime]:
         """
             The `datetime` of when was this notification triggered/created at.
         """
@@ -112,7 +112,7 @@ class Notification(BaseFlarumIndividualObject):
         return self.attributes.get("isRead", False)
 
 
-    def from_user(self) -> Optional[UserFromNotification]:
+    def from_user(self) -> t.Optional[UserFromNotification]:
         """
             From which user does the notification originate from?
 
@@ -129,7 +129,7 @@ class Notification(BaseFlarumIndividualObject):
         return None
 
 
-    def get_subject(self) -> Optional['DiscussionFromNotification | PostFromNotification']:
+    def get_subject(self) -> t.Optional[t.Union[DiscussionFromNotification, PostFromNotification]]:
         """
             Returns the subject of the notification, either one of these:
             - `pyflarum.flarum.core.discussions.DiscussionFromNotification`
@@ -151,7 +151,7 @@ class Notification(BaseFlarumIndividualObject):
         return None
 
 
-    def mark_as_read(self) -> True:
+    def mark_as_read(self) -> 't.Literal[True]':
         """
             Marks the notification as read.
 

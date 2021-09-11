@@ -1,4 +1,4 @@
-from typing import Optional
+import typing as t
 
 from ...extensions import ExtensionMixin
 from ...extensions.admin import AdminExtension, AdminFlarumUserMixin
@@ -24,17 +24,17 @@ class Achievement(BaseFlarumIndividualObject):
 
 
     @property
-    def name(self) -> Optional[str]:
+    def name(self) -> t.Optional[str]:
         return self.attributes.get("name", None)
 
 
     @property
-    def description(self) -> Optional[str]:
+    def description(self) -> t.Optional[str]:
         return self.attributes.get("description", None)
 
 
     @property
-    def computation(self) -> Optional[str]:
+    def computation(self) -> t.Optional[str]:
         return self.attributes.get("computation", None)
 
 
@@ -47,12 +47,12 @@ class Achievement(BaseFlarumIndividualObject):
 
 
     @property
-    def icon(self) -> Optional[str]:
+    def icon(self) -> t.Optional[str]:
         return self.attributes.get("icon", None)
 
 
     @property
-    def rectangle(self) -> Optional[str]:
+    def rectangle(self) -> t.Optional[str]:
         """
             No, I have no idea what this is either.
         """
@@ -61,7 +61,7 @@ class Achievement(BaseFlarumIndividualObject):
 
 
     @property
-    def active(self) -> Optional[bool]:
+    def active(self) -> t.Optional[bool]:
         raw = self.attributes.get("active", None)
 
         if raw:
@@ -69,7 +69,7 @@ class Achievement(BaseFlarumIndividualObject):
 
 
     @property
-    def hidden(self) -> Optional[bool]:
+    def hidden(self) -> t.Optional[bool]:
         raw = self.attributes.get("hidden", None)
 
         if raw:
@@ -77,7 +77,7 @@ class Achievement(BaseFlarumIndividualObject):
 
 
     @property
-    def new(self) -> Optional[str]:
+    def new(self) -> t.Optional[str]:
         return self.attributes.get("new", None)
 
 
@@ -95,7 +95,7 @@ class AchievementsForumMixin(Forum):
 
 
 class AchievementsAdminFlarumUserMixin(AdminFlarumUserMixin):
-    def update_settings(self, show_achievement_list_in_each_post_footer: Optional[bool]=None, show_achievement_list_in_user_badge: Optional[bool]=None) -> True:
+    def update_settings(self, show_achievement_list_in_each_post_footer: t.Optional[bool]=None, show_achievement_list_in_user_badge: t.Optional[bool]=None) -> 't.Literal[True]':
         post_data = {}
 
 
@@ -135,7 +135,7 @@ class AchievementsAdminFlarumUserMixin(AdminFlarumUserMixin):
         return Achievement(user=self, _fetched_data=json)
 
 
-    def get_all_achievements(self) -> list[Achievement]:
+    def get_all_achievements(self) -> t.List[Achievement]:
         raw = self.session.get(f"{self.api_urls['base']}/achievements")
         json = parse_request(raw)
 

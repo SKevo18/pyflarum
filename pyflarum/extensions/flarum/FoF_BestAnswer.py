@@ -1,4 +1,4 @@
-from typing import Optional
+import typing as t
 
 from datetime import datetime
 
@@ -24,7 +24,7 @@ class BestAnswerDiscussionNotificationMixin(DiscussionFromNotification):
 
 
     @property
-    def bestAnswerSetAt(self) -> Optional[datetime]:
+    def bestAnswerSetAt(self) -> t.Optional[datetime]:
         raw = self.attributes.get("bestAnswerSetAt", None)
 
         return flarum_to_datetime(raw)

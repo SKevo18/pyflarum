@@ -1,5 +1,5 @@
-from typing import Literal, NoReturn, Optional, TYPE_CHECKING
-if TYPE_CHECKING:
+import typing as t
+if t.TYPE_CHECKING:
     from requests.models import Response
 
 from json.decoder import JSONDecodeError
@@ -11,7 +11,7 @@ class FlarumError(Exception):
         Generic class for all Flarum related errors.
     """
 
-    def __init__(self, message: Optional[str]=None, status: Optional[int]=None, code: Optional[str]=None, details: Optional[str]=None):
+    def __init__(self, message: t.Optional[str]=None, status: t.Optional[int]=None, code: t.Optional[str]=None, details: t.Optional[str]=None):
         self.status = status
         self.code = code
         self.details = details
@@ -30,7 +30,7 @@ class MissingExtensionWarning(Warning):
 
 
 
-def parse_request(response: 'Response') -> 'dict | NoReturn | Literal[True]':
+def parse_request(response: 'Response') -> t.Union[dict, t.NoReturn]:
     """
         Parses the request as JSON, raises `FlarumError` if
         something went wrong.
@@ -52,13 +52,12 @@ def parse_request(response: 'Response') -> 'dict | NoReturn | Literal[True]':
 
 
     if 'errors' in json:
-        return handle_errors(errors=json['errors'])
-
+        return handle_errors(errors=json['errors'], status_code=response.status_code)
 
     return json
 
 
-def handle_errors(errors: Optional[list[dict[str, str]]]=None, status_code: Optional[str]=None) -> 'Literal[True] | NoReturn':
+def handle_errors(errors: t.Optional[t.List[t.Dict[str, str]]]=None, status_code: t.Optional[str]=None) -> t.NoReturn:
     """
         Handles Flarum & request related errors.
         Returns `FlarumError` if an error was found, `True` otherwise.
@@ -99,8 +98,3 @@ def handle_errors(errors: Optional[list[dict[str, str]]]=None, status_code: Opti
 
             else:
                 raise FlarumError(f'Error {status}: {code} - {details}', status=status, code=code, details=details)
-
-    else:
-        raise FlarumError(f'Request related error: {status_code} (https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/{status_code})')
-
-    return True

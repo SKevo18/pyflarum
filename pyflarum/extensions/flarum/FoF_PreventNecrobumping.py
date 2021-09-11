@@ -1,4 +1,4 @@
-from typing import Optional
+import typing as t
 
 from .. import ExtensionMixin
 from ...flarum.core.discussions import DiscussionFromBulk
@@ -15,7 +15,7 @@ HARD_DEPENCENDIES = []
 
 class PreventNecrobumpingDiscussionMixin(DiscussionFromBulk):
     @property
-    def fof_prevent_necrobumping(self) -> Optional[int]:
+    def fof_prevent_necrobumping(self) -> t.Optional[int]:
         """
             I have no idea what this does either, sorry.
         """

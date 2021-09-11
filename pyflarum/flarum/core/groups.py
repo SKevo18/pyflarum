@@ -1,7 +1,7 @@
-from typing import TYPE_CHECKING, Iterator, Optional
+import typing as t
 
 # Avoid my greatest enemy in Python: circular import:
-if TYPE_CHECKING:
+if t.TYPE_CHECKING:
     from ...session import FlarumUser
 
 from ...error_handler import parse_request
@@ -10,7 +10,7 @@ from ..core import BaseFlarumBulkObject, BaseFlarumIndividualObject
 
 
 class PreparedGroup(BaseFlarumIndividualObject):
-    def __init__(self, user: 'FlarumUser', nameSingular: str, namePlural: Optional[str]=None, color: Optional[str]=None, icon: Optional[str]=None, isHidden: bool=False):
+    def __init__(self, user: 'FlarumUser', nameSingular: str, namePlural: t.Optional[str]=None, color: t.Optional[str]=None, icon: t.Optional[str]=None, isHidden: bool=False):
         self.user = user
 
         self.nameSingular = nameSingular
@@ -71,9 +71,9 @@ class Groups(BaseFlarumBulkObject):
         return super().__init__(user=user, _fetched_data=_fetched_data, _listclass=Group, _required_type='groups')
 
 
-    if TYPE_CHECKING:
+    if t.TYPE_CHECKING:
         def __getitem__(self, key: int) -> 'Group': ...
-        def __iter__(self) -> Iterator['Group']: ...
+        def __iter__(self) -> t.Iterator['Group']: ...
 
 
 
@@ -84,7 +84,7 @@ class Group(BaseFlarumIndividualObject):
 
 
     @property
-    def nameSingular(self) -> Optional[str]:
+    def nameSingular(self) -> t.Optional[str]:
         """
             Singular form of the group's name.
         """
@@ -93,7 +93,7 @@ class Group(BaseFlarumIndividualObject):
 
 
     @property
-    def namePlural(self) -> Optional[str]:
+    def namePlural(self) -> t.Optional[str]:
         """
             Plural form of the group's name.
         """
@@ -102,7 +102,7 @@ class Group(BaseFlarumIndividualObject):
 
 
     @property
-    def color(self) -> Optional[str]:
+    def color(self) -> t.Optional[str]:
         """
             The color of the group.
         """
@@ -111,7 +111,7 @@ class Group(BaseFlarumIndividualObject):
 
 
     @property
-    def icon(self) -> Optional[str]:
+    def icon(self) -> t.Optional[str]:
         """
             [FontAwesome](https://fontawesome.com/v5.15/icons?d=gallery) icon of the group.
         """
@@ -141,7 +141,7 @@ class Group(BaseFlarumIndividualObject):
         return Group(user=self.user, _fetched_data=json)
 
 
-    def delete(self) -> True:
+    def delete(self) -> 't.Literal[True]':
         """
             Removes the group forever. This is irreversible!
 

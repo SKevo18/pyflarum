@@ -1,5 +1,5 @@
 from pyflarum.flarum.core import BaseFlarumIndividualObject
-from typing import Optional
+import typing as t
 
 from datetime import datetime
 
@@ -27,17 +27,17 @@ class Tag(BaseFlarumIndividualObject):
 
 
     @property
-    def name(self) -> Optional[str]:
+    def name(self) -> t.Optional[str]:
         return self.attributes.get("name", None)
 
 
     @property
-    def description(self) -> Optional[str]:
+    def description(self) -> t.Optional[str]:
         return self.attributes.get("description", None)
 
 
     @property
-    def slug(self) -> Optional[str]:
+    def slug(self) -> t.Optional[str]:
         return self.attributes.get("slug", None)
 
 
@@ -47,37 +47,37 @@ class Tag(BaseFlarumIndividualObject):
 
 
     @property
-    def backgroundUrl(self) -> Optional[str]:
+    def backgroundUrl(self) -> t.Optional[str]:
         return self.attributes.get("backgroundUrl", None)
 
 
     @property
-    def backgroundMode(self) -> Optional[str]:
+    def backgroundMode(self) -> t.Optional[str]:
         return self.attributes.get("backgroundMode", None)
 
 
     @property
-    def icon(self) -> Optional[str]:
+    def icon(self) -> t.Optional[str]:
         return self.attributes.get("icon", None)
 
 
     @property
-    def discussionCount(self) -> Optional[int]:
+    def discussionCount(self) -> t.Optional[int]:
         return self.attributes.get("discussionCount", None)
 
 
     @property
-    def discussionCount(self) -> Optional[int]:
+    def discussionCount(self) -> t.Optional[int]:
         return self.attributes.get("discussionCount", None)
 
 
     @property
-    def position(self) -> Optional[int]:
+    def position(self) -> t.Optional[int]:
         return self.attributes.get("position", None)
 
 
     @property
-    def defaultSort(self) -> Optional[str]:
+    def defaultSort(self) -> t.Optional[str]:
         return self.attributes.get("defaultSort", None)
 
 
@@ -92,7 +92,7 @@ class Tag(BaseFlarumIndividualObject):
 
 
     @property
-    def lastPostedAt(self) -> Optional[datetime]:
+    def lastPostedAt(self) -> t.Optional[datetime]:
         raw = self.attributes.get("lastPostedAt", None)
         return flarum_to_datetime(raw)
 
@@ -108,7 +108,7 @@ class Tag(BaseFlarumIndividualObject):
 
 
     @property
-    def subscription(self) -> Optional[str]:
+    def subscription(self) -> t.Optional[str]:
         return self.attributes.get("subscription", None)
 
 
@@ -170,7 +170,7 @@ class TagsForumMixin(Forum):
 
 
     @property
-    def minPrimaryTags(self) -> Optional[int]:
+    def minPrimaryTags(self) -> t.Optional[int]:
         raw = self.attributes.get("minPrimaryTags", None)
 
         if raw:
@@ -178,7 +178,7 @@ class TagsForumMixin(Forum):
 
 
     @property
-    def maxPrimaryTags(self) -> Optional[int]:
+    def maxPrimaryTags(self) -> t.Optional[int]:
         raw = self.attributes.get("maxPrimaryTags", None)
 
         if raw:
@@ -186,7 +186,7 @@ class TagsForumMixin(Forum):
 
 
     @property
-    def minSecondaryTags(self) -> Optional[int]:
+    def minSecondaryTags(self) -> t.Optional[int]:
         raw = self.attributes.get("minSecondaryTags", None)
 
         if raw:
@@ -194,7 +194,7 @@ class TagsForumMixin(Forum):
 
 
     @property
-    def maxSecondaryTags(self) -> Optional[int]:
+    def maxSecondaryTags(self) -> t.Optional[int]:
         raw = self.attributes.get("maxSecondaryTags", None)
 
         if raw:
@@ -208,10 +208,10 @@ class TagsDiscussionMixin(DiscussionFromBulk):
         return self.attributes.get("canTag", False)
 
 
-    def get_tags(self) -> list[Tag]:
-        all_tags = [] # type: list[Tag]
+    def get_tags(self) -> t.List[Tag]:
+        all_tags = [] # type: t.List[Tag]
         seen = set()
-        tags = self.relationships.get("tags", {}).get("data", [{}]) # type: list[dict]
+        tags = self.relationships.get("tags", {}).get("data", [{}]) # type: t.List[dict]
 
         for raw_tag in tags:
             id = raw_tag.get("id", None)

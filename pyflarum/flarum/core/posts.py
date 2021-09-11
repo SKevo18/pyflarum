@@ -1,6 +1,6 @@
-from typing import TYPE_CHECKING, Iterator, Optional
+import typing as t
 
-if TYPE_CHECKING:
+if t.TYPE_CHECKING:
     from ...session import FlarumUser
     from ...custom_types import AnyDiscussion
 
@@ -20,7 +20,7 @@ class PreparedPost(BaseFlarumIndividualObject):
         A prepared post that can be sent to the API.
     """
 
-    def __init__(self, user: 'FlarumUser', discussion: Optional['AnyDiscussion']=None, content: Optional[str]=None):
+    def __init__(self, user: 'FlarumUser', discussion: t.Optional['AnyDiscussion']=None, content: t.Optional[str]=None):
         """
             ### Parameters:
             - `user` - the `pyflarum.session.FlarumUser` object that will create the post
@@ -67,7 +67,7 @@ class PreparedPost(BaseFlarumIndividualObject):
         return data
 
 
-    def post(self):
+    def post(self) -> 'Post':
         """
             Posts/creates the post. Raises `FlarumError` on error, otherwise it returns the created `Post`.
         """
@@ -89,9 +89,9 @@ class Posts(BaseFlarumBulkObject):
         return super().__init__(user=user, _fetched_data=_fetched_data, _listclass=PostFromBulk, _required_type='posts')
 
 
-    if TYPE_CHECKING:
+    if t.TYPE_CHECKING:
         def __getitem__(self, key: int) -> 'PostFromBulk': ...
-        def __iter__(self) -> Iterator['PostFromBulk']: ...
+        def __iter__(self) -> t.Iterator['PostFromBulk']: ...
 
 
 
@@ -101,7 +101,7 @@ class PostFromDiscussion(BaseFlarumIndividualObject):
     """
 
     @property
-    def number(self) -> Optional[int]:
+    def number(self) -> t.Optional[int]:
         """
             The post's number/order in the discussion.
         """
@@ -110,7 +110,7 @@ class PostFromDiscussion(BaseFlarumIndividualObject):
 
 
     @property
-    def createdAt(self) -> Optional[datetime]:
+    def createdAt(self) -> t.Optional[datetime]:
         """
             The `datetime` of when was this post created.
         """
@@ -121,7 +121,7 @@ class PostFromDiscussion(BaseFlarumIndividualObject):
 
 
     @property
-    def contentType(self) -> Optional[str]:
+    def contentType(self) -> t.Optional[str]:
         """
             Post's content type. This is usually a `comment` for user-made posts,
             but this can differ if it's actually a message that a post's tags changed, or
@@ -140,7 +140,7 @@ class PostFromDiscussion(BaseFlarumIndividualObject):
 
 
     @property
-    def contentHtml(self) -> Optional[str]:
+    def contentHtml(self) -> t.Optional[str]:
         """
             The HTML content of the post.
         """
@@ -189,7 +189,7 @@ class PostFromDiscussion(BaseFlarumIndividualObject):
     unhide = restore
 
 
-    def delete(self) -> True:
+    def delete(self) -> 't.Literal[True]':
         """
             Removes the post forever.
 
@@ -222,7 +222,7 @@ class PostFromNotification(PostFromDiscussion):
     """
 
     @property
-    def content(self) -> Optional['str | dict']:
+    def content(self) -> t.Optional[t.Union[str, dict]]:
         """
             The post's content. Doesn't contain markdown, and is just plain-text.
 
@@ -235,7 +235,7 @@ class PostFromNotification(PostFromDiscussion):
 
 
     @property
-    def ipAddress(self) -> Optional[str]:
+    def ipAddress(self) -> t.Optional[str]:
         """
             The post's IP address.
 
@@ -247,7 +247,7 @@ class PostFromNotification(PostFromDiscussion):
 
 
     @property
-    def editedAt(self) -> Optional[datetime]:
+    def editedAt(self) -> t.Optional[datetime]:
         """
             The `datetime` when was this post edited at.
         """
@@ -285,7 +285,7 @@ class PostFromNotification(PostFromDiscussion):
 
 
     @property
-    def url(self):
+    def url(self) -> t.Optional[str]:
         """
             The post's URL.
         """
@@ -296,7 +296,7 @@ class PostFromNotification(PostFromDiscussion):
             return f"{self.user.forum_url}/d/{discussion_id}/{self.number}"
 
 
-    def get_discussion(self):
+    def get_discussion(self) -> t.Optional[DiscussionFromNotification]:
         """
             Obtains the discussion of the post.
 
@@ -315,7 +315,7 @@ class PostFromNotification(PostFromDiscussion):
         return None
 
 
-    def reply_to(self, post: PreparedPost):
+    def reply_to(self, post: PreparedPost) -> 'Post':
         """
             Replies to this `Post` with another `PreparedPost`.
         """
@@ -326,7 +326,7 @@ class PostFromNotification(PostFromDiscussion):
         return post.post()
 
 
-    def get_author(self):
+    def get_author(self) -> t.Optional[UserFromBulk]:
         """
             Obtains the post's author.
 
@@ -345,7 +345,7 @@ class PostFromNotification(PostFromDiscussion):
         return None
 
 
-    def edit(self, new_data: PreparedPost):
+    def edit(self, new_data: PreparedPost) -> 'Post':
         """
             Edits the post. The new post should be a `PreparedPost` object.
         """
@@ -370,7 +370,7 @@ class Post(PostFromNotification):
         A Flarum post.
     """
 
-    def get_author(self):
+    def get_author(self) -> t.Optional[UserFromBulk]:
         """
             Obtains the post's author.
 

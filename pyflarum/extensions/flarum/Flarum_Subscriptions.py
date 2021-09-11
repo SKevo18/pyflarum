@@ -1,4 +1,4 @@
-from typing import Literal, Optional, Type
+import typing as t
 
 from .. import ExtensionMixin
 
@@ -16,7 +16,7 @@ HARD_DEPENCENDIES = []
 
 
 class SubscriptionsDiscussionFromNotificationMixin(DiscussionFromNotification):
-    def __change_subscription_state(self, state: Optional[Literal['following', 'ignoring']]):
+    def __change_subscription_state(self, state: t.Optional['t.Literal["following", "ignoring"]']):
         """
             Changes the subscription state of a discussion.
 
@@ -71,7 +71,7 @@ class SubscriptionsDiscussionFromNotificationMixin(DiscussionFromNotification):
 
 class SubscriptionsDiscussionFromBulkMixin(DiscussionFromBulk, SubscriptionsDiscussionFromNotificationMixin):
     @property
-    def subscription(self) -> Optional[Literal['following', 'ignoring']]:
+    def subscription(self) -> t.Optional['t.Literal["following", "ignoring"]']:
         """
             Get the current subscription state of the discussion.
         """
