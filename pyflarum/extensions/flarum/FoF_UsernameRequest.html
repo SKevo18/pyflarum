@@ -70,7 +70,7 @@
                 
                         <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+            <div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">typing</span> <span class="k">as</span> <span class="nn">t</span>
 
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
 
@@ -90,16 +90,17 @@
 
 <span class="k">class</span> <span class="nc">UsernameRequestUserMixin</span><span class="p">(</span><span class="n">UserFromBulk</span><span class="p">):</span>
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">usernameHistory</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">datetime</span><span class="p">]]]:</span>
-        <span class="n">raw_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;usernameHistory&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="c1"># type: list[dict[str, int]]</span>
-        <span class="n">formatted_list</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># type: list[dict[str, datetime]]</span>
+    <span class="k">def</span> <span class="nf">usernameHistory</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">datetime</span><span class="p">]]]:</span>
+        <span class="n">raw_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;usernameHistory&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="c1"># type: t.List[t.Dict[str, int]]</span>
+        <span class="n">formatted_list</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># type: t.List[t.Dict[str, datetime]]</span>
 
-        <span class="k">if</span> <span class="n">raw_list</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">raw_list</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">raw_list</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">raw_list</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">raw_dict</span> <span class="ow">in</span> <span class="n">raw_list</span><span class="p">:</span>
-                <span class="k">for</span> <span class="n">username</span><span class="p">,</span> <span class="n">unix</span> <span class="ow">in</span> <span class="n">raw_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                    <span class="n">dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">unix</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">raw_dict</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                    <span class="k">for</span> <span class="n">username</span><span class="p">,</span> <span class="n">unix</span> <span class="ow">in</span> <span class="n">raw_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                        <span class="n">dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">unix</span><span class="p">)</span>
 
-                    <span class="n">formatted_list</span><span class="o">.</span><span class="n">append</span><span class="p">({</span> <span class="n">username</span><span class="p">:</span> <span class="n">dt</span><span class="p">})</span>
+                        <span class="n">formatted_list</span><span class="o">.</span><span class="n">append</span><span class="p">({</span> <span class="n">username</span><span class="p">:</span> <span class="n">dt</span><span class="p">})</span>
 
             <span class="k">return</span> <span class="n">formatted_list</span>
 
@@ -135,16 +136,17 @@
             <summary>View Source</summary>
             <div class="codehilite"><pre><span></span><span class="k">class</span> <span class="nc">UsernameRequestUserMixin</span><span class="p">(</span><span class="n">UserFromBulk</span><span class="p">):</span>
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">usernameHistory</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">datetime</span><span class="p">]]]:</span>
-        <span class="n">raw_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;usernameHistory&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="c1"># type: list[dict[str, int]]</span>
-        <span class="n">formatted_list</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># type: list[dict[str, datetime]]</span>
+    <span class="k">def</span> <span class="nf">usernameHistory</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">datetime</span><span class="p">]]]:</span>
+        <span class="n">raw_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;usernameHistory&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="c1"># type: t.List[t.Dict[str, int]]</span>
+        <span class="n">formatted_list</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># type: t.List[t.Dict[str, datetime]]</span>
 
-        <span class="k">if</span> <span class="n">raw_list</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">raw_list</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">raw_list</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">raw_list</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">raw_dict</span> <span class="ow">in</span> <span class="n">raw_list</span><span class="p">:</span>
-                <span class="k">for</span> <span class="n">username</span><span class="p">,</span> <span class="n">unix</span> <span class="ow">in</span> <span class="n">raw_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                    <span class="n">dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">unix</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">raw_dict</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                    <span class="k">for</span> <span class="n">username</span><span class="p">,</span> <span class="n">unix</span> <span class="ow">in</span> <span class="n">raw_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                        <span class="n">dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">unix</span><span class="p">)</span>
 
-                    <span class="n">formatted_list</span><span class="o">.</span><span class="n">append</span><span class="p">({</span> <span class="n">username</span><span class="p">:</span> <span class="n">dt</span><span class="p">})</span>
+                        <span class="n">formatted_list</span><span class="o">.</span><span class="n">append</span><span class="p">({</span> <span class="n">username</span><span class="p">:</span> <span class="n">dt</span><span class="p">})</span>
 
             <span class="k">return</span> <span class="n">formatted_list</span>
 
@@ -160,7 +162,7 @@
                             <div id="UsernameRequestUserMixin.usernameHistory" class="classattr">
                                             <div class="attr variable"><a class="headerlink" href="#UsernameRequestUserMixin.usernameHistory">#&nbsp;&nbsp</a>
 
-        <span class="name">usernameHistory</span><span class="annotation">: Optional[list[dict[str, datetime.datetime]]]</span>
+        <span class="name">usernameHistory</span><span class="annotation">: Optional[List[Dict[str, datetime.datetime]]]</span>
     </div>
 
     

@@ -163,7 +163,7 @@
                 
                         <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">BinaryIO</span>
+            <div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">typing</span> <span class="k">as</span> <span class="nn">t</span>
 
 <span class="kn">from</span> <span class="nn">..extensions</span> <span class="kn">import</span> <span class="n">ExtensionMixin</span>
 
@@ -198,12 +198,12 @@
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">mailgun_secret</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">mailgun_secret</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mailgun</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;mail_mailgun_secret&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">mailgun_domain</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">mailgun_domain</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mailgun</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;mail_mailgun_domain&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
 
@@ -218,27 +218,27 @@
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">mail_host</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">mail_host</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">smtp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;mail_host&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">mail_port</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">mail_port</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">smtp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;mail_port&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">mail_encryption</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">mail_encryption</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">smtp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;mail_encryption&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">mail_username</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">mail_username</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">smtp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;mail_username&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">mail_password</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">mail_password</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">smtp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;mail_password&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
 
@@ -254,29 +254,29 @@
 
 
 <span class="k">class</span> <span class="nc">AdminFlarumUserMixin</span><span class="p">(</span><span class="n">FlarumUser</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__enable_or_disable_extension</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="s1">&#39;str | int&#39;</span><span class="p">,</span> <span class="n">enabled</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__enable_or_disable_extension</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="s1">&#39;str | int&#39;</span><span class="p">,</span> <span class="n">enabled</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;t.Literal[True]&#39;</span><span class="p">:</span>
         <span class="n">raw</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">api_urls</span><span class="p">[</span><span class="s1">&#39;extensions&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="nb">id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;enabled&quot;</span><span class="p">:</span> <span class="n">enabled</span><span class="p">})</span>
         <span class="n">parse_request</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="kc">True</span>
 
 
-    <span class="k">def</span> <span class="nf">enable_extension</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="s1">&#39;str | int&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">enable_extension</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="s1">&#39;str | int&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;t.Literal[True]&#39;</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__enable_or_disable_extension</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="nb">id</span><span class="p">,</span> <span class="n">enabled</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 
-    <span class="k">def</span> <span class="nf">disable_extension</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="s1">&#39;str | int&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">disable_extension</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="s1">&#39;str | int&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;t.Literal[True]&#39;</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__enable_or_disable_extension</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="nb">id</span><span class="p">,</span> <span class="n">enabled</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 
-    <span class="k">def</span> <span class="nf">clear_cache</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">clear_cache</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;t.Literal[True]&#39;</span><span class="p">:</span>
         <span class="n">raw</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">api_urls</span><span class="p">[</span><span class="s1">&#39;base&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">/cache&quot;</span><span class="p">)</span>
         <span class="n">parse_request</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="kc">True</span>
 
 
-    <span class="k">def</span> <span class="nf">update_forum_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">forum_title</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">forum_description</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">default_route</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">welcome_title</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">welcome_message</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">user_slug_driver</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;default&quot;</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">]]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">update_forum_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">forum_title</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">forum_description</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">default_route</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">welcome_title</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">welcome_message</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">user_slug_driver</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;t.Literal[&quot;default&quot;, &quot;id&quot;]&#39;</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;t.Literal[True]&#39;</span><span class="p">:</span>
         <span class="n">post_data</span> <span class="o">=</span> <span class="p">{}</span>
 
 
@@ -309,7 +309,7 @@
         <span class="k">return</span> <span class="n">MailSettings</span><span class="p">(</span><span class="n">json</span><span class="p">)</span>
 
 
-    <span class="k">def</span> <span class="nf">update_mail_settings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mail_from</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mail_encryption</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mail_username</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mail_password</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">update_mail_settings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mail_from</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mail_encryption</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mail_username</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mail_password</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">post_data</span> <span class="o">=</span> <span class="p">{}</span>
 
 
@@ -329,14 +329,14 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__update_settings</span><span class="p">(</span><span class="n">post_data</span><span class="p">)</span>
 
 
-    <span class="k">def</span> <span class="nf">send_test_mail</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">send_test_mail</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;t.Literal[True]&#39;</span><span class="p">:</span>
         <span class="n">raw</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">api_urls</span><span class="p">[</span><span class="s1">&#39;base&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">/mail/test&quot;</span><span class="p">)</span>
         <span class="n">parse_request</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="kc">True</span>
 
 
-    <span class="k">def</span> <span class="nf">update_appearance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">theme_primary_color</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">theme_secondary_color</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">theme_dark_mode</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">theme_colored_header</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">update_appearance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">theme_primary_color</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">theme_secondary_color</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">theme_dark_mode</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">theme_colored_header</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;t.Literal[True]&#39;</span><span class="p">:</span>
         <span class="n">post_data</span> <span class="o">=</span> <span class="p">{}</span>
 
 
@@ -359,7 +359,7 @@
         <span class="k">return</span> <span class="kc">True</span>
 
 
-    <span class="k">def</span> <span class="nf">upload_logo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">:</span> <span class="n">BinaryIO</span><span class="p">,</span> <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;logo&quot;</span><span class="p">,</span> <span class="n">file_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;image/png&#39;</span><span class="p">,</span> <span class="s1">&#39;image/jpeg&#39;</span><span class="p">,</span> <span class="s1">&#39;image/gif&#39;</span><span class="p">]</span><span class="o">=</span><span class="s2">&quot;image/png&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">upload_logo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">BinaryIO</span><span class="p">,</span> <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;logo&quot;</span><span class="p">,</span> <span class="n">file_type</span><span class="p">:</span> <span class="s1">&#39;t.Literal[&quot;image/png&quot;, &quot;image/jpeg&quot;, &quot;image/gif&quot;]&#39;</span><span class="o">=</span><span class="s2">&quot;image/png&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;t.Literal[True]&#39;</span><span class="p">:</span>
         <span class="n">raw</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">api_urls</span><span class="p">[</span><span class="s1">&#39;base&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">/logo&quot;</span><span class="p">,</span> <span class="n">files</span><span class="o">=</span><span class="p">{</span> <span class="s2">&quot;logo&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="n">file_type</span><span class="p">)</span> <span class="p">})</span>
 
         <span class="n">parse_request</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span>
@@ -367,14 +367,14 @@
         <span class="k">return</span> <span class="kc">True</span>
 
 
-    <span class="k">def</span> <span class="nf">remove_logo</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">remove_logo</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;t.Literal[True]&#39;</span><span class="p">:</span>
         <span class="n">raw</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">api_urls</span><span class="p">[</span><span class="s1">&#39;base&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">/logo&quot;</span><span class="p">)</span>
         <span class="n">parse_request</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="kc">True</span>
 
 
-    <span class="k">def</span> <span class="nf">upload_favicon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">:</span> <span class="n">BinaryIO</span><span class="p">,</span> <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;favicon&quot;</span><span class="p">,</span> <span class="n">file_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;image/png&#39;</span><span class="p">,</span> <span class="s1">&#39;image/jpeg&#39;</span><span class="p">,</span> <span class="s1">&#39;image/gif&#39;</span><span class="p">]</span><span class="o">=</span><span class="s2">&quot;image/png&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">upload_favicon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">BinaryIO</span><span class="p">,</span> <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;favicon&quot;</span><span class="p">,</span> <span class="n">file_type</span><span class="p">:</span> <span class="s1">&#39;t.Literal[&quot;image/png&quot;, &quot;image/jpeg&quot;, &quot;image/gif&quot;]&#39;</span><span class="o">=</span><span class="s2">&quot;image/png&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;t.Literal[True]&#39;</span><span class="p">:</span>
         <span class="n">raw</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">api_urls</span><span class="p">[</span><span class="s1">&#39;base&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">/favicon&quot;</span><span class="p">,</span> <span class="n">files</span><span class="o">=</span><span class="p">{</span> <span class="s2">&quot;favicon&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="n">file_type</span><span class="p">)</span> <span class="p">})</span>
 
         <span class="n">parse_request</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span>
@@ -382,26 +382,26 @@
         <span class="k">return</span> <span class="kc">True</span>
 
 
-    <span class="k">def</span> <span class="nf">remove_favicon</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">remove_favicon</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;t.Literal[True]&#39;</span><span class="p">:</span>
         <span class="n">raw</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">api_urls</span><span class="p">[</span><span class="s1">&#39;base&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">/favicon&quot;</span><span class="p">)</span>
         <span class="n">parse_request</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="kc">True</span>
 
 
-    <span class="k">def</span> <span class="nf">update_custom_header</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">header</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">update_custom_header</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">header</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;t.Literal[True]&#39;</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__update_settings</span><span class="p">({</span> <span class="s2">&quot;custom_header&quot;</span><span class="p">:</span> <span class="n">header</span> <span class="k">if</span> <span class="n">header</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span> <span class="p">})</span>
 
 
-    <span class="k">def</span> <span class="nf">update_custom_footer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">footer</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">update_custom_footer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">footer</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;t.Literal[True]&#39;</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__update_settings</span><span class="p">({</span> <span class="s2">&quot;custom_footer&quot;</span><span class="p">:</span> <span class="n">footer</span> <span class="k">if</span> <span class="n">footer</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span> <span class="p">})</span>
 
 
-    <span class="k">def</span> <span class="nf">update_custom_css</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">css</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">update_custom_css</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">css</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;t.Literal[True]&#39;</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__update_settings</span><span class="p">({</span> <span class="s2">&quot;custom_header&quot;</span><span class="p">:</span> <span class="n">css</span> <span class="k">if</span> <span class="n">css</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span> <span class="p">})</span>
 
 
-    <span class="k">def</span> <span class="nf">__update_settings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__update_settings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;t.Literal[True]&#39;</span><span class="p">:</span>
         <span class="n">raw</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">api_urls</span><span class="p">[</span><span class="s1">&#39;base&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">/settings&quot;</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
         <span class="n">parse_request</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span>
 
@@ -457,12 +457,12 @@
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">mailgun_secret</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">mailgun_secret</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mailgun</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;mail_mailgun_secret&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">mailgun_domain</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">mailgun_domain</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mailgun</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;mail_mailgun_domain&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
 
@@ -477,27 +477,27 @@
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">mail_host</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">mail_host</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">smtp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;mail_host&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">mail_port</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">mail_port</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">smtp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;mail_port&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">mail_encryption</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">mail_encryption</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">smtp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;mail_encryption&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">mail_username</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">mail_username</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">smtp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;mail_username&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">mail_password</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">mail_password</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">smtp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;mail_password&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
 
@@ -697,29 +697,29 @@ objects have these properties.</p>
                 <details>
             <summary>View Source</summary>
             <div class="codehilite"><pre><span></span><span class="k">class</span> <span class="nc">AdminFlarumUserMixin</span><span class="p">(</span><span class="n">FlarumUser</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__enable_or_disable_extension</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="s1">&#39;str | int&#39;</span><span class="p">,</span> <span class="n">enabled</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__enable_or_disable_extension</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="s1">&#39;str | int&#39;</span><span class="p">,</span> <span class="n">enabled</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;t.Literal[True]&#39;</span><span class="p">:</span>
         <span class="n">raw</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">api_urls</span><span class="p">[</span><span class="s1">&#39;extensions&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="nb">id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;enabled&quot;</span><span class="p">:</span> <span class="n">enabled</span><span class="p">})</span>
         <span class="n">parse_request</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="kc">True</span>
 
 
-    <span class="k">def</span> <span class="nf">enable_extension</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="s1">&#39;str | int&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">enable_extension</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="s1">&#39;str | int&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;t.Literal[True]&#39;</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__enable_or_disable_extension</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="nb">id</span><span class="p">,</span> <span class="n">enabled</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 
-    <span class="k">def</span> <span class="nf">disable_extension</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="s1">&#39;str | int&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">disable_extension</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="s1">&#39;str | int&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;t.Literal[True]&#39;</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__enable_or_disable_extension</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="nb">id</span><span class="p">,</span> <span class="n">enabled</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 
-    <span class="k">def</span> <span class="nf">clear_cache</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">clear_cache</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;t.Literal[True]&#39;</span><span class="p">:</span>
         <span class="n">raw</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">api_urls</span><span class="p">[</span><span class="s1">&#39;base&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">/cache&quot;</span><span class="p">)</span>
         <span class="n">parse_request</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="kc">True</span>
 
 
-    <span class="k">def</span> <span class="nf">update_forum_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">forum_title</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">forum_description</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">default_route</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">welcome_title</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">welcome_message</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">user_slug_driver</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;default&quot;</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">]]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">update_forum_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">forum_title</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">forum_description</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">default_route</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">welcome_title</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">welcome_message</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">user_slug_driver</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;t.Literal[&quot;default&quot;, &quot;id&quot;]&#39;</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;t.Literal[True]&#39;</span><span class="p">:</span>
         <span class="n">post_data</span> <span class="o">=</span> <span class="p">{}</span>
 
 
@@ -752,7 +752,7 @@ objects have these properties.</p>
         <span class="k">return</span> <span class="n">MailSettings</span><span class="p">(</span><span class="n">json</span><span class="p">)</span>
 
 
-    <span class="k">def</span> <span class="nf">update_mail_settings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mail_from</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mail_encryption</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mail_username</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mail_password</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">update_mail_settings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mail_from</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mail_encryption</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mail_username</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mail_password</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">post_data</span> <span class="o">=</span> <span class="p">{}</span>
 
 
@@ -772,14 +772,14 @@ objects have these properties.</p>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__update_settings</span><span class="p">(</span><span class="n">post_data</span><span class="p">)</span>
 
 
-    <span class="k">def</span> <span class="nf">send_test_mail</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">send_test_mail</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;t.Literal[True]&#39;</span><span class="p">:</span>
         <span class="n">raw</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">api_urls</span><span class="p">[</span><span class="s1">&#39;base&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">/mail/test&quot;</span><span class="p">)</span>
         <span class="n">parse_request</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="kc">True</span>
 
 
-    <span class="k">def</span> <span class="nf">update_appearance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">theme_primary_color</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">theme_secondary_color</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">theme_dark_mode</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">theme_colored_header</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">update_appearance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">theme_primary_color</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">theme_secondary_color</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">theme_dark_mode</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">theme_colored_header</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;t.Literal[True]&#39;</span><span class="p">:</span>
         <span class="n">post_data</span> <span class="o">=</span> <span class="p">{}</span>
 
 
@@ -802,7 +802,7 @@ objects have these properties.</p>
         <span class="k">return</span> <span class="kc">True</span>
 
 
-    <span class="k">def</span> <span class="nf">upload_logo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">:</span> <span class="n">BinaryIO</span><span class="p">,</span> <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;logo&quot;</span><span class="p">,</span> <span class="n">file_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;image/png&#39;</span><span class="p">,</span> <span class="s1">&#39;image/jpeg&#39;</span><span class="p">,</span> <span class="s1">&#39;image/gif&#39;</span><span class="p">]</span><span class="o">=</span><span class="s2">&quot;image/png&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">upload_logo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">BinaryIO</span><span class="p">,</span> <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;logo&quot;</span><span class="p">,</span> <span class="n">file_type</span><span class="p">:</span> <span class="s1">&#39;t.Literal[&quot;image/png&quot;, &quot;image/jpeg&quot;, &quot;image/gif&quot;]&#39;</span><span class="o">=</span><span class="s2">&quot;image/png&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;t.Literal[True]&#39;</span><span class="p">:</span>
         <span class="n">raw</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">api_urls</span><span class="p">[</span><span class="s1">&#39;base&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">/logo&quot;</span><span class="p">,</span> <span class="n">files</span><span class="o">=</span><span class="p">{</span> <span class="s2">&quot;logo&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="n">file_type</span><span class="p">)</span> <span class="p">})</span>
 
         <span class="n">parse_request</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span>
@@ -810,14 +810,14 @@ objects have these properties.</p>
         <span class="k">return</span> <span class="kc">True</span>
 
 
-    <span class="k">def</span> <span class="nf">remove_logo</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">remove_logo</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;t.Literal[True]&#39;</span><span class="p">:</span>
         <span class="n">raw</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">api_urls</span><span class="p">[</span><span class="s1">&#39;base&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">/logo&quot;</span><span class="p">)</span>
         <span class="n">parse_request</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="kc">True</span>
 
 
-    <span class="k">def</span> <span class="nf">upload_favicon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">:</span> <span class="n">BinaryIO</span><span class="p">,</span> <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;favicon&quot;</span><span class="p">,</span> <span class="n">file_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;image/png&#39;</span><span class="p">,</span> <span class="s1">&#39;image/jpeg&#39;</span><span class="p">,</span> <span class="s1">&#39;image/gif&#39;</span><span class="p">]</span><span class="o">=</span><span class="s2">&quot;image/png&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">upload_favicon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">BinaryIO</span><span class="p">,</span> <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;favicon&quot;</span><span class="p">,</span> <span class="n">file_type</span><span class="p">:</span> <span class="s1">&#39;t.Literal[&quot;image/png&quot;, &quot;image/jpeg&quot;, &quot;image/gif&quot;]&#39;</span><span class="o">=</span><span class="s2">&quot;image/png&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;t.Literal[True]&#39;</span><span class="p">:</span>
         <span class="n">raw</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">api_urls</span><span class="p">[</span><span class="s1">&#39;base&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">/favicon&quot;</span><span class="p">,</span> <span class="n">files</span><span class="o">=</span><span class="p">{</span> <span class="s2">&quot;favicon&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="n">file_type</span><span class="p">)</span> <span class="p">})</span>
 
         <span class="n">parse_request</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span>
@@ -825,26 +825,26 @@ objects have these properties.</p>
         <span class="k">return</span> <span class="kc">True</span>
 
 
-    <span class="k">def</span> <span class="nf">remove_favicon</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">remove_favicon</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;t.Literal[True]&#39;</span><span class="p">:</span>
         <span class="n">raw</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">api_urls</span><span class="p">[</span><span class="s1">&#39;base&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">/favicon&quot;</span><span class="p">)</span>
         <span class="n">parse_request</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="kc">True</span>
 
 
-    <span class="k">def</span> <span class="nf">update_custom_header</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">header</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">update_custom_header</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">header</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;t.Literal[True]&#39;</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__update_settings</span><span class="p">({</span> <span class="s2">&quot;custom_header&quot;</span><span class="p">:</span> <span class="n">header</span> <span class="k">if</span> <span class="n">header</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span> <span class="p">})</span>
 
 
-    <span class="k">def</span> <span class="nf">update_custom_footer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">footer</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">update_custom_footer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">footer</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;t.Literal[True]&#39;</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__update_settings</span><span class="p">({</span> <span class="s2">&quot;custom_footer&quot;</span><span class="p">:</span> <span class="n">footer</span> <span class="k">if</span> <span class="n">footer</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span> <span class="p">})</span>
 
 
-    <span class="k">def</span> <span class="nf">update_custom_css</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">css</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">update_custom_css</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">css</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;t.Literal[True]&#39;</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__update_settings</span><span class="p">({</span> <span class="s2">&quot;custom_header&quot;</span><span class="p">:</span> <span class="n">css</span> <span class="k">if</span> <span class="n">css</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span> <span class="p">})</span>
 
 
-    <span class="k">def</span> <span class="nf">__update_settings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__update_settings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;t.Literal[True]&#39;</span><span class="p">:</span>
         <span class="n">raw</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">api_urls</span><span class="p">[</span><span class="s1">&#39;base&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">/settings&quot;</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
         <span class="n">parse_request</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span>
 
@@ -862,12 +862,12 @@ objects have these properties.</p>
 
         
             <span class="def">def</span>
-            <span class="name">enable_extension</span><span class="signature">(self, id: &#39;str | int&#39;) -&gt; True</span>:
+            <span class="name">enable_extension</span><span class="signature">(self, id: &#39;str | int&#39;) -&gt; Literal[True]</span>:
     </div>
 
                 <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">enable_extension</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="s1">&#39;str | int&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">True</span><span class="p">:</span>
+            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">enable_extension</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="s1">&#39;str | int&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;t.Literal[True]&#39;</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__enable_or_disable_extension</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="nb">id</span><span class="p">,</span> <span class="n">enabled</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 
@@ -881,12 +881,12 @@ objects have these properties.</p>
 
         
             <span class="def">def</span>
-            <span class="name">disable_extension</span><span class="signature">(self, id: &#39;str | int&#39;) -&gt; True</span>:
+            <span class="name">disable_extension</span><span class="signature">(self, id: &#39;str | int&#39;) -&gt; Literal[True]</span>:
     </div>
 
                 <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">disable_extension</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="s1">&#39;str | int&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">True</span><span class="p">:</span>
+            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">disable_extension</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="s1">&#39;str | int&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;t.Literal[True]&#39;</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__enable_or_disable_extension</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="nb">id</span><span class="p">,</span> <span class="n">enabled</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 
@@ -900,12 +900,12 @@ objects have these properties.</p>
 
         
             <span class="def">def</span>
-            <span class="name">clear_cache</span><span class="signature">(self) -&gt; True</span>:
+            <span class="name">clear_cache</span><span class="signature">(self) -&gt; Literal[True]</span>:
     </div>
 
                 <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">clear_cache</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">True</span><span class="p">:</span>
+            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">clear_cache</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;t.Literal[True]&#39;</span><span class="p">:</span>
         <span class="n">raw</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">api_urls</span><span class="p">[</span><span class="s1">&#39;base&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">/cache&quot;</span><span class="p">)</span>
         <span class="n">parse_request</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span>
 
@@ -929,13 +929,13 @@ objects have these properties.</p>
     default_route: Optional[str] = None,
     welcome_title: Optional[str] = None,
     welcome_message: Optional[str] = None,
-    user_slug_driver: Optional[Literal[&#39;&#39;, &#39;default&#39;, &#39;id&#39;]] = None
-) -&gt; True</span>:
+    user_slug_driver: Optional[Literal[&#39;default&#39;, &#39;id&#39;]] = None
+) -&gt; Literal[True]</span>:
     </div>
 
                 <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">update_forum_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">forum_title</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">forum_description</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">default_route</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">welcome_title</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">welcome_message</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">user_slug_driver</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;default&quot;</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">]]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">True</span><span class="p">:</span>
+            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">update_forum_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">forum_title</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">forum_description</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">default_route</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">welcome_title</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">welcome_message</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">user_slug_driver</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;t.Literal[&quot;default&quot;, &quot;id&quot;]&#39;</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;t.Literal[True]&#39;</span><span class="p">:</span>
         <span class="n">post_data</span> <span class="o">=</span> <span class="p">{}</span>
 
 
@@ -1004,7 +1004,7 @@ objects have these properties.</p>
 
                 <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">update_mail_settings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mail_from</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mail_encryption</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mail_username</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mail_password</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">update_mail_settings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mail_from</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mail_encryption</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mail_username</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mail_password</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">post_data</span> <span class="o">=</span> <span class="p">{}</span>
 
 
@@ -1034,12 +1034,12 @@ objects have these properties.</p>
 
         
             <span class="def">def</span>
-            <span class="name">send_test_mail</span><span class="signature">(self) -&gt; True</span>:
+            <span class="name">send_test_mail</span><span class="signature">(self) -&gt; Literal[True]</span>:
     </div>
 
                 <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">send_test_mail</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">True</span><span class="p">:</span>
+            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">send_test_mail</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;t.Literal[True]&#39;</span><span class="p">:</span>
         <span class="n">raw</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">api_urls</span><span class="p">[</span><span class="s1">&#39;base&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">/mail/test&quot;</span><span class="p">)</span>
         <span class="n">parse_request</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span>
 
@@ -1062,12 +1062,12 @@ objects have these properties.</p>
     theme_secondary_color: Optional[str] = None,
     theme_dark_mode: Optional[bool] = None,
     theme_colored_header: bool = None
-) -&gt; True</span>:
+) -&gt; Literal[True]</span>:
     </div>
 
                 <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">update_appearance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">theme_primary_color</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">theme_secondary_color</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">theme_dark_mode</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">theme_colored_header</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">True</span><span class="p">:</span>
+            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">update_appearance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">theme_primary_color</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">theme_secondary_color</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">theme_dark_mode</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">theme_colored_header</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;t.Literal[True]&#39;</span><span class="p">:</span>
         <span class="n">post_data</span> <span class="o">=</span> <span class="p">{}</span>
 
 
@@ -1105,12 +1105,12 @@ objects have these properties.</p>
     file: &lt;class &#39;BinaryIO&#39;&gt;,
     file_name: str = &#39;logo&#39;,
     file_type: Literal[&#39;image/png&#39;, &#39;image/jpeg&#39;, &#39;image/gif&#39;] = &#39;image/png&#39;
-) -&gt; True</span>:
+) -&gt; Literal[True]</span>:
     </div>
 
                 <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">upload_logo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">:</span> <span class="n">BinaryIO</span><span class="p">,</span> <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;logo&quot;</span><span class="p">,</span> <span class="n">file_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;image/png&#39;</span><span class="p">,</span> <span class="s1">&#39;image/jpeg&#39;</span><span class="p">,</span> <span class="s1">&#39;image/gif&#39;</span><span class="p">]</span><span class="o">=</span><span class="s2">&quot;image/png&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">True</span><span class="p">:</span>
+            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">upload_logo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">BinaryIO</span><span class="p">,</span> <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;logo&quot;</span><span class="p">,</span> <span class="n">file_type</span><span class="p">:</span> <span class="s1">&#39;t.Literal[&quot;image/png&quot;, &quot;image/jpeg&quot;, &quot;image/gif&quot;]&#39;</span><span class="o">=</span><span class="s2">&quot;image/png&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;t.Literal[True]&#39;</span><span class="p">:</span>
         <span class="n">raw</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">api_urls</span><span class="p">[</span><span class="s1">&#39;base&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">/logo&quot;</span><span class="p">,</span> <span class="n">files</span><span class="o">=</span><span class="p">{</span> <span class="s2">&quot;logo&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="n">file_type</span><span class="p">)</span> <span class="p">})</span>
 
         <span class="n">parse_request</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span>
@@ -1128,12 +1128,12 @@ objects have these properties.</p>
 
         
             <span class="def">def</span>
-            <span class="name">remove_logo</span><span class="signature">(self) -&gt; True</span>:
+            <span class="name">remove_logo</span><span class="signature">(self) -&gt; Literal[True]</span>:
     </div>
 
                 <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">remove_logo</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">True</span><span class="p">:</span>
+            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">remove_logo</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;t.Literal[True]&#39;</span><span class="p">:</span>
         <span class="n">raw</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">api_urls</span><span class="p">[</span><span class="s1">&#39;base&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">/logo&quot;</span><span class="p">)</span>
         <span class="n">parse_request</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span>
 
@@ -1155,12 +1155,12 @@ objects have these properties.</p>
     file: &lt;class &#39;BinaryIO&#39;&gt;,
     file_name: str = &#39;favicon&#39;,
     file_type: Literal[&#39;image/png&#39;, &#39;image/jpeg&#39;, &#39;image/gif&#39;] = &#39;image/png&#39;
-) -&gt; True</span>:
+) -&gt; Literal[True]</span>:
     </div>
 
                 <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">upload_favicon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">:</span> <span class="n">BinaryIO</span><span class="p">,</span> <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;favicon&quot;</span><span class="p">,</span> <span class="n">file_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;image/png&#39;</span><span class="p">,</span> <span class="s1">&#39;image/jpeg&#39;</span><span class="p">,</span> <span class="s1">&#39;image/gif&#39;</span><span class="p">]</span><span class="o">=</span><span class="s2">&quot;image/png&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">True</span><span class="p">:</span>
+            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">upload_favicon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">BinaryIO</span><span class="p">,</span> <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;favicon&quot;</span><span class="p">,</span> <span class="n">file_type</span><span class="p">:</span> <span class="s1">&#39;t.Literal[&quot;image/png&quot;, &quot;image/jpeg&quot;, &quot;image/gif&quot;]&#39;</span><span class="o">=</span><span class="s2">&quot;image/png&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;t.Literal[True]&#39;</span><span class="p">:</span>
         <span class="n">raw</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">api_urls</span><span class="p">[</span><span class="s1">&#39;base&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">/favicon&quot;</span><span class="p">,</span> <span class="n">files</span><span class="o">=</span><span class="p">{</span> <span class="s2">&quot;favicon&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="n">file_type</span><span class="p">)</span> <span class="p">})</span>
 
         <span class="n">parse_request</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span>
@@ -1178,12 +1178,12 @@ objects have these properties.</p>
 
         
             <span class="def">def</span>
-            <span class="name">remove_favicon</span><span class="signature">(self) -&gt; True</span>:
+            <span class="name">remove_favicon</span><span class="signature">(self) -&gt; Literal[True]</span>:
     </div>
 
                 <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">remove_favicon</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">True</span><span class="p">:</span>
+            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">remove_favicon</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;t.Literal[True]&#39;</span><span class="p">:</span>
         <span class="n">raw</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">api_urls</span><span class="p">[</span><span class="s1">&#39;base&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">/favicon&quot;</span><span class="p">)</span>
         <span class="n">parse_request</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span>
 
@@ -1200,12 +1200,12 @@ objects have these properties.</p>
 
         
             <span class="def">def</span>
-            <span class="name">update_custom_header</span><span class="signature">(self, header: Optional[str] = None) -&gt; True</span>:
+            <span class="name">update_custom_header</span><span class="signature">(self, header: Optional[str] = None) -&gt; Literal[True]</span>:
     </div>
 
                 <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">update_custom_header</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">header</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">True</span><span class="p">:</span>
+            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">update_custom_header</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">header</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;t.Literal[True]&#39;</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__update_settings</span><span class="p">({</span> <span class="s2">&quot;custom_header&quot;</span><span class="p">:</span> <span class="n">header</span> <span class="k">if</span> <span class="n">header</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span> <span class="p">})</span>
 </pre></div>
 
@@ -1219,12 +1219,12 @@ objects have these properties.</p>
 
         
             <span class="def">def</span>
-            <span class="name">update_custom_footer</span><span class="signature">(self, footer: Optional[str] = None) -&gt; True</span>:
+            <span class="name">update_custom_footer</span><span class="signature">(self, footer: Optional[str] = None) -&gt; Literal[True]</span>:
     </div>
 
                 <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">update_custom_footer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">footer</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">True</span><span class="p">:</span>
+            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">update_custom_footer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">footer</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;t.Literal[True]&#39;</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__update_settings</span><span class="p">({</span> <span class="s2">&quot;custom_footer&quot;</span><span class="p">:</span> <span class="n">footer</span> <span class="k">if</span> <span class="n">footer</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span> <span class="p">})</span>
 </pre></div>
 
@@ -1238,12 +1238,12 @@ objects have these properties.</p>
 
         
             <span class="def">def</span>
-            <span class="name">update_custom_css</span><span class="signature">(self, css: Optional[str] = None) -&gt; True</span>:
+            <span class="name">update_custom_css</span><span class="signature">(self, css: Optional[str] = None) -&gt; Literal[True]</span>:
     </div>
 
                 <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">update_custom_css</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">css</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">True</span><span class="p">:</span>
+            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">update_custom_css</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">css</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;t.Literal[True]&#39;</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__update_settings</span><span class="p">({</span> <span class="s2">&quot;custom_header&quot;</span><span class="p">:</span> <span class="n">css</span> <span class="k">if</span> <span class="n">css</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span> <span class="p">})</span>
 </pre></div>
 

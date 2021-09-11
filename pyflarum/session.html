@@ -124,8 +124,8 @@
                 
                         <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">BinaryIO</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">TYPE_CHECKING</span>
-<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+            <div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">typing</span> <span class="k">as</span> <span class="nn">t</span>
+<span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">TYPE_CHECKING</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">.custom_types</span> <span class="kn">import</span> <span class="n">AnyUser</span>
 
 
@@ -161,7 +161,7 @@
 <span class="sd">        The main object that carries the Flarum session.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">forum_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">username_or_email</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">password</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">api_endpoint</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;api&quot;</span><span class="p">,</span> <span class="n">user_agent</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s1">&#39;pyflarum&#39;</span><span class="p">,</span> <span class="n">session_object</span><span class="p">:</span> <span class="s1">&#39;Session | Any&#39;</span><span class="o">=</span><span class="n">Session</span><span class="p">()):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">forum_url</span><span class="p">:</span> <span class="s1">&#39;str&#39;</span><span class="p">,</span> <span class="n">username_or_email</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">password</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">api_endpoint</span><span class="p">:</span> <span class="s1">&#39;str&#39;</span><span class="o">=</span><span class="s2">&quot;api&quot;</span><span class="p">,</span> <span class="n">user_agent</span><span class="p">:</span> <span class="s1">&#39;str&#39;</span><span class="o">=</span><span class="s2">&quot;pyflarum&quot;</span><span class="p">,</span> <span class="n">session_object</span><span class="p">:</span> <span class="s1">&#39;Session | t.Any&#39;</span><span class="o">=</span><span class="n">Session</span><span class="p">()):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            ### Parameters:</span>
 <span class="sd">            - `forum_url` - the forum URL that you want the bot to fetch/update data from.</span>
@@ -199,7 +199,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__str__</span><span class="p">()</span>
 
 
-    <span class="k">def</span> <span class="nf">authenticate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username_or_email</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">password</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">authenticate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username_or_email</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">password</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Authenticates your user. This can be run after `FlarumUser` was initialized, to switch to a different user. You can even change</span>
 <span class="sd">            `FlarumUser.forum_url` to login to another forum.</span>
@@ -237,7 +237,7 @@
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">api_urls</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">api_urls</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Simple, hardcoded `&#39;key: value&#39;` `dict` of Flarum&#39;s API routes for quick access.</span>
 
@@ -265,7 +265,7 @@
 
 
 <span class="k">class</span> <span class="nc">FlarumUser</span><span class="p">(</span><span class="n">FlarumSession</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">extensions</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">ExtensionMixin</span><span class="p">]]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">extensions</span><span class="p">:</span> <span class="s1">&#39;t.Optional[t.List[ExtensionMixin]]&#39;</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            ### Parameters:</span>
 <span class="sd">            - `forum_url` - the forum URL that you want the bot to fetch/update data from. This mustn&#39;t end with trailing slash (e. g.: https://domain.tld/ - wrong; https://domain.tld - correct).</span>
@@ -312,7 +312,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">username</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">username_or_email</span>
 
 
-    <span class="k">def</span> <span class="nf">_fetch_user_data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">_fetch_user_data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Fetches your user&#39;s JSON data.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -343,7 +343,7 @@
         <span class="k">return</span> <span class="kc">None</span>
 
 
-    <span class="k">def</span> <span class="nf">_update_user_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;FlarumUser | User&#39;</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">_update_user_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_data</span><span class="p">:</span> <span class="s1">&#39;dict&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="s1">&#39;FlarumUser&#39;</span><span class="p">,</span> <span class="n">User</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Updates your user data with new data, if the data belongs to you.</span>
 <span class="sd">            Then returns updated `FlarumUser`.</span>
@@ -361,7 +361,6 @@
             <span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">_fetched_data</span><span class="o">=</span><span class="n">new_data</span><span class="p">)</span>
 
             <span class="k">return</span> <span class="n">user</span>
-
 
 
     <span class="k">def</span> <span class="nf">get_forum_data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Forum</span><span class="p">:</span>
@@ -412,7 +411,7 @@
         <span class="k">return</span> <span class="n">Post</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">_fetched_data</span><span class="o">=</span><span class="n">json</span><span class="p">)</span>
 
 
-    <span class="k">def</span> <span class="nf">get_discussions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Filter</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Discussions</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">get_discussions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">Filter</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Discussions</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Obtains all discussions from `/api/discussions`, optionally filtering results by using `filter`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -429,7 +428,7 @@
         <span class="k">return</span> <span class="n">Discussions</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">_fetched_data</span><span class="o">=</span><span class="n">json</span><span class="p">)</span>
 
 
-    <span class="k">def</span> <span class="nf">get_posts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Filter</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">get_posts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">Filter</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Posts</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Obtains all posts from `/api/posts`, optionally filtering results by using `filter`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -446,7 +445,7 @@
         <span class="k">return</span> <span class="n">Posts</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">_fetched_data</span><span class="o">=</span><span class="n">json</span><span class="p">)</span>
 
 
-    <span class="k">def</span> <span class="nf">get_users</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="n">Filter</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Users</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">get_users</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="s1">&#39;Filter&#39;</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Users</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Obtains all users from `/api/users`, optionally filtering results by using `filter`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -464,7 +463,7 @@
         <span class="k">return</span> <span class="n">Users</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">_fetched_data</span><span class="o">=</span><span class="n">json</span><span class="p">)</span>
 
 
-    <span class="k">def</span> <span class="nf">get_notifications</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Filter</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Notifications</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">get_notifications</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">Filter</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Notifications</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Obtains all of your notifications from `/api/notifications`, optionally filtering results by using `filter`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -482,7 +481,7 @@
         <span class="k">return</span> <span class="n">Notifications</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">_fetched_data</span><span class="o">=</span><span class="n">json</span><span class="p">)</span>
 
 
-    <span class="k">def</span> <span class="nf">mark_all_discussions_as_read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">at</span><span class="p">:</span> <span class="n">datetime</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">())</span> <span class="o">-&gt;</span> <span class="n">Literal</span><span class="p">[</span><span class="kc">True</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">mark_all_discussions_as_read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">at</span><span class="p">:</span> <span class="s1">&#39;datetime&#39;</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">())</span> <span class="o">-&gt;</span> <span class="s1">&#39;t.Literal[True]&#39;</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Marks all discussions as read.</span>
 
@@ -507,7 +506,7 @@
         <span class="k">return</span> <span class="kc">True</span>
 
 
-    <span class="k">def</span> <span class="nf">mark_all_notifications_as_read</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Literal</span><span class="p">[</span><span class="kc">True</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">mark_all_notifications_as_read</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;t.Literal[True]&#39;</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Marks all notifications as read. Returns `True` when successful.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -531,7 +530,7 @@
         <span class="k">return</span> <span class="n">Groups</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">_fetched_data</span><span class="o">=</span><span class="n">json</span><span class="p">)</span>
 
 
-    <span class="k">def</span> <span class="nf">update_user_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;AnyUser&#39;</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">new_username</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">groups</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;list[str | int] | list[Group] | Groups&#39;</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;FlarumUser | User&#39;</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">update_user_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;AnyUser&#39;</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">new_username</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">groups</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]],</span> <span class="n">t</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">Group</span><span class="p">],</span> <span class="n">Groups</span><span class="p">]]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="s1">&#39;FlarumUser&#39;</span><span class="p">,</span> <span class="n">User</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Updates the info of a user (this can be your user or someone else).</span>
 
@@ -554,7 +553,7 @@
                 <span class="s2">&quot;attributes&quot;</span><span class="p">:</span> <span class="p">{},</span>
                 <span class="s2">&quot;relationships&quot;</span><span class="p">:</span> <span class="p">{}</span>
             <span class="p">}</span>
-        <span class="p">}</span> <span class="c1"># type: dict[str, dict[str, dict]]</span>
+        <span class="p">}</span> <span class="c1"># type: t.Dict[str, t.Dict[str, dict]]</span>
 
 
         <span class="k">if</span> <span class="n">new_username</span><span class="p">:</span>
@@ -571,7 +570,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_user_data</span><span class="p">(</span><span class="n">new_data</span><span class="o">=</span><span class="n">json</span><span class="p">)</span>
 
 
-    <span class="k">def</span> <span class="nf">send_password_reset_email</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;FlarumUser | User&#39;</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">send_password_reset_email</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="s1">&#39;FlarumUser&#39;</span><span class="p">,</span> <span class="n">User</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Allows you to send yourself a password reset E-mail.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -585,7 +584,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_user_data</span><span class="p">(</span><span class="n">new_data</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">json</span><span class="p">))</span>
 
 
-    <span class="k">def</span> <span class="nf">update_preferences</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">preferences</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="n">user</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;AnyUser&#39;</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;FlarumUser | User&#39;</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">update_preferences</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">preferences</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Iterable</span><span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">]],</span> <span class="n">user</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;AnyUser&#39;</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="s1">&#39;FlarumUser&#39;</span><span class="p">,</span> <span class="n">User</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Updates an user&#39;s preferences.</span>
 
@@ -616,7 +615,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_user_data</span><span class="p">(</span><span class="n">new_data</span><span class="o">=</span><span class="n">json</span><span class="p">)</span>
 
 
-    <span class="k">def</span> <span class="nf">change_email</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_email</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">password_confirmation</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;AnyUser&#39;</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;FlarumUser | User&#39;</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">change_email</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_email</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">password_confirmation</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;AnyUser&#39;</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="s1">&#39;FlarumUser&#39;</span><span class="p">,</span> <span class="n">User</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Changes your E-mail. If `user` is specified, then that user&#39;s E-mail is changed.</span>
 
@@ -645,7 +644,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_user_data</span><span class="p">(</span><span class="n">new_data</span><span class="o">=</span><span class="n">json</span><span class="p">)</span>
 
 
-    <span class="k">def</span> <span class="nf">upload_user_avatar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">:</span> <span class="n">BinaryIO</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;AnyUser&#39;</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;avatar&quot;</span><span class="p">,</span> <span class="n">file_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;image/png&#39;</span><span class="p">,</span> <span class="s1">&#39;image/jpeg&#39;</span><span class="p">,</span> <span class="s1">&#39;image/gif&#39;</span><span class="p">]</span><span class="o">=</span><span class="s2">&quot;image/png&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;FlarumUser | User&#39;</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">upload_user_avatar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">BinaryIO</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;AnyUser&#39;</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;avatar&quot;</span><span class="p">,</span> <span class="n">file_type</span><span class="p">:</span> <span class="s1">&#39;t.Literal[&quot;image/png&quot;, &quot;image/jpeg&quot;, &quot;image/gif&quot;]&#39;</span><span class="o">=</span><span class="s2">&quot;image/png&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="s1">&#39;FlarumUser&#39;</span><span class="p">,</span> <span class="n">User</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Uploads an avatar for yourself. If `user` is specified, then avatar of that user is changed.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -659,7 +658,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_user_data</span><span class="p">(</span><span class="n">new_data</span><span class="o">=</span><span class="n">json</span><span class="p">)</span>
 
 
-    <span class="k">def</span> <span class="nf">remove_user_avatar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;AnyUser&#39;</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;FlarumUser | User&#39;</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">remove_user_avatar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;AnyUser&#39;</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="s1">&#39;FlarumUser&#39;</span><span class="p">,</span> <span class="n">User</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Removes your user&#39;s avatar. If `user` is specified, then avatar of that user is removed.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -690,7 +689,7 @@
 <span class="sd">        The main object that carries the Flarum session.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">forum_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">username_or_email</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">password</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">api_endpoint</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;api&quot;</span><span class="p">,</span> <span class="n">user_agent</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s1">&#39;pyflarum&#39;</span><span class="p">,</span> <span class="n">session_object</span><span class="p">:</span> <span class="s1">&#39;Session | Any&#39;</span><span class="o">=</span><span class="n">Session</span><span class="p">()):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">forum_url</span><span class="p">:</span> <span class="s1">&#39;str&#39;</span><span class="p">,</span> <span class="n">username_or_email</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">password</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">api_endpoint</span><span class="p">:</span> <span class="s1">&#39;str&#39;</span><span class="o">=</span><span class="s2">&quot;api&quot;</span><span class="p">,</span> <span class="n">user_agent</span><span class="p">:</span> <span class="s1">&#39;str&#39;</span><span class="o">=</span><span class="s2">&quot;pyflarum&quot;</span><span class="p">,</span> <span class="n">session_object</span><span class="p">:</span> <span class="s1">&#39;Session | t.Any&#39;</span><span class="o">=</span><span class="n">Session</span><span class="p">()):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            ### Parameters:</span>
 <span class="sd">            - `forum_url` - the forum URL that you want the bot to fetch/update data from.</span>
@@ -728,7 +727,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__str__</span><span class="p">()</span>
 
 
-    <span class="k">def</span> <span class="nf">authenticate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username_or_email</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">password</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">authenticate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username_or_email</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">password</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Authenticates your user. This can be run after `FlarumUser` was initialized, to switch to a different user. You can even change</span>
 <span class="sd">            `FlarumUser.forum_url` to login to another forum.</span>
@@ -766,7 +765,7 @@
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">api_urls</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">api_urls</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Simple, hardcoded `&#39;key: value&#39;` `dict` of Flarum&#39;s API routes for quick access.</span>
 
@@ -808,13 +807,13 @@
     password: Optional[str] = None,
     api_endpoint: str = &#39;api&#39;,
     user_agent: str = &#39;pyflarum&#39;,
-    session_object: &#39;Session | Any&#39; = &lt;requests.sessions.Session object&gt;
+    session_object: &#39;Session | t.Any&#39; = &lt;requests.sessions.Session object&gt;
 )</span>
     </div>
 
                 <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">forum_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">username_or_email</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">password</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">api_endpoint</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;api&quot;</span><span class="p">,</span> <span class="n">user_agent</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s1">&#39;pyflarum&#39;</span><span class="p">,</span> <span class="n">session_object</span><span class="p">:</span> <span class="s1">&#39;Session | Any&#39;</span><span class="o">=</span><span class="n">Session</span><span class="p">()):</span>
+            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">forum_url</span><span class="p">:</span> <span class="s1">&#39;str&#39;</span><span class="p">,</span> <span class="n">username_or_email</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">password</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">api_endpoint</span><span class="p">:</span> <span class="s1">&#39;str&#39;</span><span class="o">=</span><span class="s2">&quot;api&quot;</span><span class="p">,</span> <span class="n">user_agent</span><span class="p">:</span> <span class="s1">&#39;str&#39;</span><span class="o">=</span><span class="s2">&quot;pyflarum&quot;</span><span class="p">,</span> <span class="n">session_object</span><span class="p">:</span> <span class="s1">&#39;Session | t.Any&#39;</span><span class="o">=</span><span class="n">Session</span><span class="p">()):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            ### Parameters:</span>
 <span class="sd">            - `forum_url` - the forum URL that you want the bot to fetch/update data from.</span>
@@ -875,7 +874,7 @@
 
                 <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">authenticate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username_or_email</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">password</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">authenticate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username_or_email</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">password</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Authenticates your user. This can be run after `FlarumUser` was initialized, to switch to a different user. You can even change</span>
 <span class="sd">            `FlarumUser.forum_url` to login to another forum.</span>
@@ -930,7 +929,7 @@
                             <div id="FlarumSession.api_urls" class="classattr">
                                             <div class="attr variable"><a class="headerlink" href="#FlarumSession.api_urls">#&nbsp;&nbsp</a>
 
-        <span class="name">api_urls</span><span class="annotation">: dict[str, str]</span>
+        <span class="name">api_urls</span><span class="annotation">: Dict[str, str]</span>
     </div>
 
             <div class="docstring"><p>Simple, hardcoded <code>'key: value'</code> <code>dict</code> of Flarum's API routes for quick access.</p>
@@ -954,7 +953,7 @@ https://github.com/flarum/flarum.github.io/blob/20322c0e6011e4f304ae7e95f41594a0
                 <details>
             <summary>View Source</summary>
             <div class="codehilite"><pre><span></span><span class="k">class</span> <span class="nc">FlarumUser</span><span class="p">(</span><span class="n">FlarumSession</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">extensions</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">ExtensionMixin</span><span class="p">]]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">extensions</span><span class="p">:</span> <span class="s1">&#39;t.Optional[t.List[ExtensionMixin]]&#39;</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            ### Parameters:</span>
 <span class="sd">            - `forum_url` - the forum URL that you want the bot to fetch/update data from. This mustn&#39;t end with trailing slash (e. g.: https://domain.tld/ - wrong; https://domain.tld - correct).</span>
@@ -1001,7 +1000,7 @@ https://github.com/flarum/flarum.github.io/blob/20322c0e6011e4f304ae7e95f41594a0
             <span class="bp">self</span><span class="o">.</span><span class="n">username</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">username_or_email</span>
 
 
-    <span class="k">def</span> <span class="nf">_fetch_user_data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">_fetch_user_data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Fetches your user&#39;s JSON data.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1032,7 +1031,7 @@ https://github.com/flarum/flarum.github.io/blob/20322c0e6011e4f304ae7e95f41594a0
         <span class="k">return</span> <span class="kc">None</span>
 
 
-    <span class="k">def</span> <span class="nf">_update_user_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;FlarumUser | User&#39;</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">_update_user_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_data</span><span class="p">:</span> <span class="s1">&#39;dict&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="s1">&#39;FlarumUser&#39;</span><span class="p">,</span> <span class="n">User</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Updates your user data with new data, if the data belongs to you.</span>
 <span class="sd">            Then returns updated `FlarumUser`.</span>
@@ -1050,7 +1049,6 @@ https://github.com/flarum/flarum.github.io/blob/20322c0e6011e4f304ae7e95f41594a0
             <span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">_fetched_data</span><span class="o">=</span><span class="n">new_data</span><span class="p">)</span>
 
             <span class="k">return</span> <span class="n">user</span>
-
 
 
     <span class="k">def</span> <span class="nf">get_forum_data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Forum</span><span class="p">:</span>
@@ -1101,7 +1099,7 @@ https://github.com/flarum/flarum.github.io/blob/20322c0e6011e4f304ae7e95f41594a0
         <span class="k">return</span> <span class="n">Post</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">_fetched_data</span><span class="o">=</span><span class="n">json</span><span class="p">)</span>
 
 
-    <span class="k">def</span> <span class="nf">get_discussions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Filter</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Discussions</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">get_discussions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">Filter</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Discussions</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Obtains all discussions from `/api/discussions`, optionally filtering results by using `filter`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1118,7 +1116,7 @@ https://github.com/flarum/flarum.github.io/blob/20322c0e6011e4f304ae7e95f41594a0
         <span class="k">return</span> <span class="n">Discussions</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">_fetched_data</span><span class="o">=</span><span class="n">json</span><span class="p">)</span>
 
 
-    <span class="k">def</span> <span class="nf">get_posts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Filter</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">get_posts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">Filter</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Posts</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Obtains all posts from `/api/posts`, optionally filtering results by using `filter`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1135,7 +1133,7 @@ https://github.com/flarum/flarum.github.io/blob/20322c0e6011e4f304ae7e95f41594a0
         <span class="k">return</span> <span class="n">Posts</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">_fetched_data</span><span class="o">=</span><span class="n">json</span><span class="p">)</span>
 
 
-    <span class="k">def</span> <span class="nf">get_users</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="n">Filter</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Users</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">get_users</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="s1">&#39;Filter&#39;</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Users</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Obtains all users from `/api/users`, optionally filtering results by using `filter`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1153,7 +1151,7 @@ https://github.com/flarum/flarum.github.io/blob/20322c0e6011e4f304ae7e95f41594a0
         <span class="k">return</span> <span class="n">Users</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">_fetched_data</span><span class="o">=</span><span class="n">json</span><span class="p">)</span>
 
 
-    <span class="k">def</span> <span class="nf">get_notifications</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Filter</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Notifications</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">get_notifications</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">Filter</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Notifications</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Obtains all of your notifications from `/api/notifications`, optionally filtering results by using `filter`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1171,7 +1169,7 @@ https://github.com/flarum/flarum.github.io/blob/20322c0e6011e4f304ae7e95f41594a0
         <span class="k">return</span> <span class="n">Notifications</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">_fetched_data</span><span class="o">=</span><span class="n">json</span><span class="p">)</span>
 
 
-    <span class="k">def</span> <span class="nf">mark_all_discussions_as_read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">at</span><span class="p">:</span> <span class="n">datetime</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">())</span> <span class="o">-&gt;</span> <span class="n">Literal</span><span class="p">[</span><span class="kc">True</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">mark_all_discussions_as_read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">at</span><span class="p">:</span> <span class="s1">&#39;datetime&#39;</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">())</span> <span class="o">-&gt;</span> <span class="s1">&#39;t.Literal[True]&#39;</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Marks all discussions as read.</span>
 
@@ -1196,7 +1194,7 @@ https://github.com/flarum/flarum.github.io/blob/20322c0e6011e4f304ae7e95f41594a0
         <span class="k">return</span> <span class="kc">True</span>
 
 
-    <span class="k">def</span> <span class="nf">mark_all_notifications_as_read</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Literal</span><span class="p">[</span><span class="kc">True</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">mark_all_notifications_as_read</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;t.Literal[True]&#39;</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Marks all notifications as read. Returns `True` when successful.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1220,7 +1218,7 @@ https://github.com/flarum/flarum.github.io/blob/20322c0e6011e4f304ae7e95f41594a0
         <span class="k">return</span> <span class="n">Groups</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">_fetched_data</span><span class="o">=</span><span class="n">json</span><span class="p">)</span>
 
 
-    <span class="k">def</span> <span class="nf">update_user_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;AnyUser&#39;</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">new_username</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">groups</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;list[str | int] | list[Group] | Groups&#39;</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;FlarumUser | User&#39;</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">update_user_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;AnyUser&#39;</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">new_username</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">groups</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]],</span> <span class="n">t</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">Group</span><span class="p">],</span> <span class="n">Groups</span><span class="p">]]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="s1">&#39;FlarumUser&#39;</span><span class="p">,</span> <span class="n">User</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Updates the info of a user (this can be your user or someone else).</span>
 
@@ -1243,7 +1241,7 @@ https://github.com/flarum/flarum.github.io/blob/20322c0e6011e4f304ae7e95f41594a0
                 <span class="s2">&quot;attributes&quot;</span><span class="p">:</span> <span class="p">{},</span>
                 <span class="s2">&quot;relationships&quot;</span><span class="p">:</span> <span class="p">{}</span>
             <span class="p">}</span>
-        <span class="p">}</span> <span class="c1"># type: dict[str, dict[str, dict]]</span>
+        <span class="p">}</span> <span class="c1"># type: t.Dict[str, t.Dict[str, dict]]</span>
 
 
         <span class="k">if</span> <span class="n">new_username</span><span class="p">:</span>
@@ -1260,7 +1258,7 @@ https://github.com/flarum/flarum.github.io/blob/20322c0e6011e4f304ae7e95f41594a0
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_user_data</span><span class="p">(</span><span class="n">new_data</span><span class="o">=</span><span class="n">json</span><span class="p">)</span>
 
 
-    <span class="k">def</span> <span class="nf">send_password_reset_email</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;FlarumUser | User&#39;</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">send_password_reset_email</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="s1">&#39;FlarumUser&#39;</span><span class="p">,</span> <span class="n">User</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Allows you to send yourself a password reset E-mail.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1274,7 +1272,7 @@ https://github.com/flarum/flarum.github.io/blob/20322c0e6011e4f304ae7e95f41594a0
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_user_data</span><span class="p">(</span><span class="n">new_data</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">json</span><span class="p">))</span>
 
 
-    <span class="k">def</span> <span class="nf">update_preferences</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">preferences</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="n">user</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;AnyUser&#39;</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;FlarumUser | User&#39;</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">update_preferences</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">preferences</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Iterable</span><span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">]],</span> <span class="n">user</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;AnyUser&#39;</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="s1">&#39;FlarumUser&#39;</span><span class="p">,</span> <span class="n">User</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Updates an user&#39;s preferences.</span>
 
@@ -1305,7 +1303,7 @@ https://github.com/flarum/flarum.github.io/blob/20322c0e6011e4f304ae7e95f41594a0
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_user_data</span><span class="p">(</span><span class="n">new_data</span><span class="o">=</span><span class="n">json</span><span class="p">)</span>
 
 
-    <span class="k">def</span> <span class="nf">change_email</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_email</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">password_confirmation</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;AnyUser&#39;</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;FlarumUser | User&#39;</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">change_email</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_email</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">password_confirmation</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;AnyUser&#39;</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="s1">&#39;FlarumUser&#39;</span><span class="p">,</span> <span class="n">User</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Changes your E-mail. If `user` is specified, then that user&#39;s E-mail is changed.</span>
 
@@ -1334,7 +1332,7 @@ https://github.com/flarum/flarum.github.io/blob/20322c0e6011e4f304ae7e95f41594a0
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_user_data</span><span class="p">(</span><span class="n">new_data</span><span class="o">=</span><span class="n">json</span><span class="p">)</span>
 
 
-    <span class="k">def</span> <span class="nf">upload_user_avatar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">:</span> <span class="n">BinaryIO</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;AnyUser&#39;</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;avatar&quot;</span><span class="p">,</span> <span class="n">file_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;image/png&#39;</span><span class="p">,</span> <span class="s1">&#39;image/jpeg&#39;</span><span class="p">,</span> <span class="s1">&#39;image/gif&#39;</span><span class="p">]</span><span class="o">=</span><span class="s2">&quot;image/png&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;FlarumUser | User&#39;</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">upload_user_avatar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">BinaryIO</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;AnyUser&#39;</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;avatar&quot;</span><span class="p">,</span> <span class="n">file_type</span><span class="p">:</span> <span class="s1">&#39;t.Literal[&quot;image/png&quot;, &quot;image/jpeg&quot;, &quot;image/gif&quot;]&#39;</span><span class="o">=</span><span class="s2">&quot;image/png&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="s1">&#39;FlarumUser&#39;</span><span class="p">,</span> <span class="n">User</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Uploads an avatar for yourself. If `user` is specified, then avatar of that user is changed.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1348,7 +1346,7 @@ https://github.com/flarum/flarum.github.io/blob/20322c0e6011e4f304ae7e95f41594a0
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_user_data</span><span class="p">(</span><span class="n">new_data</span><span class="o">=</span><span class="n">json</span><span class="p">)</span>
 
 
-    <span class="k">def</span> <span class="nf">remove_user_avatar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;AnyUser&#39;</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;FlarumUser | User&#39;</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">remove_user_avatar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;AnyUser&#39;</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="s1">&#39;FlarumUser&#39;</span><span class="p">,</span> <span class="n">User</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Removes your user&#39;s avatar. If `user` is specified, then avatar of that user is removed.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1371,14 +1369,14 @@ https://github.com/flarum/flarum.github.io/blob/20322c0e6011e4f304ae7e95f41594a0
 
         
             <span class="name">FlarumUser</span><span class="signature">(
-    extensions: Optional[list[<a href="extensions.html#ExtensionMixin">pyflarum.extensions.ExtensionMixin</a>]] = None,
+    extensions: Optional[List[<a href="extensions.html#ExtensionMixin">pyflarum.extensions.ExtensionMixin</a>]] = None,
     **kwargs
 )</span>
     </div>
 
                 <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">extensions</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">ExtensionMixin</span><span class="p">]]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">extensions</span><span class="p">:</span> <span class="s1">&#39;t.Optional[t.List[ExtensionMixin]]&#39;</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            ### Parameters:</span>
 <span class="sd">            - `forum_url` - the forum URL that you want the bot to fetch/update data from. This mustn&#39;t end with trailing slash (e. g.: https://domain.tld/ - wrong; https://domain.tld - correct).</span>
@@ -1572,7 +1570,7 @@ https://github.com/flarum/flarum.github.io/blob/20322c0e6011e4f304ae7e95f41594a0
 
                 <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">get_discussions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Filter</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Discussions</span><span class="p">:</span>
+            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">get_discussions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">Filter</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Discussions</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Obtains all discussions from `/api/discussions`, optionally filtering results by using `filter`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1601,12 +1599,15 @@ https://github.com/flarum/flarum.github.io/blob/20322c0e6011e4f304ae7e95f41594a0
 
         
             <span class="def">def</span>
-            <span class="name">get_posts</span><span class="signature">(self, filter: Optional[<a href="flarum/core/filters.html#Filter">pyflarum.flarum.core.filters.Filter</a>] = None)</span>:
+            <span class="name">get_posts</span><span class="signature">(
+    self,
+    filter: Optional[<a href="flarum/core/filters.html#Filter">pyflarum.flarum.core.filters.Filter</a>] = None
+) -&gt; <a href="flarum/core/posts.html#Posts">pyflarum.flarum.core.posts.Posts</a></span>:
     </div>
 
                 <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">get_posts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Filter</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">get_posts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">Filter</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Posts</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Obtains all posts from `/api/posts`, optionally filtering results by using `filter`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1643,7 +1644,7 @@ https://github.com/flarum/flarum.github.io/blob/20322c0e6011e4f304ae7e95f41594a0
 
                 <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">get_users</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="n">Filter</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Users</span><span class="p">:</span>
+            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">get_users</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="s1">&#39;Filter&#39;</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Users</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Obtains all users from `/api/users`, optionally filtering results by using `filter`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1681,7 +1682,7 @@ https://github.com/flarum/flarum.github.io/blob/20322c0e6011e4f304ae7e95f41594a0
 
                 <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">get_notifications</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Filter</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Notifications</span><span class="p">:</span>
+            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">get_notifications</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">Filter</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Notifications</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Obtains all of your notifications from `/api/notifications`, optionally filtering results by using `filter`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1713,13 +1714,13 @@ https://github.com/flarum/flarum.github.io/blob/20322c0e6011e4f304ae7e95f41594a0
             <span class="def">def</span>
             <span class="name">mark_all_discussions_as_read</span><span class="signature">(
     self,
-    at: datetime.datetime = datetime.datetime(2021, 8, 28, 17, 15, 16, 976687)
+    at: datetime.datetime = datetime.datetime(2021, 9, 11, 8, 32, 3, 305206)
 ) -&gt; Literal[True]</span>:
     </div>
 
                 <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">mark_all_discussions_as_read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">at</span><span class="p">:</span> <span class="n">datetime</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">())</span> <span class="o">-&gt;</span> <span class="n">Literal</span><span class="p">[</span><span class="kc">True</span><span class="p">]:</span>
+            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">mark_all_discussions_as_read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">at</span><span class="p">:</span> <span class="s1">&#39;datetime&#39;</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">())</span> <span class="o">-&gt;</span> <span class="s1">&#39;t.Literal[True]&#39;</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Marks all discussions as read.</span>
 
@@ -1764,7 +1765,7 @@ because of timezones).</p>
 
                 <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">mark_all_notifications_as_read</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Literal</span><span class="p">[</span><span class="kc">True</span><span class="p">]:</span>
+            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">mark_all_notifications_as_read</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;t.Literal[True]&#39;</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Marks all notifications as read. Returns `True` when successful.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1821,13 +1822,13 @@ because of timezones).</p>
     self,
     user: Optional[ForwardRef(&#39;AnyUser&#39;)] = None,
     new_username: Optional[str] = None,
-    groups: Optional[ForwardRef(&#39;list[str | int] | list[Group] | Groups&#39;)] = None
-) -&gt; &#39;FlarumUser | User&#39;</span>:
+    groups: Union[List[Union[str, int]], NoneType, List[<a href="flarum/core/groups.html#Group">pyflarum.flarum.core.groups.Group</a>], <a href="flarum/core/groups.html#Groups">pyflarum.flarum.core.groups.Groups</a>] = None
+) -&gt; Union[<a href="#FlarumUser">pyflarum.session.FlarumUser</a>, <a href="flarum/core/users.html#User">pyflarum.flarum.core.users.User</a>]</span>:
     </div>
 
                 <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">update_user_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;AnyUser&#39;</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">new_username</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">groups</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;list[str | int] | list[Group] | Groups&#39;</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;FlarumUser | User&#39;</span><span class="p">:</span>
+            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">update_user_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;AnyUser&#39;</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">new_username</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">groups</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]],</span> <span class="n">t</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">Group</span><span class="p">],</span> <span class="n">Groups</span><span class="p">]]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="s1">&#39;FlarumUser&#39;</span><span class="p">,</span> <span class="n">User</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Updates the info of a user (this can be your user or someone else).</span>
 
@@ -1850,7 +1851,7 @@ because of timezones).</p>
                 <span class="s2">&quot;attributes&quot;</span><span class="p">:</span> <span class="p">{},</span>
                 <span class="s2">&quot;relationships&quot;</span><span class="p">:</span> <span class="p">{}</span>
             <span class="p">}</span>
-        <span class="p">}</span> <span class="c1"># type: dict[str, dict[str, dict]]</span>
+        <span class="p">}</span> <span class="c1"># type: t.Dict[str, t.Dict[str, dict]]</span>
 
 
         <span class="k">if</span> <span class="n">new_username</span><span class="p">:</span>
@@ -1891,12 +1892,14 @@ or just one <code><a href="flarum/core/groups.html#Groups">pyflarum.flarum.core.
 
         
             <span class="def">def</span>
-            <span class="name">send_password_reset_email</span><span class="signature">(self) -&gt; &#39;FlarumUser | User&#39;</span>:
+            <span class="name">send_password_reset_email</span><span class="signature">(
+    self
+) -&gt; Union[<a href="#FlarumUser">pyflarum.session.FlarumUser</a>, <a href="flarum/core/users.html#User">pyflarum.flarum.core.users.User</a>]</span>:
     </div>
 
                 <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">send_password_reset_email</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;FlarumUser | User&#39;</span><span class="p">:</span>
+            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">send_password_reset_email</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="s1">&#39;FlarumUser&#39;</span><span class="p">,</span> <span class="n">User</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Allows you to send yourself a password reset E-mail.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1924,14 +1927,14 @@ or just one <code><a href="flarum/core/groups.html#Groups">pyflarum.flarum.core.
             <span class="def">def</span>
             <span class="name">update_preferences</span><span class="signature">(
     self,
-    preferences: Iterable[tuple[str, Any]],
+    preferences: Iterable[Tuple[str, Any]],
     user: Optional[ForwardRef(&#39;AnyUser&#39;)] = None
-) -&gt; &#39;FlarumUser | User&#39;</span>:
+) -&gt; Union[<a href="#FlarumUser">pyflarum.session.FlarumUser</a>, <a href="flarum/core/users.html#User">pyflarum.flarum.core.users.User</a>]</span>:
     </div>
 
                 <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">update_preferences</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">preferences</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="n">user</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;AnyUser&#39;</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;FlarumUser | User&#39;</span><span class="p">:</span>
+            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">update_preferences</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">preferences</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Iterable</span><span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">]],</span> <span class="n">user</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;AnyUser&#39;</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="s1">&#39;FlarumUser&#39;</span><span class="p">,</span> <span class="n">User</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Updates an user&#39;s preferences.</span>
 
@@ -1981,12 +1984,12 @@ or just one <code><a href="flarum/core/groups.html#Groups">pyflarum.flarum.core.
     new_email: str,
     password_confirmation: str,
     user: Optional[ForwardRef(&#39;AnyUser&#39;)] = None
-) -&gt; &#39;FlarumUser | User&#39;</span>:
+) -&gt; Union[<a href="#FlarumUser">pyflarum.session.FlarumUser</a>, <a href="flarum/core/users.html#User">pyflarum.flarum.core.users.User</a>]</span>:
     </div>
 
                 <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">change_email</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_email</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">password_confirmation</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;AnyUser&#39;</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;FlarumUser | User&#39;</span><span class="p">:</span>
+            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">change_email</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_email</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">password_confirmation</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;AnyUser&#39;</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="s1">&#39;FlarumUser&#39;</span><span class="p">,</span> <span class="n">User</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Changes your E-mail. If `user` is specified, then that user&#39;s E-mail is changed.</span>
 
@@ -2035,12 +2038,12 @@ or just one <code><a href="flarum/core/groups.html#Groups">pyflarum.flarum.core.
     user: Optional[ForwardRef(&#39;AnyUser&#39;)] = None,
     file_name: str = &#39;avatar&#39;,
     file_type: Literal[&#39;image/png&#39;, &#39;image/jpeg&#39;, &#39;image/gif&#39;] = &#39;image/png&#39;
-) -&gt; &#39;FlarumUser | User&#39;</span>:
+) -&gt; Union[<a href="#FlarumUser">pyflarum.session.FlarumUser</a>, <a href="flarum/core/users.html#User">pyflarum.flarum.core.users.User</a>]</span>:
     </div>
 
                 <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">upload_user_avatar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">:</span> <span class="n">BinaryIO</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;AnyUser&#39;</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;avatar&quot;</span><span class="p">,</span> <span class="n">file_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;image/png&#39;</span><span class="p">,</span> <span class="s1">&#39;image/jpeg&#39;</span><span class="p">,</span> <span class="s1">&#39;image/gif&#39;</span><span class="p">]</span><span class="o">=</span><span class="s2">&quot;image/png&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;FlarumUser | User&#39;</span><span class="p">:</span>
+            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">upload_user_avatar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">BinaryIO</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;AnyUser&#39;</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;avatar&quot;</span><span class="p">,</span> <span class="n">file_type</span><span class="p">:</span> <span class="s1">&#39;t.Literal[&quot;image/png&quot;, &quot;image/jpeg&quot;, &quot;image/gif&quot;]&#39;</span><span class="o">=</span><span class="s2">&quot;image/png&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="s1">&#39;FlarumUser&#39;</span><span class="p">,</span> <span class="n">User</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Uploads an avatar for yourself. If `user` is specified, then avatar of that user is changed.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -2069,12 +2072,12 @@ or just one <code><a href="flarum/core/groups.html#Groups">pyflarum.flarum.core.
             <span class="name">remove_user_avatar</span><span class="signature">(
     self,
     user: Optional[ForwardRef(&#39;AnyUser&#39;)] = None
-) -&gt; &#39;FlarumUser | User&#39;</span>:
+) -&gt; Union[<a href="#FlarumUser">pyflarum.session.FlarumUser</a>, <a href="flarum/core/users.html#User">pyflarum.flarum.core.users.User</a>]</span>:
     </div>
 
                 <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">remove_user_avatar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;AnyUser&#39;</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;FlarumUser | User&#39;</span><span class="p">:</span>
+            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">remove_user_avatar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;AnyUser&#39;</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="s1">&#39;FlarumUser&#39;</span><span class="p">,</span> <span class="n">User</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Removes your user&#39;s avatar. If `user` is specified, then avatar of that user is removed.</span>
 <span class="sd">        &quot;&quot;&quot;</span>

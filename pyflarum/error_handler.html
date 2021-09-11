@@ -76,8 +76,8 @@
                 
                         <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">NoReturn</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">TYPE_CHECKING</span>
-<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+            <div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">typing</span> <span class="k">as</span> <span class="nn">t</span>
+<span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">TYPE_CHECKING</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">requests.models</span> <span class="kn">import</span> <span class="n">Response</span>
 
 <span class="kn">from</span> <span class="nn">json.decoder</span> <span class="kn">import</span> <span class="n">JSONDecodeError</span>
@@ -89,7 +89,7 @@
 <span class="sd">        Generic class for all Flarum related errors.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">status</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">code</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">details</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">status</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">code</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">details</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">status</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">code</span> <span class="o">=</span> <span class="n">code</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">details</span> <span class="o">=</span> <span class="n">details</span>
@@ -108,7 +108,7 @@
 
 
 
-<span class="k">def</span> <span class="nf">parse_request</span><span class="p">(</span><span class="n">response</span><span class="p">:</span> <span class="s1">&#39;Response&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;dict | NoReturn | Literal[True]&#39;</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">parse_request</span><span class="p">(</span><span class="n">response</span><span class="p">:</span> <span class="s1">&#39;Response&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">NoReturn</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Parses the request as JSON, raises `FlarumError` if</span>
 <span class="sd">        something went wrong.</span>
@@ -130,13 +130,12 @@
 
 
     <span class="k">if</span> <span class="s1">&#39;errors&#39;</span> <span class="ow">in</span> <span class="n">json</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">handle_errors</span><span class="p">(</span><span class="n">errors</span><span class="o">=</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;errors&#39;</span><span class="p">])</span>
-
+        <span class="k">return</span> <span class="n">handle_errors</span><span class="p">(</span><span class="n">errors</span><span class="o">=</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;errors&#39;</span><span class="p">],</span> <span class="n">status_code</span><span class="o">=</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">json</span>
 
 
-<span class="k">def</span> <span class="nf">handle_errors</span><span class="p">(</span><span class="n">errors</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">status_code</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;Literal[True] | NoReturn&#39;</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">handle_errors</span><span class="p">(</span><span class="n">errors</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">status_code</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">NoReturn</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Handles Flarum &amp; request related errors.</span>
 <span class="sd">        Returns `FlarumError` if an error was found, `True` otherwise.</span>
@@ -177,11 +176,6 @@
 
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">FlarumError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Error </span><span class="si">{</span><span class="n">status</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">code</span><span class="si">}</span><span class="s1"> - </span><span class="si">{</span><span class="n">details</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="p">,</span> <span class="n">code</span><span class="o">=</span><span class="n">code</span><span class="p">,</span> <span class="n">details</span><span class="o">=</span><span class="n">details</span><span class="p">)</span>
-
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="n">FlarumError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Request related error: </span><span class="si">{</span><span class="n">status_code</span><span class="si">}</span><span class="s1"> (https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/</span><span class="si">{</span><span class="n">status_code</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="kc">True</span>
 </pre></div>
 
         </details>
@@ -203,7 +197,7 @@
 <span class="sd">        Generic class for all Flarum related errors.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">status</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">code</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">details</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">status</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">code</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">details</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">status</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">code</span> <span class="o">=</span> <span class="n">code</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">details</span> <span class="o">=</span> <span class="n">details</span>
@@ -231,7 +225,7 @@
 
                 <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">status</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">code</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">details</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">status</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">code</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">details</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">status</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">code</span> <span class="o">=</span> <span class="n">code</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">details</span> <span class="o">=</span> <span class="n">details</span>
@@ -334,14 +328,12 @@
 
         
             <span class="def">def</span>
-            <span class="name">parse_request</span><span class="signature">(
-    response: requests.models.Response
-) -&gt; &#39;dict | NoReturn | Literal[True]&#39;</span>:
+            <span class="name">parse_request</span><span class="signature">(response: &#39;Response&#39;) -&gt; Union[dict, NoReturn]</span>:
     </div>
 
                 <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">parse_request</span><span class="p">(</span><span class="n">response</span><span class="p">:</span> <span class="s1">&#39;Response&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;dict | NoReturn | Literal[True]&#39;</span><span class="p">:</span>
+            <div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">parse_request</span><span class="p">(</span><span class="n">response</span><span class="p">:</span> <span class="s1">&#39;Response&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">NoReturn</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Parses the request as JSON, raises `FlarumError` if</span>
 <span class="sd">        something went wrong.</span>
@@ -363,8 +355,7 @@
 
 
     <span class="k">if</span> <span class="s1">&#39;errors&#39;</span> <span class="ow">in</span> <span class="n">json</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">handle_errors</span><span class="p">(</span><span class="n">errors</span><span class="o">=</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;errors&#39;</span><span class="p">])</span>
-
+        <span class="k">return</span> <span class="n">handle_errors</span><span class="p">(</span><span class="n">errors</span><span class="o">=</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;errors&#39;</span><span class="p">],</span> <span class="n">status_code</span><span class="o">=</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">json</span>
 </pre></div>
@@ -383,14 +374,14 @@ something went wrong.</p>
         
             <span class="def">def</span>
             <span class="name">handle_errors</span><span class="signature">(
-    errors: Optional[list[dict[str, str]]] = None,
+    errors: Optional[List[Dict[str, str]]] = None,
     status_code: Optional[str] = None
-) -&gt; &#39;Literal[True] | NoReturn&#39;</span>:
+) -&gt; NoReturn</span>:
     </div>
 
                 <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">handle_errors</span><span class="p">(</span><span class="n">errors</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">status_code</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;Literal[True] | NoReturn&#39;</span><span class="p">:</span>
+            <div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">handle_errors</span><span class="p">(</span><span class="n">errors</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">status_code</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">NoReturn</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Handles Flarum &amp; request related errors.</span>
 <span class="sd">        Returns `FlarumError` if an error was found, `True` otherwise.</span>
@@ -431,11 +422,6 @@ something went wrong.</p>
 
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">FlarumError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Error </span><span class="si">{</span><span class="n">status</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">code</span><span class="si">}</span><span class="s1"> - </span><span class="si">{</span><span class="n">details</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="p">,</span> <span class="n">code</span><span class="o">=</span><span class="n">code</span><span class="p">,</span> <span class="n">details</span><span class="o">=</span><span class="n">details</span><span class="p">)</span>
-
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="n">FlarumError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Request related error: </span><span class="si">{</span><span class="n">status_code</span><span class="si">}</span><span class="s1"> (https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/</span><span class="si">{</span><span class="n">status_code</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="kc">True</span>
 </pre></div>
 
         </details>

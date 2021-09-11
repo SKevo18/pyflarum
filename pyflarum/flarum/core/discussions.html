@@ -187,10 +187,10 @@
                 
                         <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">NoReturn</span><span class="p">,</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Optional</span>
+            <div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">typing</span> <span class="k">as</span> <span class="nn">t</span>
 
 <span class="c1"># Avoid my greatest enemy in Python: circular import:</span>
-<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+<span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">TYPE_CHECKING</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">...session</span> <span class="kn">import</span> <span class="n">FlarumUser</span>
 
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
@@ -207,7 +207,7 @@
 <span class="sd">        A prepared discussion that can be sent to the API.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="s1">&#39;FlarumUser&#39;</span><span class="p">,</span> <span class="n">title</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">content</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="s1">&#39;FlarumUser&#39;</span><span class="p">,</span> <span class="n">title</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">content</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            ### Parameters:</span>
 <span class="sd">            - `user` - the `pyflarum.session.FlarumUser` object that will create the discussion</span>
@@ -273,9 +273,9 @@
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span> <span class="n">_fetched_data</span><span class="o">=</span><span class="n">_fetched_data</span><span class="p">,</span> <span class="n">_listclass</span><span class="o">=</span><span class="n">DiscussionFromBulk</span><span class="p">,</span> <span class="n">_required_type</span><span class="o">=</span><span class="s1">&#39;discussions&#39;</span><span class="p">)</span>
 
 
-    <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">TYPE_CHECKING</span><span class="p">:</span>
         <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DiscussionFromBulk&#39;</span><span class="p">:</span> <span class="o">...</span>
-        <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="s1">&#39;DiscussionFromBulk&#39;</span><span class="p">]:</span> <span class="o">...</span>
+        <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Iterator</span><span class="p">[</span><span class="s1">&#39;DiscussionFromBulk&#39;</span><span class="p">]:</span> <span class="o">...</span>
 
 
 
@@ -301,7 +301,7 @@
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">title</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">title</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Returns the discussion&#39;s title.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -310,7 +310,7 @@
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">slug</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">slug</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Returns the discussion&#39;s slug</span>
 <span class="sd">            (consists of ID and dash separated words from discussion&#39;s title,</span>
@@ -402,7 +402,7 @@
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">commentCount</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">commentCount</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Obtains the comment count of the discussion.</span>
 
@@ -413,7 +413,7 @@
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">participantCount</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">participantCount</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            The participant count of the discussion. This is</span>
 <span class="sd">            the number of all users that have participated in a</span>
@@ -424,7 +424,7 @@
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">createdAt</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">datetime</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">createdAt</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">datetime</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            The `datetime` of when this discussion was created at.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -435,7 +435,7 @@
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">lastPostedAt</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">datetime</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">lastPostedAt</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">datetime</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            The `datetime` of when the last post in this</span>
 <span class="sd">            discussion was made, e. g. when was this</span>
@@ -448,7 +448,7 @@
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">lastPostNumber</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">lastPostNumber</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Returns the number of the newest post in the</span>
 <span class="sd">            discussion.</span>
@@ -458,7 +458,7 @@
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">lastReadPostNumber</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">lastReadPostNumber</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Number of a post that you&#39;ve last read in the discussion.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -503,7 +503,7 @@
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">lastReadAt</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">datetime</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">lastReadAt</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">datetime</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            The `datetime` when you last read that discussion.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -523,7 +523,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;isHidden&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
 
 
-    <span class="k">def</span> <span class="nf">get_author</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">UserFromNotification</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">get_author</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">UserFromNotification</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Obtains the author of the discussion.</span>
 
@@ -545,7 +545,7 @@
         <span class="k">return</span> <span class="kc">None</span>
 
 
-    <span class="k">def</span> <span class="nf">get_last_posted_user</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">UserFromNotification</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">get_last_posted_user</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">UserFromNotification</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Obtains the user that posted the latest post in the discussion.</span>
 
@@ -566,7 +566,7 @@
         <span class="k">return</span> <span class="kc">None</span>
 
 
-    <span class="k">def</span> <span class="nf">get_first_post</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">PostFromDiscussion</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">get_first_post</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">PostFromDiscussion</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Obtains the first post of the discussion. If no post is found,</span>
 <span class="sd">            `None` is returned.</span>
@@ -654,7 +654,7 @@
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">included</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">included</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Returns raw list of JSON included data.</span>
 
@@ -664,7 +664,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;included&quot;</span><span class="p">,</span> <span class="p">[{}])</span>
 
 
-    <span class="k">def</span> <span class="nf">get_author</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="s1">&#39;Any | Literal[&quot;first_number&quot;]&#39;</span><span class="o">=</span><span class="s1">&#39;first_number&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">UserFromBulk</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">get_author</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">,</span> <span class="s1">&#39;t.Literal[&quot;first_number&quot;]&#39;</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;first_number&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">UserFromBulk</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Obtains the discussion&#39;s author, AKA. the author</span>
 <span class="sd">            of the post with number 1 in a discussion.</span>
@@ -693,7 +693,7 @@
         <span class="k">return</span> <span class="kc">None</span>
 
 
-    <span class="k">def</span> <span class="nf">get_posts</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">PostFromBulk</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">get_posts</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">PostFromBulk</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Returns a list of `pyflarum.flarum.core.posts.PostFromBulk` objects.</span>
 
@@ -704,7 +704,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">all_posts</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
-        <span class="n">raw_posts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">relationships</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;posts&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="p">[{}])</span> <span class="c1"># type: list[dict]</span>
+        <span class="n">raw_posts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">relationships</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;posts&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="p">[{}])</span> <span class="c1"># type: t.List[dict]</span>
 
         <span class="k">for</span> <span class="n">raw_post</span> <span class="ow">in</span> <span class="n">raw_posts</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">raw_post</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;posts&#39;</span><span class="p">:</span>
@@ -720,7 +720,7 @@
         <span class="k">return</span> <span class="n">all_posts</span>
 
 
-    <span class="k">def</span> <span class="nf">get_first_post</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NoReturn</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">get_first_post</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">NoReturn</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            The `Discussion` object does not have the first post&#39;s JSON data in it&#39;s own JSON. Because of Python&#39;s subclass inheritance, this</span>
 <span class="sd">            function was included in `Discussion`, but it does not work!</span>
@@ -755,7 +755,7 @@
 <span class="sd">        A prepared discussion that can be sent to the API.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="s1">&#39;FlarumUser&#39;</span><span class="p">,</span> <span class="n">title</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">content</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="s1">&#39;FlarumUser&#39;</span><span class="p">,</span> <span class="n">title</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">content</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            ### Parameters:</span>
 <span class="sd">            - `user` - the `pyflarum.session.FlarumUser` object that will create the discussion</span>
@@ -822,7 +822,7 @@
 
         
             <span class="name">PreparedDiscussion</span><span class="signature">(
-    user: <a href="../../session.html#FlarumUser">pyflarum.session.FlarumUser</a>,
+    user: &#39;FlarumUser&#39;,
     title: Optional[str] = None,
     content: Optional[str] = None
 )</span>
@@ -830,7 +830,7 @@
 
                 <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="s1">&#39;FlarumUser&#39;</span><span class="p">,</span> <span class="n">title</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">content</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="s1">&#39;FlarumUser&#39;</span><span class="p">,</span> <span class="n">title</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">content</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            ### Parameters:</span>
 <span class="sd">            - `user` - the `pyflarum.session.FlarumUser` object that will create the discussion</span>
@@ -994,9 +994,9 @@ This is the same as <code><a href="#PreparedDiscussion.create">PreparedDiscussio
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span> <span class="n">_fetched_data</span><span class="o">=</span><span class="n">_fetched_data</span><span class="p">,</span> <span class="n">_listclass</span><span class="o">=</span><span class="n">DiscussionFromBulk</span><span class="p">,</span> <span class="n">_required_type</span><span class="o">=</span><span class="s1">&#39;discussions&#39;</span><span class="p">)</span>
 
 
-    <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">TYPE_CHECKING</span><span class="p">:</span>
         <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DiscussionFromBulk&#39;</span><span class="p">:</span> <span class="o">...</span>
-        <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="s1">&#39;DiscussionFromBulk&#39;</span><span class="p">]:</span> <span class="o">...</span>
+        <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Iterator</span><span class="p">[</span><span class="s1">&#39;DiscussionFromBulk&#39;</span><span class="p">]:</span> <span class="o">...</span>
 </pre></div>
 
         </details>
@@ -1009,7 +1009,7 @@ This is the same as <code><a href="#PreparedDiscussion.create">PreparedDiscussio
                                         <div class="attr function"><a class="headerlink" href="#Discussions.__init__">#&nbsp;&nbsp</a>
 
         
-            <span class="name">Discussions</span><span class="signature">(user: <a href="../../session.html#FlarumUser">pyflarum.session.FlarumUser</a>, _fetched_data: dict)</span>
+            <span class="name">Discussions</span><span class="signature">(user: &#39;FlarumUser&#39;, _fetched_data: dict)</span>
     </div>
 
                 <details>
@@ -1082,7 +1082,7 @@ This is the same as <code><a href="#PreparedDiscussion.create">PreparedDiscussio
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">title</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">title</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Returns the discussion&#39;s title.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1091,7 +1091,7 @@ This is the same as <code><a href="#PreparedDiscussion.create">PreparedDiscussio
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">slug</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">slug</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Returns the discussion&#39;s slug</span>
 <span class="sd">            (consists of ID and dash separated words from discussion&#39;s title,</span>
@@ -1408,7 +1408,7 @@ Returns <code>True</code> on success, <code>FlarumError</code> otherwise.</p>
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">commentCount</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">commentCount</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Obtains the comment count of the discussion.</span>
 
@@ -1419,7 +1419,7 @@ Returns <code>True</code> on success, <code>FlarumError</code> otherwise.</p>
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">participantCount</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">participantCount</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            The participant count of the discussion. This is</span>
 <span class="sd">            the number of all users that have participated in a</span>
@@ -1430,7 +1430,7 @@ Returns <code>True</code> on success, <code>FlarumError</code> otherwise.</p>
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">createdAt</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">datetime</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">createdAt</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">datetime</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            The `datetime` of when this discussion was created at.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1441,7 +1441,7 @@ Returns <code>True</code> on success, <code>FlarumError</code> otherwise.</p>
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">lastPostedAt</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">datetime</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">lastPostedAt</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">datetime</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            The `datetime` of when the last post in this</span>
 <span class="sd">            discussion was made, e. g. when was this</span>
@@ -1454,7 +1454,7 @@ Returns <code>True</code> on success, <code>FlarumError</code> otherwise.</p>
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">lastPostNumber</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">lastPostNumber</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Returns the number of the newest post in the</span>
 <span class="sd">            discussion.</span>
@@ -1464,7 +1464,7 @@ Returns <code>True</code> on success, <code>FlarumError</code> otherwise.</p>
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">lastReadPostNumber</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">lastReadPostNumber</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Number of a post that you&#39;ve last read in the discussion.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1509,7 +1509,7 @@ Returns <code>True</code> on success, <code>FlarumError</code> otherwise.</p>
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">lastReadAt</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">datetime</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">lastReadAt</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">datetime</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            The `datetime` when you last read that discussion.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1529,7 +1529,7 @@ Returns <code>True</code> on success, <code>FlarumError</code> otherwise.</p>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;isHidden&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
 
 
-    <span class="k">def</span> <span class="nf">get_author</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">UserFromNotification</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">get_author</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">UserFromNotification</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Obtains the author of the discussion.</span>
 
@@ -1551,7 +1551,7 @@ Returns <code>True</code> on success, <code>FlarumError</code> otherwise.</p>
         <span class="k">return</span> <span class="kc">None</span>
 
 
-    <span class="k">def</span> <span class="nf">get_last_posted_user</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">UserFromNotification</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">get_last_posted_user</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">UserFromNotification</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Obtains the user that posted the latest post in the discussion.</span>
 
@@ -1572,7 +1572,7 @@ Returns <code>True</code> on success, <code>FlarumError</code> otherwise.</p>
         <span class="k">return</span> <span class="kc">None</span>
 
 
-    <span class="k">def</span> <span class="nf">get_first_post</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">PostFromDiscussion</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">get_first_post</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">PostFromDiscussion</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Obtains the first post of the discussion. If no post is found,</span>
 <span class="sd">            `None` is returned.</span>
@@ -1813,7 +1813,7 @@ you delete the discussion for the first time.</p>
 
                 <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">get_author</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">UserFromNotification</span><span class="p">]:</span>
+            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">get_author</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">UserFromNotification</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Obtains the author of the discussion.</span>
 
@@ -1858,7 +1858,7 @@ returned.</p>
 
                 <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">get_last_posted_user</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">UserFromNotification</span><span class="p">]:</span>
+            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">get_last_posted_user</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">UserFromNotification</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Obtains the user that posted the latest post in the discussion.</span>
 
@@ -1901,7 +1901,7 @@ data matches the data of user from notification. If no user is found, <code>None
 
                 <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">get_first_post</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">PostFromDiscussion</span><span class="p">]:</span>
+            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">get_first_post</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">PostFromDiscussion</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Obtains the first post of the discussion. If no post is found,</span>
 <span class="sd">            `None` is returned.</span>
@@ -2102,7 +2102,7 @@ that are not worthy to view such thread.</p>
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">included</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">included</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Returns raw list of JSON included data.</span>
 
@@ -2112,7 +2112,7 @@ that are not worthy to view such thread.</p>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;included&quot;</span><span class="p">,</span> <span class="p">[{}])</span>
 
 
-    <span class="k">def</span> <span class="nf">get_author</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="s1">&#39;Any | Literal[&quot;first_number&quot;]&#39;</span><span class="o">=</span><span class="s1">&#39;first_number&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">UserFromBulk</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">get_author</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">,</span> <span class="s1">&#39;t.Literal[&quot;first_number&quot;]&#39;</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;first_number&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">UserFromBulk</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Obtains the discussion&#39;s author, AKA. the author</span>
 <span class="sd">            of the post with number 1 in a discussion.</span>
@@ -2141,7 +2141,7 @@ that are not worthy to view such thread.</p>
         <span class="k">return</span> <span class="kc">None</span>
 
 
-    <span class="k">def</span> <span class="nf">get_posts</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">PostFromBulk</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">get_posts</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">PostFromBulk</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Returns a list of `pyflarum.flarum.core.posts.PostFromBulk` objects.</span>
 
@@ -2152,7 +2152,7 @@ that are not worthy to view such thread.</p>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">all_posts</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
-        <span class="n">raw_posts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">relationships</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;posts&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="p">[{}])</span> <span class="c1"># type: list[dict]</span>
+        <span class="n">raw_posts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">relationships</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;posts&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="p">[{}])</span> <span class="c1"># type: t.List[dict]</span>
 
         <span class="k">for</span> <span class="n">raw_post</span> <span class="ow">in</span> <span class="n">raw_posts</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">raw_post</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;posts&#39;</span><span class="p">:</span>
@@ -2168,7 +2168,7 @@ that are not worthy to view such thread.</p>
         <span class="k">return</span> <span class="n">all_posts</span>
 
 
-    <span class="k">def</span> <span class="nf">get_first_post</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NoReturn</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">get_first_post</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">NoReturn</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            The `Discussion` object does not have the first post&#39;s JSON data in it&#39;s own JSON. Because of Python&#39;s subclass inheritance, this</span>
 <span class="sd">            function was included in `Discussion`, but it does not work!</span>
@@ -2198,7 +2198,7 @@ inherits properties from all previous discussion-like objects.</p>
                             <div id="Discussion.included" class="classattr">
                                             <div class="attr variable"><a class="headerlink" href="#Discussion.included">#&nbsp;&nbsp</a>
 
-        <span class="name">included</span><span class="annotation">: list[dict]</span>
+        <span class="name">included</span><span class="annotation">: List[dict]</span>
     </div>
 
             <div class="docstring"><p>Returns raw list of JSON included data.</p>
@@ -2215,13 +2215,13 @@ inherits properties from all previous discussion-like objects.</p>
             <span class="def">def</span>
             <span class="name">get_author</span><span class="signature">(
     self,
-    mode: &#39;Any | Literal[&#34;first_number&#34;]&#39; = &#39;first_number&#39;
+    mode: Union[Any, Literal[&#39;first_number&#39;]] = &#39;first_number&#39;
 ) -&gt; <a href="users.html#UserFromBulk">pyflarum.flarum.core.users.UserFromBulk</a></span>:
     </div>
 
                 <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">get_author</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="s1">&#39;Any | Literal[&quot;first_number&quot;]&#39;</span><span class="o">=</span><span class="s1">&#39;first_number&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">UserFromBulk</span><span class="p">:</span>
+            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">get_author</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">,</span> <span class="s1">&#39;t.Literal[&quot;first_number&quot;]&#39;</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;first_number&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">UserFromBulk</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Obtains the discussion&#39;s author, AKA. the author</span>
 <span class="sd">            of the post with number 1 in a discussion.</span>
@@ -2274,12 +2274,12 @@ probably a good idea to also check if the number of the post is 1 - but then aga
 
         
             <span class="def">def</span>
-            <span class="name">get_posts</span><span class="signature">(self) -&gt; list[<a href="posts.html#PostFromBulk">pyflarum.flarum.core.posts.PostFromBulk</a>]</span>:
+            <span class="name">get_posts</span><span class="signature">(self) -&gt; List[<a href="posts.html#PostFromBulk">pyflarum.flarum.core.posts.PostFromBulk</a>]</span>:
     </div>
 
                 <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">get_posts</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">PostFromBulk</span><span class="p">]:</span>
+            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">get_posts</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">PostFromBulk</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Returns a list of `pyflarum.flarum.core.posts.PostFromBulk` objects.</span>
 
@@ -2290,7 +2290,7 @@ probably a good idea to also check if the number of the post is 1 - but then aga
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">all_posts</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
-        <span class="n">raw_posts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">relationships</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;posts&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="p">[{}])</span> <span class="c1"># type: list[dict]</span>
+        <span class="n">raw_posts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">relationships</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;posts&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="p">[{}])</span> <span class="c1"># type: t.List[dict]</span>
 
         <span class="k">for</span> <span class="n">raw_post</span> <span class="ow">in</span> <span class="n">raw_posts</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">raw_post</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;posts&#39;</span><span class="p">:</span>
@@ -2328,7 +2328,7 @@ but these posts are in fact identical to <code><a href="posts.html#PostFromBulk"
 
                 <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">get_first_post</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NoReturn</span><span class="p">:</span>
+            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">get_first_post</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">NoReturn</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            The `Discussion` object does not have the first post&#39;s JSON data in it&#39;s own JSON. Because of Python&#39;s subclass inheritance, this</span>
 <span class="sd">            function was included in `Discussion`, but it does not work!</span>

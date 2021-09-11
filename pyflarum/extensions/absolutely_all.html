@@ -85,8 +85,8 @@
                 
                         <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Generator</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">TYPE_CHECKING</span>
-<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+            <div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">typing</span> <span class="k">as</span> <span class="nn">t</span>
+<span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">TYPE_CHECKING</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">..flarum.core.notifications</span> <span class="kn">import</span> <span class="n">Notifications</span>
     <span class="kn">from</span> <span class="nn">..flarum.core.discussions</span> <span class="kn">import</span> <span class="n">Discussions</span>
     <span class="kn">from</span> <span class="nn">..flarum.core.posts</span> <span class="kn">import</span> <span class="n">Posts</span>
@@ -114,7 +114,7 @@
 
 
 <span class="k">class</span> <span class="nc">AbsolutelyAllFlarumUserMixin</span><span class="p">(</span><span class="n">FlarumUser</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">absolutely_all_users</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Filter</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>  <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">[</span><span class="s1">&#39;Users&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">absolutely_all_users</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">Filter</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>  <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="s1">&#39;Users&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            A generator that yields `Users` from entire forum, until there are `None` left. `Filter` compatible.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -140,7 +140,7 @@
                 <span class="k">break</span>
 
 
-    <span class="k">def</span> <span class="nf">absolutely_all_posts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Filter</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">[</span><span class="s1">&#39;Posts&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">absolutely_all_posts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">Filter</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="s1">&#39;Posts&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            A generator that yields `Posts` from entire forum, until there are `None` left. `Filter` compatible.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -166,7 +166,7 @@
                 <span class="k">break</span>
 
 
-    <span class="k">def</span> <span class="nf">absolutely_all_discussions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Filter</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">[</span><span class="s1">&#39;Discussions&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">absolutely_all_discussions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">Filter</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="s1">&#39;Discussions&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            A generator that yields `Discussions` from entire forum, until there are `None` left. `Filter` compatible.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -192,7 +192,7 @@
                 <span class="k">break</span>
 
 
-    <span class="k">def</span> <span class="nf">absolutely_all_notifications</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Filter</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">[</span><span class="s1">&#39;Notifications&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">absolutely_all_notifications</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">Filter</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="s1">&#39;Notifications&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            A generator that yields all of your `Notifications`, until there are `None` left. `Filter` compatible.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -218,7 +218,7 @@
                 <span class="k">break</span>
     
 
-    <span class="k">def</span> <span class="nf">get_all_posts_from_discussion</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">discussion</span><span class="p">:</span> <span class="n">Discussion</span><span class="p">,</span> <span class="n">at_once</span><span class="p">:</span> <span class="nb">int</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">force</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">[</span><span class="s1">&#39;Posts&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">get_all_posts_from_discussion</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">discussion</span><span class="p">:</span> <span class="n">Discussion</span><span class="p">,</span> <span class="n">at_once</span><span class="p">:</span> <span class="nb">int</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">force</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="s1">&#39;Posts&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            This fetches all posts from a long discussion where only post IDs are present.</span>
 
@@ -237,12 +237,12 @@
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;`at_once` was capped at 50, because Flarum (by default/currently) doesn&#39;t support fetching more than 50 entires at once from API. Use `force=True` to bypass.&quot;</span><span class="p">)</span>
 
 
-        <span class="n">raw_posts</span> <span class="o">=</span> <span class="n">discussion</span><span class="o">.</span><span class="n">relationships</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;posts&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="p">[])</span> <span class="c1"># type: list[dict]</span>
-        <span class="n">post_ids</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># type: list[int]</span>
+        <span class="n">raw_posts</span> <span class="o">=</span> <span class="n">discussion</span><span class="o">.</span><span class="n">relationships</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;posts&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="p">[])</span> <span class="c1"># type: t.List[dict]</span>
+        <span class="n">post_ids</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># type: t.List[int]</span>
 
 
         <span class="k">for</span> <span class="n">raw_post</span> <span class="ow">in</span> <span class="n">raw_posts</span><span class="p">:</span>
-            <span class="n">post_id</span> <span class="o">=</span> <span class="n">raw_post</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="c1"># type: Optional[int]</span>
+            <span class="n">post_id</span> <span class="o">=</span> <span class="n">raw_post</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="c1"># type: t.Optional[int]</span>
 
             <span class="k">if</span> <span class="n">post_id</span><span class="p">:</span>
                 <span class="n">post_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">post_id</span><span class="p">)</span>
@@ -292,7 +292,7 @@
                 <details>
             <summary>View Source</summary>
             <div class="codehilite"><pre><span></span><span class="k">class</span> <span class="nc">AbsolutelyAllFlarumUserMixin</span><span class="p">(</span><span class="n">FlarumUser</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">absolutely_all_users</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Filter</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>  <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">[</span><span class="s1">&#39;Users&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">absolutely_all_users</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">Filter</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>  <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="s1">&#39;Users&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            A generator that yields `Users` from entire forum, until there are `None` left. `Filter` compatible.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -318,7 +318,7 @@
                 <span class="k">break</span>
 
 
-    <span class="k">def</span> <span class="nf">absolutely_all_posts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Filter</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">[</span><span class="s1">&#39;Posts&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">absolutely_all_posts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">Filter</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="s1">&#39;Posts&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            A generator that yields `Posts` from entire forum, until there are `None` left. `Filter` compatible.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -344,7 +344,7 @@
                 <span class="k">break</span>
 
 
-    <span class="k">def</span> <span class="nf">absolutely_all_discussions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Filter</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">[</span><span class="s1">&#39;Discussions&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">absolutely_all_discussions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">Filter</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="s1">&#39;Discussions&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            A generator that yields `Discussions` from entire forum, until there are `None` left. `Filter` compatible.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -370,7 +370,7 @@
                 <span class="k">break</span>
 
 
-    <span class="k">def</span> <span class="nf">absolutely_all_notifications</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Filter</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">[</span><span class="s1">&#39;Notifications&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">absolutely_all_notifications</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">Filter</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="s1">&#39;Notifications&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            A generator that yields all of your `Notifications`, until there are `None` left. `Filter` compatible.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -396,7 +396,7 @@
                 <span class="k">break</span>
     
 
-    <span class="k">def</span> <span class="nf">get_all_posts_from_discussion</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">discussion</span><span class="p">:</span> <span class="n">Discussion</span><span class="p">,</span> <span class="n">at_once</span><span class="p">:</span> <span class="nb">int</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">force</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">[</span><span class="s1">&#39;Posts&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">get_all_posts_from_discussion</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">discussion</span><span class="p">:</span> <span class="n">Discussion</span><span class="p">,</span> <span class="n">at_once</span><span class="p">:</span> <span class="nb">int</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">force</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="s1">&#39;Posts&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            This fetches all posts from a long discussion where only post IDs are present.</span>
 
@@ -415,12 +415,12 @@
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;`at_once` was capped at 50, because Flarum (by default/currently) doesn&#39;t support fetching more than 50 entires at once from API. Use `force=True` to bypass.&quot;</span><span class="p">)</span>
 
 
-        <span class="n">raw_posts</span> <span class="o">=</span> <span class="n">discussion</span><span class="o">.</span><span class="n">relationships</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;posts&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="p">[])</span> <span class="c1"># type: list[dict]</span>
-        <span class="n">post_ids</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># type: list[int]</span>
+        <span class="n">raw_posts</span> <span class="o">=</span> <span class="n">discussion</span><span class="o">.</span><span class="n">relationships</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;posts&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="p">[])</span> <span class="c1"># type: t.List[dict]</span>
+        <span class="n">post_ids</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># type: t.List[int]</span>
 
 
         <span class="k">for</span> <span class="n">raw_post</span> <span class="ow">in</span> <span class="n">raw_posts</span><span class="p">:</span>
-            <span class="n">post_id</span> <span class="o">=</span> <span class="n">raw_post</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="c1"># type: Optional[int]</span>
+            <span class="n">post_id</span> <span class="o">=</span> <span class="n">raw_post</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="c1"># type: t.Optional[int]</span>
 
             <span class="k">if</span> <span class="n">post_id</span><span class="p">:</span>
                 <span class="n">post_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">post_id</span><span class="p">)</span>
@@ -444,12 +444,12 @@
             <span class="name">absolutely_all_users</span><span class="signature">(
     self,
     filter: Optional[<a href="../flarum/core/filters.html#Filter">pyflarum.flarum.core.filters.Filter</a>] = None
-) -&gt; Generator[<a href="../flarum/core/users.html#Users">pyflarum.flarum.core.users.Users</a>, NoneType, NoneType]</span>:
+) -&gt; Generator[ForwardRef(&#39;Users&#39;), NoneType, NoneType]</span>:
     </div>
 
                 <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">absolutely_all_users</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Filter</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>  <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">[</span><span class="s1">&#39;Users&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">absolutely_all_users</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">Filter</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>  <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="s1">&#39;Users&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            A generator that yields `Users` from entire forum, until there are `None` left. `Filter` compatible.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -490,12 +490,12 @@
             <span class="name">absolutely_all_posts</span><span class="signature">(
     self,
     filter: Optional[<a href="../flarum/core/filters.html#Filter">pyflarum.flarum.core.filters.Filter</a>] = None
-) -&gt; Generator[<a href="../flarum/core/posts.html#Posts">pyflarum.flarum.core.posts.Posts</a>, NoneType, NoneType]</span>:
+) -&gt; Generator[ForwardRef(&#39;Posts&#39;), NoneType, NoneType]</span>:
     </div>
 
                 <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">absolutely_all_posts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Filter</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">[</span><span class="s1">&#39;Posts&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">absolutely_all_posts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">Filter</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="s1">&#39;Posts&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            A generator that yields `Posts` from entire forum, until there are `None` left. `Filter` compatible.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -536,12 +536,12 @@
             <span class="name">absolutely_all_discussions</span><span class="signature">(
     self,
     filter: Optional[<a href="../flarum/core/filters.html#Filter">pyflarum.flarum.core.filters.Filter</a>] = None
-) -&gt; Generator[<a href="../flarum/core/discussions.html#Discussions">pyflarum.flarum.core.discussions.Discussions</a>, NoneType, NoneType]</span>:
+) -&gt; Generator[ForwardRef(&#39;Discussions&#39;), NoneType, NoneType]</span>:
     </div>
 
                 <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">absolutely_all_discussions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Filter</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">[</span><span class="s1">&#39;Discussions&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">absolutely_all_discussions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">Filter</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="s1">&#39;Discussions&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            A generator that yields `Discussions` from entire forum, until there are `None` left. `Filter` compatible.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -582,12 +582,12 @@
             <span class="name">absolutely_all_notifications</span><span class="signature">(
     self,
     filter: Optional[<a href="../flarum/core/filters.html#Filter">pyflarum.flarum.core.filters.Filter</a>] = None
-) -&gt; Generator[<a href="../flarum/core/notifications.html#Notifications">pyflarum.flarum.core.notifications.Notifications</a>, NoneType, NoneType]</span>:
+) -&gt; Generator[ForwardRef(&#39;Notifications&#39;), NoneType, NoneType]</span>:
     </div>
 
                 <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">absolutely_all_notifications</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Filter</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">[</span><span class="s1">&#39;Notifications&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">absolutely_all_notifications</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">Filter</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="s1">&#39;Notifications&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            A generator that yields all of your `Notifications`, until there are `None` left. `Filter` compatible.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -630,12 +630,12 @@
     discussion: <a href="../flarum/core/discussions.html#Discussion">pyflarum.flarum.core.discussions.Discussion</a>,
     at_once: int = 50,
     force: bool = False
-) -&gt; Generator[<a href="../flarum/core/posts.html#Posts">pyflarum.flarum.core.posts.Posts</a>, NoneType, NoneType]</span>:
+) -&gt; Generator[ForwardRef(&#39;Posts&#39;), NoneType, NoneType]</span>:
     </div>
 
                 <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">get_all_posts_from_discussion</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">discussion</span><span class="p">:</span> <span class="n">Discussion</span><span class="p">,</span> <span class="n">at_once</span><span class="p">:</span> <span class="nb">int</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">force</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">[</span><span class="s1">&#39;Posts&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+            <div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">get_all_posts_from_discussion</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">discussion</span><span class="p">:</span> <span class="n">Discussion</span><span class="p">,</span> <span class="n">at_once</span><span class="p">:</span> <span class="nb">int</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">force</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Generator</span><span class="p">[</span><span class="s1">&#39;Posts&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            This fetches all posts from a long discussion where only post IDs are present.</span>
 
@@ -654,12 +654,12 @@
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;`at_once` was capped at 50, because Flarum (by default/currently) doesn&#39;t support fetching more than 50 entires at once from API. Use `force=True` to bypass.&quot;</span><span class="p">)</span>
 
 
-        <span class="n">raw_posts</span> <span class="o">=</span> <span class="n">discussion</span><span class="o">.</span><span class="n">relationships</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;posts&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="p">[])</span> <span class="c1"># type: list[dict]</span>
-        <span class="n">post_ids</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># type: list[int]</span>
+        <span class="n">raw_posts</span> <span class="o">=</span> <span class="n">discussion</span><span class="o">.</span><span class="n">relationships</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;posts&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="p">[])</span> <span class="c1"># type: t.List[dict]</span>
+        <span class="n">post_ids</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># type: t.List[int]</span>
 
 
         <span class="k">for</span> <span class="n">raw_post</span> <span class="ow">in</span> <span class="n">raw_posts</span><span class="p">:</span>
-            <span class="n">post_id</span> <span class="o">=</span> <span class="n">raw_post</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="c1"># type: Optional[int]</span>
+            <span class="n">post_id</span> <span class="o">=</span> <span class="n">raw_post</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="c1"># type: t.Optional[int]</span>
 
             <span class="k">if</span> <span class="n">post_id</span><span class="p">:</span>
                 <span class="n">post_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">post_id</span><span class="p">)</span>
