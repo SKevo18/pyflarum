@@ -6,9 +6,6 @@ from .models.discussions import DB_Discussion
 from .models.posts import DB_Post
 
 
-MODELS = {DB_Discussion, DB_Post} # type: t.Set[Model]
-
-
 
 class FlarumDatabase:
     def __init__(self, database: Database, extensions: t.Optional[t.Iterable]=None):
@@ -16,5 +13,10 @@ class FlarumDatabase:
 
 
     def get_discussions(self, *fields) -> t.Iterator[DB_Discussion]:
-        with self.database as database:
-            return (DB_Discussion.select(*fields).execute(database))
+        with self.database.atomic():
+            return (DB_Discussion.select(*fields).execute(self.database))
+
+
+    def get_posts(self, *fields) -> t.Iterator[DB_Post]:
+        with self.database.atomic():
+            return (DB_Post.select(*fields).execute(self.database))

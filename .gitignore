@@ -19,3 +19,4 @@ dist/
 
 # Personal:
 .env
+*.db
