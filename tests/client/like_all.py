@@ -4,10 +4,10 @@ load_dotenv()
 import os
 #import time
 
-from pyflarum import FlarumUser
-from pyflarum.extensions.flarum import Flarum_Likes
-from pyflarum.extensions import absolutely_all
-from pyflarum.flarum.core.posts import Post
+from pyflarum.client import FlarumUser
+from pyflarum.client.extensions.flarum import Flarum_Likes
+from pyflarum.client.extensions import absolutely_all
+from pyflarum.client.flarum.core.posts import Post
 
 
 USER = FlarumUser(

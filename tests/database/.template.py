@@ -1,9 +1,10 @@
 from peewee import SqliteDatabase
 
-from pyflarum.database.session import FlarumDatabase
+from pyflarum.database.session import FlarumDatabaseSession
 
 
-DATABASE = FlarumDatabase(SqliteDatabase('tests/database/database.db'))
+DATABASE = FlarumDatabaseSession(SqliteDatabase('tests/database/database.db'))
+
 
 
 if __name__ == "__main__":

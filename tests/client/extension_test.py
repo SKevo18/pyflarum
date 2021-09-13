@@ -4,9 +4,9 @@ load_dotenv()
 import os
 from datetime import datetime
 
-from pyflarum import FlarumUser
-from pyflarum.extensions import admin
-from pyflarum.extensions.flarum import Malago_Achievements
+from pyflarum.client import FlarumUser
+from pyflarum.client.extensions import admin
+from pyflarum.client.extensions.flarum import Malago_Achievements
 
 EXTENSIONS = [
     Malago_Achievements.AchievementsExtension,
@@ -14,12 +14,12 @@ EXTENSIONS = [
 ]
 
 
-user = FlarumUser(forum_url=os.environ['forum_url'], username_or_email='test', password=os.environ['account_password'], extensions=EXTENSIONS) # type: admin.AdminFlarumUserMixin | Malago_Achievements.AchievementsAdminFlarumUserMixin
+USER = FlarumUser(forum_url=os.environ['forum_url'], username_or_email='test', password=os.environ['account_password'], extensions=EXTENSIONS) # type: admin.AdminFlarumUserMixin | Malago_Achievements.AchievementsAdminFlarumUserMixin
 
 
 if __name__ == "__main__":
     # Update forum info:
-    user.update_forum_info(
+    USER.update_forum_info(
         forum_description="Peppa Pig",
         forum_title="Hi, I am Peppa Pig *oink*",
         welcome_title="This is my little brother George",
@@ -29,18 +29,18 @@ if __name__ == "__main__":
     )
 
     # Clear custom header:
-    user.update_custom_header()
+    USER.update_custom_header()
 
     # Dynamic example: updating custom header to current time
-    user.update_custom_footer(f'<div style="text-align: center; padding: 20px 0;">Extension test was last run at {datetime.now()}</div>')
+    USER.update_custom_footer(f'<div style="text-align: center; padding: 20px 0;">Extension test was last run at {datetime.now()}</div>')
 
     # Validation test: raise FlarumError on invalid CSS:
-    user.update_custom_css('I am invalid.')
+    USER.update_custom_css('I am invalid.')
 
 
     # Enable achievements extension:
-    user.enable_extension(Malago_Achievements.ID)
-    all_achievements = user.get_all_achievements()
+    USER.enable_extension(Malago_Achievements.ID)
+    all_achievements = USER.get_all_achievements()
 
     name = "test achievement"
 
@@ -55,4 +55,4 @@ if __name__ == "__main__":
 
     # Create an achievement
     if can_create:
-        user.create_achievement(name="test achievements", description="owo", computation="year:1", points=100, image_url_or_fa_icon="fas fa-magic")
+        USER.create_achievement(name="test achievements", description="owo", computation="year:1", points=100, image_url_or_fa_icon="fas fa-magic")

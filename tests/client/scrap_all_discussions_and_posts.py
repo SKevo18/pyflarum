@@ -10,19 +10,20 @@ from pathlib import Path
 
 from requests_cache.session import CachedSession
 
-from pyflarum import FlarumUser
-from pyflarum.flarum.core.filters import Filter
+from pyflarum.client import FlarumUser
+from pyflarum.client.flarum.core.filters import Filter
 
-from pyflarum.extensions import absolutely_all
+from pyflarum.client.extensions import absolutely_all
 
 EXTENSIONS = [
     absolutely_all.AbsolutelyAllExtension
 ]
 
 
-def scrap_all(file_name: t.Union[str, bytes, Path]="scrapped.html"):
-    USER = FlarumUser(forum_url=os.environ['forum_url'], extensions=EXTENSIONS, session_object=CachedSession()) # type: absolutely_all.AbsolutelyAllFlarumUserMixin
+USER = FlarumUser(forum_url=os.environ['forum_url'], extensions=EXTENSIONS, session_object=CachedSession()) # type: absolutely_all.AbsolutelyAllFlarumUserMixin
 
+
+def scrap_all(file_name: t.Union[str, bytes, Path]="scrapped.html"):
     with open(file_name, 'w', encoding='UTF-8') as scrap:
         header = f"""<html><head><title>All discussions from {USER.forum_url}</title></head><body><div style="margin: 2rem 0; text-align: center; color: blue;"><h1>All discussions from <a href="{USER.forum_url}">{USER.forum_url}</a> ({datetime.now().strftime(r'%H:%M:%S %d. %m. %Y')})</h1></div><div id="data">\n"""
 

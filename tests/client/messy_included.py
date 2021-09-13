@@ -1,7 +1,7 @@
 from dotenv import load_dotenv
 load_dotenv()
 
-from pyflarum import FlarumUser
+from pyflarum.client import FlarumUser
 
 
 USER = FlarumUser(forum_url="https://discuss.flarum.org")

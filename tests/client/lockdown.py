@@ -3,10 +3,10 @@ load_dotenv()
 
 import os
 
-from pyflarum import FlarumUser
+from pyflarum.client import FlarumUser
 
-from pyflarum.extensions import absolutely_all
-from pyflarum.extensions.flarum import Flarum_Lock
+from pyflarum.client.extensions import absolutely_all
+from pyflarum.client.extensions.flarum import Flarum_Lock
 
 
 EXTENSIONS = [

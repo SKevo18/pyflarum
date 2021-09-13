@@ -3,11 +3,11 @@ load_dotenv()
 
 from pathlib import Path
 
-from pyflarum import FlarumUser
-from pyflarum.flarum.core.filters import Filter
+from pyflarum.client import FlarumUser
+from pyflarum.client.flarum.core.filters import Filter
 
-from pyflarum.extensions import absolutely_all
-from pyflarum.extensions.flarum import Flarum_Tags
+from pyflarum.client.extensions import absolutely_all
+from pyflarum.client.extensions.flarum import Flarum_Tags
 
 
 EXTENSIONS = [
@@ -15,11 +15,11 @@ EXTENSIONS = [
     Flarum_Tags.TagsExtension
 ]
 
-user = FlarumUser(forum_url="https://discuss.flarum.org", extensions=EXTENSIONS) # type: absolutely_all.AbsolutelyAllFlarumUserMixin
+USER = FlarumUser(forum_url="https://discuss.flarum.org", extensions=EXTENSIONS) # type: absolutely_all.AbsolutelyAllFlarumUserMixin
 
 
 def incompatible_extensions():
-    for discussions in user.absolutely_all_discussions(Filter(order_by='createdAt')):
+    for discussions in USER.absolutely_all_discussions(Filter(order_by='createdAt')):
         for discussion in discussions:
             discussion: Flarum_Tags.TagsDiscussionMixin
             tags = discussion.get_tags()

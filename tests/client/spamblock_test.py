@@ -5,11 +5,11 @@ load_dotenv()
 
 import os
 
-from pyflarum import FlarumUser
+from pyflarum.client import FlarumUser
 
-from pyflarum.extensions import admin
-from pyflarum.extensions.flarum import FoF_Spamblock
-from pyflarum.extensions.flarum import Flarum_Suspend
+from pyflarum.client.extensions import admin
+from pyflarum.client.extensions.flarum import FoF_Spamblock
+from pyflarum.client.extensions.flarum import Flarum_Suspend
 
 
 EXTENSIONS = [
@@ -19,13 +19,13 @@ EXTENSIONS = [
 ]
 
 
-user = FlarumUser(forum_url=os.environ['forum_url'], username_or_email='test', password=os.environ['account_password'], extensions=EXTENSIONS)
+USER = FlarumUser(forum_url=os.environ['forum_url'], username_or_email='test', password=os.environ['account_password'], extensions=EXTENSIONS)
 
 
 if __name__ == "__main__":
     id_to_block = 3
 
-    to_block = user.get_user_by_id(id_to_block) # type: FoF_Spamblock.SpamblockUserMixin | Flarum_Suspend.SuspendUserMixin
+    to_block = USER.get_user_by_id(id_to_block) # type: FoF_Spamblock.SpamblockUserMixin | Flarum_Suspend.SuspendUserMixin
     blocked = to_block.spamblock()
     print(f"Success: {blocked}")
 

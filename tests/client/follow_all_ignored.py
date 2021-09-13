@@ -3,12 +3,12 @@ load_dotenv()
 
 import os
 
-from pyflarum import FlarumUser
+from pyflarum.client import FlarumUser
 
-from pyflarum.flarum.core.filters import Filter
+from pyflarum.client.flarum.core.filters import Filter
 
-from pyflarum.extensions import absolutely_all
-from pyflarum.extensions.flarum import Flarum_Subscriptions
+from pyflarum.client.extensions import absolutely_all
+from pyflarum.client.extensions.flarum import Flarum_Subscriptions
 
 
 EXTENSIONS = [
@@ -16,11 +16,11 @@ EXTENSIONS = [
     Flarum_Subscriptions.SubscriptionsExtension
 ]
 
-user = FlarumUser(forum_url=os.environ['forum_url'], username_or_email='test', password=os.environ['account_password'], extensions=EXTENSIONS) # type: absolutely_all.AbsolutelyAllFlarumUserMixin
+USER = FlarumUser(forum_url=os.environ['forum_url'], username_or_email='test', password=os.environ['account_password'], extensions=EXTENSIONS) # type: absolutely_all.AbsolutelyAllFlarumUserMixin
 
 
 def follow_all():
-    for discussions in user.absolutely_all_discussions(Filter(query='is:ignored')):
+    for discussions in USER.absolutely_all_discussions(Filter(query='is:ignored')):
         for discussion in discussions:
             discussion: Flarum_Subscriptions.SubscriptionsDiscussionFromBulkMixin
             discussion = discussion.follow()

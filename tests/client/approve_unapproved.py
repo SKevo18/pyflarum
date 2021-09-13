@@ -4,10 +4,10 @@ load_dotenv()
 import os
 import time
 
-from pyflarum import FlarumUser
+from pyflarum.client import FlarumUser
 
-from pyflarum.extensions import absolutely_all
-from pyflarum.extensions.flarum import Flarum_Approval
+from pyflarum.client.extensions import absolutely_all
+from pyflarum.client.extensions.flarum import Flarum_Approval
 
 
 EXTENSIONS = [
@@ -16,11 +16,11 @@ EXTENSIONS = [
 ]
 
 
-user = FlarumUser(forum_url=os.environ['forum_url'], username_or_email='test', password=os.environ['account_password'], extensions=EXTENSIONS) # type: absolutely_all.AbsolutelyAllFlarumUserMixin
+USER = FlarumUser(forum_url=os.environ['forum_url'], username_or_email='test', password=os.environ['account_password'], extensions=EXTENSIONS) # type: absolutely_all.AbsolutelyAllFlarumUserMixin
 
 
 if __name__ == "__main__":
-    for discussions in user.absolutely_all_discussions():
+    for discussions in USER.absolutely_all_discussions():
         for discussion in discussions:
             full_discussion = discussion.get_full_data()
 

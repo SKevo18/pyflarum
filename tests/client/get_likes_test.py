@@ -3,10 +3,9 @@ load_dotenv()
 
 import os
 
-from pyflarum import FlarumUser
-from pyflarum.extensions.flarum import Flarum_Likes
-from pyflarum.flarum.core.posts import PostFromBulk
-from pyflarum.flarum.core.discussions import Discussion
+from pyflarum.client import FlarumUser
+from pyflarum.client.extensions.flarum import Flarum_Likes
+from pyflarum.client.flarum.core.discussions import Discussion
 
 
 USER = FlarumUser(forum_url=os.environ['forum_url'], username_or_email='test', password=os.environ['account_password'], extensions=[Flarum_Likes.LikesExtension])
