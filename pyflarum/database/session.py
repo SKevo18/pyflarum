@@ -7,6 +7,8 @@ import warnings
 from peewee import *
 from peewee import BaseQuery
 
+from .flarum.core.other import DB_AccessToken
+from .flarum.core.users import DB_User
 from .flarum.core.discussions import DB_Discussion
 from .flarum.core.posts import DB_Post
 
@@ -28,8 +30,8 @@ class FlarumDatabaseSession:
         return self.database.__enter__()
 
 
-    def __exit__(self, **exc):
-        return self.database.__exit__(**exc)
+    def __exit__(self, *exc):
+        return self.database.__exit__(*exc)
 
 
     def _execute_query(self, query: BaseQuery) -> t.Iterator:
@@ -69,6 +71,18 @@ class FlarumDatabase(FlarumDatabaseSession):
 
 
         super().__init__(**kwargs)
+
+
+    def get_access_tokens(self, *fields) -> t.Iterator[DB_AccessToken]:
+        query = DB_AccessToken.select(*fields)
+
+        return self._execute_query(query)
+
+
+    def get_users(self, *fields) -> t.Iterator[DB_User]:
+        query = DB_User.select(*fields)
+
+        return self._execute_query(query)
 
 
     def get_discussions(self, *fields) -> t.Iterator[DB_Discussion]:
