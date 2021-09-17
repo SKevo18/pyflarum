@@ -2,21 +2,26 @@ import typing as t
 if t.TYPE_CHECKING:
     from ..extensions import ExtensionMixin
 
-import warnings
-
-from peewee import *
 from peewee import BaseQuery
+from peewee import *
 
 from .flarum.core.other import DB_AccessToken
 from .flarum.core.users import DB_User
 from .flarum.core.discussions import DB_Discussion
 from .flarum.core.posts import DB_Post
 
-from ..error_handler import MissingExtensionWarning, MissingExtensionError
+from ..extensions import mixin_extensions
 
 
 
 class FlarumDatabaseSession:
+    MODELS = [
+        DB_AccessToken,
+        DB_User,
+        DB_Discussion,
+        DB_Post
+    ] # type: t.Iterable[t.Type[Model]]
+
     def __init__(self, database: Database):
         """
             ### Parameters:
@@ -24,6 +29,9 @@ class FlarumDatabaseSession:
         """
 
         self.database = database
+
+        for model in FlarumDatabaseSession.MODELS:
+            model.bind(self.database)
 
 
     def __enter__(self):
@@ -51,23 +59,7 @@ class FlarumDatabase(FlarumDatabaseSession):
         self.extensions = extensions
 
         if self.extensions:
-            for extension in self.extensions:
-                dependencies = extension.get_dependencies(extension) # type: dict
-
-                hard = dependencies.get("hard", None)
-                soft = dependencies.get("soft", None)
-
-                if hard and len(hard) > 0:
-                    for hard_dependency in hard:
-                        if hard_dependency not in self.extensions:
-                            raise MissingExtensionError(f'`{extension}` hardly depends on `{hard_dependency}`. Please, include that extension too in your extension list.')
-
-                extension.mixin(extension)
-
-                if soft and len(soft) > 0:
-                    for soft_dependency in soft:
-                        if soft_dependency not in self.extensions:
-                            warnings.warn(f'`{extension}` softly depends on `{soft_dependency}`. Some features might be unavailable.', MissingExtensionWarning)
+            mixin_extensions(self.extensions)
 
 
         super().__init__(**kwargs)

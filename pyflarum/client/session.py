@@ -3,8 +3,6 @@ if t.TYPE_CHECKING:
     from .custom_types import AnyUser
 
 
-import warnings
-
 from datetime import datetime
 from requests import Session
 from urllib.parse import urlparse
@@ -22,11 +20,11 @@ from .flarum.core.posts import Post, Posts
 from .flarum.core.filters import Filter
 
 
-from ..error_handler import MissingExtensionWarning, MissingExtensionError, parse_request
+from ..error_handler import parse_request
 from ..datetime_conversions import datetime_to_flarum
 
 
-from ..extensions import ExtensionMixin
+from ..extensions import ExtensionMixin, mixin_extensions
 
 
 
@@ -139,7 +137,7 @@ class FlarumSession:
 
 
 class FlarumUser(FlarumSession, dict):
-    def __init__(self, extensions: 't.Optional[t.List[ExtensionMixin]]'=None, **kwargs):
+    def __init__(self, extensions: t.Optional[t.List[t.Type[ExtensionMixin]]]=None, **kwargs):
         """
             ### Parameters:
             - `forum_url` - the forum URL that you want the bot to fetch/update data from. This mustn't end with trailing slash (e. g.: https://domain.tld/ - wrong; https://domain.tld - correct).
@@ -155,23 +153,7 @@ class FlarumUser(FlarumSession, dict):
         self.extensions = extensions
 
         if self.extensions:
-            for extension in self.extensions:
-                dependencies = extension.get_dependencies(extension) # type: dict
-
-                hard = dependencies.get("hard", None)
-                soft = dependencies.get("soft", None)
-
-                if hard and len(hard) > 0:
-                    for hard_dependency in hard:
-                        if hard_dependency not in self.extensions:
-                            raise MissingExtensionError(f'`{extension}` hardly depends on `{hard_dependency}`. Please, include that extension too in your extension list.')
-
-                extension.mixin(extension)
-
-                if soft and len(soft) > 0:
-                    for soft_dependency in soft:
-                        if soft_dependency not in self.extensions:
-                            warnings.warn(f'`{extension}` softly depends on `{soft_dependency}`. Some features might be unavailable.', MissingExtensionWarning)
+            mixin_extensions(self.extensions)
 
 
         super().__init__(**kwargs)
@@ -217,7 +199,7 @@ class FlarumUser(FlarumSession, dict):
         return None
 
 
-    def _update_user_data(self, new_data: 'dict') -> t.Union['FlarumUser', User]:
+    def _update_user_data(self, new_data: dict) -> t.Union['FlarumUser', User]:
         """
             Updates your user data with new data, if the data belongs to you.
             Then returns updated `FlarumUser`.

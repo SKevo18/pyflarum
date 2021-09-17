@@ -10,6 +10,5 @@ DATABASE = FlarumDatabase(database=SqliteDatabase('tests/database/database.db'))
 
 
 if __name__ == "__main__":
-    for post in DATABASE.get_posts():
-        if post.type == 'comment':
-            print(markdownify(post.content), '\n')
+    for access_token in DATABASE.get_access_tokens():
+        print(access_token.user_id.username, access_token.last_activity_at, access_token.last_ip_address, sep=' | ')

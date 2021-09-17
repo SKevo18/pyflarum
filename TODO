@@ -1,5 +1,5 @@
 - [ ] Finish core stuff - MyUser, Post, etc...
 - [ ] Database:
   - [ ] Fix circular import Discussion <-> Post
-  - [ ] Impossible to access foreign key properties - "query must be bound to database"
+  - [x] Impossible to access foreign key properties - "query must be bound to database"
 - [ ] More extensions

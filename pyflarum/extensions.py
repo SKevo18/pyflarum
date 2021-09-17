@@ -1,5 +1,8 @@
 import typing as t
 
+import warnings
+from .error_handler import MissingExtensionError, MissingExtensionWarning
+
 
 
 class ExtensionMixin:
@@ -60,3 +63,24 @@ class ExtensionMixin:
                 continue
 
             setattr(class_to_patch, f'{prop}', value)
+
+
+
+def mixin_extensions(extensions: t.List[t.Type[ExtensionMixin]]) -> None:
+    for extension in extensions:
+        dependencies = extension.get_dependencies(extension) # type: dict
+
+        hard = dependencies.get("hard", None)
+        soft = dependencies.get("soft", None)
+
+        if hard and len(hard) > 0:
+            for hard_dependency in hard:
+                if hard_dependency not in extensions:
+                    raise MissingExtensionError(f'`{extension}` hardly depends on `{hard_dependency}`. Please, include that extension too in your extension list.')
+
+        extension.mixin(extension)
+
+        if soft and len(soft) > 0:
+            for soft_dependency in soft:
+                if soft_dependency not in extensions:
+                    warnings.warn(f'`{extension}` softly depends on `{soft_dependency}`. Some features might be unavailable.', MissingExtensionWarning)

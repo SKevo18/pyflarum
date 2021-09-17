@@ -5,7 +5,7 @@ if t.TYPE_CHECKING:
 from datetime import datetime
 
 from ..core import BaseFlarumBulkObject, BaseFlarumIndividualObject
-from ...datetime_conversions import flarum_to_datetime
+from ....datetime_conversions import flarum_to_datetime
 
 
 class Users(BaseFlarumBulkObject):
