@@ -51,6 +51,8 @@ class DB_AchievementsFlarumDatabaseMixin(FlarumDatabaseSession):
 
 
 class DB_AchievementsExtension(ExtensionMixin):
+    MODELS = [DB_Achievement]
+
     def get_dependencies(self):
         return {
             "soft": SOFT_DEPENDENCIES,

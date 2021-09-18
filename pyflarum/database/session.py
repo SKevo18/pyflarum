@@ -1,6 +1,4 @@
 import typing as t
-if t.TYPE_CHECKING:
-    from ..extensions import ExtensionMixin
 
 from peewee import BaseQuery
 from peewee import *
@@ -10,7 +8,7 @@ from .flarum.core.users import DB_User
 from .flarum.core.discussions import DB_Discussion
 from .flarum.core.posts import DB_Post
 
-from ..extensions import mixin_extensions
+from ..extensions import bind_extension_models, mixin_extensions, ExtensionMixin
 
 
 
@@ -48,21 +46,20 @@ class FlarumDatabaseSession:
 
 
 class FlarumDatabase(FlarumDatabaseSession):
-    def __init__(self, extensions: t.Optional[t.Iterable['ExtensionMixin']]=None, **kwargs):
+    def __init__(self, extensions: t.Optional[t.Iterable[ExtensionMixin]]=None, **kwargs):
         """
             ### Parameters:
             - `extensions` - Iterable of extensions. The principe is same as it is in `FlarumUser`.
 
-            - `database` - the `Database` object. Recommended is to use [peewee's database classes](https://docs.peewee-orm.com/en/latest/peewee/database.html).
+            - `database` - the `Database` object. It is recommended to use [peewee's database classes](https://docs.peewee-orm.com/en/latest/peewee/database.html).
         """
 
         self.extensions = extensions
+        super().__init__(**kwargs)
 
         if self.extensions:
             mixin_extensions(self.extensions)
-
-
-        super().__init__(**kwargs)
+            self.database = bind_extension_models(self.extensions, self.database)
 
 
     def get_access_tokens(self, *fields) -> t.Iterator[DB_AccessToken]:

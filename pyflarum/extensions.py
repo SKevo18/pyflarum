@@ -1,7 +1,12 @@
 import typing as t
 
 import warnings
+
+from peewee import Database, Model
 from .error_handler import MissingExtensionError, MissingExtensionWarning
+
+
+_DBT = t.TypeVar('_DBT', bound=Database)
 
 
 
@@ -9,6 +14,8 @@ class ExtensionMixin:
     """
         A base class for mixing in custom classes (extensions) into another classes.
     """
+
+    MODELS = [] # type: t.Iterable[Model]
 
     def __init__(self):
         self.name = "Unknown"
@@ -58,11 +65,11 @@ class ExtensionMixin:
             ```
         """
 
-        for prop, value in vars(class_to_mix_in).items():
-            if prop.startswith('__') and skip_protected:
+        for property, value in vars(class_to_mix_in).items():
+            if property.startswith('__') and skip_protected:
                 continue
 
-            setattr(class_to_patch, f'{prop}', value)
+            setattr(class_to_patch, f'{property}', value)
 
 
 
@@ -84,3 +91,12 @@ def mixin_extensions(extensions: t.List[t.Type[ExtensionMixin]]) -> None:
             for soft_dependency in soft:
                 if soft_dependency not in extensions:
                     warnings.warn(f'`{extension}` softly depends on `{soft_dependency}`. Some features might be unavailable.', MissingExtensionWarning)
+
+
+def bind_extension_models(extensions: t.List[t.Type[ExtensionMixin]], database: _DBT) -> _DBT:
+    for extension in extensions:
+        if extension.MODELS and len(extension.MODELS) > 0:
+            database.bind(extension.MODELS)
+
+
+    return database

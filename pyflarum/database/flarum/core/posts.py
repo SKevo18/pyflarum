@@ -8,7 +8,7 @@ from .discussions import DB_Discussion
 
 
 class DB_Post(Model):
-    discussion_id = ForeignKeyField(DB_Discussion, backref='posts') # type: ForeignKeyField | DB_Discussion
+    discussion = ForeignKeyField(DB_Discussion, backref='posts', column_name='discussion_id') # type: ForeignKeyField | DB_Discussion
     """Discussion that this post belongs to."""
 
     number = IntegerField(default=1) # type: IntegerField | int

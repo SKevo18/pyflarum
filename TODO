@@ -1,5 +1,11 @@
 - [ ] Finish core stuff - MyUser, Post, etc...
-- [ ] Database:
-  - [ ] Fix circular import Discussion <-> Post
+- [x] Database bugs:
+  - [x] Fix circular import Discussion <-> Post
   - [x] Impossible to access foreign key properties - "query must be bound to database"
-- [ ] More extensions
+- [ ] Finish core Flarum database structure
+  - [ ] Fix bugs(?)
+  - [ ] Improve perfomance and structure
+- [ ] Move extension constants (`ID`, `AUTHOR`) to `ExtensionMixin` class.
+
+
+- [ ] More extensions - after stable

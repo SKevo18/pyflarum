@@ -1,8 +1,5 @@
-import typing as t
-if t.TYPE_CHECKING:
-    from datetime import datetime
-
 from peewee import *
+from datetime import datetime
 
 from .users import DB_User
 
@@ -11,7 +8,7 @@ from .users import DB_User
 class DB_AccessToken(Model):
     token = CharField(max_length=40, unique=True)
     """The unique access token."""
-    user_id = ForeignKeyField(DB_User, backref='tokens', on_delete='CASCADE', on_update='RESTRICT') # type: ForeignKeyField | DB_User
+    user = ForeignKeyField(DB_User, backref='tokens', on_delete='CASCADE', on_update='RESTRICT', column_name='user_id') # type: ForeignKeyField | DB_User
     """To what user does this token belong to."""
 
     last_activity_at = DateTimeField() # type: DateTimeField | datetime
@@ -32,3 +29,19 @@ class DB_AccessToken(Model):
 
     class Meta:
         table_name = 'access_tokens'
+
+
+
+class DB_APIKey(Model):
+    key = CharField(max_length=100) # type: CharField | str
+
+    allowedips = CharField(null=True) # type: CharField | str
+    scopes = CharField(null=True) # type: CharField | str
+    user = ForeignKeyField(DB_User, backref='api_keys', column_name='user_id') # type: ForeignKeyField | DB_User
+
+    created_at = DateTimeField(default=datetime.now()) # type: DateTimeField | datetime
+    last_activity_at = DateTimeField(null=True) # type: DateTimeField | datetime
+
+
+    class Meta:
+        table_name = 'api_keys'
