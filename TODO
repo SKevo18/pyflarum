@@ -6,6 +6,13 @@
   - [ ] Fix bugs(?)
   - [ ] Improve perfomance and structure
 - [ ] Move extension constants (`ID`, `AUTHOR`) to `ExtensionMixin` class.
+- [ ] Make all client extensions return mixin of classes when using mixed in methods from `FlarumUser` (how database extensions do it - will improve type hints).
+- [ ] Change 1.10 `|` `typing.Union` syntax back to `typing.Union` to support older versions of Python. 1.10 is not even officially out yet geez
+- [ ] Docstrings for everything database related.
+- [ ] Also check TODO in the TODO tree from source.
 
+- [ ] Tests
+- [ ] Release stable version
 
-- [ ] More extensions - after stable
+- [ ] Work on Flarum Archive
+  - [ ] More extensions - after stable, when needed (depends on state of FA)
