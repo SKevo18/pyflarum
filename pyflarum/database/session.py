@@ -1,7 +1,7 @@
 import typing as t
 
-from peewee import *
-from peewee import BaseQuery, ModelSelect
+from sqlmodel import SQLModel, Session
+from sqlalchemy.future import Engine
 
 from .flarum.core.other import DB_AccessToken
 from .flarum.core.users import DB_User
@@ -11,60 +11,27 @@ from .flarum.core.posts import DB_Post
 from ..extensions import bind_extension_models, mixin_extensions, ExtensionMixin
 
 
+_MDL = t.TypeVar('_MDL', bound=SQLModel)
+
+
 
 class FlarumDatabaseSession:
-    MODELS = [
-        DB_AccessToken,
-        DB_User,
-        DB_Discussion,
-        DB_Post
-    ] # type: t.Iterable[t.Type[Model]]
-
-    def __init__(self, database: Database):
+    def __init__(self, engine: Engine):
         """
             ### Parameters:
-            - `database` - the `Database` object. Recommended is to use [peewee's database classes](https://docs.peewee-orm.com/en/latest/peewee/database.html).
+            - `engine` - the `Engine` object (`sqlmodel.create_engine()`).
         """
 
-        self.database = database
-        self._bind_models()
+        self.engine = engine
+        self._create_tables()
 
 
-    def __enter__(self):
-        return self.database.__enter__()
-
-
-    def __exit__(self, *exc):
-        return self.database.__exit__(*exc)
-
-
-    def _execute_query(self, query: BaseQuery) -> t.Iterator:
-        return (query.execute(self.database))
-    
-
-    def _bind_models(self, models: t.Iterable[t.Type[Model]]=MODELS):
-        """
-            Binds `models` to the session's database.
-            
-            This is required especially for `ForeignKeyField`s, as they need to be bound to database
-            in order to call `execute()` when retrieving them.
-        """
-
-        for model in models:
-            model.bind(self.database)
-
-
-    def _create_tables(self, models: t.Iterable[t.Type[Model]]=MODELS):
+    def _create_tables(self):
         """
             Creates the table for `models` for the session's database.
-
-            Please note that pyFlarum wraps the database around an already existing data, and
-            it is not meant to create the database structure from scratch, although I assume that
-            it would just work.
         """
-        # TODO: Test if it works.
 
-        return self.database.create_tables(models)
+        return SQLModel.metadata.create_all(self.engine)
 
 
 
@@ -73,8 +40,6 @@ class FlarumDatabase(FlarumDatabaseSession):
         """
             ### Parameters:
             - `extensions` - Iterable of extensions. The principe is same as it is in `FlarumUser`.
-
-            - `database` - the `Database` object. It is recommended to use [peewee's database classes](https://docs.peewee-orm.com/en/latest/peewee/database.html).
         """
 
         self.extensions = extensions
@@ -85,25 +50,73 @@ class FlarumDatabase(FlarumDatabaseSession):
             self.database = bind_extension_models(self.extensions, self.database)
 
 
-    def get_access_tokens(self, query: bool=False, *fields) -> t.Union[t.Iterator[DB_AccessToken], ModelSelect]:
-        _query = DB_AccessToken.select(*fields) # type: ModelSelect
+    def _generic_filter_query(self, cls: _MDL, session: Session, **filters) -> t.List[_MDL]:
+        """
+            A generic, shorthand function to obtain filtered data from the database.
+        """
 
-        return _query if query else self._execute_query(_query)
-
-
-    def get_users(self, query: bool=False, *fields) -> t.Union[t.Iterator[DB_User], ModelSelect]:
-        _query = DB_User.select(*fields) # type: ModelSelect
-
-        return _query if query else self._execute_query(_query)
+        return session.query(cls).filter_by(**filters).all()
 
 
-    def get_discussions(self, query: bool=False, *fields) -> t.Union[t.Iterator[DB_Discussion], ModelSelect]:
-        _query = DB_Discussion.select(*fields) # type: ModelSelect
+    def get_access_tokens(self, session: Session, **filters) -> t.List[DB_AccessToken]:
+        """
+            Obtains access tokens from the database.
 
-        return _query if query else self._execute_query(_query)
+            ### Parameters:
+            - `**filters` - `key = value` pair of filters.
+
+            ### Example:
+            ```python
+            DATABASE.get_access_tokens(id=1, token='123abc456def')
+            ```
+        """
+
+        return self._generic_filter_query(DB_AccessToken, session, **filters)
 
 
-    def get_posts(self, query: bool=False, *fields) -> t.Union[t.Iterator[DB_Post], ModelSelect]:
-        _query = DB_Post.select(*fields) # type: ModelSelect
+    def get_users(self, session: Session, **filters) -> t.List[DB_User]:
+        """
+            Obtains users from the database.
 
-        return _query if query else self._execute_query(_query)
+            ### Parameters:
+            - `**filters` - `key = value` pair of filters.
+
+            ### Example:
+            ```python
+            DATABASE.get_users(id=1, username='SKevo')
+            ```
+        """
+
+        return self._generic_filter_query(DB_User, session, **filters)
+
+
+    def get_discussions(self, session: Session, **filters) -> t.List[DB_Discussion]:
+        """
+            Obtains discussions from the database.
+
+            ### Parameters:
+            - `**filters` - `key = value` pair of filters.
+
+            ### Example:
+            ```python
+            DATABASE.get_discussions(id=1, title='Hello')
+            ```
+        """
+
+        return self._generic_filter_query(DB_Discussion, session, **filters)
+
+
+    def get_posts(self, **filters) -> t.List[DB_Post]:
+        """
+            Obtains posts from the database.
+
+            ### Parameters:
+            - `**filters` - `key = value` pair of filters.
+
+            ### Example:
+            ```python
+            DATABASE.get_posts(id=1, content='Hello world')
+            ```
+        """
+
+        return self._generic_filter_query(DB_Post, **filters)

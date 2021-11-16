@@ -1,9 +1,9 @@
-from peewee import SqliteDatabase
+from sqlmodel import create_engine
 
 from pyflarum.database.session import FlarumDatabaseSession
 
 
-DATABASE = FlarumDatabaseSession(SqliteDatabase('tests/database/database.db'))
+DATABASE = FlarumDatabaseSession(create_engine('sqlite://tests/database/database.db'))
 
 
 

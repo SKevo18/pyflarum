@@ -2,11 +2,13 @@ import typing as t
 
 import warnings
 
-from peewee import Database, Model
+from sqlmodel import SQLModel
+from sqlalchemy.future import Engine
+
 from .error_handler import MissingExtensionError, MissingExtensionWarning
 
 
-_DBT = t.TypeVar('_DBT', bound=Database)
+_DBT = t.TypeVar('_DBT', bound=Engine)
 
 
 
@@ -15,7 +17,7 @@ class ExtensionMixin:
         A base class for mixing in custom classes (extensions) into another classes.
     """
 
-    MODELS = [] # type: t.Iterable[Model]
+    MODELS = [] # type: t.Iterable[SQLModel]
 
     def __init__(self):
         self.name = "Unknown"

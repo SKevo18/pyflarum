@@ -4,52 +4,57 @@ if t.TYPE_CHECKING:
 
 from .users import DB_User
 
-from peewee import *
+from sqlmodel import SQLModel, Field, Relationship
 from datetime import datetime
 
 
 
-class DB_Discussion(Model):
-    id: t.Union[AutoField, int]
-    """The ID of the discussion."""
-    title = CharField(max_length=200, null=False) # type: CharField | str
-    """The title of the discussion"""
-    comment_count = IntegerField(default=0) # type: IntegerField | int
-    """The comment count of the discussion"""
-    participant_count = IntegerField(default=0) # type: IntegerField | int
-    """The discussion's participant count."""
-    post_number_index = IntegerField(default=0) # type: IntegerField | int
-    # TODO
+class DB_Discussion(SQLModel, table=True):
+    __tablename__ = 'discussions'
+    id: t.Optional[int] = Field(default=None, primary_key=True)
+    """The ID of the discussion. This is handled by the database."""
 
-    created_at = DateTimeField(default=datetime.now) # type: DateTimeField | datetime
+    title: str = Field(max_length=200)
+    """The title of the discussion"""
+    comment_count: int = Field(default=0)
+    """The comment count of the discussion"""
+    participant_count: int = Field(default=0)
+    """The discussion's participant count."""
+    post_number_index: int = Field(default=0)
+    """The post number index of the discussion."""
+
+    created_at: datetime = Field(default=datetime.utcnow())
     """When was this discussion created at"""
 
-    user = ForeignKeyField(DB_User, backref='discussions', column_name='user_id') # type: ForeignKeyField | DB_User
-    """The user that made the discussion."""
-    author = user
-    first_post = DeferredForeignKey(r'DB_Post', column_name='first_post_id') # type: DeferredForeignKey | DB_Post
-    """The first post of the discussion."""
-    posts: t.Iterable['DB_Post']
-    """All posts in the discussion."""
+    user_id: t.Optional[int] = Field(default=None, foreign_key="users.id")
+    author: t.Optional[DB_User] = Relationship(back_populates="discussions")
+    """The discussion's author."""
 
-    last_posted_at = DateTimeField(null=True) # type: DateTimeField | datetime
+    '''
+    first_post_id: t.Optional[int] = Field(default=None, foreign_key="posts.id")
+    """The ID of the first post in the discussion."""
+
+    last_posted_at: t.Optional[datetime] = Field(default=None)
     """When was the last post in this discussion made."""
-    last_posted_user = ForeignKeyField(DB_User, column_name='last_posted_user_id', null=True) # type: ForeignKeyField | DB_User
+    last_posted_user_id: t.Optional[int] = Field(default=None, foreign_key="users.id")
     """The user that last posted in the discussion."""
-    last_post = DeferredForeignKey(r'DB_Post', column_name='last_post_id', null=True) # type: DeferredForeignKey | DB_Post
+    last_post_id: t.Optional[int] = Field(default=None, foreign_key="posts.id")
     """The last post in the discussion."""
-    last_post_number = IntegerField(null=True) # type: IntegerField | int
+    last_post_number: t.Optional[int] = Field(default=None)
 
-    hidden_at = DateTimeField(null=True) # type: DateTimeField | datetime
+    hidden_at: t.Optional[datetime] = Field(default=None)
     """When was this discussion hidden at? `None`/`NULL` means that it is not hidden."""
-    hidden_user = ForeignKeyField(DB_User, column_name='hidden_user_id', null=True) # type: ForeignKeyField | DB_User
-    """The user that hid the discussion."""
+    hidden_user_id: t.Optional[int] = Field(default=None, foreign_key="users.id")
+    """The ID of the user that hid the discussion."""
+    '''
 
-    slug = CharField() # type: CharField | str
+    slug: str = Field(max_length=255)
     """The slug of the discussion."""
 
-    is_private = BooleanField(default=False) # type: BooleanField | bool
+    is_private: bool = Field(default=False)
     """Whether or not the discussion is private."""
+
+    posts: t.List['DB_Post'] = Relationship(back_populates="discussion")
 
 
     @property
@@ -60,12 +65,3 @@ class DB_Discussion(Model):
     @property
     def is_hidden(self):
         return self.hidden_at is None
-
-
-    class Meta:
-        table_name = 'discussions'
-
-
-
-class DB_DiscussionUser(Model):
-    pass
