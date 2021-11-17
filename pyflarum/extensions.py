@@ -25,8 +25,8 @@ class ExtensionMixin:
         self.id = "N/A"
 
 
-    # TODO: Make this not require `self`, e. g. @classmethod
-    def get_dependencies(self) -> t.Dict[str, t.List[object]]:
+    @classmethod
+    def get_dependencies(cls) -> t.Dict[str, t.List[object]]:
         """
             This should return the following `dict`:
             ```python
@@ -52,14 +52,14 @@ class ExtensionMixin:
         }
 
 
-    def mixin(_, class_to_patch: object, class_to_mix_in: object, skip_protected: bool=True):
+    @classmethod
+    def mixin(cls, class_to_patch: object, class_to_mix_in: object, skip_protected: bool=True):
         """
             A function to mix-in/merge properties, methods, functions, etc... of one class into another.
 
             This skips all functions and properties starting with `__` (double underscore), unless `skip_protected` is False.
             
-            This sets/overwrites attributes of `class_to_patch` to attributes of
-            `class_to_mix_in` (monkey-patch).
+            This sets/overwrites attributes of `class_to_patch` to attributes of `class_to_mix_in` (monkey-patch).
 
             ### Example:
             ```python
@@ -77,7 +77,7 @@ class ExtensionMixin:
 
 def mixin_extensions(extensions: t.List[t.Type[ExtensionMixin]]) -> None:
     for extension in extensions:
-        dependencies = extension.get_dependencies(extension) # type: dict
+        dependencies = extension.get_dependencies() # type: dict
 
         hard = dependencies.get("hard", None)
         soft = dependencies.get("soft", None)
@@ -87,18 +87,9 @@ def mixin_extensions(extensions: t.List[t.Type[ExtensionMixin]]) -> None:
                 if hard_dependency not in extensions:
                     raise MissingExtensionError(f'`{extension}` hardly depends on `{hard_dependency}`. Please, include that extension too in your extension list.')
 
-        extension.mixin(extension)
+        extension.mixin()
 
         if soft and len(soft) > 0:
             for soft_dependency in soft:
                 if soft_dependency not in extensions:
                     warnings.warn(f'`{extension}` softly depends on `{soft_dependency}`. Some features might be unavailable.', MissingExtensionWarning)
-
-
-def bind_extension_models(extensions: t.List[t.Type[ExtensionMixin]], database: _DBT) -> _DBT:
-    for extension in extensions:
-        if extension.MODELS and len(extension.MODELS) > 0:
-            database.bind(extension.MODELS)
-
-
-    return database

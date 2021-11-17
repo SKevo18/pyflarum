@@ -1,9 +1,9 @@
 from sqlmodel import create_engine
 
-from pyflarum.database.session import FlarumDatabaseSession
+from pyflarum.database.session import FlarumDatabase
 
 
-DATABASE = FlarumDatabaseSession(create_engine('sqlite://tests/database/database.db'))
+DATABASE = FlarumDatabase(create_engine('sqlite://tests/database/database.db'))
 
 
 

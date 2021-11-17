@@ -1,4 +1,4 @@
-from sqlmodel import create_engine, Session
+from sqlmodel import create_engine
 
 from pyflarum.database.session import FlarumDatabase
 
@@ -9,10 +9,8 @@ DATABASE = FlarumDatabase(engine=ENGINE)
 
 
 if __name__ == "__main__":
-    # TODO: Handle session better, so it doesn't stay open. Use __enter__ and __exit__ in FlarumDatabaseSession class.
-
-    with Session(ENGINE) as session:
-        for user in DATABASE.get_users(session):
+    with DATABASE:
+        for user in DATABASE.get_users():
             if user.discussions:
                 print(user.username, ':', sep='')
 

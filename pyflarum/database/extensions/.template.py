@@ -1,41 +1,37 @@
 from ...extensions import ExtensionMixin
-from ..session import FlarumDatabaseSession
+from ..session import FlarumDatabase
 
-from peewee import *
+import sqlmodel as sql
 
 
-AUTHOR = "unknown"
-NAME = "unknown"
-ID = f"{AUTHOR}-{NAME}"
-
-SOFT_DEPENDENCIES = []
-HARD_DEPENCENDIES = []
+class DB_Example(sql.SQLModel):
+    __tablename__ = ...
 
 
 
-class DB_Example(Model):
-    ...
-
-    class Meta:
-        table_name = ...
-
-
-
-class DB_ExampleFlarumDatabaseMixin(FlarumDatabaseSession):
-    def _example(self) -> ...:
-        query = DB_Example.select()
-
-        return self._execute_query(query)
+class DB_ExampleFlarumDatabaseMixin(FlarumDatabase):
+    def _example(self):
+        return self.session.exec(sql.select(DB_Example)).all()
 
 
 
 class DB_ExampleExtension(ExtensionMixin):
-    def get_dependencies(self):
+    AUTHOR = "unknown"
+    NAME = "unknown"
+    ID = f"{AUTHOR}-{NAME}"
+
+    SOFT_DEPENDENCIES = []
+    HARD_DEPENCENDIES = []
+
+
+    @classmethod
+    def get_dependencies(cls):
         return {
-            "soft": SOFT_DEPENDENCIES,
-            "hard": HARD_DEPENCENDIES
+            "soft": cls.SOFT_DEPENDENCIES,
+            "hard": cls.HARD_DEPENCENDIES
         }
 
 
-    def mixin(self):
-        super().mixin(self, FlarumDatabaseSession, DB_ExampleFlarumDatabaseMixin)
+    @classmethod
+    def mixin(cls):
+        super().mixin(FlarumDatabase, DB_ExampleFlarumDatabaseMixin)
