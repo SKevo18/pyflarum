@@ -26,6 +26,8 @@ Thus, I present to you my first (real) Python package - [pyFlarum](https://pypi.
   - This means that instead of using `discussion['data']['attributes']['title']`, it is as simple as `discussion.title`.
 - Flarum's JSON API works in saving mode. What I mean is that when you fetch a discussion from notification, not all of the discussion's data is present in the JSON. On the other hand, obtaining the discussion directly by it's ID results in a much detailed JSON.
   - To save you headaches, pyFlarum obviously handles this too and all of the objects have different hierarchy and inheritance. Example: `DiscussionFromNotification` is parent for `DiscussionFromBulk` and that's parent for `Discussion`, where `Discussion` object is discussion obtained directly from API, and therefore logically contains all properties of the previous objects (and JSON). This is all nicely rendered thanks to your editor's linting and type hints, so you won't make a mistake by accessing unexisting properties from parent objects. More about pyFlarum's inheritance system and it's flaws can be found [here](https://cwkevo.github.io/pyflarum/docs/#class-inheritance).
+- pyFlarum wraps a small amount of Flarum's database structure by using `sqlmodel`'s ORM.
+  - This means that you can query the database, and pyFlarum will automatically convert the results to pyFlarum's objects.
 
 
 
@@ -123,8 +125,8 @@ USER = FlarumUser(forum_url="https://discuss.flarum.org", username="yourusername
 
 *.env:*
 ```
-username="foo"
-password="hahayouexpectedbarbutno"
+username="spam"
+password="eggs"
 ```
 
 *script.py:*
@@ -342,3 +344,69 @@ You can think of this as a cache in a nutshell, if it's unclear for you. And if 
 because pyFlarum handles everything for you in the background. Unless you are forging this object's JSON data by yourself,
 and you don't pass the parent's included - this would mean that all functions that rely on that will break. I have never spotted any weird stuff by normal
 usage of pyFlarum during testing, but there's perhaps a very tiny chance that this system can possibly bug out.
+
+
+
+# 💾 Database support (since `v1.0.11-beta`)
+
+pyFlarum has also support for the default Flarum database structure (upon installation). This makes it possible to implement pyFlarum in migration scripts, to
+make transition to Flarum easy, fast and fully-automatic.
+
+### 👀 Example:
+
+```python
+from sqlmodel import create_engine
+
+from pyflarum.database import FlarumDatabase
+from pyflarum.database import DB_User
+
+
+ENGINE = create_engine('sqlite:///tests/database/database.db')  # see https://docs.sqlalchemy.org/en/latest/core/engines.html for details on the engine
+DATABASE = FlarumDatabase(engine=ENGINE)
+
+
+
+if __name__ == "__main__":
+    with DATABASE:
+        for user in DATABASE.generic_filter(DB_User, id=1).first():
+            if user.discussions:
+                print(user.username, ':', sep='')
+
+                for discussion in user.discussions:
+                    print('•', discussion.title)
+
+            else:
+                print(user.username, '(no discussions)')
+
+```
+
+**Disclaimer:** Database support is still new and in beta (as the rest of this library anyways).
+
+Database has no support for extensions that are not included in Flarum by default. This is because it is very difficult to maintain the support
+for all the different columns that extensions create - when pyFlarum defines/doesn't define a column that is not/is in the database, it breaks.
+
+It is also technically not possible to monkey-patch database properties the same way it is possible to do in `FlarumUser`.
+
+My vision about the database support is to provide an easy way to create migration scripts to Flarum. You can see my [other repository](https://github.com/CWKevo/pyflarum-migrations) for migrations that have already been created by me.
+
+Contributions to both the migrations and this project are welcome!
+
+
+# 🎁 Support me
+
+I create free software to benefit people.
+If this project helps you and you like it, consider supporting me by donating via cryptocurrency:
+
+- Bitcoin: `bc1q6n7f4mllak9xts355wlyq2n3rce60w2r5aswxa`; `1LMS4u41beDGMb9AXmXzfH7ZkZSwGSkSyx`
+- Ethereum: `0x12C598b3bC084710507c9d6d19C9434fD26864Cc`
+- Litecoin: `LgHQK1NQrRQ56AKvVtSxMubqbjSWh7DTD2`
+- Dash: `Xe7TYoRCYPdZyiQYDjgzCGxR5juPWV8PgZ`
+- Zcash: `t1Pesobv3SShMHGfrZWe926nsnBo2pyqN3f`
+- Dogecoin: `DALxrKSbcCXz619QqLj9qKXFnTp8u2cS12`
+- Ripple: `rNQsgQvMbbBAd957XyDeNudA4jLH1ANERL`
+- Monero: `48TfTddnpgnKBn13MdJNJwHfxDwwGngPgL3v6bNSTwGaXveeaUWzJcMUVrbWUyDSyPDwEJVoup2gmDuskkcFuNG99zatYFS`
+- Bitcoin Cash: `qzx6pqzcltm7ely24wnhpzp65r8ltrqgeuevtrsj9n`
+- Ethereum Classic: `0x383Dc3B83afBD66b4a5e64511525FbFeb2C023Db`
+
+More cryptocurrencies are supported. If you are interested in donating with a different one, please [E-mail me](mailto:me@kevo.link).
+No other forms of donation are currently supported.

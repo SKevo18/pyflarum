@@ -6,12 +6,12 @@ sys.path.append('.')
 import setuptools
 
 
-__description__ = "An unofficial Python package for manipulating with Flarum's API"
+__description__ = "An unofficial Python package for manipulating with Flarum's API & database"
 __author__      = "SKevo"
 __copyright__   = "Copyright (c) 2021, SKevo"
 __credits__     = ["SKevo"]
-__license__     = "GPLv3"
-__version__     = "v1.0.10-beta"
+__license__     = "MIT"
+__version__     = "v1.0.11-beta"
 __maintainer__  = "SKevo"
 __email__       = "me@kevo.link"
 __status__      = "4 - Beta"
@@ -54,7 +54,7 @@ setuptools.setup(
         f'Development Status :: {__status__}',
         'Intended Audience :: Developers',
         'Topic :: Software Development :: Build Tools',
-        'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
+        'License :: OSI Approved :: MIT License',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
