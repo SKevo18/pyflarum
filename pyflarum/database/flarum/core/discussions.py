@@ -16,6 +16,8 @@ class DB_Discussion(SQLModel, table=True):
 
     title: str = Field(max_length=200)
     """The title of the discussion"""
+    slug: str = Field(max_length=255)
+    """The discussion's slug."""
     comment_count: int = Field(default=0)
     """The comment count of the discussion"""
     participant_count: int = Field(default=0)
@@ -30,31 +32,34 @@ class DB_Discussion(SQLModel, table=True):
     author: t.Optional[DB_User] = Relationship(back_populates="discussions")
     """The discussion's author."""
 
-    '''
-    first_post_id: t.Optional[int] = Field(default=None, foreign_key="posts.id")
+    first_post_id: t.Optional[int] = Field(default=None)
     """The ID of the first post in the discussion."""
 
     last_posted_at: t.Optional[datetime] = Field(default=None)
     """When was the last post in this discussion made."""
-    last_posted_user_id: t.Optional[int] = Field(default=None, foreign_key="users.id")
+    last_posted_user_id: t.Optional[int] = Field(default=None)
     """The user that last posted in the discussion."""
-    last_post_id: t.Optional[int] = Field(default=None, foreign_key="posts.id")
+    last_post_id: t.Optional[int] = Field(default=None)
     """The last post in the discussion."""
     last_post_number: t.Optional[int] = Field(default=None)
+    """The number of the last post in the discussion."""
 
     hidden_at: t.Optional[datetime] = Field(default=None)
     """When was this discussion hidden at? `None`/`NULL` means that it is not hidden."""
-    hidden_user_id: t.Optional[int] = Field(default=None, foreign_key="users.id")
+    hidden_user_id: t.Optional[int] = Field(default=None)
     """The ID of the user that hid the discussion."""
-    '''
-
-    slug: str = Field(max_length=255)
-    """The slug of the discussion."""
 
     is_private: bool = Field(default=False)
     """Whether or not the discussion is private."""
 
     posts: t.List['DB_Post'] = Relationship(back_populates="discussion")
+
+    # Extensions:
+    is_locked: bool = Field(default=False)
+    """Whether or not the discussion is locked."""
+    is_sticky: bool = Field(default=False)
+    """Whether or not the discussion is sticky."""
+
 
 
     @property

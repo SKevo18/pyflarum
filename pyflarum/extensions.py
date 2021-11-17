@@ -77,7 +77,7 @@ class ExtensionMixin:
 
 def mixin_extensions(extensions: t.List[t.Type[ExtensionMixin]]) -> None:
     for extension in extensions:
-        dependencies = extension.get_dependencies() # type: dict
+        dependencies = extension.get_dependencies()
 
         hard = dependencies.get("hard", None)
         soft = dependencies.get("soft", None)
