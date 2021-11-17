@@ -6,14 +6,6 @@ from ...flarum.core.posts import Post, PostFromNotification
 from ....error_handler import FlarumError, parse_request
 
 
-AUTHOR = 'flarum'
-NAME = 'approval'
-ID = f"{AUTHOR}-{NAME}"
-
-SOFT_DEPENDENCIES = []
-HARD_DEPENCENDIES = []
-
-
 
 class ApprovalDiscussionFromNotificationMixin(DiscussionFromNotification):
     @property
@@ -76,13 +68,11 @@ class ApprovalExtension(ExtensionMixin):
         https://packagist.org/packages/flarum/approval
     """
 
-    def get_dependencies(self):
-        return {
-            "soft": SOFT_DEPENDENCIES,
-            "hard": HARD_DEPENCENDIES
-        }
+    AUTHOR = 'flarum'
+    NAME = 'approval'
 
 
-    def mixin(self):
-        super().mixin(self, DiscussionFromNotification, ApprovalDiscussionFromNotificationMixin)
-        super().mixin(self, PostFromNotification, ApprovalPostFromNotificationMixin)
+    @classmethod
+    def mixin(cls):
+        super().mixin(DiscussionFromNotification, ApprovalDiscussionFromNotificationMixin)
+        super().mixin(PostFromNotification, ApprovalPostFromNotificationMixin)

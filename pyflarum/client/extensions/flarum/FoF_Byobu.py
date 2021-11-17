@@ -4,14 +4,6 @@ from ...flarum.core.discussions import DiscussionFromBulk
 from ...flarum.core.users import UserFromBulk
 
 
-AUTHOR = 'fof'
-NAME = 'byobu'
-ID = f"{AUTHOR}-{NAME}"
-
-SOFT_DEPENDENCIES = []
-HARD_DEPENCENDIES = []
-
-
 
 class ByobuDiscussionMixin(DiscussionFromBulk):
     @property
@@ -42,13 +34,11 @@ class ByobuUserMixin(UserFromBulk):
 
 
 class ByobuExtension(ExtensionMixin):
-    def get_dependencies(self):
-        return {
-            "soft": SOFT_DEPENDENCIES,
-            "hard": HARD_DEPENCENDIES
-        }
+    AUTHOR = 'fof'
+    NAME = 'byobu'
 
 
-    def mixin(self):
-        super().mixin(self, DiscussionFromBulk, ByobuDiscussionMixin)
-        super().mixin(self, UserFromBulk, ByobuUserMixin)
+    @classmethod
+    def mixin(cls):
+        super().mixin(DiscussionFromBulk, ByobuDiscussionMixin)
+        super().mixin(UserFromBulk, ByobuUserMixin)

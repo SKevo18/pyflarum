@@ -9,14 +9,6 @@ from ....error_handler import parse_request
 from ....datetime_conversions import datetime_to_flarum, flarum_to_datetime
 
 
-AUTHOR = 'flarum'
-NAME = 'suspend'
-ID = f"{AUTHOR}-{NAME}"
-
-SOFT_DEPENDENCIES = []
-HARD_DEPENCENDIES = []
-
-
 
 class SuspendUserMixin(UserFromBulk):
     @property
@@ -62,12 +54,10 @@ class SuspendUserMixin(UserFromBulk):
 
 
 class SuspendExtension(ExtensionMixin):
-    def get_dependencies(self):
-        return {
-            "soft": SOFT_DEPENDENCIES,
-            "hard": HARD_DEPENCENDIES
-        }
+    AUTHOR = 'flarum'
+    NAME = 'suspend'
 
 
-    def mixin(self):
-        super().mixin(self, UserFromBulk, SuspendUserMixin)
+    @classmethod
+    def mixin(cls):
+        super().mixin(UserFromBulk, SuspendUserMixin)

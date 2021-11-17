@@ -1,19 +1,11 @@
 import typing as t
 
-from ...extensions import ExtensionMixin
+from ....extensions import ExtensionMixin
 from ...extensions.admin import AdminExtension, AdminFlarumUserMixin
 
 from ...flarum.core.forum import Forum
 from ...flarum.core import BaseFlarumIndividualObject
 from ....error_handler import parse_request
-
-
-AUTHOR = 'malago'
-NAME = 'achievements'
-ID = f"{AUTHOR}-{NAME}"
-
-SOFT_DEPENDENCIES = [AdminExtension]
-HARD_DEPENCENDIES = []
 
 
 
@@ -150,13 +142,13 @@ class AchievementsAdminFlarumUserMixin(AdminFlarumUserMixin):
 
 
 class AchievementsExtension(ExtensionMixin):
-    def get_dependencies(self):
-        return {
-            "soft": SOFT_DEPENDENCIES,
-            "hard": HARD_DEPENCENDIES
-        }
+    AUTHOR = 'malago'
+    NAME = 'achievements'
+
+    SOFT_DEPENDENCIES = [AdminExtension]
 
 
-    def mixin(self):
-        super().mixin(self, AdminFlarumUserMixin, AchievementsAdminFlarumUserMixin)
-        super().mixin(self, Forum, AchievementsForumMixin)
+    @classmethod
+    def mixin(cls):
+        super().mixin(AdminFlarumUserMixin, AchievementsAdminFlarumUserMixin)
+        super().mixin(Forum, AchievementsForumMixin)

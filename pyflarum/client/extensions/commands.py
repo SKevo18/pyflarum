@@ -6,15 +6,6 @@ from ...extensions import ExtensionMixin
 from ..session import FlarumUser
 
 
-AUTHOR = 'skevo'
-NAME = 'commands'
-ID = f"{AUTHOR}-{NAME}"
-
-
-SOFT_DEPENDENCIES = []
-HARD_DEPENCENDIES = []
-
-
 
 class CommandsFlarumUserMixin(FlarumUser):
     def is_mentioned_in(self, string: str) -> bool:
@@ -53,17 +44,10 @@ class CommandsFlarumUserMixin(FlarumUser):
 
 
 class CommandsExtension(ExtensionMixin, CommandsFlarumUserMixin):
-    def __init__(self):
-        self.name = NAME
-        self.author = AUTHOR
-        self.id = ID
-
-    def get_dependencies(self):
-        return {
-            "soft": SOFT_DEPENDENCIES,
-            "hard": HARD_DEPENCENDIES
-        }
+    AUTHOR = 'skevo'
+    NAME = 'commands'
 
 
-    def mixin(self):
-        super().mixin(self, FlarumUser, CommandsFlarumUserMixin)
+    @classmethod
+    def mixin(cls):
+        super().mixin(FlarumUser, CommandsFlarumUserMixin)

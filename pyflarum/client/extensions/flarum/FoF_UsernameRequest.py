@@ -6,15 +6,6 @@ from ....extensions import ExtensionMixin
 from ...flarum.core.users import UserFromBulk
 
 
-AUTHOR = 'fof'
-NAME = 'username-request'
-ID = f"{AUTHOR}-{NAME}"
-
-
-SOFT_DEPENDENCIES = []
-HARD_DEPENCENDIES = []
-
-
 
 class UsernameRequestUserMixin(UserFromBulk):
     @property
@@ -37,12 +28,10 @@ class UsernameRequestUserMixin(UserFromBulk):
 
 
 class UsernameRequestExtension(ExtensionMixin):
-    def get_dependencies(self):
-        return {
-            "soft": SOFT_DEPENDENCIES,
-            "hard": HARD_DEPENCENDIES
-        }
+    AUTHOR = 'fof'
+    NAME = 'username-request'
 
 
-    def mixin(self):
-        super().mixin(self, UserFromBulk, UsernameRequestUserMixin)
+    @classmethod
+    def mixin(cls):
+        super().mixin(UserFromBulk, UsernameRequestUserMixin)

@@ -4,16 +4,8 @@ from datetime import datetime
 
 from ....extensions import ExtensionMixin
 
-from ...datetime_conversions import flarum_to_datetime
+from ....datetime_conversions import flarum_to_datetime
 from ...flarum.core.discussions import DiscussionFromBulk, DiscussionFromNotification
-
-
-AUTHOR = 'fof'
-NAME = 'best-answer'
-ID = f"{AUTHOR}-{NAME}"
-
-SOFT_DEPENDENCIES = []
-HARD_DEPENCENDIES = []
 
 
 
@@ -39,13 +31,11 @@ class BestAnswerDiscussionMixin(DiscussionFromBulk):
 
 
 class BestAnswerExtension(ExtensionMixin):
-    def get_dependencies(self):
-        return {
-            "soft": SOFT_DEPENDENCIES,
-            "hard": HARD_DEPENCENDIES
-        }
+    AUTHOR = 'fof'
+    NAME = 'best-answer'
 
 
-    def mixin(self):
-        super().mixin(self, DiscussionFromNotification, BestAnswerDiscussionNotificationMixin)
-        super().mixin(self, DiscussionFromBulk, BestAnswerDiscussionMixin)
+    @classmethod
+    def mixin(cls):
+        super().mixin(DiscussionFromNotification, BestAnswerDiscussionNotificationMixin)
+        super().mixin(DiscussionFromBulk, BestAnswerDiscussionMixin)

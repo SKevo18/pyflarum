@@ -3,14 +3,6 @@ from ....extensions import ExtensionMixin
 from ...flarum.core.discussions import DiscussionFromBulk
 
 
-AUTHOR = 'askvortsov'
-NAME = 'reply-templates'
-ID = f"{AUTHOR}-{NAME}"
-
-SOFT_DEPENDENCIES = []
-HARD_DEPENCENDIES = []
-
-
 
 class ReplyTemplatesDiscussionFromBulkMixin(DiscussionFromBulk):
     @property
@@ -37,12 +29,10 @@ class ReplyTemplatesExtension(ExtensionMixin):
         https://extiverse.com/extension/askvortsov/flarum-discussion-templates
     """
 
-    def get_dependencies(self):
-        return {
-            "soft": SOFT_DEPENDENCIES,
-            "hard": HARD_DEPENCENDIES
-        }
+    AUTHOR = 'askvortsov'
+    NAME = 'reply-templates'
 
 
-    def mixin(self):
-        super().mixin(self, DiscussionFromBulk, ReplyTemplatesDiscussionFromBulkMixin)
+    @classmethod
+    def mixin(cls):
+        super().mixin(DiscussionFromBulk, ReplyTemplatesDiscussionFromBulkMixin)

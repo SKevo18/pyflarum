@@ -11,14 +11,6 @@ from ...flarum.core.users import UserFromBulk
 from ....error_handler import parse_request
 
 
-AUTHOR = 'fof'
-NAME = 'user-bio'
-ID = f"{AUTHOR}-{NAME}"
-
-SOFT_DEPENDENCIES = []
-HARD_DEPENCENDIES = []
-
-
 
 class UserBioForumMixin(Forum):
     @property
@@ -66,14 +58,12 @@ class UserBioUserFromBulkMixin(UserFromBulk):
 
 
 class UserBioExtension(ExtensionMixin):
-    def get_dependencies(self):
-        return {
-            "soft": SOFT_DEPENDENCIES,
-            "hard": HARD_DEPENCENDIES
-        }
+    AUTHOR = 'fof'
+    NAME = 'user-bio'
 
 
-    def mixin(self):
-        super().mixin(self, FlarumUser, UserBioFlarumUserMixin)
-        super().mixin(self, UserFromBulk, UserBioUserFromBulkMixin)
-        super().mixin(self, Forum, UserBioForumMixin)
+    @classmethod
+    def mixin(cls):
+        super().mixin(FlarumUser, UserBioFlarumUserMixin)
+        super().mixin(UserFromBulk, UserBioUserFromBulkMixin)
+        super().mixin(Forum, UserBioForumMixin)

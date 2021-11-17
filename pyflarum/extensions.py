@@ -17,12 +17,12 @@ class ExtensionMixin:
         A base class for mixing in custom classes (extensions) into another classes.
     """
 
-    MODELS = [] # type: t.Iterable[SQLModel]
+    AUTHOR = "unknown"
+    NAME = "unknown"
+    ID = f"{AUTHOR}-{NAME}"
 
-    def __init__(self):
-        self.name = "Unknown"
-        self.author = "Unknown"
-        self.id = "N/A"
+    SOFT_DEPENDENCIES = []
+    HARD_DEPENCENDIES = []
 
 
     @classmethod
@@ -47,8 +47,8 @@ class ExtensionMixin:
         """
 
         return {
-            "hard": [],
-            "soft": []
+            "soft": cls.SOFT_DEPENDENCIES,
+            "hard": cls.HARD_DEPENCENDIES
         }
 
 

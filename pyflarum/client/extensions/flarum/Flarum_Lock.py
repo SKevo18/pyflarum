@@ -4,14 +4,6 @@ from ....error_handler import parse_request
 from ...flarum.core.discussions import Discussion, DiscussionFromBulk, DiscussionFromNotification
 
 
-AUTHOR = 'flarum'
-NAME = 'lock'
-ID = f"{AUTHOR}-{NAME}"
-
-SOFT_DEPENDENCIES = []
-HARD_DEPENCENDIES = []
-
-
 
 class LockDiscussionFromNotificationMixin(DiscussionFromNotification):
     def __lock_or_unlock(self, locked: bool=True) -> Discussion:
@@ -79,13 +71,11 @@ class LockExtension(ExtensionMixin):
         https://packagist.org/packages/flarum/lock
     """
 
-    def get_dependencies(self):
-        return {
-            "soft": SOFT_DEPENDENCIES,
-            "hard": HARD_DEPENCENDIES
-        }
+    AUTHOR = 'flarum'
+    NAME = 'lock'
 
 
-    def mixin(self):
-        super().mixin(self, DiscussionFromNotification, LockDiscussionFromNotificationMixin)
-        super().mixin(self, DiscussionFromBulk, LockDiscussionFromBulkMixin)
+    @classmethod
+    def mixin(cls):
+        super().mixin(DiscussionFromNotification, LockDiscussionFromNotificationMixin)
+        super().mixin(DiscussionFromBulk, LockDiscussionFromBulkMixin)

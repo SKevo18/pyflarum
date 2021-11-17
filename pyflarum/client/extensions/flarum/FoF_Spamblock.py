@@ -4,14 +4,6 @@ from ...flarum.core.users import UserFromBulk, UserFromNotification
 from ....error_handler import parse_request
 
 
-AUTHOR = 'fof'
-NAME = 'spamblock'
-ID = f"{AUTHOR}-{NAME}"
-
-SOFT_DEPENDENCIES = []
-HARD_DEPENCENDIES = []
-
-
 
 class SpamblockUserFromNotificationMixin(UserFromNotification):
     def spamblock(self) -> bool:
@@ -30,13 +22,11 @@ class SpamblockUserMixin(UserFromBulk, SpamblockUserFromNotificationMixin):
 
 
 class SpamblockExtension(ExtensionMixin):
-    def get_dependencies(self):
-        return {
-            "soft": SOFT_DEPENDENCIES,
-            "hard": HARD_DEPENCENDIES
-        }
+    AUTHOR = 'fof'
+    NAME = 'spamblock'
 
 
-    def mixin(self):
-        super().mixin(self, UserFromNotification, SpamblockUserFromNotificationMixin)
-        super().mixin(self, UserFromBulk, SpamblockUserMixin)
+    @classmethod
+    def mixin(cls):
+        super().mixin(UserFromNotification, SpamblockUserFromNotificationMixin)
+        super().mixin(UserFromBulk, SpamblockUserMixin)

@@ -4,13 +4,6 @@ from ....error_handler import parse_request
 from ...flarum.core.discussions import Discussion, DiscussionFromNotification, DiscussionFromBulk
 
 
-AUTHOR = 'flarum'
-NAME = 'sticky'
-ID = f"{AUTHOR}-{NAME}"
-
-SOFT_DEPENDENCIES = []
-HARD_DEPENCENDIES = []
-
 
 class StickyDiscussionFromNotificationMixin(DiscussionFromNotification):
     def __stick_or_unstick(self, sticky: bool=True) -> Discussion:
@@ -74,13 +67,11 @@ class StickyDiscussionFromBulkMixin(DiscussionFromBulk, DiscussionFromNotificati
 
 
 class StickyExtension(ExtensionMixin):
-    def get_dependencies(self):
-        return {
-            "soft": SOFT_DEPENDENCIES,
-            "hard": HARD_DEPENCENDIES
-        }
+    AUTHOR = 'flarum'
+    NAME = 'sticky'
 
 
-    def mixin(self):
-        super().mixin(self, DiscussionFromNotification, StickyDiscussionFromNotificationMixin)
-        super().mixin(self, DiscussionFromBulk, StickyDiscussionFromBulkMixin)
+    @classmethod
+    def mixin(cls):
+        super().mixin(DiscussionFromNotification, StickyDiscussionFromNotificationMixin)
+        super().mixin(DiscussionFromBulk, StickyDiscussionFromBulkMixin)

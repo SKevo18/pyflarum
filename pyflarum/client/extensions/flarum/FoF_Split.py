@@ -3,14 +3,6 @@ from ....extensions import ExtensionMixin
 from ...flarum.core.discussions import DiscussionFromBulk
 
 
-AUTHOR = 'fof'
-NAME = 'split'
-ID = f"{AUTHOR}-{NAME}"
-
-SOFT_DEPENDENCIES = []
-HARD_DEPENCENDIES = []
-
-
 
 class SplitDiscussionMixin(DiscussionFromBulk):
     @property
@@ -20,12 +12,10 @@ class SplitDiscussionMixin(DiscussionFromBulk):
 
 
 class SplitExtension(ExtensionMixin):
-    def get_dependencies(self):
-        return {
-            "soft": SOFT_DEPENDENCIES,
-            "hard": HARD_DEPENCENDIES
-        }
+    AUTHOR = 'fof'
+    NAME = 'split'
 
 
-    def mixin(self):
-        super().mixin(self, DiscussionFromBulk, SplitDiscussionMixin)
+    @classmethod
+    def mixin(cls):
+        super().mixin(DiscussionFromBulk, SplitDiscussionMixin)

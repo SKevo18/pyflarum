@@ -9,15 +9,6 @@ from ..flarum.core.filters import Filter
 from ...error_handler import parse_request
 
 
-AUTHOR = 'skevo'
-NAME = 'advanced-search'
-ID = f"{AUTHOR}-{NAME}"
-
-
-SOFT_DEPENDENCIES = []
-HARD_DEPENCENDIES = []
-
-
 
 class AdvancedSearchFlarumUserMixin(FlarumUser):
     def get_user_by_username(self, username: str) -> t.Optional[User]:
@@ -35,17 +26,10 @@ class AdvancedSearchFlarumUserMixin(FlarumUser):
 
 
 class AdvancedSearchExtension(ExtensionMixin, AdvancedSearchFlarumUserMixin):
-    def __init__(self):
-        self.name = NAME
-        self.author = AUTHOR
-        self.id = ID
-
-    def get_dependencies(self):
-        return {
-            "soft": SOFT_DEPENDENCIES,
-            "hard": HARD_DEPENCENDIES
-        }
+    AUTHOR = 'skevo'
+    NAME = 'advanced-search'
 
 
-    def mixin(self):
-        super().mixin(self, FlarumUser, AdvancedSearchFlarumUserMixin)
+    @classmethod
+    def mixin(cls):
+        super().mixin(FlarumUser, AdvancedSearchFlarumUserMixin)

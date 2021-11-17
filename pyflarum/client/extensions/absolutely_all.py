@@ -16,15 +16,6 @@ from ..flarum.core.filters import Filter
 from ..flarum.core.discussions import Discussion
 
 
-AUTHOR = 'skevo'
-NAME = 'absolutely-all'
-ID = f"{AUTHOR}-{NAME}"
-
-
-SOFT_DEPENDENCIES = []
-HARD_DEPENCENDIES = []
-
-
 
 class AbsolutelyAllFlarumUserMixin(FlarumUser):
     def absolutely_all_users(self, filter: t.Optional[Filter]=None)  -> t.Generator['Users', None, None]:
@@ -173,18 +164,10 @@ class AbsolutelyAllExtension(ExtensionMixin):
         Based on `Generator`, that yields in a while loop, until no `next_link` is present in the API.
     """
 
-    def __init__(self):
-        self.name = NAME
-        self.author = AUTHOR
-        self.id = ID
+    AUTHOR = 'skevo'
+    NAME = 'absolutely-all'
 
 
-    def get_dependencies(self):
-        return {
-            "soft": SOFT_DEPENDENCIES,
-            "hard": HARD_DEPENCENDIES
-        }
-
-
-    def mixin(self):
-        super().mixin(self, FlarumUser, AbsolutelyAllFlarumUserMixin)
+    @classmethod
+    def mixin(cls):
+        super().mixin(FlarumUser, AbsolutelyAllFlarumUserMixin)

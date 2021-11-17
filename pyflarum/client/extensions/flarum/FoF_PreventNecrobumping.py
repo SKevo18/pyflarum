@@ -4,14 +4,6 @@ from ....extensions import ExtensionMixin
 from ...flarum.core.discussions import DiscussionFromBulk
 
 
-AUTHOR = 'fof'
-NAME = 'prevent-necrobumping'
-ID = f"{AUTHOR}-{NAME}"
-
-SOFT_DEPENDENCIES = []
-HARD_DEPENCENDIES = []
-
-
 
 class PreventNecrobumpingDiscussionMixin(DiscussionFromBulk):
     @property
@@ -25,12 +17,10 @@ class PreventNecrobumpingDiscussionMixin(DiscussionFromBulk):
 
 
 class PreventNecrobumpingExtension(ExtensionMixin):
-    def get_dependencies(self):
-        return {
-            "soft": SOFT_DEPENDENCIES,
-            "hard": HARD_DEPENCENDIES
-        }
+    AUTHOR = 'fof'
+    NAME = 'prevent-necrobumping'
 
 
-    def mixin(self):
-        super().mixin(self, DiscussionFromBulk, PreventNecrobumpingDiscussionMixin)
+    @classmethod
+    def mixin(cls):
+        super().mixin(DiscussionFromBulk, PreventNecrobumpingDiscussionMixin)

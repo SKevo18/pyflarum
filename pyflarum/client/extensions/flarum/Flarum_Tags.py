@@ -12,14 +12,6 @@ from ....datetime_conversions import flarum_to_datetime
 from ....error_handler import parse_request
 
 
-AUTHOR = 'flarum'
-NAME = 'tags'
-ID = f"{AUTHOR}-{NAME}"
-
-SOFT_DEPENDENCIES = []
-HARD_DEPENCENDIES = []
-
-
 
 class Tag(BaseFlarumIndividualObject):
     """
@@ -230,13 +222,11 @@ class TagsDiscussionMixin(DiscussionFromBulk):
 
 
 class TagsExtension(ExtensionMixin):
-    def get_dependencies(self):
-        return {
-            "soft": SOFT_DEPENDENCIES,
-            "hard": HARD_DEPENCENDIES
-        }
+    AUTHOR = 'flarum'
+    NAME = 'tags'
 
 
-    def mixin(self):
-        super().mixin(self, Forum, TagsForumMixin)
-        super().mixin(self, DiscussionFromBulk, TagsDiscussionMixin)
+    @classmethod
+    def mixin(cls):
+        super().mixin(Forum, TagsForumMixin)
+        super().mixin(DiscussionFromBulk, TagsDiscussionMixin)

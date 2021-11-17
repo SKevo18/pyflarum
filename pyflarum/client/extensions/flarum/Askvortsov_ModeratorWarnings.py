@@ -3,14 +3,6 @@ from ....extensions import ExtensionMixin
 from ...flarum.core.users import UserFromBulk
 
 
-AUTHOR = 'askvortsov'
-NAME = 'moderator-warnings'
-ID = f"{AUTHOR}-{NAME}"
-
-SOFT_DEPENDENCIES = []
-HARD_DEPENCENDIES = []
-
-
 
 class ModeratorWarningsUserFromBulkMixin(UserFromBulk):
     @property
@@ -55,12 +47,10 @@ class ModeratorWarningsExtension(ExtensionMixin):
         https://extiverse.com/extension/askvortsov/flarum-moderator-warnings
     """
 
-    def get_dependencies(self):
-        return {
-            "soft": SOFT_DEPENDENCIES,
-            "hard": HARD_DEPENCENDIES
-        }
+    AUTHOR = 'askvortsov'
+    NAME = 'moderator-warnings'
 
 
-    def mixin(self):
-        super().mixin(self, UserFromBulk, ModeratorWarningsUserFromBulkMixin)
+    @classmethod
+    def mixin(cls):
+        super().mixin(UserFromBulk, ModeratorWarningsUserFromBulkMixin)

@@ -9,15 +9,6 @@ from ...flarum.core.posts import Post, PostFromBulk, PostFromNotification, PostF
 
 
 
-AUTHOR = 'flarum'
-NAME = 'likes'
-ID = f"{AUTHOR}-{NAME}"
-
-SOFT_DEPENDENCIES = []
-HARD_DEPENCENDIES = []
-
-
-
 class LikesPostFromDiscussionMixin(PostFromDiscussion):
     def __like_or_unlike(self, liked: bool=True) -> Post:
         """
@@ -94,14 +85,12 @@ class LikesExtension(ExtensionMixin):
         https://packagist.org/packages/flarum/likes
     """
 
-    def get_dependencies(self):
-        return {
-            "soft": SOFT_DEPENDENCIES,
-            "hard": HARD_DEPENCENDIES
-        }
+    AUTHOR = 'flarum'
+    NAME = 'likes'
 
 
-    def mixin(self):
-        super().mixin(self, PostFromDiscussion, LikesPostFromDiscussionMixin)
-        super().mixin(self, PostFromNotification, LikesPostFromNotificationMixin)
-        super().mixin(self, PostFromBulk, LikesPostFromBulkMixin)
+    @classmethod
+    def mixin(cls):
+        super().mixin(PostFromDiscussion, LikesPostFromDiscussionMixin)
+        super().mixin(PostFromNotification, LikesPostFromNotificationMixin)
+        super().mixin(PostFromBulk, LikesPostFromBulkMixin)

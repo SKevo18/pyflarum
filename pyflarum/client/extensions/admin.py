@@ -7,14 +7,6 @@ from ..flarum.core import BaseFlarumIndividualObject
 from ...error_handler import parse_request
 
 
-AUTHOR = 'skevo'
-NAME = 'admin'
-ID = f"{AUTHOR}-{NAME}"
-
-
-SOFT_DEPENDENCIES = []
-HARD_DEPENCENDIES = []
-
 
 class MailSettings(BaseFlarumIndividualObject):
     @property
@@ -245,17 +237,10 @@ class AdminFlarumUserMixin(FlarumUser):
 
 
 class AdminExtension(ExtensionMixin, AdminFlarumUserMixin):
-    def __init__(self):
-        self.name = NAME
-        self.author = AUTHOR
-        self.id = ID
-
-    def get_dependencies(self):
-        return {
-            "soft": SOFT_DEPENDENCIES,
-            "hard": HARD_DEPENCENDIES
-        }
+    AUTHOR = 'skevo'
+    NAME = 'admin'
 
 
-    def mixin(self):
-        super().mixin(self, FlarumUser, AdminFlarumUserMixin)
+    @classmethod
+    def mixin(cls):
+        super().mixin(FlarumUser, AdminFlarumUserMixin)

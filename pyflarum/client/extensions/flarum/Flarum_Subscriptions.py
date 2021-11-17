@@ -7,13 +7,6 @@ from ...flarum.core.discussions import Discussion, DiscussionFromNotification, D
 from ....error_handler import parse_request
 
 
-AUTHOR = 'flarum'
-NAME = 'subscriptions'
-ID = f"{AUTHOR}-{NAME}"
-
-SOFT_DEPENDENCIES = []
-HARD_DEPENCENDIES = []
-
 
 class SubscriptionsDiscussionFromNotificationMixin(DiscussionFromNotification):
     def __change_subscription_state(self, state: t.Optional['t.Literal["following", "ignoring"]']):
@@ -81,13 +74,11 @@ class SubscriptionsDiscussionFromBulkMixin(DiscussionFromBulk, SubscriptionsDisc
 
 
 class SubscriptionsExtension(ExtensionMixin):
-    def get_dependencies(self):
-        return {
-            "soft": SOFT_DEPENDENCIES,
-            "hard": HARD_DEPENCENDIES
-        }
+    AUTHOR = 'flarum'
+    NAME = 'subscriptions'
 
 
-    def mixin(self):
-        super().mixin(self, DiscussionFromNotification, SubscriptionsDiscussionFromNotificationMixin)
-        super().mixin(self, DiscussionFromBulk, SubscriptionsDiscussionFromBulkMixin)
+    @classmethod
+    def mixin(cls):
+        super().mixin(DiscussionFromNotification, SubscriptionsDiscussionFromNotificationMixin)
+        super().mixin(DiscussionFromBulk, SubscriptionsDiscussionFromBulkMixin)

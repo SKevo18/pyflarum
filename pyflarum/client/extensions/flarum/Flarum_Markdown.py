@@ -3,14 +3,6 @@ from ....extensions import ExtensionMixin
 from ...flarum.core.forum import Forum
 
 
-AUTHOR = "flarum"
-NAME = "markdown"
-ID = f"{AUTHOR}-{NAME}"
-
-SOFT_DEPENDENCIES = []
-HARD_DEPENCENDIES = []
-
-
 
 class ForumMixin(Forum):
     @property
@@ -23,17 +15,15 @@ class ForumMixin(Forum):
 
 
 
-class ExampleExtension(ExtensionMixin):
+class MarkdownExtension(ExtensionMixin):
     """
         https://packagist.org/packages/flarum/markdown
     """
 
-    def get_dependencies(self):
-        return {
-            "soft": SOFT_DEPENDENCIES,
-            "hard": HARD_DEPENCENDIES
-        }
+    AUTHOR = 'flarum'
+    NAME = 'markdown'
 
 
-    def mixin(self):
-        super().mixin(self, Forum, ForumMixin)
+    @classmethod
+    def mixin(cls):
+        super().mixin(Forum, ForumMixin)

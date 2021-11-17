@@ -6,14 +6,6 @@ from ...flarum.core.forum import Forum
 from ...flarum.core.posts import PostFromNotification
 
 
-AUTHOR = 'flarum'
-NAME = 'flags'
-ID = f"{AUTHOR}-{NAME}"
-
-SOFT_DEPENDENCIES = []
-HARD_DEPENCENDIES = []
-
-
 
 class FlagsForumMixin(Forum):
     @property
@@ -56,13 +48,11 @@ class FlagsExtension(ExtensionMixin):
         https://packagist.org/packages/flarum/flags
     """
 
-    def get_dependencies(self):
-        return {
-            "soft": SOFT_DEPENDENCIES,
-            "hard": HARD_DEPENCENDIES
-        }
+    AUTHOR = 'flarum'
+    NAME = 'flags'
 
 
-    def mixin(self):
-        super().mixin(self, PostFromNotification, FlagsPostFromNotificationMixin)
-        super().mixin(self, Forum, FlagsForumMixin)
+    @classmethod
+    def mixin(cls):
+        super().mixin(PostFromNotification, FlagsPostFromNotificationMixin)
+        super().mixin(Forum, FlagsForumMixin)
