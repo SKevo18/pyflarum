@@ -13,7 +13,7 @@ Thus, I present to you my first (real) Python package - [pyFlarum](https://pypi.
 ## 🔗 Useful links:
   - [❗ Changelog](https://github.com/CWKevo/pyflarum/releases)
   - [🗣 Discuss](https://discuss.flarum.org/d/28221)
-  - [📚 Documentation](https://cwkevo.github.io/pyflarum/docs/)
+  - [📚 Documentation](https://cwkevo.github.io/pyflarum/docs)
   - [👨‍💻 GitHub repository](https://github.com/CWKevo/pyflarum)
   - [🐍 PyPi link](https://pypi.org/project/pyFlarum)
 
@@ -349,8 +349,7 @@ usage of pyFlarum during testing, but there's perhaps a very tiny chance that th
 
 # 💾 Database support (since `v1.0.11-beta`)
 
-pyFlarum has also support for the default Flarum database structure (upon installation). This makes it possible to implement pyFlarum in migration scripts, to
-make transition to Flarum easy, fast and fully-automatic.
+pyFlarum has also support for the default Flarum database structure (upon installation). This makes it possible to implement pyFlarum in migration scripts, to make transition to Flarum easy, fast and fully-automatic.
 
 ### 👀 Example:
 
@@ -382,8 +381,7 @@ if __name__ == "__main__":
 
 **Disclaimer:** Database support is still new and in beta (as the rest of this library anyways).
 
-Database has no support for extensions that are not included in Flarum by default. This is because it is very difficult to maintain the support
-for all the different columns that extensions create - when pyFlarum defines/doesn't define a column that is not/is in the database, it breaks.
+Database has no support for extensions that are not included in Flarum by default. This is because it is very difficult to maintain the support for all the different columns that extensions create - when pyFlarum defines/doesn't define a column that is not/is in the database, it breaks.
 
 It is also technically not possible to monkey-patch database properties the same way it is possible to do in `FlarumUser`.
 
