@@ -46,6 +46,7 @@ class FlarumDatabase:
         return SQLModel.metadata.create_all(self.engine)
 
 
+    # TODO: Is context manager even needed?
     def __enter__(self) -> None:
         """
             Initializes a database session.
@@ -115,10 +116,16 @@ class FlarumDatabase:
     def create_user(self, username: str, password: bytes, nickname: t.Optional[str]=None, **kwargs) -> DB_User:
         """
             Creates a new user and inserts it in the database.
+
+            ### Parameters:
+            - `username` - the user's username.
+            - `password` - the user's password (must be `bytes` encoded - this will be hashed by `bcrypt`, so it is required to have that module installed).
+            - `nickname` - the user's nickname (comes from the [Nicknames extension](https://extiverse.com/extension/flarum/nicknames)).
+            - `**kwargs` - any other keyword arguments to be passed to the `DB_User` object.
         """
 
         if not bcrypt:
-            raise RuntimeError('`bcrypt` module is not installed.')
+            raise RuntimeError('`bcrypt` module is not installed. It is required to hash passwords. Please, install that module first (`pip install bcrypt`).')
 
         hashed_password = bcrypt.hashpw(password, bcrypt.gensalt())
 

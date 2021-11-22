@@ -3,11 +3,9 @@
 ![PyPI version](https://badge.fury.io/py/pyFlarum.svg) ![GitHub issues](https://img.shields.io/github/issues/CWKevo/pyflarum?color=forestgreen&label=Issues) ![GitHub](https://img.shields.io/github/license/CWKevo/pyFlarum?color=yellow&label=License)
 
 
-Somewhere at the beginning of this year, I have started a concept to build a Python Flarum API client. The goal was to provide everyone an easy and extensible system to interact with Flarum's public API and perform user-related tasks.
+Somewhere at the beginning of year 2021, I have started a concept to build a Python Flarum package. The goal was to provide everyone an easy and extensible system to interact with Flarum's public API and perform user-related tasks. Later, I've expanded this idea to also include support for server-side database modifications.
 
-Later, I began to work on rebasing FreeFlarum's code, so this idea was left in the dust. But after that was done, I revisited this project and started over now that I had learned more about Python.
-
-Thus, I present to you my first (real) Python package - [pyFlarum](https://pypi.org/project/pyFlarum).
+Thus, I present to you [pyFlarum](https://pypi.org/project/pyFlarum).
 
 
 ## 🔗 Useful links:
@@ -376,16 +374,11 @@ if __name__ == "__main__":
 
             else:
                 print(user.username, '(no discussions)')
-
 ```
 
-**Disclaimer:** Database support is still new and in beta (as the rest of this library anyways).
+Database has currently no support for extensions that are not included in Flarum by default. This is because it is very difficult to maintain the support for all the different columns that extensions create - when pyFlarum defines/doesn't define a column that is not/is in the database, it breaks. I think that I will eventually find a way to support this, but I don't have the time to do it right now.
 
-Database has no support for extensions that are not included in Flarum by default. This is because it is very difficult to maintain the support for all the different columns that extensions create - when pyFlarum defines/doesn't define a column that is not/is in the database, it breaks.
-
-It is also technically not possible to monkey-patch database properties the same way it is possible to do in `FlarumUser`.
-
-My vision about the database support is to provide an easy way to create migration scripts to Flarum. You can see my [other repository](https://github.com/CWKevo/pyflarum-migrations) for migrations that have already been created by me.
+My vision about the database support is to provide an easy way to create migration scripts to Flarum. You can see my [other repository](https://github.com/CWKevo/pyflarum-migrations) for migrations that have already been/will be created by me.
 
 Contributions to both the migrations and this project are welcome!
 

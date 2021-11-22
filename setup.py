@@ -47,7 +47,8 @@ setuptools.setup(
     url = 'https://github.com/CWKevo/pyflarum',
 
     install_requires=[
-        'requests'
+        'requests',
+        'sqlmodel'
     ],
 
     classifiers=[

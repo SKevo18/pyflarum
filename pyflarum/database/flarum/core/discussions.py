@@ -29,6 +29,7 @@ class DB_Discussion(SQLModel, table=True):
     """When was this discussion created at"""
 
     user_id: t.Optional[int] = Field(default=None, foreign_key="users.id")
+    """The discussion's author user ID."""
     author: t.Optional[DB_User] = Relationship(back_populates="discussions")
     """The discussion's author."""
 
@@ -45,7 +46,11 @@ class DB_Discussion(SQLModel, table=True):
     """The number of the last post in the discussion."""
 
     hidden_at: t.Optional[datetime] = Field(default=None)
-    """When was this discussion hidden at? `None`/`NULL` means that it is not hidden."""
+    """
+        When was this discussion hidden at? `None`/`NULL` means that it is not hidden.
+    
+        Note: You can also use `DB_Discussion.is_hidden` to check whether or not the discussion is hidden.
+    """
     hidden_user_id: t.Optional[int] = Field(default=None)
     """The ID of the user that hid the discussion."""
 
@@ -53,6 +58,7 @@ class DB_Discussion(SQLModel, table=True):
     """Whether or not the discussion is private."""
 
     posts: t.List['DB_Post'] = Relationship(back_populates="discussion")
+    """List of posts in the discussion."""
 
     # Extensions:
     is_locked: bool = Field(default=False)
@@ -64,9 +70,17 @@ class DB_Discussion(SQLModel, table=True):
 
     @property
     def uri(self):
+        """
+            The URI of the discussion.
+        """
+
         return f"/d/{self.id}-{self.slug}"
 
 
     @property
     def is_hidden(self):
+        """
+            Whether or not the discussion is hidden.
+        """
+
         return self.hidden_at is None
