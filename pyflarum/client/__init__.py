@@ -16,7 +16,7 @@ from pyflarum.client.flarum.core.forum import Forum
 
 from pathlib import Path
 try:
-    with open(f"{Path(__file__).parent.parent.absolute()}{Path('/README.md')}", 'r', encoding="UTF-8") as readme:
+    with open(f"{Path(__file__).parent.parent.parent.absolute()}{Path('/README.md')}", 'r', encoding="UTF-8") as readme:
         __doc__ = readme.read() 
 
 except Exception:
