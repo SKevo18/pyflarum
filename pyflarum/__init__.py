@@ -14,6 +14,15 @@ from pyflarum.client.flarum.core.notifications import Notifications, Notificatio
 from pyflarum.client.flarum.core.forum import Forum
 
 
+from pathlib import Path
+try:
+    with open(f"{Path(__file__).parent.parent.absolute() / Path('README.md')}", 'r', encoding="UTF-8") as readme:
+        __doc__ = readme.read() 
+
+except Exception:
+    __doc__ = "Failed to load README.md. For now, please see the GitHub version, which is identical: https://github.com/CWkevo/pyflarum. Also, please report this issue to me so that I can fix it, thanks!"
+
+
 if TYPE_CHECKING:
     _ = [
         FlarumUser, FlarumError,
