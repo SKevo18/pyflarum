@@ -383,12 +383,12 @@ My vision about the database support is to provide an easy way to create migrati
 Contributions to both the migrations and this project are welcome!
 
 
-# 🎁 Support me
+## 🎁 Support me
 
 I create free software to benefit people.
 If this project helps you and you like it, consider supporting me by donating via cryptocurrency:
 
-- Bitcoin: `bc1q6n7f4mllak9xts355wlyq2n3rce60w2r5aswxa`; `1LMS4u41beDGMb9AXmXzfH7ZkZSwGSkSyx`
+- Bitcoin: [E-mail me](mailto:me@kevo.link)
 - Ethereum: `0x12C598b3bC084710507c9d6d19C9434fD26864Cc`
 - Litecoin: `LgHQK1NQrRQ56AKvVtSxMubqbjSWh7DTD2`
 - Dash: `Xe7TYoRCYPdZyiQYDjgzCGxR5juPWV8PgZ`
