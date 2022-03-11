@@ -2,21 +2,20 @@
 
 ![PyPI version](https://badge.fury.io/py/pyFlarum.svg) ![GitHub issues](https://img.shields.io/github/issues/CWKevo/pyflarum?color=forestgreen&label=Issues) ![GitHub](https://img.shields.io/github/license/CWKevo/pyFlarum?color=yellow&label=License)
 
-
 Somewhere at the beginning of year 2021, I have started a concept to build a Python Flarum package. The goal was to provide everyone an easy and extensible system to interact with Flarum's public API and perform user-related tasks. Later, I've expanded this idea to also include support for server-side database modifications.
 
 Thus, I present to you [pyFlarum](https://pypi.org/project/pyFlarum).
 
+## 🔗 Useful links
 
-## 🔗 Useful links:
-  - [❗ Changelog](https://github.com/CWKevo/pyflarum/releases)
-  - [🗣 Discuss](https://discuss.flarum.org/d/28221)
-  - [📚 Documentation](https://cwkevo.github.io/pyflarum/docs)
-  - [👨‍💻 GitHub repository](https://github.com/CWKevo/pyflarum)
-  - [🐍 PyPi link](https://pypi.org/project/pyFlarum)
+- [❗ Changelog](https://github.com/CWKevo/pyflarum/releases)
+- [🗣 Discuss](https://discuss.flarum.org/d/28221)
+- [📚 Documentation](https://cwkevo.github.io/pyflarum/docs)
+- [👨‍💻 GitHub repository](https://github.com/CWKevo/pyflarum)
+- [🐍 PyPi link](https://pypi.org/project/pyFlarum)
 
+### 🐱‍🏍 Features
 
-### 🐱‍🏍 Features:
 - Complete support for creating, retrieving, updating and deleting data.
 - (Almost) everything is object-oriented, with docstrings (still needs to be done) and examples to help you code faster.
 - Very extensible, thanks to custom extension & dependency system. The most common Flarum extensions are included out of the box, and more are still on the way. Read more about the extension system [here](https://cwkevo.github.io/pyflarum/docs/#extensions).
@@ -27,11 +26,10 @@ Thus, I present to you [pyFlarum](https://pypi.org/project/pyFlarum).
 - pyFlarum wraps a small amount of Flarum's database structure by using `sqlmodel`'s ORM.
   - This means that you can query the database, and pyFlarum will automatically convert the results to pyFlarum's objects.
 
+## 🚀 Quickstart
 
+### 📀 Installation
 
-## 🚀 Quickstart:
-
-### 📀 Installation:
 This package requires Python 3.6+ and the [requests](https://pypi.org/project/requests) library to be installed. Yep, that's the only dependency. Should there be more over time, you can install them all at once by using this command (but I assume that you're already familiar with all of this, so feel free to skip this part):
 
 ```shell
@@ -41,6 +39,7 @@ python -m pip install -r requirements.txt
 ```
 
 Installing is easy with:
+
 ```shell
 pip install pyflarum -U
 # or:
@@ -48,6 +47,7 @@ python -m pip install pyflarum -U
 ```
 
 Updating:
+
 ```shell
 python -m pip install pyflarum -U --upgrade
 # or:
@@ -55,14 +55,15 @@ pip install pyflarum --upgrade -U
 ```
 
 Uninstalling:
+
 ```shell
 python -m pip uninstall pyflarum
 # or:
 pip uninstall pyflarum
 ```
 
+### 📜 Quickstart Example
 
-### 📜 Quickstart Example:
 How easy is it to fetch a specific discussion and print it's title?
 
 The answer - luckily, it's actually quite easy:
@@ -80,25 +81,27 @@ print(discussion.title)
 
 That's just amazing 4 lines of code (without comments and newlines)!
 
-
 ### ➡ What's next?
-Check the [documentation](https://cwkevo.github.io/pyflarum/docs/) to dive deep into the concepts of this project and learn more! 
+
+Check the [documentation](https://cwkevo.github.io/pyflarum/docs/) to dive deep into the concepts of this project and learn more!
 
 I will now take a small break from maintaining this - I still want to do a bit more projects this summer now that I have some time. However, I am open for feature requests and bug reports at the [GitHub repository](https://github.com/CWKevo/pyflarum/issues).
 
 The documentation is still not finished yet, but that can wait for now until some people show some interest in this. My honest view is that I do not want to work on something that people will not enjoy, and I will likely require some motivation in order to keep this project alive. If no interest is shown, I will occassionaly push bugfixes and features for my personal use over time. I don't actually expect much people to use this, but I'd be surprised and happy if you would!
 
+## 📜 Examples
 
-## 📜 Examples:
 I'll show you some more examples before we dive deep into the details at the [documentation](https://cwkevo.github.io/pyflarum/docs/). All of the following snippets assume that you already have your `USER` object initialized.
 
 Get all discussions from the front page (`/api/discussions`) and print the title & URL:
+
 ```python
 for discussion in USER.all_discussions():
     print(discussion.title, discussion.url)
 ```
 
 Obtain some user:
+
 ```python
 user = USER.get_user_by_id(1)
 for group in user.get_groups():
@@ -107,12 +110,12 @@ for group in user.get_groups():
 
 You can find more examples in the sections below, or browse the [tests](https://github.com/CWKevo/pyflarum/tree/main/tests) directory of the source code for full examples of various tasks. These will be regularly updated, [should this stay maintained](#➡-whats-next), to ensure that old stuff works and new features behave correctly too.
 
-
 ## 📡 Parameters
+
 By default, pyFlarum works by just knowing the forum's URL. But there are more options to choose from. Let's go through the basic ones:
 
-
 ### 🔐 Authentication
+
 In order to perform user related actions, you must be logged in. This is easier done than said (pun unintended):
 
 ```python
@@ -122,12 +125,14 @@ USER = FlarumUser(forum_url="https://discuss.flarum.org", username="yourusername
 ...just like that! However, I **strongly** recommend you to store your user's credentials in a `.env` file and load it by using a library such as [python-dotenv](https://pypi.org/project/python-dotenv):
 
 *.env:*
-```
+
+```env
 username="spam"
 password="eggs"
 ```
 
 *script.py:*
+
 ```python
 import os
 
@@ -144,8 +149,7 @@ USER = FlarumUser(
 
 > Don't forget to exclude `.env` in your `.gitignore`, if you're using Git (in other words, don't be like me once)!
 
-
-### 📚 Cached sessions:
+### 📚 Cached sessions
 
 By default, pyFlarum uses the standard `Session` object from Python's [requests](https://pypi.org/project/requests). However, it is possible to pass your own `Session` object.
 
@@ -162,7 +166,6 @@ USER = FlarumUser(
 ```
 
 The cache really makes a difference and can speed requests by up to 10x! But I decided to make it optional, as it is not ideal for frequent API calls (e. g. watching for notifications/mentions to respond to user's commands - yes, that's possible with [the commands and watch extensions](https://github.com/CWKevo/pyflarum/blob/main/tests/watch_for_commands.py))
-
 
 ## 🧩 Extensions
 
@@ -183,7 +186,6 @@ USER = FlarumUser(
 
 # ...
 ```
-
 
 ### 🐲 Dealing with type hints
 
@@ -219,7 +221,6 @@ discussion.isApproved # <- syntax highlighting works
 
 > **Note:** The `Flarum_Approval` extension contains only one mixin for discussions: `Flarum_Approval.ApprovalDiscussionFromNotificationMixin`. Since this is a parent of `Discussion` because of the [inheritance](#⬆-class-inheritance), you can type-hint just that for it to work (no `Union` from [typing](https://docs.python.org/3/library/typing.html) is required). You can check the [extensions documentation](https://cwkevo.github.io/pyflarum/docs/extensions) for list of available mixins and extensions, or the [source code](https://github.com/CWKevo/pyflarum/tree/main/pyflarum/extensions).
 
-
 ## ⬆ Class Inheritance
 
 pyFlarum's inhertitance needed to be wrapped around Flarum's API, so that these two can work together. To understand this system, we need to first understand how Flarum's API works:
@@ -230,14 +231,14 @@ Usually, Flarum inherits the more detailed data's properties from the previous l
 
 Luckily, I have put my best efforts to make pyFlarum handle this for you. That's why there are multiple objects for each of Flarum's thingies. Here's an example inheritance structure for posts:
 
-```
+```plaintext
         (contains)                (is parent for)
 Posts       >>       PostFromBulk       ->       Post
 ```
 
 Or (more complicated) notifications:
 
-```
+```plaintext
                 (contains)                  (contains)                        (inherits from)
 Notifications       >>       Notification       >>       PostFromNotification       <-        PostFromDiscussion
                                                                   |
@@ -245,8 +246,7 @@ Notifications       >>       Notification       >>       PostFromNotification   
                                                             (is parent for)             (is parent for)
 ```
 
-
-### 📜 Example:
+### 📜 Example
 
 Fetch all discussions from the front page:
 
@@ -273,7 +273,6 @@ for discussion in USER.all_discussions():
     for posts in full_discussion.get_posts():
         print(post.url)
 ```
-
 
 ### 👀 Included data
 
@@ -324,14 +323,14 @@ You might be asking, why keep tossing the parent `included` into every object? W
 
 This is very complicated, and I can't explain things, so it might be worthy checking the source code, if you care to learn more about how pyFlarum handles this.
 
-
 ### 📚 Parent included
 
 It is a JSON data of the parent's included JSON data.
 
 > I put together what I could to make this work for you instead of you working for it. Whenever pyFlarum makes an API call to a top-level route such as `/api/discussions`, obtaining a discussion from that will include the parent `pyflarum.flarum.core.discussions.Discussions.included` in that discussion as well. So now, whenever you would like to obtain a post from that discussion, the reference for that post is found in the `relationships` array and then it gets recursively matched to the resulting `pyflarum.flarum.core.posts.PostFromDiscussion` in the `pyflarum.flarum.core.discussions.Discussions.included` section.
 
-#### Long explanation for nerds (I am not good at explaining):
+#### Long explanation for nerds (I am not good at explaining)
+
 This is because of the way [Flarum's includes](https://cwkevo.github.io/pyflarum/docs/#included-data) work.
 When you run a function such as `pyflarum.flarum.core.discussions.DiscussionFromBulk.get_author()`, the data for the author is not directly in the `pyflarum.flarum.core.discussions.DiscussionFromBulk`'s JSON.
 This means that pyFlarum would have to make a new API call everytime you run `pyflarum.flarum.core.discussions.DiscussionFromBulk.get_author()`, and you'd see 429 sooner than usual.
@@ -343,13 +342,11 @@ because pyFlarum handles everything for you in the background. Unless you are fo
 and you don't pass the parent's included - this would mean that all functions that rely on that will break. I have never spotted any weird stuff by normal
 usage of pyFlarum during testing, but there's perhaps a very tiny chance that this system can possibly bug out.
 
-
-
-# 💾 Database support (since `v1.0.11-beta`)
+## 💾 Database support (since `v1.0.11-beta`)
 
 pyFlarum has also support for the default Flarum database structure (upon installation). This makes it possible to implement pyFlarum in migration scripts, to make transition to Flarum easy, fast and fully-automatic.
 
-### 👀 Example:
+### 👀 Example
 
 ```python
 from sqlmodel import create_engine
@@ -381,7 +378,6 @@ Database has currently no support for extensions that are not included in Flarum
 My vision about the database support is to provide an easy way to create migration scripts to Flarum. You can see my [other repository](https://github.com/CWKevo/pyflarum-migrations) for migrations that have already been/will be created by me.
 
 Contributions to both the migrations and this project are welcome!
-
 
 ## 🎁 Support me
 
