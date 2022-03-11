@@ -1,2 +1,1 @@
 requests # for client support
-sqlmodel # for database support

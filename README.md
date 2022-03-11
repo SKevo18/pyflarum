@@ -2,7 +2,7 @@
 
 ![PyPI version](https://badge.fury.io/py/pyFlarum.svg) ![GitHub issues](https://img.shields.io/github/issues/CWKevo/pyflarum?color=forestgreen&label=Issues) ![GitHub](https://img.shields.io/github/license/CWKevo/pyFlarum?color=yellow&label=License)
 
-Somewhere at the beginning of year 2021, I have started a concept to build a Python Flarum package. The goal was to provide everyone an easy and extensible system to interact with Flarum's public API and perform user-related tasks. Later, I've expanded this idea to also include support for server-side database modifications.
+Somewhere at the beginning of year 2021, I have started a concept to build a Python Flarum package. The goal was to provide everyone an easy and extensible system to interact with Flarum's public API and perform user-related tasks.
 
 Thus, I present to you [pyFlarum](https://pypi.org/project/pyFlarum).
 
@@ -23,8 +23,6 @@ Thus, I present to you [pyFlarum](https://pypi.org/project/pyFlarum).
   - This means that instead of using `discussion['data']['attributes']['title']`, it is as simple as `discussion.title`.
 - Flarum's JSON API works in saving mode. What I mean is that when you fetch a discussion from notification, not all of the discussion's data is present in the JSON. On the other hand, obtaining the discussion directly by it's ID results in a much detailed JSON.
   - To save you headaches, pyFlarum obviously handles this too and all of the objects have different hierarchy and inheritance. Example: `DiscussionFromNotification` is parent for `DiscussionFromBulk` and that's parent for `Discussion`, where `Discussion` object is discussion obtained directly from API, and therefore logically contains all properties of the previous objects (and JSON). This is all nicely rendered thanks to your editor's linting and type hints, so you won't make a mistake by accessing unexisting properties from parent objects. More about pyFlarum's inheritance system and it's flaws can be found [here](https://cwkevo.github.io/pyflarum/docs/#class-inheritance).
-- pyFlarum wraps a small amount of Flarum's database structure by using `sqlmodel`'s ORM.
-  - This means that you can query the database, and pyFlarum will automatically convert the results to pyFlarum's objects.
 
 ## 🚀 Quickstart
 
@@ -341,43 +339,6 @@ You can think of this as a cache in a nutshell, if it's unclear for you. And if 
 because pyFlarum handles everything for you in the background. Unless you are forging this object's JSON data by yourself,
 and you don't pass the parent's included - this would mean that all functions that rely on that will break. I have never spotted any weird stuff by normal
 usage of pyFlarum during testing, but there's perhaps a very tiny chance that this system can possibly bug out.
-
-## 💾 Database support (since `v1.0.11-beta`)
-
-pyFlarum has also support for the default Flarum database structure (upon installation). This makes it possible to implement pyFlarum in migration scripts, to make transition to Flarum easy, fast and fully-automatic.
-
-### 👀 Example
-
-```python
-from sqlmodel import create_engine
-
-from pyflarum.database import FlarumDatabase
-from pyflarum.database import DB_User
-
-
-ENGINE = create_engine('sqlite:///tests/database/database.db')  # see https://docs.sqlalchemy.org/en/latest/core/engines.html for details on the engine
-DATABASE = FlarumDatabase(engine=ENGINE)
-
-
-
-if __name__ == "__main__":
-    with DATABASE:
-        for user in DATABASE.generic_filter(DB_User, id=1).first():
-            if user.discussions:
-                print(user.username, ':', sep='')
-
-                for discussion in user.discussions:
-                    print('•', discussion.title)
-
-            else:
-                print(user.username, '(no discussions)')
-```
-
-Database has currently no support for extensions that are not included in Flarum by default. This is because it is very difficult to maintain the support for all the different columns that extensions create - when pyFlarum defines/doesn't define a column that is not/is in the database, it breaks. I think that I will eventually find a way to support this, but I don't have the time to do it right now.
-
-My vision about the database support is to provide an easy way to create migration scripts to Flarum. You can see my [other repository](https://github.com/CWKevo/pyflarum-migrations) for migrations that have already been/will be created by me.
-
-Contributions to both the migrations and this project are welcome!
 
 ## 🎁 Support me
 

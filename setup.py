@@ -6,7 +6,7 @@ sys.path.append('.')
 import setuptools
 
 
-__description__ = "An unofficial Python package for manipulating with Flarum's API & database"
+__description__ = "An unofficial Python package for manipulating with Flarum's API"
 __author__      = "SKevo"
 __copyright__   = "Copyright (c) 2021, SKevo"
 __credits__     = ["SKevo"]
@@ -39,7 +39,7 @@ setuptools.setup(
     version = __version__,
     license = __license__,
     description = __description__,
-    keywords = ['Flarum', 'forum software', 'api', 'Flarum api', 'bot', 'userbot', 'database', 'flarum database', 'server', 'client'],
+    keywords = ['Flarum', 'forum software', 'api', 'Flarum api', 'bot', 'userbot', 'server', 'client'],
 
     author = __author__,
     author_email = __email__,

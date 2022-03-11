@@ -13,12 +13,6 @@ from pyflarum.client.flarum.core.filters import Filter
 from pyflarum.client.flarum.core.notifications import Notifications, Notification
 from pyflarum.client.flarum.core.forum import Forum
 
-from pyflarum.database.session import FlarumDatabase
-
-from pyflarum.database.flarum.core.discussions import DB_Discussion
-from pyflarum.database.flarum.core.posts import DB_Post
-from pyflarum.database.flarum.core.users import DB_User
-
 
 if TYPE_CHECKING:
     _ = [
@@ -28,7 +22,4 @@ if TYPE_CHECKING:
         Users, User, UserFromBulk, UserFromNotification, MyUser,
         PreparedGroup, Groups, Group,
         Filter, Notifications, Notification, Forum,
-
-        FlarumDatabase,
-        DB_Discussion, DB_Post, DB_User,
     ]
