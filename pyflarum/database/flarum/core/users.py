@@ -3,10 +3,13 @@ import typing as t
 if t.TYPE_CHECKING:
     from .other import DB_AccessToken, DB_APIKey
     from .discussions import DB_Discussion
+    from ..core.posts import DB_Post
 
 from datetime import datetime
 
 from sqlmodel import SQLModel, Field, Relationship, Column, JSON
+
+from ..extensions.likes import DB_PostLikes
 from ..extensions.tags import DB_Tag, DB_TagUser
 
 
@@ -28,7 +31,7 @@ class DB_User(SQLModel, table=True):
 
     avatar_url: t.Optional[str] = Field(max_length=100)
     """The file name of user's avatar. Avatars are located in the `public/assets/avatars` directory of your forum root."""
-    preferences: t.Dict[str, bool] = Field(sa_column=Column(JSON), default={"notify_discussionRenamed_alert": True,"notify_postLiked_alert": True,"notify_discussionLocked_alert": True,"notify_postMentioned_alert": True,"notify_postMentioned_email": False,"notify_userMentioned_alert": True,"notify_userMentioned_email": False,"notify_newPost_alert": True, "notify_newPost_email": True, "notify_userSuspended_alert": True, "notify_userUnsuspended_alert": True, "followAfterReply": True, "discloseOnline": True, "indexProfile": True, "locale": None })
+    preferences: t.Dict[str, bool] = Field(sa_column=Column(JSON), default={"notify_discussionRenamed_alert": True, "notify_postLiked_alert": True, "notify_discussionLocked_alert": True, "notify_postMentioned_alert": True, "notify_postMentioned_email": False, "notify_userMentioned_alert": True, "notify_userMentioned_email": False, "notify_newPost_alert": True, "notify_newPost_email": True, "notify_userSuspended_alert": True, "notify_userUnsuspended_alert": True, "followAfterReply": True, "discloseOnline": True, "indexProfile": True, "locale": None })
     """The user's preferences (e. g.: for notifications)."""
 
     joined_at: t.Optional[datetime] = Field(default=None)
@@ -52,5 +55,8 @@ class DB_User(SQLModel, table=True):
     discussions: t.List['DB_Discussion'] = Relationship(back_populates='author')
     """List of discussions that this user made."""
 
+
     tags: t.List['DB_Tag'] = Relationship(back_populates='users', link_model=DB_TagUser)
     """Tags that have relationship with this user."""
+    liked_posts: t.List['DB_Post'] = Relationship(back_populates='users_liked', link_model=DB_PostLikes)
+    """The list of posts that the user liked."""

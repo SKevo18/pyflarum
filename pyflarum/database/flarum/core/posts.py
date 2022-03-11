@@ -1,9 +1,13 @@
 import typing as t
 
+if t.TYPE_CHECKING:
+    from ..core.users import DB_User
+
 from sqlmodel import SQLModel, Field, Relationship
 from datetime import datetime
 
 from .discussions import DB_Discussion
+from ..extensions.likes import DB_PostLikes
 
 
 
@@ -38,3 +42,7 @@ class DB_Post(SQLModel, table=True):
     """Whether or not the post is private."""
     is_approved: bool = Field(default=True)
     """Whether or not the post is approved."""
+
+
+    users_liked: t.List['DB_User'] = Relationship(back_populates='liked_posts', link_model=DB_PostLikes)
+    """The list of users that liked this post."""

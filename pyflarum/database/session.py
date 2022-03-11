@@ -46,7 +46,6 @@ class FlarumDatabase:
         return SQLModel.metadata.create_all(self.engine)
 
 
-    # TODO: Is context manager even needed?
     def __enter__(self) -> None:
         """
             Initializes a database session.
