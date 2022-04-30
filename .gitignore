@@ -8,8 +8,6 @@ scrapped.html
 test.png
 
 # Cache:
-*.sqlite
-*.sqlite-journal
 __pycache__/
 .pyc
 

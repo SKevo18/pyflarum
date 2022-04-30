@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 from ....extensions import ExtensionMixin
 
 from ...flarum.core.users import User, UserFromBulk
-from ....error_handler import parse_request
+from ....error_handler import parse_request, FlarumError
 from ....datetime_conversions import datetime_to_flarum, flarum_to_datetime
 
 
@@ -48,6 +48,9 @@ class SuspendUserMixin(UserFromBulk):
 
         raw = self.user.session.patch(f"{self.user.api_urls['users']}/{self.id}", json=post_data)
         json = parse_request(raw)
+
+        if json is None:
+            raise FlarumError(f"The JSON response was empty while suspending user ID `{self.id}`.")
 
         return User(user=self.user, _fetched_data=json)
 

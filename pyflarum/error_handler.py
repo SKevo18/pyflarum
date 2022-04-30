@@ -32,8 +32,7 @@ class MissingExtensionWarning(Warning):
 
 def parse_request(response: 'Response') -> t.Union[dict, t.NoReturn]:
     """
-        Parses the request as JSON, raises `FlarumError` if
-        something went wrong.
+        Parses the request as JSON, raises `FlarumError` if something went wrong.
     """
 
     if not 200 <= response.status_code <= 204:

@@ -2,13 +2,7 @@ import typing as t
 
 import warnings
 
-from sqlmodel import SQLModel
-from sqlalchemy.future import Engine
-
 from .error_handler import MissingExtensionError, MissingExtensionWarning
-
-
-_DBT = t.TypeVar('_DBT', bound=Engine)
 
 
 
@@ -36,7 +30,7 @@ class ExtensionMixin:
             }
             ```
 
-            A dependency is anything that you can pass into `FlarumUser(extensions=[...])` or `FlarumDatabase(extensions=[...])` (e. g. an extension class).
+            A dependency is anything that you can pass into `FlarumUser(extensions=[...])` (e. g. an extension class).
 
             #### Hard-dependencies:
             - Will raise an error when they're not found. It is impossible for the extension to function without these.

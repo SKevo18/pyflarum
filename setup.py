@@ -11,7 +11,7 @@ __author__      = "SKevo"
 __copyright__   = "Copyright (c) 2021, SKevo"
 __credits__     = ["SKevo"]
 __license__     = "MIT"
-__version__     = "v1.0.11-beta"
+__version__     = "v1.0.0"
 __maintainer__  = "SKevo"
 __email__       = "me@kevo.link"
 __status__      = "4 - Beta"
@@ -47,8 +47,7 @@ setuptools.setup(
     url = 'https://github.com/CWKevo/pyflarum',
 
     install_requires=[
-        'requests',
-        'sqlmodel'
+        'requests'
     ],
 
     classifiers=[

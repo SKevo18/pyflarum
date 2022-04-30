@@ -8,19 +8,19 @@ import os
 from datetime import datetime
 from pathlib import Path
 
-from requests_cache.session import CachedSession
+try:
+    from requests_cache.session import CachedSession as RSession
+except ImportError:
+    from requests import Session as RSession
+
 
 from pyflarum.client import FlarumUser
 from pyflarum.client.flarum.core.filters import Filter
 
 from pyflarum.client.extensions import absolutely_all
 
-EXTENSIONS = [
-    absolutely_all.AbsolutelyAllExtension
-]
 
-
-USER = FlarumUser(forum_url=os.environ['forum_url'], extensions=EXTENSIONS, session_object=CachedSession()) # type: absolutely_all.AbsolutelyAllFlarumUserMixin
+USER = FlarumUser(forum_url=os.environ['forum_url'], extensions=[absolutely_all.AbsolutelyAllExtension], session_object=RSession()) # type: absolutely_all.AbsolutelyAllFlarumUserMixin
 
 
 def scrap_all(file_name: t.Union[str, bytes, Path]="scrapped.html"):
@@ -61,5 +61,4 @@ def scrap_all(file_name: t.Union[str, bytes, Path]="scrapped.html"):
 
 if __name__ == "__main__":
     from tests import ROOT_PATH
-
     scrap_all(f"{ROOT_PATH}/tests/scrapped.html")

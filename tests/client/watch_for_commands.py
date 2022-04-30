@@ -14,13 +14,7 @@ from pyflarum.client.extensions import commands
 from pyflarum.client.extensions.flarum import Flarum_Likes
 
 
-EXTENSIONS = [
-    watch.WatchExtension,
-    commands.CommandsExtension,
-    Flarum_Likes.LikesExtension
-]
-
-USER = FlarumUser(forum_url=os.environ['forum_url'], username_or_email="test", password=os.environ['account_password'], extensions=EXTENSIONS) # type: watch.WatchFlarumUserMixin | commands.CommandsFlarumUserMixin
+USER = FlarumUser(forum_url=os.environ['forum_url'], username_or_email="test", password=os.environ['account_password'], extensions=[watch.WatchExtension, commands.CommandsExtension, Flarum_Likes.LikesExtension]) # type: watch.WatchFlarumUserMixin | commands.CommandsFlarumUserMixin
 API_KEY = os.environ['openweather_api_key']
 
 WEATHER_POST_TEMPLATE = """**{city}**, `{country}` has **{weather}** and __{temperature} °C__"""
@@ -30,7 +24,7 @@ WEATHER_POST_TEMPLATE = """**{city}**, `{country}` has **{weather}** and __{temp
 def on_notification(notification: Notification):
     subject = notification.get_subject()
 
-    if isinstance(subject, PostFromNotification):
+    if isinstance(subject, PostFromNotification): # if it's a notification about new post
         subject: Flarum_Likes.LikesPostFromNotificationMixin
 
         if USER.is_mentioned_in(subject.content):

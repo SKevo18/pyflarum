@@ -2,7 +2,7 @@ import typing as t
 
 from ....extensions import ExtensionMixin
 
-from ....error_handler import parse_request
+from ....error_handler import parse_request, FlarumError
 
 from ...flarum.core.users import UserFromBulk
 from ...flarum.core.posts import Post, PostFromBulk, PostFromNotification, PostFromDiscussion
@@ -29,6 +29,9 @@ class LikesPostFromDiscussionMixin(PostFromDiscussion):
 
         raw = self.user.session.patch(f"{self.user.api_urls['posts']}/{self.id}", json=patch_data)
         json = parse_request(raw)
+
+        if json is None:
+            raise FlarumError(f"Reponse to patch request while liking post {patch_data['data']['id']} was empty. Was the post really a post that can be liked? You should check whether the post isn't just something like an alert when the discussion was locked or similar.")
 
         return Post(user=self.user, _fetched_data=json)
 

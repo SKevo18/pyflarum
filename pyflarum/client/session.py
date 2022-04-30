@@ -33,7 +33,7 @@ class FlarumSession:
         The main object that carries the Flarum session.
     """
 
-    def __init__(self, forum_url: 'str', username_or_email: t.Optional[str]=None, password: t.Optional[str]=None, api_endpoint: 'str'="api", user_agent: 'str'="pyflarum", session_object: 'Session | t.Any'=Session()):
+    def __init__(self, forum_url: 'str', username_or_email: t.Optional[str]=None, password: t.Optional[str]=None, api_endpoint: 'str'="api", user_agent: 'str'="pyflarum", session_object: 't.Type[Session] | t.Any'=Session()):
         """
             ### Parameters:
             - `forum_url` - the forum URL that you want the bot to fetch/update data from.
