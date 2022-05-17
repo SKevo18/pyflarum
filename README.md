@@ -10,7 +10,7 @@ Thus, I present to you [pyFlarum](https://pypi.org/project/pyFlarum).
 
 - [❗ Changelog](https://github.com/CWKevo/pyflarum/releases)
 - [🗣 Discuss](https://discuss.flarum.org/d/28221)
-- [📚 Documentation](https://cwkevo.github.io/pyflarum/docs)
+- [📚 Documentation](https://cwkevo.github.io/pyflarum)
 - [👨‍💻 GitHub repository](https://github.com/CWKevo/pyflarum)
 - [🐍 PyPi link](https://pypi.org/project/pyFlarum)
 
@@ -18,11 +18,11 @@ Thus, I present to you [pyFlarum](https://pypi.org/project/pyFlarum).
 
 - Complete support for creating, retrieving, updating and deleting data.
 - (Almost) everything is object-oriented, with docstrings (still needs to be done) and examples to help you code faster.
-- Very extensible, thanks to custom extension & dependency system. The most common Flarum extensions are included out of the box, and more are still on the way. Read more about the extension system [here](https://cwkevo.github.io/pyflarum/docs/#extensions).
+- Very extensible, thanks to custom extension & dependency system. The most common Flarum extensions are included out of the box, and more are still on the way. Read more about the extension system [here](https://cwkevo.github.io/pyflarum/#extensions).
 - The data is fetched and stored as JSON, but the keys can be retrieved by using class properties, which also handles type conversions.
   - This means that instead of using `discussion['data']['attributes']['title']`, it is as simple as `discussion.title`.
 - Flarum's JSON API works in saving mode. What I mean is that when you fetch a discussion from notification, not all of the discussion's data is present in the JSON. On the other hand, obtaining the discussion directly by it's ID results in a much detailed JSON.
-  - To save you headaches, pyFlarum obviously handles this too and all of the objects have different hierarchy and inheritance. Example: `DiscussionFromNotification` is parent for `DiscussionFromBulk` and that's parent for `Discussion`, where `Discussion` object is discussion obtained directly from API, and therefore logically contains all properties of the previous objects (and JSON). This is all nicely rendered thanks to your editor's linting and type hints, so you won't make a mistake by accessing unexisting properties from parent objects. More about pyFlarum's inheritance system and it's flaws can be found [here](https://cwkevo.github.io/pyflarum/docs/#class-inheritance).
+  - To save you headaches, pyFlarum obviously handles this too and all of the objects have different hierarchy and inheritance. Example: `DiscussionFromNotification` is parent for `DiscussionFromBulk` and that's parent for `Discussion`, where `Discussion` object is discussion obtained directly from API, and therefore logically contains all properties of the previous objects (and JSON). This is all nicely rendered thanks to your editor's linting and type hints, so you won't make a mistake by accessing unexisting properties from parent objects. More about pyFlarum's inheritance system and it's flaws can be found [here](https://cwkevo.github.io/pyflarum/#class-inheritance).
 
 ## 🚀 Quickstart
 
@@ -81,7 +81,7 @@ That's just amazing 4 lines of code (without comments and newlines)!
 
 ### ➡ What's next?
 
-Check the [documentation](https://cwkevo.github.io/pyflarum/docs/) to dive deep into the concepts of this project and learn more!
+Check the [documentation](https://cwkevo.github.io/pyflarum/) to dive deep into the concepts of this project and learn more!
 
 I will now take a small break from maintaining this - I still want to do a bit more projects this summer now that I have some time. However, I am open for feature requests and bug reports at the [GitHub repository](https://github.com/CWKevo/pyflarum/issues).
 
@@ -89,7 +89,7 @@ The documentation is still not finished yet, but that can wait for now until som
 
 ## 📜 Examples
 
-I'll show you some more examples before we dive deep into the details at the [documentation](https://cwkevo.github.io/pyflarum/docs/). All of the following snippets assume that you already have your `USER` object initialized.
+I'll show you some more examples before we dive deep into the details at the [documentation](https://cwkevo.github.io/pyflarum/). All of the following snippets assume that you already have your `USER` object initialized.
 
 Get all discussions from the front page (`/api/discussions`) and print the title & URL:
 
@@ -167,7 +167,7 @@ The cache really makes a difference and can speed requests by up to 10x! But I d
 
 ## 🧩 Extensions
 
-Similarly to [Flarum](https://discuss.flarum.org/t/extensions), pyFlarum also works around the concept of [extensions](https://cwkevo.github.io/pyflarum/docs/extensions/index.html).
+Similarly to [Flarum](https://discuss.flarum.org/t/extensions), pyFlarum also works around the concept of [extensions](https://cwkevo.github.io/pyflarum/extensions/index.html).
 
 These can be imported and included in your `FlarumUser` object as a list of extension classes:
 
@@ -217,7 +217,7 @@ discussion = USER.get_discussion_by_id(1) # type: Flarum_Approval.ApprovalDiscus
 discussion.isApproved # <- syntax highlighting works
 ```
 
-> **Note:** The `Flarum_Approval` extension contains only one mixin for discussions: `Flarum_Approval.ApprovalDiscussionFromNotificationMixin`. Since this is a parent of `Discussion` because of the [inheritance](#⬆-class-inheritance), you can type-hint just that for it to work (no `Union` from [typing](https://docs.python.org/3/library/typing.html) is required). You can check the [extensions documentation](https://cwkevo.github.io/pyflarum/docs/extensions) for list of available mixins and extensions, or the [source code](https://github.com/CWKevo/pyflarum/tree/main/pyflarum/extensions).
+> **Note:** The `Flarum_Approval` extension contains only one mixin for discussions: `Flarum_Approval.ApprovalDiscussionFromNotificationMixin`. Since this is a parent of `Discussion` because of the [inheritance](#⬆-class-inheritance), you can type-hint just that for it to work (no `Union` from [typing](https://docs.python.org/3/library/typing.html) is required). You can check the [extensions documentation](https://cwkevo.github.io/pyflarum/extensions) for list of available mixins and extensions, or the [source code](https://github.com/CWKevo/pyflarum/tree/main/pyflarum/extensions).
 
 ## ⬆ Class Inheritance
 
@@ -313,7 +313,7 @@ Let's examine a wild JSON spotted in the real world:
 
 This is a simplified syntax of how might a JSON for `/api/discussions` look like. We can see a discussion with ID `1`, that has a special `pyflarum.flarum.core.discussions.DiscussionFromBulk.relationships` array (or dictionary, if you're a Pythonista). This array contains a reference for `firstPost` (unsurprisingly, that's the first post of the discussion). The full data is in the `pyflarum.flarum.core.discussions.Discussions.included` section of the JSON, where we indeed can see a post object with the corresponding ID of `1`.
 
-Again, I put together what I could to make this work for you instead of you working for it. Whenever pyFlarum makes an API call to a top-level route such as `/api/discussions`, obtaining a discussion from that will include the parent `pyflarum.flarum.core.discussions.Discussions.included` in that discussion as well. So now, whenever you would like to obtain a post from that discussion, the reference for that post is found in the `relationships` array and then it gets recursively matched to the resulting `pyflarum.flarum.core.posts.PostFromDiscussion` in the `pyflarum.flarum.core.discussions.Discussions.included` section. See [parent included](https://cwkevo.github.io/pyflarum/docs/#parent-included) below.
+Again, I put together what I could to make this work for you instead of you working for it. Whenever pyFlarum makes an API call to a top-level route such as `/api/discussions`, obtaining a discussion from that will include the parent `pyflarum.flarum.core.discussions.Discussions.included` in that discussion as well. So now, whenever you would like to obtain a post from that discussion, the reference for that post is found in the `relationships` array and then it gets recursively matched to the resulting `pyflarum.flarum.core.posts.PostFromDiscussion` in the `pyflarum.flarum.core.discussions.Discussions.included` section. See [parent included](https://cwkevo.github.io/pyflarum/#parent-included) below.
 
 From Flarum's side, this was done to eliminate frequent API calls and to save on the JSON's size. Including the full data would possibly make the JSON contain duplicates, if for example, all posts were made by the same user. This way, the user is included only once in the `pyflarum.flarum.core.discussions.Discussions.included` section, and we saved some bytes to transfer. People using paid mobile networks will be grateful to save some cents.
 
@@ -329,7 +329,7 @@ It is a JSON data of the parent's included JSON data.
 
 #### Long explanation for nerds (I am not good at explaining)
 
-This is because of the way [Flarum's includes](https://cwkevo.github.io/pyflarum/docs/#included-data) work.
+This is because of the way [Flarum's includes](https://cwkevo.github.io/pyflarum/#included-data) work.
 When you run a function such as `pyflarum.flarum.core.discussions.DiscussionFromBulk.get_author()`, the data for the author is not directly in the `pyflarum.flarum.core.discussions.DiscussionFromBulk`'s JSON.
 This means that pyFlarum would have to make a new API call everytime you run `pyflarum.flarum.core.discussions.DiscussionFromBulk.get_author()`, and you'd see 429 sooner than usual.
 Instead, the data is already in the parent's (`pyflarum.flarum.core.discussions.Discussions.included`) data. And since that gets passed to this object too, pyFlarum doesn't need to
