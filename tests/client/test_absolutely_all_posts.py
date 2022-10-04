@@ -16,7 +16,7 @@ def test_absolutely_all_posts():
     discussion = USER.get_discussion_by_id(7585)
 
     for number, posts in enumerate(USER.get_all_posts_from_discussion(discussion)):
-        if number > 3: # 3 batches of posts
+        if number > 3: # only first 3 batches of posts
             break
 
         for post in posts:

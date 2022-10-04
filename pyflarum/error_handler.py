@@ -35,7 +35,7 @@ def parse_request(response: 'Response') -> t.Union[dict, t.NoReturn]:
         Parses the request as JSON, raises `FlarumError` if something went wrong.
     """
 
-    if not 200 <= response.status_code <= 204:
+    if not (200 <= response.status_code <= 204):
         return handle_errors(status_code=response.status_code)
 
     try:
@@ -56,44 +56,43 @@ def parse_request(response: 'Response') -> t.Union[dict, t.NoReturn]:
     return json
 
 
-def handle_errors(errors: t.Optional[t.List[t.Dict[str, str]]]=None, status_code: t.Optional[str]=None) -> t.NoReturn:
+def handle_errors(errors: t.Optional[t.List[t.Dict[str, str]]]=[{}], status_code: t.Optional[str]=None):
     """
         Handles Flarum & request related errors.
         Returns `FlarumError` if an error was found, `True` otherwise.
     """
 
-    if errors:
-        for error in errors:
-            if status_code:
-                status = status_code
+    for error in errors:
+        if status_code:
+            status = status_code
+
+        else:
+            s = error.get('status', None)
+
+            if s:
+                status = int(s)
 
             else:
-                s = error.get('status', None)
+                status = 'Unknown'
 
-                if s:
-                    status = int(s)
-
-                else:
-                    status = 'Unknown'
-
-            code = error.get('code', 0)
-            details = error.get("detail", "No further details.")
+        code = error.get('code', 0)
+        details = error.get("detail", "No further details.")
 
 
-            if status == 400:
-                if code == 'invalid_parameter':
-                    raise FlarumError(f'Error {status}: Invalid parameter. This usually happens when you provide an invalid filter when filtering data. {details}', status=status, code=code, details=details)
-
-                else:
-                    raise FlarumError(f'Error {status}: {code} - {details}', status=status, code=code, details=details)
-
-
-            if status == 401:
-                if code == 'not_authenticated':
-                    raise FlarumError(f'Error {status}: Not authenticated. Please, check whether your authentication details (username & password) are correct and try again. {details}', status=status, code=code, details=details)
-
-                else:
-                    raise FlarumError(f'Error {status}: {code} - {details}', status=status, code=code, details=details)
+        if status == 400:
+            if code == 'invalid_parameter':
+                raise FlarumError(f'Error {status}: Invalid parameter. This usually happens when you provide an invalid filter when filtering data. {details}', status=status, code=code, details=details)
 
             else:
                 raise FlarumError(f'Error {status}: {code} - {details}', status=status, code=code, details=details)
+
+
+        if status == 401:
+            if code == 'not_authenticated':
+                raise FlarumError(f'Error {status}: Not authenticated. Please, check whether your authentication details (username & password) are correct and try again. {details}', status=status, code=code, details=details)
+
+            else:
+                raise FlarumError(f'Error {status}: {code} - {details}', status=status, code=code, details=details)
+
+        else:
+            raise FlarumError(f'Error {status}: {code} - {details}', status=status, code=code, details=details)

@@ -20,7 +20,7 @@ from .flarum.core.posts import Post, Posts
 from .flarum.core.filters import Filter
 
 
-from ..error_handler import parse_request
+from ..error_handler import parse_request, FlarumError
 from ..datetime_conversions import datetime_to_flarum
 
 
@@ -54,6 +54,7 @@ class FlarumSession:
         self.api_endpoint = api_endpoint
         self.username_or_email = username_or_email
         self.session = session_object
+        self.user_id = None
 
         self.session.headers.update({
             "User-Agent": user_agent
@@ -85,7 +86,13 @@ class FlarumSession:
             identification_data = {"identification": username_or_email, "password": password}
 
             raw = self.session.post(url=f'{self.forum_url}/api/token', json=identification_data)
-            token_data = parse_request(raw)
+
+            try:
+                token_data = parse_request(raw)
+
+            except FlarumError as e:
+                raise FlarumError(f"Failed to login. Are your credentials correct/does your account exist? The status code was: {e.status}") from e
+
 
             token = token_data.get("token", None)
             user_id = token_data.get("userId", None)
@@ -99,6 +106,8 @@ class FlarumSession:
 
             else:
                 self.is_authenticated = False
+
+            self.user_id = user_id
 
         else:
             self.session.headers.update({
@@ -173,30 +182,14 @@ class FlarumUser(FlarumSession, dict):
             Fetches your user's JSON data.
         """
 
-        if self.username_or_email:
-            filter = Filter(limit=1)
-
-            if '@' in self.username_or_email:
-                filter.query = f'email:{self.username_or_email}'
-
-            else:
-                filter.query = self.username_or_email
+        if self.user_id is None:
+            return None
 
 
-            raw = self.session.get(f"{self.api_urls['users']}", params=filter.to_dict)
-            json = parse_request(raw)
+        raw = self.session.get(f"{self.api_urls['users']}/{self.user_id}")
+        json = parse_request(raw)
 
-            for possible_user in json.get("data", [{}]):
-                if '@' in self.username_or_email:
-                    if possible_user.get("attributes", {}).get("email", None) == self.username_or_email:
-                        return possible_user
-
-                else:
-                    if possible_user.get("attributes", {}).get("username", None) == self.username_or_email:
-                        return possible_user
-
-
-        return None
+        return json.get('data', {})
 
 
     def _update_user_data(self, new_data: dict) -> t.Union['FlarumUser', User]:

@@ -54,7 +54,7 @@ class Filter:
 
         if self.query:
             __data["filter[q]"] = self.query
-        
+
         if self.ids:
             __data["filter[id]"] = ','.join(map(str, self.ids))
 

@@ -144,6 +144,7 @@ class AchievementsAdminFlarumUserMixin(AdminFlarumUserMixin):
 class AchievementsExtension(ExtensionMixin):
     AUTHOR = 'malago'
     NAME = 'achievements'
+    ID = f"{AUTHOR}-{NAME}"
 
     SOFT_DEPENDENCIES = [AdminExtension]
 

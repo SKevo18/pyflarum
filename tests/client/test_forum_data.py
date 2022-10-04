@@ -21,7 +21,7 @@ def test_forum_data():
 
     print("Groups:")
     for group in USER.get_groups():
-        print(f" • {group.nameSingular}")
+        print(f"• {group.nameSingular}")
 
 
 if __name__ == "__main__":

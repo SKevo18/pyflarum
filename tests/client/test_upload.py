@@ -20,11 +20,6 @@ def test_upload():
     updated_user = USER.upload_user_avatar(birb_image)
     print(updated_user.data.avatarUrl)
 
-    # ...or for someone else:
-    _user = USER.get_user_by_id(3)
-    USER.upload_user_avatar(birb_image, user=_user)
-    print(USER.data.id)
-
     # Also, why not upload it as logo?
     USER.upload_logo(birb_image)
 
