@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="generator" content="pdoc 12.0.2"/>
+    <meta name="generator" content="pdoc 12.2.0"/>
     <title>pyflarum.client.extensions.flarum.Flarum_Flags API documentation</title>
 
     <style>/*! * Bootstrap Reboot v5.0.0 (https://getbootstrap.com/) * Copyright 2011-2021 The Bootstrap Authors * Copyright 2011-2021 Twitter, Inc. * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE) * Forked from Normalize.css, licensed MIT (https://github.com/necolas/normalize.css/blob/master/LICENSE.md) */*,::after,::before{box-sizing:border-box}@media (prefers-reduced-motion:no-preference){:root{scroll-behavior:smooth}}body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";font-size:1rem;font-weight:400;line-height:1.5;color:#212529;background-color:#fff;-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}hr{margin:1rem 0;color:inherit;background-color:currentColor;border:0;opacity:.25}hr:not([size]){height:1px}h1,h2,h3,h4,h5,h6{margin-top:0;margin-bottom:.5rem;font-weight:500;line-height:1.2}h1{font-size:calc(1.375rem + 1.5vw)}@media (min-width:1200px){h1{font-size:2.5rem}}h2{font-size:calc(1.325rem + .9vw)}@media (min-width:1200px){h2{font-size:2rem}}h3{font-size:calc(1.3rem + .6vw)}@media (min-width:1200px){h3{font-size:1.75rem}}h4{font-size:calc(1.275rem + .3vw)}@media (min-width:1200px){h4{font-size:1.5rem}}h5{font-size:1.25rem}h6{font-size:1rem}p{margin-top:0;margin-bottom:1rem}abbr[data-bs-original-title],abbr[title]{-webkit-text-decoration:underline dotted;text-decoration:underline dotted;cursor:help;-webkit-text-decoration-skip-ink:none;text-decoration-skip-ink:none}address{margin-bottom:1rem;font-style:normal;line-height:inherit}ol,ul{padding-left:2rem}dl,ol,ul{margin-top:0;margin-bottom:1rem}ol ol,ol ul,ul ol,ul ul{margin-bottom:0}dt{font-weight:700}dd{margin-bottom:.5rem;margin-left:0}blockquote{margin:0 0 1rem}b,strong{font-weight:bolder}small{font-size:.875em}mark{padding:.2em;background-color:#fcf8e3}sub,sup{position:relative;font-size:.75em;line-height:0;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}a{color:#0d6efd;text-decoration:underline}a:hover{color:#0a58ca}a:not([href]):not([class]),a:not([href]):not([class]):hover{color:inherit;text-decoration:none}code,kbd,pre,samp{font-family:SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;font-size:1em;direction:ltr;unicode-bidi:bidi-override}pre{display:block;margin-top:0;margin-bottom:1rem;overflow:auto;font-size:.875em}pre code{font-size:inherit;color:inherit;word-break:normal}code{font-size:.875em;color:#d63384;word-wrap:break-word}a>code{color:inherit}kbd{padding:.2rem .4rem;font-size:.875em;color:#fff;background-color:#212529;border-radius:.2rem}kbd kbd{padding:0;font-size:1em;font-weight:700}figure{margin:0 0 1rem}img,svg{vertical-align:middle}table{caption-side:bottom;border-collapse:collapse}caption{padding-top:.5rem;padding-bottom:.5rem;color:#6c757d;text-align:left}th{text-align:inherit;text-align:-webkit-match-parent}tbody,td,tfoot,th,thead,tr{border-color:inherit;border-style:solid;border-width:0}label{display:inline-block}button{border-radius:0}button:focus:not(:focus-visible){outline:0}button,input,optgroup,select,textarea{margin:0;font-family:inherit;font-size:inherit;line-height:inherit}button,select{text-transform:none}[role=button]{cursor:pointer}select{word-wrap:normal}select:disabled{opacity:1}[list]::-webkit-calendar-picker-indicator{display:none}[type=button],[type=reset],[type=submit],button{-webkit-appearance:button}[type=button]:not(:disabled),[type=reset]:not(:disabled),[type=submit]:not(:disabled),button:not(:disabled){cursor:pointer}::-moz-focus-inner{padding:0;border-style:none}textarea{resize:vertical}fieldset{min-width:0;padding:0;margin:0;border:0}legend{float:left;width:100%;padding:0;margin-bottom:.5rem;font-size:calc(1.275rem + .3vw);line-height:inherit}@media (min-width:1200px){legend{font-size:1.5rem}}legend+*{clear:left}::-webkit-datetime-edit-day-field,::-webkit-datetime-edit-fields-wrapper,::-webkit-datetime-edit-hour-field,::-webkit-datetime-edit-minute,::-webkit-datetime-edit-month-field,::-webkit-datetime-edit-text,::-webkit-datetime-edit-year-field{padding:0}::-webkit-inner-spin-button{height:auto}[type=search]{outline-offset:-2px;-webkit-appearance:textfield}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-color-swatch-wrapper{padding:0}::file-selector-button{font:inherit}::-webkit-file-upload-button{font:inherit;-webkit-appearance:button}output{display:inline-block}iframe{border:0}summary{display:list-item;cursor:pointer}progress{vertical-align:baseline}[hidden]{display:none!important}</style>
@@ -48,9 +48,6 @@
             <li>
                     <a class="class" href="#FlagsPostFromNotificationMixin">FlagsPostFromNotificationMixin</a>
                             <ul class="memberlist">
-                        <li>
-                                <a class="variable" href="#FlagsPostFromNotificationMixin.canFlag">canFlag</a>
-                        </li>
                 </ul>
 
             </li>
@@ -59,12 +56,6 @@
                             <ul class="memberlist">
                         <li>
                                 <a class="function" href="#FlagsExtension.__init__">FlagsExtension</a>
-                        </li>
-                        <li>
-                                <a class="variable" href="#FlagsExtension.AUTHOR">AUTHOR</a>
-                        </li>
-                        <li>
-                                <a class="variable" href="#FlagsExtension.NAME">NAME</a>
                         </li>
                         <li>
                                 <a class="function" href="#FlagsExtension.mixin">mixin</a>
@@ -89,9 +80,9 @@
 <a href="./../../../../pyflarum.html">pyflarum</a><wbr>.<a href="./../../../client.html">client</a><wbr>.<a href="./../../extensions.html">extensions</a><wbr>.<a href="./../flarum.html">flarum</a><wbr>.Flarum_Flags    </h1>
 
                 
-                        <input id="Flarum_Flags-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+                        <input id="mod-Flarum_Flags-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 
-                        <label class="view-source-button" for="Flarum_Flags-view-source"><span>View Source</span></label>
+                        <label class="view-source-button" for="mod-Flarum_Flags-view-source"><span>View Source</span></label>
 
                         <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos"> 1</span></a><span class="kn">import</span> <span class="nn">typing</span> <span class="k">as</span> <span class="nn">t</span>
 </span><span id="L-2"><a href="#L-2"><span class="linenos"> 2</span></a>
@@ -269,7 +260,6 @@
                 <dd id="FlagsForumMixin.canSearchUsers" class="variable"><a href="../../flarum/core/forum.html#Forum.canSearchUsers">canSearchUsers</a></dd>
                 <dd id="FlagsForumMixin.adminUrl" class="variable"><a href="../../flarum/core/forum.html#Forum.adminUrl">adminUrl</a></dd>
                 <dd id="FlagsForumMixin.version" class="variable"><a href="../../flarum/core/forum.html#Forum.version">version</a></dd>
-                <dd id="FlagsForumMixin.allowUsernameMentionFormat" class="variable"><a href="../../flarum/core/forum.html#Forum.allowUsernameMentionFormat">allowUsernameMentionFormat</a></dd>
                 <dd id="FlagsForumMixin.get_groups" class="function"><a href="../../flarum/core/forum.html#Forum.get_groups">get_groups</a></dd>
                 <dd id="FlagsForumMixin.included" class="variable"><a href="../../flarum/core/forum.html#Forum.included">included</a></dd>
 
@@ -320,17 +310,6 @@
 </div>
 
 
-                            <div id="FlagsPostFromNotificationMixin.canFlag" class="classattr">
-                                <div class="attr variable">
-            <span class="name">canFlag</span><span class="annotation">: bool</span>
-
-        
-    </div>
-    <a class="headerlink" href="#FlagsPostFromNotificationMixin.canFlag"></a>
-    
-    
-
-                            </div>
                             <div class="inherited">
                                 <h5>Inherited Members</h5>
                                 <dl>
@@ -433,35 +412,13 @@
     
 
                             </div>
-                            <div id="FlagsExtension.AUTHOR" class="classattr">
-                                <div class="attr variable">
-            <span class="name">AUTHOR</span><span class="default_value"> = &#39;flarum&#39;</span>
-
-        
-    </div>
-    <a class="headerlink" href="#FlagsExtension.AUTHOR"></a>
-    
-    
-
-                            </div>
-                            <div id="FlagsExtension.NAME" class="classattr">
-                                <div class="attr variable">
-            <span class="name">NAME</span><span class="default_value"> = &#39;flags&#39;</span>
-
-        
-    </div>
-    <a class="headerlink" href="#FlagsExtension.NAME"></a>
-    
-    
-
-                            </div>
                             <div id="FlagsExtension.mixin" class="classattr">
                                         <input id="FlagsExtension.mixin-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 <div class="attr function">
                     <div class="decorator">@classmethod</div>
 
         <span class="def">def</span>
-        <span class="name">mixin</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">cls</span></span>)</span>
+        <span class="name">mixin</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">cls</span></span><span class="return-annotation">):</span></span>
 
                 <label class="view-source-button" for="FlagsExtension.mixin-view-source"><span>View Source</span></label>
 
@@ -482,8 +439,10 @@
 
 <h3 id="example">Example:</h3>
 
-<div class="pdoc-code codehilite"><pre><span></span><code><span class="n">extension</span><span class="o">.</span><span class="n">mixin</span><span class="p">(</span><span class="n">myclass</span><span class="p">,</span> <span class="n">pyflarum_class</span><span class="p">)</span>
-</code></pre></div>
+<div class="pdoc-code codehilite">
+<pre><span></span><code><span class="n">extension</span><span class="o">.</span><span class="n">mixin</span><span class="p">(</span><span class="n">myclass</span><span class="p">,</span> <span class="n">pyflarum_class</span><span class="p">)</span>
+</code></pre>
+</div>
 </div>
 
 
@@ -492,10 +451,7 @@
                                 <h5>Inherited Members</h5>
                                 <dl>
                                     <div><dt><a href="../../../extensions.html#ExtensionMixin">pyflarum.extensions.ExtensionMixin</a></dt>
-                                <dd id="FlagsExtension.ID" class="variable"><a href="../../../extensions.html#ExtensionMixin.ID">ID</a></dd>
-                <dd id="FlagsExtension.SOFT_DEPENDENCIES" class="variable"><a href="../../../extensions.html#ExtensionMixin.SOFT_DEPENDENCIES">SOFT_DEPENDENCIES</a></dd>
-                <dd id="FlagsExtension.HARD_DEPENCENDIES" class="variable"><a href="../../../extensions.html#ExtensionMixin.HARD_DEPENCENDIES">HARD_DEPENCENDIES</a></dd>
-                <dd id="FlagsExtension.get_dependencies" class="function"><a href="../../../extensions.html#ExtensionMixin.get_dependencies">get_dependencies</a></dd>
+                                <dd id="FlagsExtension.get_dependencies" class="function"><a href="../../../extensions.html#ExtensionMixin.get_dependencies">get_dependencies</a></dd>
 
             </div>
                                 </dl>
@@ -604,7 +560,11 @@
                 let heading;
                 switch (result.doc.type) {
                     case "function":
-                        heading = `<span class="def">${doc.funcdef}</span> <span class="name">${doc.fullname}</span><span class="signature">${doc.signature}:</span>`;
+                        if (doc.fullname.endsWith(".__init__")) {
+                            heading = `<span class="name">${doc.fullname.replace(/\.__init__$/, "")}</span>${doc.signature}`;
+                        } else {
+                            heading = `<span class="def">${doc.funcdef}</span> <span class="name">${doc.fullname}</span>${doc.signature}`;
+                        }
                         break;
                     case "class":
                         heading = `<span class="def">class</span> <span class="name">${doc.fullname}</span>`;

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="generator" content="pdoc 12.0.2"/>
+    <meta name="generator" content="pdoc 12.2.0"/>
     <title>pyflarum.client.extensions.admin API documentation</title>
 
     <style>/*! * Bootstrap Reboot v5.0.0 (https://getbootstrap.com/) * Copyright 2011-2021 The Bootstrap Authors * Copyright 2011-2021 Twitter, Inc. * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE) * Forked from Normalize.css, licensed MIT (https://github.com/necolas/normalize.css/blob/master/LICENSE.md) */*,::after,::before{box-sizing:border-box}@media (prefers-reduced-motion:no-preference){:root{scroll-behavior:smooth}}body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";font-size:1rem;font-weight:400;line-height:1.5;color:#212529;background-color:#fff;-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}hr{margin:1rem 0;color:inherit;background-color:currentColor;border:0;opacity:.25}hr:not([size]){height:1px}h1,h2,h3,h4,h5,h6{margin-top:0;margin-bottom:.5rem;font-weight:500;line-height:1.2}h1{font-size:calc(1.375rem + 1.5vw)}@media (min-width:1200px){h1{font-size:2.5rem}}h2{font-size:calc(1.325rem + .9vw)}@media (min-width:1200px){h2{font-size:2rem}}h3{font-size:calc(1.3rem + .6vw)}@media (min-width:1200px){h3{font-size:1.75rem}}h4{font-size:calc(1.275rem + .3vw)}@media (min-width:1200px){h4{font-size:1.5rem}}h5{font-size:1.25rem}h6{font-size:1rem}p{margin-top:0;margin-bottom:1rem}abbr[data-bs-original-title],abbr[title]{-webkit-text-decoration:underline dotted;text-decoration:underline dotted;cursor:help;-webkit-text-decoration-skip-ink:none;text-decoration-skip-ink:none}address{margin-bottom:1rem;font-style:normal;line-height:inherit}ol,ul{padding-left:2rem}dl,ol,ul{margin-top:0;margin-bottom:1rem}ol ol,ol ul,ul ol,ul ul{margin-bottom:0}dt{font-weight:700}dd{margin-bottom:.5rem;margin-left:0}blockquote{margin:0 0 1rem}b,strong{font-weight:bolder}small{font-size:.875em}mark{padding:.2em;background-color:#fcf8e3}sub,sup{position:relative;font-size:.75em;line-height:0;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}a{color:#0d6efd;text-decoration:underline}a:hover{color:#0a58ca}a:not([href]):not([class]),a:not([href]):not([class]):hover{color:inherit;text-decoration:none}code,kbd,pre,samp{font-family:SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;font-size:1em;direction:ltr;unicode-bidi:bidi-override}pre{display:block;margin-top:0;margin-bottom:1rem;overflow:auto;font-size:.875em}pre code{font-size:inherit;color:inherit;word-break:normal}code{font-size:.875em;color:#d63384;word-wrap:break-word}a>code{color:inherit}kbd{padding:.2rem .4rem;font-size:.875em;color:#fff;background-color:#212529;border-radius:.2rem}kbd kbd{padding:0;font-size:1em;font-weight:700}figure{margin:0 0 1rem}img,svg{vertical-align:middle}table{caption-side:bottom;border-collapse:collapse}caption{padding-top:.5rem;padding-bottom:.5rem;color:#6c757d;text-align:left}th{text-align:inherit;text-align:-webkit-match-parent}tbody,td,tfoot,th,thead,tr{border-color:inherit;border-style:solid;border-width:0}label{display:inline-block}button{border-radius:0}button:focus:not(:focus-visible){outline:0}button,input,optgroup,select,textarea{margin:0;font-family:inherit;font-size:inherit;line-height:inherit}button,select{text-transform:none}[role=button]{cursor:pointer}select{word-wrap:normal}select:disabled{opacity:1}[list]::-webkit-calendar-picker-indicator{display:none}[type=button],[type=reset],[type=submit],button{-webkit-appearance:button}[type=button]:not(:disabled),[type=reset]:not(:disabled),[type=submit]:not(:disabled),button:not(:disabled){cursor:pointer}::-moz-focus-inner{padding:0;border-style:none}textarea{resize:vertical}fieldset{min-width:0;padding:0;margin:0;border:0}legend{float:left;width:100%;padding:0;margin-bottom:.5rem;font-size:calc(1.275rem + .3vw);line-height:inherit}@media (min-width:1200px){legend{font-size:1.5rem}}legend+*{clear:left}::-webkit-datetime-edit-day-field,::-webkit-datetime-edit-fields-wrapper,::-webkit-datetime-edit-hour-field,::-webkit-datetime-edit-minute,::-webkit-datetime-edit-month-field,::-webkit-datetime-edit-text,::-webkit-datetime-edit-year-field{padding:0}::-webkit-inner-spin-button{height:auto}[type=search]{outline-offset:-2px;-webkit-appearance:textfield}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-color-swatch-wrapper{padding:0}::file-selector-button{font:inherit}::-webkit-file-upload-button{font:inherit;-webkit-appearance:button}output{display:inline-block}iframe{border:0}summary{display:list-item;cursor:pointer}progress{vertical-align:baseline}[hidden]{display:none!important}</style>
@@ -33,48 +33,6 @@
             <li>
                     <a class="class" href="#MailSettings">MailSettings</a>
                             <ul class="memberlist">
-                        <li>
-                                <a class="variable" href="#MailSettings.fields">fields</a>
-                        </li>
-                        <li>
-                                <a class="variable" href="#MailSettings.mail">mail</a>
-                        </li>
-                        <li>
-                                <a class="variable" href="#MailSettings.mailgun">mailgun</a>
-                        </li>
-                        <li>
-                                <a class="variable" href="#MailSettings.mailgun_secret">mailgun_secret</a>
-                        </li>
-                        <li>
-                                <a class="variable" href="#MailSettings.mailgun_domain">mailgun_domain</a>
-                        </li>
-                        <li>
-                                <a class="variable" href="#MailSettings.log">log</a>
-                        </li>
-                        <li>
-                                <a class="variable" href="#MailSettings.smtp">smtp</a>
-                        </li>
-                        <li>
-                                <a class="variable" href="#MailSettings.mail_host">mail_host</a>
-                        </li>
-                        <li>
-                                <a class="variable" href="#MailSettings.mail_port">mail_port</a>
-                        </li>
-                        <li>
-                                <a class="variable" href="#MailSettings.mail_encryption">mail_encryption</a>
-                        </li>
-                        <li>
-                                <a class="variable" href="#MailSettings.mail_username">mail_username</a>
-                        </li>
-                        <li>
-                                <a class="variable" href="#MailSettings.mail_password">mail_password</a>
-                        </li>
-                        <li>
-                                <a class="variable" href="#MailSettings.sending">sending</a>
-                        </li>
-                        <li>
-                                <a class="variable" href="#MailSettings.errors">errors</a>
-                        </li>
                 </ul>
 
             </li>
@@ -133,12 +91,6 @@
                     <a class="class" href="#AdminExtension">AdminExtension</a>
                             <ul class="memberlist">
                         <li>
-                                <a class="variable" href="#AdminExtension.AUTHOR">AUTHOR</a>
-                        </li>
-                        <li>
-                                <a class="variable" href="#AdminExtension.NAME">NAME</a>
-                        </li>
-                        <li>
                                 <a class="function" href="#AdminExtension.mixin">mixin</a>
                         </li>
                 </ul>
@@ -161,9 +113,9 @@
 <a href="./../../../pyflarum.html">pyflarum</a><wbr>.<a href="./../../client.html">client</a><wbr>.<a href="./../extensions.html">extensions</a><wbr>.admin    </h1>
 
                 
-                        <input id="admin-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+                        <input id="mod-admin-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 
-                        <label class="view-source-button" for="admin-view-source"><span>View Source</span></label>
+                        <label class="view-source-button" for="mod-admin-view-source"><span>View Source</span></label>
 
                         <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos">  1</span></a><span class="kn">import</span> <span class="nn">typing</span> <span class="k">as</span> <span class="nn">t</span>
 </span><span id="L-2"><a href="#L-2"><span class="linenos">  2</span></a>
@@ -511,160 +463,6 @@ objects have these properties.</p>
 </div>
 
 
-                            <div id="MailSettings.fields" class="classattr">
-                                <div class="attr variable">
-            <span class="name">fields</span><span class="annotation">: dict</span>
-
-        
-    </div>
-    <a class="headerlink" href="#MailSettings.fields"></a>
-    
-    
-
-                            </div>
-                            <div id="MailSettings.mail" class="classattr">
-                                <div class="attr variable">
-            <span class="name">mail</span><span class="annotation">: list</span>
-
-        
-    </div>
-    <a class="headerlink" href="#MailSettings.mail"></a>
-    
-    
-
-                            </div>
-                            <div id="MailSettings.mailgun" class="classattr">
-                                <div class="attr variable">
-            <span class="name">mailgun</span><span class="annotation">: dict</span>
-
-        
-    </div>
-    <a class="headerlink" href="#MailSettings.mailgun"></a>
-    
-    
-
-                            </div>
-                            <div id="MailSettings.mailgun_secret" class="classattr">
-                                <div class="attr variable">
-            <span class="name">mailgun_secret</span><span class="annotation">: Optional[str]</span>
-
-        
-    </div>
-    <a class="headerlink" href="#MailSettings.mailgun_secret"></a>
-    
-    
-
-                            </div>
-                            <div id="MailSettings.mailgun_domain" class="classattr">
-                                <div class="attr variable">
-            <span class="name">mailgun_domain</span><span class="annotation">: Optional[str]</span>
-
-        
-    </div>
-    <a class="headerlink" href="#MailSettings.mailgun_domain"></a>
-    
-    
-
-                            </div>
-                            <div id="MailSettings.log" class="classattr">
-                                <div class="attr variable">
-            <span class="name">log</span><span class="annotation">: list</span>
-
-        
-    </div>
-    <a class="headerlink" href="#MailSettings.log"></a>
-    
-    
-
-                            </div>
-                            <div id="MailSettings.smtp" class="classattr">
-                                <div class="attr variable">
-            <span class="name">smtp</span><span class="annotation">: dict</span>
-
-        
-    </div>
-    <a class="headerlink" href="#MailSettings.smtp"></a>
-    
-    
-
-                            </div>
-                            <div id="MailSettings.mail_host" class="classattr">
-                                <div class="attr variable">
-            <span class="name">mail_host</span><span class="annotation">: Optional[str]</span>
-
-        
-    </div>
-    <a class="headerlink" href="#MailSettings.mail_host"></a>
-    
-    
-
-                            </div>
-                            <div id="MailSettings.mail_port" class="classattr">
-                                <div class="attr variable">
-            <span class="name">mail_port</span><span class="annotation">: Optional[str]</span>
-
-        
-    </div>
-    <a class="headerlink" href="#MailSettings.mail_port"></a>
-    
-    
-
-                            </div>
-                            <div id="MailSettings.mail_encryption" class="classattr">
-                                <div class="attr variable">
-            <span class="name">mail_encryption</span><span class="annotation">: Optional[str]</span>
-
-        
-    </div>
-    <a class="headerlink" href="#MailSettings.mail_encryption"></a>
-    
-    
-
-                            </div>
-                            <div id="MailSettings.mail_username" class="classattr">
-                                <div class="attr variable">
-            <span class="name">mail_username</span><span class="annotation">: Optional[str]</span>
-
-        
-    </div>
-    <a class="headerlink" href="#MailSettings.mail_username"></a>
-    
-    
-
-                            </div>
-                            <div id="MailSettings.mail_password" class="classattr">
-                                <div class="attr variable">
-            <span class="name">mail_password</span><span class="annotation">: Optional[str]</span>
-
-        
-    </div>
-    <a class="headerlink" href="#MailSettings.mail_password"></a>
-    
-    
-
-                            </div>
-                            <div id="MailSettings.sending" class="classattr">
-                                <div class="attr variable">
-            <span class="name">sending</span><span class="annotation">: bool</span>
-
-        
-    </div>
-    <a class="headerlink" href="#MailSettings.sending"></a>
-    
-    
-
-                            </div>
-                            <div id="MailSettings.errors" class="classattr">
-                                <div class="attr variable">
-            <span class="name">errors</span><span class="annotation">: list</span>
-
-        
-    </div>
-    <a class="headerlink" href="#MailSettings.errors"></a>
-    
-    
-
-                            </div>
                             <div class="inherited">
                                 <h5>Inherited Members</h5>
                                 <dl>
@@ -997,7 +795,7 @@ objects have these properties.</p>
 <div class="attr function">
             
         <span class="def">def</span>
-        <span class="name">update_mail_settings</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="bp">self</span>,</span><span class="param">	<span class="n">mail_from</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">mail_encryption</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">mail_username</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">mail_password</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></span>)</span>
+        <span class="name">update_mail_settings</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="bp">self</span>,</span><span class="param">	<span class="n">mail_from</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">mail_encryption</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">mail_username</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">mail_password</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></span><span class="return-annotation">):</span></span>
 
                 <label class="view-source-button" for="AdminFlarumUserMixin.update_mail_settings-view-source"><span>View Source</span></label>
 
@@ -1092,7 +890,7 @@ objects have these properties.</p>
 <div class="attr function">
             
         <span class="def">def</span>
-        <span class="name">upload_logo</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="bp">self</span>,</span><span class="param">	file: <class 'BinaryIO'>,</span><span class="param">	<span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;logo&#39;</span>,</span><span class="param">	<span class="n">file_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;image/png&#39;</span><span class="p">,</span> <span class="s1">&#39;image/jpeg&#39;</span><span class="p">,</span> <span class="s1">&#39;image/gif&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;image/png&#39;</span></span><span class="return-annotation">) -> <span class="n">Literal</span><span class="p">[</span><span class="kc">True</span><span class="p">]</span>:</span></span>
+        <span class="name">upload_logo</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="bp">self</span>,</span><span class="param">	file: &lt;class &#x27;BinaryIO&#x27;&gt;,</span><span class="param">	<span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;logo&#39;</span>,</span><span class="param">	<span class="n">file_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;image/png&#39;</span><span class="p">,</span> <span class="s1">&#39;image/jpeg&#39;</span><span class="p">,</span> <span class="s1">&#39;image/gif&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;image/png&#39;</span></span><span class="return-annotation">) -> <span class="n">Literal</span><span class="p">[</span><span class="kc">True</span><span class="p">]</span>:</span></span>
 
                 <label class="view-source-button" for="AdminFlarumUserMixin.upload_logo-view-source"><span>View Source</span></label>
 
@@ -1137,7 +935,7 @@ objects have these properties.</p>
 <div class="attr function">
             
         <span class="def">def</span>
-        <span class="name">upload_favicon</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="bp">self</span>,</span><span class="param">	file: <class 'BinaryIO'>,</span><span class="param">	<span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;favicon&#39;</span>,</span><span class="param">	<span class="n">file_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;image/png&#39;</span><span class="p">,</span> <span class="s1">&#39;image/jpeg&#39;</span><span class="p">,</span> <span class="s1">&#39;image/gif&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;image/png&#39;</span></span><span class="return-annotation">) -> <span class="n">Literal</span><span class="p">[</span><span class="kc">True</span><span class="p">]</span>:</span></span>
+        <span class="name">upload_favicon</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="bp">self</span>,</span><span class="param">	file: &lt;class &#x27;BinaryIO&#x27;&gt;,</span><span class="param">	<span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;favicon&#39;</span>,</span><span class="param">	<span class="n">file_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;image/png&#39;</span><span class="p">,</span> <span class="s1">&#39;image/jpeg&#39;</span><span class="p">,</span> <span class="s1">&#39;image/gif&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;image/png&#39;</span></span><span class="return-annotation">) -> <span class="n">Literal</span><span class="p">[</span><span class="kc">True</span><span class="p">]</span>:</span></span>
 
                 <label class="view-source-button" for="AdminFlarumUserMixin.upload_favicon-view-source"><span>View Source</span></label>
 
@@ -1306,35 +1104,13 @@ objects have these properties.</p>
 </div>
 
 
-                            <div id="AdminExtension.AUTHOR" class="classattr">
-                                <div class="attr variable">
-            <span class="name">AUTHOR</span><span class="default_value"> = &#39;skevo&#39;</span>
-
-        
-    </div>
-    <a class="headerlink" href="#AdminExtension.AUTHOR"></a>
-    
-    
-
-                            </div>
-                            <div id="AdminExtension.NAME" class="classattr">
-                                <div class="attr variable">
-            <span class="name">NAME</span><span class="default_value"> = &#39;admin&#39;</span>
-
-        
-    </div>
-    <a class="headerlink" href="#AdminExtension.NAME"></a>
-    
-    
-
-                            </div>
                             <div id="AdminExtension.mixin" class="classattr">
                                         <input id="AdminExtension.mixin-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 <div class="attr function">
                     <div class="decorator">@classmethod</div>
 
         <span class="def">def</span>
-        <span class="name">mixin</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">cls</span></span>)</span>
+        <span class="name">mixin</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">cls</span></span><span class="return-annotation">):</span></span>
 
                 <label class="view-source-button" for="AdminExtension.mixin-view-source"><span>View Source</span></label>
 
@@ -1354,8 +1130,10 @@ objects have these properties.</p>
 
 <h3 id="example">Example:</h3>
 
-<div class="pdoc-code codehilite"><pre><span></span><code><span class="n">extension</span><span class="o">.</span><span class="n">mixin</span><span class="p">(</span><span class="n">myclass</span><span class="p">,</span> <span class="n">pyflarum_class</span><span class="p">)</span>
-</code></pre></div>
+<div class="pdoc-code codehilite">
+<pre><span></span><code><span class="n">extension</span><span class="o">.</span><span class="n">mixin</span><span class="p">(</span><span class="n">myclass</span><span class="p">,</span> <span class="n">pyflarum_class</span><span class="p">)</span>
+</code></pre>
+</div>
 </div>
 
 
@@ -1385,10 +1163,7 @@ objects have these properties.</p>
 
             </div>
             <div><dt><a href="../../extensions.html#ExtensionMixin">pyflarum.extensions.ExtensionMixin</a></dt>
-                                <dd id="AdminExtension.ID" class="variable"><a href="../../extensions.html#ExtensionMixin.ID">ID</a></dd>
-                <dd id="AdminExtension.SOFT_DEPENDENCIES" class="variable"><a href="../../extensions.html#ExtensionMixin.SOFT_DEPENDENCIES">SOFT_DEPENDENCIES</a></dd>
-                <dd id="AdminExtension.HARD_DEPENCENDIES" class="variable"><a href="../../extensions.html#ExtensionMixin.HARD_DEPENCENDIES">HARD_DEPENCENDIES</a></dd>
-                <dd id="AdminExtension.get_dependencies" class="function"><a href="../../extensions.html#ExtensionMixin.get_dependencies">get_dependencies</a></dd>
+                                <dd id="AdminExtension.get_dependencies" class="function"><a href="../../extensions.html#ExtensionMixin.get_dependencies">get_dependencies</a></dd>
 
             </div>
             <div><dt><a href="#AdminFlarumUserMixin">AdminFlarumUserMixin</a></dt>
@@ -1534,7 +1309,11 @@ objects have these properties.</p>
                 let heading;
                 switch (result.doc.type) {
                     case "function":
-                        heading = `<span class="def">${doc.funcdef}</span> <span class="name">${doc.fullname}</span><span class="signature">${doc.signature}:</span>`;
+                        if (doc.fullname.endsWith(".__init__")) {
+                            heading = `<span class="name">${doc.fullname.replace(/\.__init__$/, "")}</span>${doc.signature}`;
+                        } else {
+                            heading = `<span class="def">${doc.funcdef}</span> <span class="name">${doc.fullname}</span>${doc.signature}`;
+                        }
                         break;
                     case "class":
                         heading = `<span class="def">class</span> <span class="name">${doc.fullname}</span>`;
