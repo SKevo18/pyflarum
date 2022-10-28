@@ -340,7 +340,4 @@ because pyFlarum handles everything for you in the background. Unless you are fo
 and you don't pass the parent's included - this would mean that all functions that rely on that will break. I have never spotted any weird stuff by normal
 usage of pyFlarum during testing, but there's perhaps a very tiny chance that this system can possibly bug out.
 
-## 🎁 Support me
-
-I create free software to benefit people.
-If this project helps you and you like it, consider supporting me by donating via [PayPal](https://www.paypal.com/donate/?hosted_button_id=XDUWS5K6947HY).
+<a href="https://www.buymeacoffee.com/skevo"><img src="https://img.buymeacoffee.com/button-api/?text=Support me&emoji=🐣&slug=skevo&button_colour=ffa200&font_colour=000000&font_family=Poppins&outline_colour=000000&coffee_colour=FFDD00" /></a>
