@@ -13,7 +13,7 @@ def test_upload():
     USER = FlarumUser(forum_url=os.environ['forum_url'], username_or_email='test', password=os.environ['account_password'], extensions=[admin.AdminExtension]) # type: admin.AdminFlarumUserMixin
 
     # Get random birb image:
-    birb_link = requests.get("https://some-random-api.ml/img/birb").json()['link']
+    birb_link = requests.get("https://some-random-api.ml/animal/bird").json()['image']
     birb_image = requests.get(birb_link, stream=True).content
 
     # Upload it as avatar:
