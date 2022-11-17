@@ -3,10 +3,11 @@ import typing as t
 from datetime import datetime
 
 from ....extensions import ExtensionMixin
+from ...session import FlarumUser
 
 from ...flarum.core import BaseFlarumIndividualObject
 from ...flarum.core.forum import Forum
-from ...flarum.core.discussions import DiscussionFromBulk
+from ...flarum.core.discussions import DiscussionFromBulk, PreparedDiscussion
 
 from ....datetime_conversions import flarum_to_datetime
 from ....error_handler import parse_request
@@ -202,6 +203,10 @@ class TagsDiscussionMixin(DiscussionFromBulk):
 
 
     def get_tags(self) -> t.List[Tag]:
+        """
+            Returns a list of all tags.
+        """
+
         all_tags = [] # type: t.List[Tag]
         seen = set()
         tags = self.relationships.get("tags", {}).get("data", [{}]) # type: t.List[dict]
@@ -221,6 +226,30 @@ class TagsDiscussionMixin(DiscussionFromBulk):
 
 
 
+class TagsPreparedDiscussionMixin(PreparedDiscussion):
+    def append_tag(self, tag: t.Union[Tag, int]) -> None:
+        """
+            Appends a `Tag` to the discussion
+        """
+
+        self.data.setdefault("relationships", {'tags': {'data': []} })
+        self.data['relationships']['tags']['data'].append({"type": 'tags', "id": tag if isinstance(tag, int) else tag.id})
+
+
+
+class TagsFlarumUserMixin(FlarumUser):
+    def get_tags(self) -> t.List[Tag]:
+        """
+            Obtains all tags available at the forum.
+        """
+
+        raw = self.session.get(f"{self.api_urls['base']}/tags")
+        json = parse_request(raw)
+
+        return [Tag(user=self, _fetched_data={'data': data}) for data in json['data']]
+
+
+
 class TagsExtension(ExtensionMixin):
     AUTHOR = 'flarum'
     NAME = 'tags'
@@ -230,3 +259,5 @@ class TagsExtension(ExtensionMixin):
     def mixin(cls):
         super().mixin(Forum, TagsForumMixin)
         super().mixin(DiscussionFromBulk, TagsDiscussionMixin)
+        super().mixin(PreparedDiscussion, TagsPreparedDiscussionMixin)
+        super().mixin(FlarumUser, TagsFlarumUserMixin)

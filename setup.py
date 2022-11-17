@@ -8,10 +8,10 @@ import setuptools
 
 __description__ = "An unofficial Python package for manipulating with Flarum's API"
 __author__      = "SKevo"
-__copyright__   = "Copyright (c) 2021, SKevo"
+__copyright__   = "Copyright (c) 2022, SKevo"
 __credits__     = ["SKevo"]
 __license__     = "MIT"
-__version__     = "v1.0.1"
+__version__     = "v1.0.2"
 __maintainer__  = "SKevo"
 __email__       = "me@kevo.link"
 __status__      = "4 - Beta"
@@ -23,7 +23,7 @@ try:
         __readme__ = readme.read()
 
 except:
-    __readme__ = "Failed to read README.md!\n\n(c) SKevo" # type: str
+    __readme__ = "Failed to read README.md!\n\n(c) SKevo"
 
 
 __doc__ = __readme__
@@ -59,5 +59,7 @@ setuptools.setup(
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
     ],
 )
